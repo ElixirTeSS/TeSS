@@ -28,6 +28,13 @@ class StaticController < ApplicationController
     @container_class = 'showcase-container container-fluid'
   end
 
+  def set_featured_trainer
+    return nil unless TeSS::Config.site.dig('home_page', 'featured_trainer')
+
+    srand(Date.today.beginning_of_day.to_i)
+    Trainer.order(:id).sample(1)
+  end
+
   def set_upcoming_events
     n_events = TeSS::Config.site.dig('home_page', 'upcoming_events')
     return [] unless n_events
@@ -37,14 +44,7 @@ class StaticController < ApplicationController
       '',
       { 'start' => "#{Date.tomorrow.beginning_of_day}/" },
       sort_by: 'early',
-      per_page: n_events
-    ).results
-  end
-
-  def set_featured_trainer
-    return nil unless TeSS::Config.site.dig('home_page', 'featured_trainer')
-
-    srand(Date.today.beginning_of_day.to_i)
-    Trainer.order(:id).sample(1)
+      per_page: 5 * n_events
+    ).results.group_by(&:content_provider_id).map { |_p_id, p_events| p_events.first }.first(n_events)
   end
 end

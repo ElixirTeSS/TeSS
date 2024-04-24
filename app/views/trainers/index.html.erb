@@ -10,7 +10,7 @@
     <h2><%=t("features.trainers.long")%></h2>
     <% content_for :buttons do %>
       <!-- Register button -->
-      <%= edit_button(current_user, text: 'Register as trainer') if current_user && policy(current_user).update? %>
+      <%= edit_button(current_user, text: 'Register as trainer', anchor: 'trainer_details') if current_user && policy(current_user).update? && TeSS::Config.feature['trainers'] %>
       <!-- Info -->
       <%= info_button("What are trainers in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
         <%= render_markdown(TrainersHelper::TRAINERS_INFO) %>
