@@ -52,3 +52,5 @@
 <%= render partial: 'static/home/promo_blocks' if TeSS::Config.site.dig('home_page', 'promo_blocks') %>
 
 <%= render partial: 'static/home/upcoming_events' if @events.present? %>
+
+<%= render partial: 'static/home/latest_materials' if @materials.present? %>

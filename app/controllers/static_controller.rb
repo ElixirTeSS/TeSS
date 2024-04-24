@@ -19,11 +19,26 @@ class StaticController < ApplicationController
     end
 
     @resources = @resources.sort_by(&:created_at).reverse
+
     @events = set_upcoming_events
+    @materials = set_latest_materials
   end
 
   def showcase
     @container_class = 'showcase-container container-fluid'
+  end
+
+  def set_latest_materials
+    n_materials = TeSS::Config.site.dig('home_page', 'latest_materials')
+    return [] unless n_materials
+
+    Material.search_and_filter(
+      nil,
+      '',
+      { 'max_age' => '1 month' },
+      sort_by: 'new',
+      per_page: 10 * n_materials
+    )&.results&.group_by(&:content_provider_id)&.map { |_p_id, p_materials| p_materials&.first }&.first(n_materials)
   end
 
   def set_upcoming_events
