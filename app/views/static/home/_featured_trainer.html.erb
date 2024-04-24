@@ -1,0 +1,11 @@
+<% cache(['home', 'featured_trainer', @featured_trainer]) do %>
+  <section id="featured_trainer">
+    <div class="tab-content">
+      <h2 class="text-center"><%= 'Featured Trainer' %></h2>
+      <ul class="tab-pane fade in active">
+        <%= render partial: 'common/masonry_grid', locals: { objects: [@featured_trainer] } %>
+      </ul>
+    </div>
+  </section>
+<% end %>
+
