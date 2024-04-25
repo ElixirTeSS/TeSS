@@ -67,7 +67,7 @@ class StaticController < ApplicationController
     catalogue_count_strings = {}
     return catalogue_count_strings unless TeSS::Config.site.dig('home_page', 'catalogue_counts')
 
-    total_events = Event.where('events.end < ?', Time.now).where.not(end: nil).count
+    total_events = Event.where.not(end: nil).where('events.end > ?', Time.zone.now).count
     last_month_events = Event.where('events.created_at > ?', 1.month.ago).count
     total_events = "#{total_events.round(-2).to_f / 1000}k" if total_events > 100
     last_month_events = "#{last_month_events.round(-2).to_f / 1000}k" if last_month_events > 100
