@@ -1449,11 +1449,15 @@ class EventsControllerTest < ActionController::TestCase
     Event.create(title: 'relevant_event', url: 'http://google.com#relevant',
                  user: User.first, content_provider: ContentProvider.first, timezone: 'UTC',
                  start: Time.now.noon, end: Time.now.noon + 7.hours, city: 'Tilburg', country: 'Netherlands')
+    Event.create(title: 'long relevant_event', url: 'http://google.com#long_relevant',
+                 user: User.first, content_provider: ContentProvider.first, timezone: 'UTC',
+                 start: Time.now.noon, end: Time.now.noon + 1.month + 7.hours, city: 'Tilburg', country: 'Netherlands')
     sign_in users(:another_regular_user)
     get :index
     assert_select 'li a[href=?]', '#calendar', count: 1
     get :calendar
     @response.body.include? 'relevant_event'
+    @response.body.include? 'long_relevant_event'
   end
 
   test 'should preview event' do
