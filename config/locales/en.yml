@@ -312,10 +312,6 @@ en:
       providers: "Browse training providers to discover training resources they offer and follow links to their materials and courses."
       trainers: "Browse a directory of trainers based on their skills and expertise."
       events_count: "%{total_events} upcoming events, %{last_month_events} added last month"
-      materials_count: "%{total_materials} materials"
-      workflows_count: "%{total_workflows} workflows"
-      content_providers_count: "%{total_content_providers} content_providers"
-      trainers_count: "%{total_trainers} trainers"
     providers:
       title: Providers
       content: |
