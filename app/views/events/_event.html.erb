@@ -45,6 +45,11 @@
           <span class="muted"><%= t("activerecord.attributes.event.presence.#{event.presence}") %></span>
         </p>
       </div>
+      <% if TeSS::Config.site.fetch('show_provider_logo_in_event', false) && event.content_provider&.image&.url.present? %>
+        <div>
+          <%= image_tag(event.content_provider.image.url, class: 'small-avatar') %>
+        </div>
+      <% end %>
     </div>
 
     <%= item_comment(collection_item) if defined? collection_item %>
