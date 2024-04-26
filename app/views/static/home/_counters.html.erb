@@ -1,0 +1,19 @@
+<% features = ['events', 'materials', 'workflows', 'trainers'].select { |f| TeSS::Config.feature[f] } %>
+
+<section id="counters">
+  <ul class="counter">
+    <% features.each do |feature| %>
+      <li class="resource-counter">
+        <%= link_to polymorphic_path(feature), class: 'link-overlay' do %>
+          <div class="resource-counter-title">
+            <%= image_tag(asset_path("modern/icons/#{feature}-icon.svg"), alt: feature.titleize) %>
+          </div>
+
+          <div id='resource_count' class='resource-counter-number'> <%= @catalogue_count_strings[feature] %> </div>
+          <div class='resource-counter-text'> <%= feature == 'events' ? 'Upcoming Events' : feature.titleize %> </div>
+
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</section>

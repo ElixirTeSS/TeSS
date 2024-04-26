@@ -14,7 +14,13 @@
 
           <div class="resource-type-text"><%== t "home.catalogue.#{feature}" %></div>
 
-          <div id='catalogue_count'> <%= @catalogue_count_strings[feature] %> </div>
+          <div id='catalogue_count'>
+            <%= if feature == 'events'
+              t('home.catalogue.events_count', total_events: @catalogue_count_strings['events'], last_month_events: @catalogue_count_strings['last_month_events'])
+            else
+              "#{@catalogue_count_strings[feature]} #{feature}"
+            end %>
+          </div>
 
           <div class="resource-type-link">
               <span class="pseudolink">

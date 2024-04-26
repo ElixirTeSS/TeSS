@@ -67,16 +67,12 @@ class StaticController < ApplicationController
     catalogue_count_strings = {}
     return catalogue_count_strings unless TeSS::Config.site.dig('home_page', 'catalogue_counts')
 
-    total_events = Event.where.not(end: nil).where('events.end > ?', Time.zone.now).count
-    last_month_events = Event.where('events.created_at > ?', 1.month.ago).count
-    total_events = "#{total_events.round(-2).to_f / 1000}k" if total_events > 100
-    last_month_events = "#{last_month_events.round(-2).to_f / 1000}k" if last_month_events > 100
-    catalogue_count_strings['events'] = t('home.catalogue.events_count', total_events:, last_month_events:)
-    # catalogue_count_strings['materials'] = t('home.catalogue.materials_count', total_materials: Material.all.count)
-    catalogue_count_strings['materials'] = "#{Material.all.count} #{Material.model_name.human.pluralize.downcase}"
-    catalogue_count_strings['workflows'] = "#{Workflow.all.count} #{Workflow.model_name.human.pluralize.downcase}"
-    catalogue_count_strings['content_providers'] = "#{ContentProvider.all.count} #{ContentProvider.model_name.human.pluralize.downcase}"
-    catalogue_count_strings['trainers'] = "#{Trainer.all.count} #{Trainer.model_name.human.pluralize.downcase}"
+    catalogue_count_strings['events'] = Event.where.not(end: nil).where('events.end > ?', Time.zone.now).count
+    catalogue_count_strings['last_month_events'] = Event.where('events.created_at > ?', 1.month.ago).count
+    catalogue_count_strings['materials'] = Material.all.count
+    catalogue_count_strings['workflows'] = Workflow.all.count
+    catalogue_count_strings['content_providers'] = ContentProvider.all.count
+    catalogue_count_strings['trainers'] = Trainer.all.count
     catalogue_count_strings
   end
 end
