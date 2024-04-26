@@ -25,10 +25,10 @@ class CurationMailer < ApplicationMailer
     @provider = provider
     # @events = @provider.events.where { |e| e.lmm_processed > cut_off_time }
     @events = @provider.events.filter { |e| e.created_at > cut_off_time }
-    return if @events.count.zero? || @provider.contact.nil?
+    return if @events.count.zero? || !@provider.send_event_curation_email
 
     subject = "#{TeSS::Config.site['title_short']} events require approval"
-    mail(subject:, to: @provider.contact) do |format|
+    mail(subject:, to: @provider.user.email) do |format|
       format.html
       format.text
     end
