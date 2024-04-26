@@ -19,11 +19,7 @@ class ContentProvider < ApplicationRecord
 
   has_and_belongs_to_many :editors, class_name: "User"
 
-  attribute :approved_editors, :string, array: true
   attribute :contact, :string
-
-  #has_many :content_provider_users
-  #has_many :editors, through: :users, source: :user, inverse_of: :providers
 
   delegate :name, to: :node, prefix: true, allow_nil: true
 
@@ -38,7 +34,7 @@ class ContentProvider < ApplicationRecord
 
   validates :content_provider_type, presence: true, inclusion: { in: PROVIDER_TYPE }
 
-  clean_array_fields(:keywords, :approved_editors)
+  clean_array_fields(:keywords)
 
   has_image(placeholder: TeSS::Config.placeholder['content_provider'])
 

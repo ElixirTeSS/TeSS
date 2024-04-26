@@ -311,6 +311,7 @@ en:
       workflows: "Create training workflows to visualise learning steps and link to resources specific to your training needs."
       providers: "Browse training providers to discover training resources they offer and follow links to their materials and courses."
       trainers: "Browse a directory of trainers based on their skills and expertise."
+      events_count: "%{total_events} upcoming events, %{last_month_events} added last month"
     providers:
       title: Providers
       content: |

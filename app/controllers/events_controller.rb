@@ -48,7 +48,7 @@ class EventsController < ApplicationController
     @events = events_set.to_set.to_a
 
     # now customize the list by moving all events longer than 3 days into a separate array
-    @long_events, @events = @events.partition { |e| e.end.nil? || e.start.nil? || e.start + TeSS::Config.site.fetch(:calendar_event_maxlength, 5).to_i.days < e.end }
+    @long_events, _short_events = @events.partition { |e| e.end.nil? || e.start.nil? || e.start + TeSS::Config.site.fetch(:calendar_event_maxlength, 5).to_i.days < e.end }
 
     respond_to do |format|
       format.js
