@@ -33,6 +33,7 @@ default: &default
     widget_example:
     home_page: # Configuration for the sections displayed on the front page
       catalogue_blocks: true
+      provider_grid: false
       provider_carousel: true
       # A list of content provider IDs to show in the front page carousel. Leave blank to show latest 5 (that have avatars set)
       featured_providers: # e.g. [123, 5, 10, 1]
