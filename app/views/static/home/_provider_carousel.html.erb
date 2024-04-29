@@ -10,7 +10,7 @@
 
 <% cache(['home', 'provider-carousel', providers]) do %>
   <section id="providers">
-    <h2 class="text-center"><%= t('home.providers.title') %></h2>
+    <h2 class="text-center"><%= link_to(t('home.providers.title'), content_providers_path, class: 'home-title-link' ) %></h2>
     <div class="carousel slide multi-item-carousel" id="providers-carousel">
       <div class="carousel-inner">
         <%
