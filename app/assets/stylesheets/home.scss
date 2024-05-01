@@ -288,3 +288,12 @@ ul.promo-blocks {
     width: 30px;
   }
 }
+
+.home-title-link {
+  color: $primary-color;
+  text-decoration: none;
+  &:hover{
+    color: $primary-color;
+    text-decoration: none;
+  }
+}

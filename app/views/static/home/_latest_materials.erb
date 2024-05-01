@@ -1,7 +1,7 @@
 <% cache(['home', 'latest_materials', @materials]) do %>
   <section id="latest_materials">
     <div class="tab-content">
-      <h2 class="text-center"><%= 'Latest materials' %></h2>
+      <h2 class="text-center"><%= link_to('Latest materials', materials_path, class: 'home-title-link' ) %></h2>
       <ul class="tab-pane fade in active">
         <%= render partial: 'common/masonry_grid', locals: { objects: @materials } %>
       </ul>
