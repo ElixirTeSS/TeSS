@@ -314,3 +314,12 @@ ul.content-providers-grid {
     }
   }
 }
+
+.home-title-link {
+  color: $primary-color;
+  text-decoration: none;
+  &:hover{
+    color: $primary-color;
+    text-decoration: none;
+  }
+}
