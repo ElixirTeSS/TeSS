@@ -251,19 +251,6 @@ class StaticControllerTest < ActionController::TestCase
     end
   end
 
-  test 'should show event counts in catalogue blocks' do
-    params = events(:one).attributes.symbolize_keys
-    params.delete(:id)
-    params = params.merge({ start: Time.zone.now + 1.week, end: Time.zone.now + 1.week + 8.hours })
-    111.times do |i|
-      Event.create(params.merge(url: "#{params[:url]}##{i}"))
-    end
-    with_settings({ site: { home_page: { catalogue_blocks: true, catalogue_counts: true } } }) do
-      get :home
-      assert_select 'div#catalogue_count', text: '112 upcoming events, 136 added last month', count: 1
-    end
-  end
-
   test 'should show event counts in counter blocks' do
     params = events(:one).attributes.symbolize_keys
     params.delete(:id)
@@ -271,7 +258,7 @@ class StaticControllerTest < ActionController::TestCase
     111.times do |i|
       Event.create(params.merge(url: "#{params[:url]}##{i}"))
     end
-    with_settings({ site: { home_page: { counters: true, catalogue_counts: true } } }) do
+    with_settings({ site: { home_page: { counters: true } } }) do
       get :home
       assert_select 'div#resource_count', text: '112', count: 1
     end

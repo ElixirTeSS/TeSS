@@ -9,7 +9,7 @@
             <%= image_tag(asset_path("modern/icons/#{feature}-icon.svg"), alt: feature.titleize) %>
           </div>
 
-          <div id='resource_count' class='resource-counter-number'> <%= @catalogue_count_strings[feature] %> </div>
+          <div id='resource_count' class='resource-counter-number'> <%= @count_strings[feature] %> </div>
           <div class='resource-counter-text'> <%= feature == 'events' ? 'Upcoming Events' : feature.titleize %> </div>
 
         <% end %>

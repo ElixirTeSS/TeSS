@@ -41,7 +41,6 @@ default: &default
       upcoming_events: # Number of events on home page. Leave blank to turn off
       latest_materials: # Number of materials on home page. Leave blank to turn off
       featured_trainer: false
-      catalogue_counts: false # Whether or not to show number of database objects in catalogue blocks
       counters: false # Whether or not to show number of database objects in separate blocks
     # The order in which the tabs appear (if feature enabled)
     tab_order: ['about', 'events', 'materials', 'elearning_materials', 'workflows', 'collections', 'trainers', 'content_providers', 'nodes']

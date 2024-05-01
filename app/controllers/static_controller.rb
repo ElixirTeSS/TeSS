@@ -23,7 +23,7 @@ class StaticController < ApplicationController
     @featured_trainer = set_featured_trainer
     @events = set_upcoming_events
     @materials = set_latest_materials
-    @catalogue_count_strings = set_catalogue_count_strings
+    @count_strings = set_count_strings
   end
 
   def showcase
@@ -63,16 +63,16 @@ class StaticController < ApplicationController
     ).results.group_by(&:content_provider_id).map { |_p_id, p_events| p_events.first }.first(n_events)
   end
 
-  def set_catalogue_count_strings
-    catalogue_count_strings = {}
-    return catalogue_count_strings unless TeSS::Config.site.dig('home_page', 'catalogue_counts')
+  def set_count_strings
+    count_strings = {}
+    return count_strings unless TeSS::Config.site.dig('home_page', 'counters')
 
-    catalogue_count_strings['events'] = Event.where.not(end: nil).where('events.end > ?', Time.zone.now).count
-    catalogue_count_strings['last_month_events'] = Event.where('events.created_at > ?', 1.month.ago).count
-    catalogue_count_strings['materials'] = Material.all.count
-    catalogue_count_strings['workflows'] = Workflow.all.count
-    catalogue_count_strings['content_providers'] = ContentProvider.all.count
-    catalogue_count_strings['trainers'] = Trainer.all.count
-    catalogue_count_strings
+    count_strings['events'] = Event.where.not(end: nil).where('events.end > ?', Time.zone.now).count
+    count_strings['last_month_events'] = Event.where('events.created_at > ?', 1.month.ago).count
+    count_strings['materials'] = Material.all.count
+    count_strings['workflows'] = Workflow.all.count
+    count_strings['content_providers'] = ContentProvider.all.count
+    count_strings['trainers'] = Trainer.all.count
+    count_strings
   end
 end
