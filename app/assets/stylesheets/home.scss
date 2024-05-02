@@ -336,6 +336,32 @@ ul.promo-blocks {
   }
 }
 
+ul.content-providers-grid {
+  padding: 10px 100px;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+
+  li.provider-grid-tile {
+    min-width: 100px;
+    justify-content: center;
+    display: flex;
+    aspect-ratio: 1 / 1;
+
+    .provider-grid-image {
+      justify-content: center;
+      display: flex;
+      img {
+        max-width: 100px;
+        max-height: 100px;
+        object-fit: cover;
+      }
+    }
+  }
+}
+
 .home-title-link {
   color: $primary-color;
   text-decoration: none;

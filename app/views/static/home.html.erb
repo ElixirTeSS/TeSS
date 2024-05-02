@@ -30,6 +30,8 @@
 
 <%= render partial: 'static/home/provider_carousel' if TeSS::Config.site.dig('home_page', 'provider_carousel') %>
 
+<%= render partial: 'static/home/provider_grid' if TeSS::Config.site.dig('home_page', 'provider_grid') %>
+
 <%= render partial: 'static/home/faq' if TeSS::Config.site.dig('home_page', 'faq')&.any? %>
 
 <%= render partial: 'static/home/promo_blocks' if TeSS::Config.site.dig('home_page', 'promo_blocks') %>
