@@ -24,7 +24,7 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
 <% classes += ' hidden' if hidden %>
 <% classes += ' has-error' if errors.size > 0 %>
 
-<div class="<%= classes -%>" title="<%= title -%>">
+<div class="<%= classes -%>" title="<%= title -%>" id="<%= "multi_input_#{field_name}" -%>">
   <% if required %>
     <label class="control-label string required">
       <abbr title="required">*</abbr>
