@@ -156,7 +156,13 @@ default: &default
   llm_scraper:
     model:
     model_version:
-
+  communities:
+#    uk:
+#      name: UK training
+#      filters:
+#        node: United Kingdom
+#      flag: 🇬🇧
+#      description: Some text about what the community is bla bla bla
 development:
   <<: *default
 

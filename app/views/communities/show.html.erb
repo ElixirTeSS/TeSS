@@ -1,0 +1,43 @@
+
+<div class="row">
+  <section class="col-md-9">
+    <%# Welcome text %>
+    <div class="welcome-text">
+      <h1><%= @community.flag %> <%= @community.name %></h1>
+      <p class="font-size-lg">
+        <%= @community.description %>
+      </p>
+    </div>
+
+    <%# Big search box %>
+    <div class="searchbox">
+      <%= form_tag search_path, method: :get, role: 'search' do %>
+        <% @community.filters.each do |key, value| %>
+          <%= hidden_field_tag(key, value) %>
+        <% end %>
+        <div class="searchbox-wrapper">
+          <input type="text" class="searchbox-field" name="q"
+                 placeholder="Search <%= @community.name %>" autofocus="autofocus">
+          <button type="submit" class="searchbox-btn">
+            <i class="icon icon-h3 search-icon"></i>
+          </button>
+        </div>
+      <% end %>
+    </div>
+  </section>
+  <div class="col-md-3">
+    <section id="featured_trainer">
+      <h5 class="text-center"><%= 'Featured Trainer' %></h5>
+      <%= render partial: 'common/masonry_grid', locals: { objects: [@featured_trainer] } %>
+    </section>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <%= render partial: 'static/home/upcoming_events' if @events.present? %>
+  </div>
+  <div class="col-md-6">
+    <%= render partial: 'static/home/latest_materials' if @materials.present? %>
+  </div>
+</div>
