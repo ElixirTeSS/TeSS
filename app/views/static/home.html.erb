@@ -24,6 +24,8 @@
 
 <%= render partial: 'static/home/welcome' %>
 
+<%= render partial: 'static/home/counters' if TeSS::Config.site.dig('home_page', 'counters') %>
+
 <%= render partial: 'static/home/catalogue_blocks' if TeSS::Config.site.dig('home_page', 'catalogue_blocks') %>
 
 <%= render partial: 'static/home/provider_carousel' if TeSS::Config.site.dig('home_page', 'provider_carousel') %>

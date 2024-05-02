@@ -122,6 +122,53 @@ ul.catalogue {
   }
 }
 
+ul.counter {
+  padding: 10px 0;
+  margin: 0 -10px;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  justify-content: center;
+
+  // Avoids visual awkwardness when 4 features are enabled and 3 appear on the top row, and 1 is wrapped under
+  li.resource-counter {
+    padding: 0 12px;
+    min-width: 200px;
+    justify-content: center;
+
+    .pseudolink {
+      color: $link-color;
+      text-decoration: underline;
+      justify-content: center;
+    }
+
+    .resource-counter-number {
+      justify-content: center;
+      display: flex;
+      font-size: x-large;
+      font-weight: bold;
+    }
+
+    .resource-counter-text {
+      justify-content: center;
+      display: flex;
+      color: gray;
+    }
+
+    .resource-counter-title {
+      justify-content: center;
+      display: flex;
+      margin-bottom: 10px;
+      img {
+        // margin-top: 10px;
+        max-width: 50px;
+      }
+    }
+  }
+}
+
 dl.faq {
   display: flex;
   padding: 10px 0;
