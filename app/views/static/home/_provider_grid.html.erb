@@ -1,0 +1,14 @@
+<section id="content_providers_grid">
+  <h2 class="text-center"><%= t('home.providers.title') %></h2>
+  <ul class="content-providers-grid">
+    <% (@content_providers).each do |provider| %>
+      <li class="provider-grid-tile">
+        <%= link_to(polymorphic_path(provider), class: 'link-overlay provider-grid') do %>
+          <div class="provider-grid-image">
+            <%= image_tag(provider.image.url, alt: provider.title) %>
+          </div>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</section>

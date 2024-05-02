@@ -1,0 +1,20 @@
+<section>
+  <%# Welcome text %>
+  <div class="welcome-text">
+    <h1 class="module-heading"><%== t 'home.welcome' %></h1>
+    <p class="font-size-lg"><%== t 'home.subtitle' %></p>
+  </div>
+
+  <%# Big search box %>
+  <div class="searchbox">
+    <%= form_tag search_path, method: :get, role: 'search' do %>
+      <div class="searchbox-wrapper">
+        <input type="text" class="searchbox-field" name="q"
+               placeholder="Search <%= TeSS::Config.site['title_short'] %>..." autofocus="autofocus">
+        <button type="submit" class="searchbox-btn">
+          <i class="icon icon-h3 search-icon"></i>
+        </button>
+      </div>
+    <% end %>
+  </div>
+</section>
