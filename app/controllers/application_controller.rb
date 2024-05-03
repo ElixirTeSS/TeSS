@@ -66,8 +66,8 @@ class ApplicationController < ActionController::Base
       else
         body = { message: 'Invalid URL - Make sure the URL starts with "https://" or "http://"' }
       end
-    rescue PrivateAddressCheck::PrivateConnectionAttemptedError, Net::OpenTimeout, SocketError, Errno::ECONNREFUSED,
-      Errno::EHOSTUNREACH
+    rescue PrivateAddressCheck::PrivateConnectionAttemptedError, Net::OpenTimeout, Net::ReadTimeout, SocketError,
+      Errno::ECONNREFUSED, Errno::EHOSTUNREACH, OpenSSL::SSL::SSLError, URI::InvalidURIError
       body = { message: 'Could not access the given URL' }
     end
 
