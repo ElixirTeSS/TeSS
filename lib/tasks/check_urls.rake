@@ -57,7 +57,6 @@ def process_record(record)
         res.link_monitor.success!
       end
     end
-    res.save!
   end
 end
 
