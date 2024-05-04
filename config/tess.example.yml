@@ -33,6 +33,7 @@ default: &default
     widget_example:
     home_page: # Configuration for the sections displayed on the front page
       catalogue_blocks: true
+      provider_grid: false
       provider_carousel: true
       # A list of content provider IDs to show in the front page carousel. Leave blank to show latest 5 (that have avatars set)
       featured_providers: # e.g. [123, 5, 10, 1]
@@ -41,7 +42,7 @@ default: &default
       upcoming_events: # Number of events on home page. Leave blank to turn off
       latest_materials: # Number of materials on home page. Leave blank to turn off
       featured_trainer: false
-      catalogue_counts: false # Whether or not to show number of database objects in catalogue blocks
+      counters: false # Whether or not to show number of database objects in separate blocks
     # The order in which the tabs appear (if feature enabled)
     tab_order: ['about', 'events', 'materials', 'elearning_materials', 'workflows', 'collections', 'trainers', 'content_providers', 'nodes']
     # The tabs that should be collapsed under the "Directory" tab. Can be left blank to hide it.
