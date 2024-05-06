@@ -106,4 +106,17 @@ class CurationMailerTest < ActionMailer::TestCase
       end
     end
   end
+
+  test 'text events approval no mail if disabled' do
+    @content_provider = content_providers(:goblet)
+    @events = [events(:one), events(:scraper_user_event)]
+    [[false, 0], [true, 1]].each do |val, count|
+      @content_provider.send_event_curation_email = val
+      email = CurationMailer.events_require_approval(@content_provider, @events.pluck(:created_at).min - 1.week)
+
+      assert_emails count do
+        email.deliver_now
+      end
+    end
+  end
 end
