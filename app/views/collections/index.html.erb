@@ -10,7 +10,7 @@
     <h2><%=t("features.collections.long")%></h2>
     <% content_for :buttons do %>
       <%= link_to new_collection_path, class: 'btn btn-primary' do %>
-        Create collection
+        <%= t('register.buttons.collections') %>
       <% end %>
       <%= info_button("What are collections in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
         <%= render_markdown(CollectionsHelper::COLLECTIONS_INFO) %>

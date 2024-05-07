@@ -212,6 +212,13 @@ en:
       <a href="https://doi.org/10.1093/bioinformatics/btaa047">https://doi.org/10.1093/bioinformatics/btaa047</a>
 
   register:
+    buttons:
+      content_providers: 'Register content provider'
+      events: 'Register event'
+      materials: 'Register training material'
+      workflows: 'Create workflow'
+      trainers: 'Register as trainer'
+      collections: 'Create collection'
     registering_resources_in: "Registering Resources in %{site_name}"
     resources: >
       <p>Training resources (events and materials) may be added to TeSS to reach bigger audiences, increase impact and
