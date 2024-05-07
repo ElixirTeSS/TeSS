@@ -5,28 +5,42 @@ namespace :tess do
   # those which have failed, e.g. with a badge.
   # This is for tickets #511 and #517.
 
-  desc 'Check all URLs for materials'
+  desc 'Check material URLs for dead links'
   task check_material_urls: :environment do
-    Material.all.each do |mat|
-      process_record(mat)
-    end
+    check_materials
   end
 
-  desc 'Check all URLs for events'
+  desc 'Check event URLs for dead links'
   task check_event_urls: :environment do
-    Event.all.each do |ev|
-      process_record(ev)
-    end
+    check_events
   end
 
+  desc 'Check event and material URLs for dead links'
+  task check_resource_urls: :environment do
+    #check_materials
+    check_events
+  end
+end
+
+def check_materials
+  puts 'Checking material URLs'
+  Material.find_each do |mat|
+    process_record(mat)
+  end
+end
+
+def check_events
+  puts 'Checking event URLs'
+  Event.find_each do |event|
+    process_record(event)
+  end
 end
 
 def process_record(record)
-  puts "Checking: #{record.id}, #{record.url}"
   if record.url
     code = get_bad_response(record.url)
     if code
-      puts "#{code}|#{record.id}|#{record.url}"
+      puts "  #{code} - #{record.class.name} #{record.id}: #{record.url}"
       if record.link_monitor
         record.link_monitor.fail!(code)
       else
@@ -42,11 +56,10 @@ def process_record(record)
   record.external_resources.each do |res|
     next unless res.url
 
-    puts "Checking (ER): #{res.id}, #{res.url}"
     code = get_bad_response(res.url)
 
     if code
-      puts "#{code}|#{record.id}|#{record.url}|#{res.id}|#{res.url}"
+      puts "  #{code} - ExternalResource #{res.id}: #{res.url}"
       if res.link_monitor
         res.link_monitor.fail!(code)
       else
@@ -72,16 +85,16 @@ def get_bad_response(url)
     return nil if response.code.to_s =~ /3[0-9]{2}/  # Redirection
     return response.code
   rescue EOFError => e
-    puts "#{e}|#{url}"
+    puts "  #{e.class.name}: #{e}"
     return 490
   rescue SocketError => e
-    puts "#{e}|#{url}"
+    puts "  #{e.class.name}: #{e}"
     return 491
   rescue Net::ReadTimeout => e
-    puts "#{e}|#{url}"
+    puts "  #{e.class.name}: #{e}"
     return 492
   rescue StandardError => e
-    puts "#{e}|#{url}"
+    puts "  #{e.class.name}: #{e}"
     return 493
   end
 end
