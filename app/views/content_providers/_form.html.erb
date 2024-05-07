@@ -22,6 +22,10 @@
                         label_field: :name %>
   <% end %>
 
+  <% if current_user.is_admin? || current_user == @content_provider.user%>
+    <%= f.input :send_event_curation_email, label: 'Receive event curation emails' %>
+  <% end %>
+
   <% if !TeSS::Config.feature['disabled'].include? 'approved_editors' %>
     <%= f.autocompleter :approved_editors, url: users_path, transform_function: 'users', template: 'autocompleter/user',
                         form_field_name: 'content_provider[approved_editors]',
