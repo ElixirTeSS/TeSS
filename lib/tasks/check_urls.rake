@@ -17,7 +17,7 @@ namespace :tess do
 
   desc 'Check event and material URLs for dead links'
   task check_resource_urls: :environment do
-    #check_materials
+    check_materials
     check_events
   end
 end
