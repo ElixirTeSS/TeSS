@@ -29,7 +29,8 @@ class User < ApplicationRecord
   end
 
   has_one :profile, inverse_of: :user, dependent: :destroy
-  CREATED_RESOURCE_TYPES = [:events, :materials, :workflows, :content_providers, :sources, :collections, :nodes]
+  CREATED_RESOURCE_TYPES = [:events, :materials, :workflows, :content_providers, :sources, :collections, :nodes,
+                            :learning_paths, :learning_path_topics]
   has_many :materials
   has_many :collections
   has_many :workflows
@@ -37,10 +38,13 @@ class User < ApplicationRecord
   has_many :events
   has_many :nodes
   has_many :sources
+  has_many :learning_paths
+  has_many :learning_path_topics
   belongs_to :role, optional: true
   has_many :subscriptions, dependent: :destroy
   has_many :stars, dependent: :destroy
   has_one :ban, dependent: :destroy, inverse_of: :user
+  has_many :bans_as_banner, class_name: 'Ban', foreign_key: :banner_id, inverse_of: :banner, dependent: :nullify
   has_many :activities_as_owner,
            class_name: '::PublicActivity::Activity',
            as: :owner

@@ -76,4 +76,34 @@ class ContentProviderTest < ActiveSupport::TestCase
     assert_equal 'http://website.com', content_provider.url
     assert_equal 'http://image.host/another_image.png', content_provider.image_url
   end
+
+  test 'should correctly destroy associated items when destroyed' do
+    content_provider = content_providers(:goblet)
+    material = materials(:material_with_external_resource)
+    event = events(:event_with_external_resource)
+    learning_path = learning_paths(:one)
+    learning_path.update!(content_provider: content_provider)
+    source = sources(:first_source)
+    source.update!(content_provider: content_provider)
+
+    material_count = content_provider.materials.count
+    event_count = content_provider.events.count
+    learning_path_count = content_provider.learning_paths.count
+    source_count = content_provider.sources.count
+
+    assert_difference('Material.count', -material_count) do
+      assert_difference('Event.count', -event_count) do
+        assert_difference('LearningPath.count', -learning_path_count) do
+          assert_difference('Source.count', -source_count) do
+            content_provider.destroy!
+          end
+        end
+      end
+    end
+
+    assert_nil Material.find_by_id(material.id)
+    assert_nil Event.find_by_id(event.id)
+    assert_nil LearningPath.find_by_id(learning_path.id)
+    assert_nil Source.find_by_id(source.id)
+  end
 end

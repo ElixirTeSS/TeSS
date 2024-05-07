@@ -1,0 +1,22 @@
+<li data-id="{{ item.resource_type }}-{{ item.resource_id }}" class="collection-item">
+    <div class="collection-item-handle">
+      <i class="fa fa-sort" aria-hidden="true"></i>
+      <span class="item-order-label">{{ item.order }}</span>
+      <input type="hidden" name="{{ prefix }}[][order]" value="{{ item.order }}" data-role="item-order" />
+    </div>
+
+    <div class="collection-item-title">
+        <input type="hidden" name="{{ prefix }}[][id]" value="{{ item.id }}" />
+        <input type="hidden" name="{{ prefix }}[][topic_id]" value="{{ item.resource_id }}" />
+        <a href="{{ item.url }}" target="_blank">{{ item.title }}</a>
+    </div>
+
+    <div>
+        <a href="#" class="btn btn-icon" data-role="delete-collection-item">
+            <i class="icon cross-icon icon-sm icon-greyscale"></i>
+            {{#if item.id}}
+            <input type="checkbox" name="{{ prefix }}[][_destroy]" style="display: none;" autocomplete="off">
+            {{/if}}
+        </a>
+    </div>
+</li>

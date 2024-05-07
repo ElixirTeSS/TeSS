@@ -262,6 +262,63 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_26_090005) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
+  create_table "learning_path_topic_items", force: :cascade do |t|
+    t.bigint "topic_id"
+    t.string "resource_type"
+    t.bigint "resource_id"
+    t.text "comment"
+    t.integer "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["resource_type", "resource_id"], name: "index_learning_path_topic_items_on_resource"
+    t.index ["topic_id"], name: "index_learning_path_topic_items_on_topic_id"
+  end
+
+  create_table "learning_path_topic_links", force: :cascade do |t|
+    t.bigint "learning_path_id"
+    t.bigint "topic_id"
+    t.integer "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["learning_path_id"], name: "index_learning_path_topic_links_on_learning_path_id"
+    t.index ["topic_id"], name: "index_learning_path_topic_links_on_topic_id"
+  end
+
+  create_table "learning_path_topics", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.integer "user_id"
+    t.string "keywords", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "difficulty_level", default: "notspecified"
+  end
+
+  create_table "learning_paths", force: :cascade do |t|
+    t.text "title"
+    t.text "description"
+    t.string "doi"
+    t.string "target_audience", default: [], array: true
+    t.string "authors", default: [], array: true
+    t.string "contributors", default: [], array: true
+    t.string "licence", default: "notspecified"
+    t.string "difficulty_level", default: "notspecified"
+    t.string "slug"
+    t.bigint "user_id"
+    t.bigint "content_provider_id"
+    t.string "keywords", default: [], array: true
+    t.text "prerequisites"
+    t.text "learning_objectives"
+    t.string "status"
+    t.string "learning_path_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "public", default: true
+    t.index ["content_provider_id"], name: "index_learning_paths_on_content_provider_id"
+    t.index ["slug"], name: "index_learning_paths_on_slug", unique: true
+    t.index ["user_id"], name: "index_learning_paths_on_user_id"
+  end
+
   create_table "link_monitors", force: :cascade do |t|
     t.string "url"
     t.integer "code"
@@ -545,6 +602,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_26_090005) do
   add_foreign_key "event_materials", "events"
   add_foreign_key "event_materials", "materials"
   add_foreign_key "events", "users"
+  add_foreign_key "learning_path_topic_links", "learning_paths"
+  add_foreign_key "learning_paths", "content_providers"
+  add_foreign_key "learning_paths", "users"
   add_foreign_key "materials", "content_providers"
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"

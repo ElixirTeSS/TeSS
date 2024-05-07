@@ -36,6 +36,20 @@
   background-color: white;
 }
 
+.media-item.large {
+  width: 45%;
+
+  @include sm {
+    float: none;
+    width: 95%;
+  }
+
+  @include xs {
+    float: none;
+    width: 95%;
+  }
+}
+
 .media-item.long {
   width: 100%;
 }
@@ -79,7 +93,7 @@
   &:hover, &:focus {
     text-decoration: none;
     color: $gray-darker;
-    background-color: #e8f3f6;
+    background-color: #e8f3f6aa;
     border: 1px solid #e8f3f6;
     box-shadow: none;
   }
