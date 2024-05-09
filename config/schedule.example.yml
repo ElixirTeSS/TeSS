@@ -14,3 +14,6 @@ curation_mail:
 autocomplete_suggestions:
   every: tuesday
   at: 5am
+dead_link_check:
+  every: day
+  at: 6am

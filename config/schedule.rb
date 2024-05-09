@@ -62,3 +62,13 @@ else
     rake "tess:rebuild_autocomplete_suggestions"
   end
 end
+
+if !schedules['dead_link_check'].nil?
+  every :"#{schedules['dead_link_check']['every']}", at: "#{schedules['dead_link_check']['at']}" do
+    rake "tess:check_resource_urls"
+  end
+else
+  every :day, at: '6am' do
+    rake "tess:check_resource_urls"
+  end
+end
