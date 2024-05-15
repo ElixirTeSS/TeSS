@@ -1370,19 +1370,19 @@ class MaterialsControllerTest < ActionController::TestCase
       sign_in users(:regular_user)
       get :new
       assert_response :success
-      assert_select "div.hidden" do |div|
-        assert_select "label", text: 'Licence', count: 1
-        assert_select "label", text: 'Status', count: 0
+      assert_select 'div.hidden' do |div|
+        assert_select 'label', text: 'Licence', count: 1
+        assert_select 'label', text: 'Status', count: 0
       end
-      assert_select 'div[hidden]' do |el|
-        assert_select el, "label", text: 'Resource types', count: 1
-        assert_select el, "label", text: 'Scientific topics', count: 1
-        assert_select el, "label", text: 'Keywords', count: 0
-        assert_select el, "label", text: 'Operations', count: 0
+      assert_select 'div.hidden' do |el|
+        assert_select el, 'label', text: 'Resource types', count: 1
+        assert_select el, 'label', text: 'Scientific topics', count: 1
+        assert_select el, 'label', text: 'Keywords', count: 0
+        assert_select el, 'label', text: 'Operations', count: 0
       end
-      assert_select "label", {:count=>1, :text=>"Status"}
-      assert_select "label", {:count=>1, :text=>"Keywords"}
-      assert_select "label", {:count=>1, :text=>"Operations"}
+      assert_select 'label', { count: 1, text: 'Status' }
+      assert_select 'label', { count: 1, text: 'Keywords' }
+      assert_select 'label', { count: 1, text: 'Operations' }
     end
   end
 

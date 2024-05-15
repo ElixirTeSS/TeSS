@@ -88,6 +88,12 @@
     padding: 0;
   }
 
+  &.provider-grid {
+    padding: 10px;
+    justify-content: center;
+    align-content: center;
+  }
+
   h4 {
     margin-top: 0;
     margin-bottom: 0;
