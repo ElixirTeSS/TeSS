@@ -86,9 +86,10 @@ module Ingestors
       event_page.css('script, link').each { |node| node.remove }
       event_page = event_page.text.squeeze(" \n").squeeze("\n").squeeze("\t").squeeze(' ')
       llm_service_hash = {
-        chatgpt: ChatgptService
+        chatgpt: ChatgptService,
+        willma: WillmaService
       }
-      llm_service_class = llm_service_hash.fetch(TeSS::Config.llm_scraper.model, nil)
+      llm_service_class = llm_service_hash.fetch(TeSS::Config.llm_scraper['model'].to_sym, nil)
       return unless llm_service_class
 
       begin

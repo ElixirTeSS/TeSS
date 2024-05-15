@@ -14,14 +14,7 @@ class ChatgptService < LlmService
   end
 
   def run(content)
-    beep = content
-    params = @params.merge(
-      {
-        # response_format: { type: 'json_object' },
-        messages: [{ role: 'user', content: beep }]
-      }
-    )
-    @client.chat(parameters: params).dig('choices', 0, 'message', 'content')
+    call(content).dig('choices', 0, 'message', 'content')
   end
 
   def call(prompt)
@@ -31,31 +24,5 @@ class ChatgptService < LlmService
       }
     )
     @client.chat(parameters: params)
-  end
-
-  class << self
-    def call(message)
-      new.call(message)
-    end
-
-    def scrape # rubocop:disable Metrics
-      url = 'https://dans.knaw.nl/en/agenda/open-hour-ssh-live-qa-on-monday-2/'
-      require 'open-uri'
-      event_page = URI(url).open(&:read)
-      doc = Nokogiri::HTML5.parse(event_page).css('body').css("div[id='nieuws_detail_row']")
-      doc.css('script, link').each { |node| node.remove }
-      event_page = doc.text.squeeze(" \n").squeeze("\n").squeeze("\t").squeeze(' ')
-      response = new.scrape(event_page).dig('choices', 0, 'message', 'content')
-      puts response
-      JSON.parse(response)
-    end
-
-    def process
-      event_json = ChatgptService.scrape
-      event = Event.new(event_json)
-      response = new.process(event).dig('choices', 0, 'message', 'content')
-      puts response
-      JSON.parse(response)
-    end
   end
 end

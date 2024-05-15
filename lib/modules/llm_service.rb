@@ -65,4 +65,31 @@ class LlmService
   def call(_prompt)
     puts 'please provide child class'
   end
+
+  class << self
+    def call(message)
+      new.call(message)
+    end
+
+    def scrape # rubocop:disable Metrics
+      url = 'https://dans.knaw.nl/en/agenda/open-hour-ssh-live-qa-on-monday-2/'
+      require 'open-uri'
+      event_page = URI(url).open(&:read)
+      doc = Nokogiri::HTML5.parse(event_page).css('body').css("div[id='nieuws_detail_row']")
+      doc.css('script, link').each { |node| node.remove }
+      event_page = doc.text.squeeze(" \n").squeeze("\n").squeeze("\t").squeeze(' ')
+      response = new.scrape(event_page)
+      puts response
+      JSON.parse(response)
+    end
+
+    def process
+      event_json = scrape
+      puts 'hi'
+      event = Event.new(event_json)
+      response = new.process(event)
+      puts response
+      JSON.parse(response)
+    end
+  end
 end
