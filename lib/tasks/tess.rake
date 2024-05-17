@@ -142,7 +142,7 @@ namespace :tess do
   desc 'mail content providers for curation of scraped events'
   task event_curation_mails: :environment do
     cut_off_time = Time.zone.now - 1.week
-    providers = ContentProvider.all.filter { |provider| provider.contact.present? }
+    providers = ContentProvider.all.filter { |provider| provider.send_event_curation_email }
     providers.each do |provider|
       CurationMailer.events_require_approval(provider, cut_off_time).deliver_later
     end
