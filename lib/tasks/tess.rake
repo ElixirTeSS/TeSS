@@ -144,7 +144,7 @@ namespace :tess do
     cut_off_time = Time.zone.now - 1.week
     providers = ContentProvider.all.filter { |provider| provider.contact.present? }
     providers.each do |provider|
-      CurationMailer.events_require_approval(provider, cut_off_time)
+      CurationMailer.events_require_approval(provider, cut_off_time).deliver_later
     end
     puts 'Curation mails sent'
   end
