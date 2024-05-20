@@ -1,0 +1,6 @@
+<% community = Community.for_country(current_user_country) %>
+<% if community %>
+  <div id="community-banner">
+    Your community is: <%= community.name %>
+  </div>
+<% end %>

@@ -691,4 +691,8 @@ module ApplicationHelper
     content_tag('div', t('warnings.unverified', resource_type: resource.model_name.human.downcase),
                 class: 'alert alert-warning mb-4 unverified-notice')
   end
+
+  def current_user_country
+    Locator.instance.lookup(ENV.fetch('MOCK_IP') { request.remote_ip })&.dig('country', 'iso_code')
+  end
 end

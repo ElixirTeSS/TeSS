@@ -281,4 +281,34 @@ class StaticControllerTest < ActionController::TestCase
       assert_select 'section#content_providers_grid li.provider-grid-tile', count: 2
     end
   end
+
+  test 'should show community banner if matching community for country' do
+    Locator.instance.stub(:lookup, { 'country' => { 'iso_code' => 'GB' } }) do
+      with_settings({ site: { home_page: { communities: true } } }) do
+        get :home
+        assert_response :success
+        assert_select '#community-banner', text: 'Your community is: UK training'
+      end
+    end
+  end
+
+  test 'should not show community banner if no matching community for country' do
+    Locator.instance.stub(:lookup, { 'country' => { 'iso_code' => 'SE' } }) do
+      with_settings({ site: { home_page: { communities: true } } }) do
+        get :home
+        assert_response :success
+        assert_select '#community-banner', count: 0
+      end
+    end
+  end
+
+  test 'should not show community banner if feature disabled' do
+    Locator.instance.stub(:lookup, { 'country' => { 'iso_code' => 'GB' } }) do
+      with_settings({ site: { home_page: { communities: false } } }) do
+        get :home
+        assert_response :success
+        assert_select '#community-banner', count: 0
+      end
+    end
+  end
 end
