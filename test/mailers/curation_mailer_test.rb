@@ -107,6 +107,23 @@ class CurationMailerTest < ActionMailer::TestCase
     end
   end
 
+  test 'text events approval no events' do
+    @content_provider = content_providers(:goblet)
+    email = CurationMailer.events_require_approval(@content_provider, [])
+
+    assert_emails 1 do
+      email.deliver_now
+    end
+
+    assert_equal [TeSS::Config.sender_email], email.from
+    assert_equal [@content_provider.user.email], email.to
+    assert_equal "#{TeSS::Config.site['title_short']} events require approval", email.subject
+
+    [email.text_part, email.html_part].each do |part|
+      assert part.body.to_s.include?('There were no new events this week.')
+    end
+  end
+
   test 'text events approval no mail if disabled' do
     @content_provider = content_providers(:goblet)
     @events = [events(:one), events(:scraper_user_event)]
