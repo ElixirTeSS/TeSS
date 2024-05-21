@@ -388,12 +388,18 @@ class LearningPathsControllerTest < ActionController::TestCase
     assert @learning_path.save
     @learning_path.activities.destroy_all
 
-    # 3 = 2 for parameters + 1 for update
-    assert_difference('PublicActivity::Activity.count', 3) do
-      patch :update, params: { id: @learning_path, learning_path: @updated_learning_path }
+    # 4 = 2 for parameters + 1 for update + 1 for topic
+    assert_difference('PublicActivity::Activity.count', 4) do
+      updates = @updated_learning_path.merge(
+        topic_links_attributes: { '1': { topic_id: learning_path_topics(:empty_topic).id, order: 300 } }
+      )
+      patch :update, params: { id: @learning_path, learning_path: updates }
+
+      assert flash[:error].blank?
     end
 
     assert_equal 1, @learning_path.activities.where(key: 'learning_path.update').count
+    assert_equal 1, @learning_path.activities.where(key: 'learning_path.add_topic').count
     assert_equal 2, @learning_path.activities.where(key: 'learning_path.update_parameter').count
 
     parameters = @learning_path.activities.where(key: 'learning_path.update_parameter').map(&:parameters)
@@ -408,7 +414,7 @@ class LearningPathsControllerTest < ActionController::TestCase
 
     get :index, params: { learning_path_id: @learning_path }, xhr: true
 
-    assert_select '.activity', count: 4 # +1 because they are wrapped in a .activity div for some reason...
+    assert_select '.activity', count: 5 # +1 because they are wrapped in a .activity div for some reason...
 
     @controller = old_controller
   end
