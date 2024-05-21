@@ -23,7 +23,7 @@ class CurationMailer < ApplicationMailer
 
   def events_require_approval(provider, cut_off_time)
     @provider = provider
-    return unless @provider.send_event_curation_email || @provider.user.email
+    return unless @provider.send_event_curation_email && @provider.user.email
 
     # @events = @provider.events.where { |e| e.lmm_processed > cut_off_time }
     @events = @provider.events.filter { |e| e.created_at > cut_off_time }

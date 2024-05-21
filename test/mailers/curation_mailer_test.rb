@@ -109,7 +109,7 @@ class CurationMailerTest < ActionMailer::TestCase
 
   test 'text events approval no events' do
     @content_provider = content_providers(:goblet)
-    email = CurationMailer.events_require_approval(@content_provider, [])
+    email = CurationMailer.events_require_approval(@content_provider, Time.zone.now)
 
     assert_emails 1 do
       email.deliver_now
