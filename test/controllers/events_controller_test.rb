@@ -747,6 +747,14 @@ class EventsControllerTest < ActionController::TestCase
     # find the one which will be first
     assert_equal Event.count, rss_events.items.count
     assert Event.friendly.find(rss_events.items.first.link.split('/').last.strip)
+
+    event = rss_events.items.detect { |i| i.link == event_url(events(:event_with_external_resource)) }
+    assert_not_nil event
+    assert_equal 'External Resource Event', event.title
+    description = event.description
+    assert_includes description, '12 December 2016 @ 10:00 - 12:00'
+    assert_includes description, 'this is my material'
+    assert_includes description, 'AnOrganizer'
   end
 
   test 'should include parameters in RSS file' do
