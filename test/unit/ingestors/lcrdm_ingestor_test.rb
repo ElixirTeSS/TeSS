@@ -22,14 +22,14 @@ class LcrdmIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::LcrdmIngestor.new
 
     # check event doesn't
-    new_title = "UKB/LCRDM Networking day"
+    new_title = 'UKB/LCRDM Networking day'
     new_url = 'https://lcrdm.nl/evenementen/ukb-lcrdm-networking-day/'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
     assert_difference 'Event.count', 2 do
       freeze_time(2023) do
-        VCR.use_cassette("ingestors/lcrdm") do
+        VCR.use_cassette('ingestors/lcrdm') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end
