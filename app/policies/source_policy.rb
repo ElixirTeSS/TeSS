@@ -41,11 +41,4 @@ class SourcePolicy < ScrapedResourcePolicy
       false
     end
   end
-
-  def curators_and_admin
-    @user && (
-      @user.has_role?(:curator) ||
-        @user.has_role?(:admin) ||
-        @user.has_role?(:scraper_user))
-  end
 end

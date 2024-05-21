@@ -101,7 +101,7 @@ iann_event:
   eligibility: [ registration_of_interest ]
 
 scraper_user_event:
-  title: material owned by scraper'
+  title: material owned by scraper
   url: http://myurl.com
   description: 'this is my material'
   user: scraper_user

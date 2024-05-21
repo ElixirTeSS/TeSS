@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 20_240_319_101_101) do
+ActiveRecord::Schema[7.0].define(version: 20_240_426_090_005) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -261,6 +261,63 @@ ActiveRecord::Schema[7.0].define(version: 20_240_319_101_101) do
     t.index %w[slug sluggable_type], name: 'index_friendly_id_slugs_on_slug_and_sluggable_type'
     t.index ['sluggable_id'], name: 'index_friendly_id_slugs_on_sluggable_id'
     t.index ['sluggable_type'], name: 'index_friendly_id_slugs_on_sluggable_type'
+  end
+
+  create_table 'learning_path_topic_items', force: :cascade do |t|
+    t.bigint 'topic_id'
+    t.string 'resource_type'
+    t.bigint 'resource_id'
+    t.text 'comment'
+    t.integer 'order'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index %w[resource_type resource_id], name: 'index_learning_path_topic_items_on_resource'
+    t.index ['topic_id'], name: 'index_learning_path_topic_items_on_topic_id'
+  end
+
+  create_table 'learning_path_topic_links', force: :cascade do |t|
+    t.bigint 'learning_path_id'
+    t.bigint 'topic_id'
+    t.integer 'order'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['learning_path_id'], name: 'index_learning_path_topic_links_on_learning_path_id'
+    t.index ['topic_id'], name: 'index_learning_path_topic_links_on_topic_id'
+  end
+
+  create_table 'learning_path_topics', force: :cascade do |t|
+    t.string 'title'
+    t.text 'description'
+    t.integer 'user_id'
+    t.string 'keywords', default: [], array: true
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.string 'difficulty_level', default: 'notspecified'
+  end
+
+  create_table 'learning_paths', force: :cascade do |t|
+    t.text 'title'
+    t.text 'description'
+    t.string 'doi'
+    t.string 'target_audience', default: [], array: true
+    t.string 'authors', default: [], array: true
+    t.string 'contributors', default: [], array: true
+    t.string 'licence', default: 'notspecified'
+    t.string 'difficulty_level', default: 'notspecified'
+    t.string 'slug'
+    t.bigint 'user_id'
+    t.bigint 'content_provider_id'
+    t.string 'keywords', default: [], array: true
+    t.text 'prerequisites'
+    t.text 'learning_objectives'
+    t.string 'status'
+    t.string 'learning_path_type'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.boolean 'public', default: true
+    t.index ['content_provider_id'], name: 'index_learning_paths_on_content_provider_id'
+    t.index ['slug'], name: 'index_learning_paths_on_slug', unique: true
+    t.index ['user_id'], name: 'index_learning_paths_on_user_id'
   end
 
   create_table 'link_monitors', force: :cascade do |t|

@@ -27,6 +27,12 @@ en:
     nodes:
       short: Nodes
       long: Nodes
+    learning_paths:
+      short: Learning paths
+      long: Learning paths
+    learning_path_topics:
+      short: Topics
+      long: Learning path topics
   pundit:
     default: 'You are not authorised to perform this action.'
     material_policy:
@@ -206,6 +212,13 @@ en:
       <a href="https://doi.org/10.1093/bioinformatics/btaa047">https://doi.org/10.1093/bioinformatics/btaa047</a>
 
   register:
+    buttons:
+      content_providers: 'Register content provider'
+      events: 'Register event'
+      materials: 'Register training material'
+      workflows: 'Create workflow'
+      trainers: 'Register as trainer'
+      collections: 'Create collection'
     registering_resources_in: "Registering Resources in %{site_name}"
     resources: >
       <p>Training resources (events and materials) may be added to TeSS to reach bigger audiences, increase impact and
@@ -464,6 +477,42 @@ en:
       resource_type: 'Select the type of resource that best matches the training material. '
       url: 'Preferred URL to direct people to your training material landing page.'
       version: 'Indicate the current version of the training material.'
+  learning_paths:
+    hints:
+      authors: >
+        Add individuals and organisations involved in the preparation, creation or presentation of the published work.
+      contact: >
+        Include the first name, last name and contact details of the person or organisation that can be contacted about
+        the learning path.
+      contributors: 'Add individual and organisations that contributed to the learning path.'
+      date_created: 'Add the date that the learning path was created.'
+      date_modified: 'Add the date that the learning path was last modified.'
+      date_published: 'Add the date that the learning path was published.'
+      description: 'Provide a textual description of your learning path, for additional context.'
+      difficulty: 'Indicate the learners expected level of competency in the topic covered by the learning path.'
+      doi: 'Include a DOI if one exists for the learning path.'
+      events: ''
+      fields: 'Select Fields of Research to better classify your learning path.'
+      keywords: "Provide words or terms that clearly identify the learning path's topics."
+      licence: 'Select the licence for the learning path.'
+      objectives: >
+        Describe the knowledge, skills or abilities that students should acquire throught the completion or use of the
+        learning path.
+      other_types: 'Enter the types of resources that are not included on the above list.'
+      part_of: 'Describe the larger service of training to which this learning path belongs.'
+      prerequisites: >
+        What prior understanding or knowledge does your audience need to have on the topics covered in the learning path?
+      providers: ''
+      resources: 'Are there any external resources that relate to the is learning path?'
+      status: 'Indicate the current status of the learning path.'
+      subsets: 'Add identifier URLs or DOIs for each subset of the learning path.'
+      syllabus: 'Describe the syllabus or provide an overview of the topics covered.'
+      targets: 'Indicate the type of audience intended to use your learning path.'
+      time: 'What is the estimated time it takes to work through this resource in hours?'
+      title: 'Add a title for your learning path.'
+      resource_type: 'Select the type of resource that best matches the learning path. '
+      url: 'Preferred URL to direct people to your learning path landing page.'
+      version: 'Indicate the current version of the learning path.'
   profile:
     user:
       disclaimer: >

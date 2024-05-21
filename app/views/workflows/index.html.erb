@@ -10,7 +10,7 @@
     <h2><%=t("features.workflows.long")%></h2>
     <% content_for :buttons do %>
       <%= link_to new_workflow_path, class: 'btn btn-primary' do %>
-        Create workflow
+        <%= t('register.buttons.workflows')%>
       <% end %>
       <%= info_button("What are workflows in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
         <%= render_markdown(WorkflowsHelper::WORKFLOWS_INFO) %>

@@ -1,0 +1,6 @@
+<i class="fa fa-trash-o"></i>
+<% if activity.owner %>
+    <%= link_to activity.owner.username, activity.owner %>
+<% end %>
+
+created <%= link_to activity.trackable.title, activity.trackable %> at <%= activity.created_at -%>.

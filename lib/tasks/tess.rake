@@ -154,6 +154,16 @@ namespace :tess do
   task reset_llm_status: :environment do
   end
 
+  desc 'mail content providers for curation of scraped events'
+  task event_curation_mails: :environment do
+    cut_off_time = Time.zone.now - 1.week
+    providers = ContentProvider.all.filter { |provider| provider.send_event_curation_email }
+    providers.each do |provider|
+      CurationMailer.events_require_approval(provider, cut_off_time).deliver_later
+    end
+    puts 'Curation mails sent'
+  end
+
   desc 'check and update time zones'
   task check_timezones: :environment do
     puts 'Task: check_timezones - start'

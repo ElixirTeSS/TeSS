@@ -14,8 +14,8 @@ class HttpUrlValidator < ActiveModel::EachValidator
           res.code == 200
         end
       end
-    rescue PrivateAddressCheck::PrivateConnectionAttemptedError, Net::OpenTimeout, SocketError, Errno::ECONNREFUSED,
-      Errno::EHOSTUNREACH
+    rescue PrivateAddressCheck::PrivateConnectionAttemptedError, Net::OpenTimeout, Net::ReadTimeout, SocketError,
+      Errno::ECONNREFUSED, Errno::EHOSTUNREACH, OpenSSL::SSL::SSLError, URI::InvalidURIError
       false
     end
   end

@@ -1,5 +1,5 @@
 <%
-  form_field_name = 'collection[items_attributes]'
+  form_field_name ||= 'collection[items_attributes]'
   data = { role: 'collection-items-group',
            url: url,
            prefix: form_field_name,

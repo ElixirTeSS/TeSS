@@ -8,6 +8,12 @@ subscriptions:
 ingestions:
   every: day
   at: '3am'
+curation_mail:
+  every: monday
+  at: '9am'
 autocomplete_suggestions:
   every: tuesday
   at: 5am
+dead_link_check:
+  every: day
+  at: 6am

@@ -1,0 +1,9 @@
+<li class="masonry-brick media-item long">
+  <%= link_to learning_path_topic, class: 'link-overlay' do %>
+    <h4><%= learning_path_topic.title %></h4>
+
+    <div class="markdown-description">
+      <%= render_sanitized_markdown truncate(learning_path_topic.description, length: 300, separator: ' ') %>
+    </div>
+  <% end %>
+</li>

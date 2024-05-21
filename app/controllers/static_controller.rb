@@ -52,7 +52,7 @@ class StaticController < ApplicationController
     Material.search_and_filter(
       nil,
       '',
-      { 'max_age' => '1 month' },
+      {},
       sort_by: 'new',
       per_page: 10 * n_materials
     )&.results&.group_by(&:content_provider_id)&.map { |_p_id, p_materials| p_materials&.first }&.first(n_materials)
