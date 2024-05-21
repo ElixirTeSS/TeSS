@@ -1,6 +1,8 @@
 You are receiving this automated email because you are a curator of <%= @provider.title %> on <%= TeSS::Config.site['title_short'] %>.
 <% if @events.count.positive? %>
   If any of these events are incorrect or should not be shown, please follow the link to change them.
+  If an event should not be shown, disable it on the edit page instead of deleting it to prevent rescraping.
+  If an event needs changes, lock the changed fields to prevent your changes from being overwritten by the scraper.
 
   <% @events.each do |event| %>
     <%= event.title %> (<%= url_for(event) %>)
