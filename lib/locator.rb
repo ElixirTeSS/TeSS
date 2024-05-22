@@ -4,7 +4,7 @@ class Locator
   include Singleton
 
   def initialize
-    @reader = MaxMind::DB.new(database_path, mode: MaxMind::DB::MODE_MEMORY)
+    @reader = database_path.exist? ? MaxMind::DB.new(database_path, mode: MaxMind::DB::MODE_MEMORY) : nil
   end
 
   def lookup(ip)
