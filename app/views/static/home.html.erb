@@ -22,9 +22,9 @@
 }
 </script>
 
-<%= render partial: 'static/home/welcome' %>
-
 <%= render partial: 'communities/banner' if TeSS::Config.site.dig('home_page', 'communities') %>
+
+<%= render partial: 'static/home/welcome' %>
 
 <%= render partial: 'static/home/counters' if TeSS::Config.site.dig('home_page', 'counters') %>
 

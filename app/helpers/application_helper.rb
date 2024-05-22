@@ -693,6 +693,6 @@ module ApplicationHelper
   end
 
   def current_user_country
-    Locator.instance.lookup(ENV.fetch('MOCK_IP') { request.remote_ip })&.dig('country', 'iso_code')
+    Locator.instance.lookup(ENV.fetch('MOCK_IP') { request.remote_ip })&.dig('country')
   end
 end

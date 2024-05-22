@@ -1,6 +1,11 @@
 <% community = Community.for_country(current_user_country) %>
 <% if community %>
-  <div id="community-banner">
-    Your community is: <%= community.name %>
-  </div>
+  <% country_name = current_user_country.dig('names', 'en') %>
+  <% country_name = "the #{country_name}" if country_name.start_with?('United') %>
+  <%= link_to community_path(community.id), class: 'link-overlay mb-4', id: 'community-banner' do %>
+    <div class="resource-type-title">
+      <h4><%= community.flag %> Connecting from <%= country_name %>?</h4>
+    </div>
+      Visit the <%= community.name %> community page to find local training.
+  <% end %>
 <% end %>
