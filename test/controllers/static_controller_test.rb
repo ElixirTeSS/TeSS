@@ -225,7 +225,7 @@ class StaticControllerTest < ActionController::TestCase
         get :home
         assert_select 'section#upcoming_events', count: 1
         assert_select 'section#upcoming_events h2', count: 1
-        assert_select 'section#upcoming_events ul', count: 2
+        assert_select 'section#upcoming_events .link-overlay', count: 2
       end
     end
   end
@@ -237,7 +237,7 @@ class StaticControllerTest < ActionController::TestCase
         get :home
         assert_select 'section#latest_materials', count: 1
         assert_select 'section#latest_materials h2', count: 1
-        assert_select 'section#latest_materials ul', count: 2
+        assert_select 'section#latest_materials .link-overlay', count: 2
       end
     end
   end
