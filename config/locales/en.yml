@@ -317,7 +317,7 @@ en:
       Search the portal for courses, events, videos, presentations, learning pathways, handbooks...<br>
       All types of resources at all levels for leveraging <span class="text-primary">computational resources in the life sciences</span>.
     search_placeholder: >
-      Search <%= TeSS::Config.site['title_short'] %>...
+      Search %{site_name}...
     catalogue:
       title: Browse the catalogue
       link_text: Start browsing
