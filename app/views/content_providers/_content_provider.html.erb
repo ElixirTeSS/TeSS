@@ -15,8 +15,8 @@
 
       <% if content_provider.events.length > 0 %>
         <div>
-          <strong><%= pluralize(content_provider.events.not_finished.length, 'event') %></strong>
-          <em>(<%= pluralize(content_provider.events.finished.length, 'past event') %>)</em>
+          <strong><%= pluralize(content_provider.events.not_finished.not_disabled.length, 'event') %></strong>
+          <em>(<%= pluralize(content_provider.events.finished.not_disabled.length, 'past event') %>)</em>
         </div>
       <% end %>
 
