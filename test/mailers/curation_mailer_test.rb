@@ -89,7 +89,7 @@ class CurationMailerTest < ActionMailer::TestCase
     end
 
     assert_equal [TeSS::Config.sender_email], email.from
-    assert_equal [@content_provider.user.email], email.to
+    assert_equal [@content_provider.user.profile.email], email.to
     assert_equal "#{TeSS::Config.site['title_short']} events require approval", email.subject
 
     text_body = email.text_part.body.to_s
@@ -116,7 +116,7 @@ class CurationMailerTest < ActionMailer::TestCase
     end
 
     assert_equal [TeSS::Config.sender_email], email.from
-    assert_equal [@content_provider.user.email], email.to
+    assert_equal [@content_provider.user.profile.email], email.to
     assert_equal "#{TeSS::Config.site['title_short']} events require approval", email.subject
 
     [email.text_part, email.html_part].each do |part|
