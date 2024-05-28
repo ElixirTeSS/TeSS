@@ -617,3 +617,6 @@ en:
   time:
     formats:
       time_short: "%H:%M"
+  mailer:
+    events_require_approval:
+      subject: "Last week's events on %{site_name}"
