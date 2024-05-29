@@ -21,10 +21,10 @@
       <% resource_limit = 30 %>
       <% materials = @content_provider.materials.from_verified_users.limit(resource_limit) %>
       <% materials_count =  @content_provider.materials.from_verified_users.count %>
-      <% upcoming_events = @content_provider.events.from_verified_users.not_finished %>
-      <% past_events = @content_provider.events.from_verified_users.finished %>
+      <% upcoming_events = @content_provider.events.from_verified_users.not_finished.not_disabled %>
+      <% past_events = @content_provider.events.from_verified_users.finished.not_disabled %>
       <% events = upcoming_events.limit(resource_limit) %>
-      <% events_count =  @content_provider.events.from_verified_users.count %>
+      <% events_count =  @content_provider.events.from_verified_users.not_disabled.count %>
       <% sources = @content_provider.sources.order(enabled: :desc, finished_at: :desc) %>
       <% activator = tab_activator %>
       <ul class="nav nav-tabs">
