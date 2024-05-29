@@ -94,6 +94,12 @@ class User < ApplicationRecord
   scope :visible, -> { not_banned.non_default.not_rejected.where(invitation_token: nil).or(accepteds) }
   # ---
 
+  # Settings
+  store :settings, coder: JSON
+  self.store_attribute_unset_values_fallback_to_default = true
+  store_attribute :settings, :receive_subscription_emails, :boolean, default: true
+  store_attribute :settings, :receive_curation_emails, :boolean, default: true
+
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)

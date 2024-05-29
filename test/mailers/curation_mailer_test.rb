@@ -136,4 +136,40 @@ class CurationMailerTest < ActionMailer::TestCase
       end
     end
   end
+
+  test 'user approval not sent to uncontactable admins' do
+    email = CurationMailer.user_requires_approval(@user)
+
+    contactable_admin = users(:admin)
+    uncontactable_admin = User.create(username: 'uncontactable_admin',
+                         password: '12345678',
+                         email: 'new-user@example.com',
+                         processing_consent: '1',
+                         role_id: roles(:admin).id,
+                         receive_curation_emails: false)
+
+    assert contactable_admin.receive_curation_emails
+    refute uncontactable_admin.receive_curation_emails
+
+    assert_emails 1 do
+      email.deliver_now
+    end
+
+    assert_includes email.to, contactable_admin.email
+    assert_not_includes email.to, uncontactable_admin.email
+  end
+
+  test 'user approval not sent if no uncontactable admins' do
+    email = CurationMailer.user_requires_approval(@user)
+
+    admins = User.with_role('admin')
+    admins.each do |a|
+      a.receive_curation_emails = false
+      a.save!
+    end
+
+    assert_emails 0 do
+      email.deliver_now
+    end
+  end
 end

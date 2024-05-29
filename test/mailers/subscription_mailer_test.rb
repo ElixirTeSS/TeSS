@@ -18,6 +18,7 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     digest = MockSearchResults.new([m1, m2])
     email = SubscriptionMailer.digest(sub, digest)
 
+    assert sub.user.receive_subscription_emails
     assert_emails 1 do
       email.deliver_now
     end
@@ -105,5 +106,21 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert html.include? 'Collections' # regular_user is owner of some collections
     assert html.include? collections(:one).title
     assert html.include? @routes.curate_materials_collection_url(collaborating_collection)
+  end
+
+  test 'does not email if user opted out of subscription emails' do
+    sub = subscriptions(:weekly_subscription)
+    m1 = materials(:good_material)
+    m2 = materials(:bad_material)
+    digest = MockSearchResults.new([m1, m2])
+    email = SubscriptionMailer.digest(sub, digest)
+    user = sub.user
+    user.receive_subscription_emails = false
+    user.save!
+
+    refute user.receive_subscription_emails
+    assert_emails 0 do
+      email.deliver_now
+    end
   end
 end

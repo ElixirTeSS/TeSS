@@ -6,6 +6,7 @@ class SubscriptionMailer < ApplicationMailer
 
   def digest(sub, dig)
     @user = sub.user
+    return unless @user.receive_subscription_emails
     @digest = dig
     @subscription = sub
     @collections = if TeSS::Config.feature['collections']

@@ -119,8 +119,9 @@ class ApplicationController < ActionController::Base
                                                                 :remember_me, :publicize_email, :processing_consent)
     end
     devise_parameter_sanitizer.permit(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
-    devise_parameter_sanitizer.permit(:account_update) do |u| u.permit(:username, :email, :password,
-                                                                       :password_confirmation, :current_password)
+    devise_parameter_sanitizer.permit(:account_update) do |u|
+      u.permit(:username, :email, :password, :password_confirmation, :current_password,
+               :receive_subscription_emails, :receive_curation_emails)
     end
   end
 
