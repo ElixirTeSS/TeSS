@@ -10,7 +10,7 @@
     <%= form_tag search_path, method: :get, role: 'search' do %>
       <div class="searchbox-wrapper">
         <input type="text" class="searchbox-field" name="q"
-               placeholder="Search <%= TeSS::Config.site['title_short'] %>..." autofocus="autofocus">
+               placeholder= "<%= t('home.search_placeholder', site_name: TeSS::Config.site['title_short']) %>" autofocus="autofocus">
         <button type="submit" class="searchbox-btn">
           <i class="icon icon-h3 search-icon"></i>
         </button>

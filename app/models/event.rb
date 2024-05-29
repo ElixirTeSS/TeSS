@@ -275,6 +275,14 @@ class Event < ApplicationRecord
     # Get timezones from: https://timezonedb.com/download
   end
 
+  def self.not_disabled
+    where('events.visible is true')
+  end
+
+  def self.disabled
+    where('events.visible is false')
+  end
+
   def self.not_finished
     where('events.end > ? OR events.end IS NULL', Time.now)
   end
