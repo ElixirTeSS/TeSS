@@ -60,6 +60,10 @@
         %>
 
         <%= menu_group(pull: 'right') do %>
+          <%= language_menu_item %>
+        <% end %>
+
+        <%= menu_group(pull: 'right') do %>
           <% main_tabs.each do |t| %>
             <%= menu_item t("features.#{t[:feature]}.short"), t[:link] %>
           <% end %>

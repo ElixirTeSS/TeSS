@@ -30,7 +30,7 @@ module TeSS
 
     # locales
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'overrides', '**', '*.{rb,yml}')] unless Rails.env.test?
-    config.i18n.available_locales = [:en]
+    config.i18n.available_locales = [:en, :fr]
     config.i18n.default_locale = :en
 
     config.active_record.yaml_column_permitted_classes = [

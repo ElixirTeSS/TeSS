@@ -7,6 +7,12 @@ Rails.application.routes.draw do
     resources :activities, only: [:index]
   end
 
+  resources :localization, only: [] do
+    collection do
+      get :change_locale
+    end
+  end
+
   get 'edam/terms' => 'edam#terms'
   get 'edam/topics' => 'edam#topics'
   get 'edam/operations' => 'edam#operations'

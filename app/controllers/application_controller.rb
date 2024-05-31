@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   include PublicActivity::StoreController
 
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :locale_from_params_or_session
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -127,4 +128,18 @@ class ApplicationController < ActionController::Base
   def allow_embedding
     response.headers.delete 'X-Frame-Options'
   end
+
+  def locale_from_params_or_session
+    loc_ids = Rails.application.config.i18n.available_locales.map(&:to_s)
+    loc = session['locale']
+    I18n.locale = if params[:locale] && loc_ids.include?(params[:locale])
+                    params[:locale].to_sym
+                  elsif !loc.blank? && loc_ids.include?(loc.to_s)
+                    loc.to_sym
+                  else
+                    Rails.application.config.i18n.default_locale
+                  end
+    session['locale'] = I18n.locale.to_s
+  end
+
 end
