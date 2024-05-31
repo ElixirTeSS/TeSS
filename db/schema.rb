@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema[7.0].define(version: 20_240_426_090_005) do
+=======
+ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
+>>>>>>> origin/master
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -145,6 +149,7 @@ ActiveRecord::Schema[7.0].define(version: 20_240_426_090_005) do
     t.bigint 'image_file_size'
     t.datetime 'image_updated_at'
     t.string 'contact'
+    t.string "event_curation_email"
     t.index ['node_id'], name: 'index_content_providers_on_node_id'
     t.index ['slug'], name: 'index_content_providers_on_slug', unique: true
     t.index ['user_id'], name: 'index_content_providers_on_user_id'

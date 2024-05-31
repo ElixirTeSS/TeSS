@@ -23,7 +23,7 @@
   <% end %>
 
   <% if current_user.is_admin? || current_user == @content_provider.user%>
-    <%= f.input :send_event_curation_email, label: 'Receive event curation emails' %>
+    <%= f.input :event_curation_email, label: 'Receive event curation emails at this address' %>
   <% end %>
 
   <% if !TeSS::Config.feature['disabled'].include? 'approved_editors' %>
