@@ -45,7 +45,6 @@ class LlmService
 
   def scrape_func(event, event_page)
     response = scrape(event_page)
-    puts response
     event = unload_json(event, response)
     event.llm_object = llm_object
     event
@@ -53,7 +52,6 @@ class LlmService
 
   def post_process_func(event)
     response = process(event)
-    puts response
     event = unload_json(event, response)
     event.llm_object = llm_object
     event
@@ -80,16 +78,13 @@ class LlmService
       doc.css('script, link').each { |node| node.remove }
       event_page = doc.text.squeeze(" \n").squeeze("\n").squeeze("\t").squeeze(' ')
       response = new.scrape(event_page)
-      puts response
       JSON.parse(response)
     end
 
     def process
       event_json = scrape
-      puts 'hi'
       event = Event.new(event_json)
       response = new.process(event)
-      puts response
       JSON.parse(response)
     end
   end

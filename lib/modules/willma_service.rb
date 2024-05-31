@@ -16,9 +16,7 @@ class WillmaService < LlmService
 
   def run(content)
     msg = call(content)['message']
-    puts msg
     res = get_first_json_from_string(msg)
-    puts res
     res
   end
 
@@ -63,11 +61,13 @@ def do_request(url, mode, data = {})
 end
 
 def get_first_json_from_string(msg)
-  char_dict = { '{': 0, '}': 0 }
+  char_dict = {}
+  char_dict['{'] = 0
+  char_dict['}'] = 0
   start_end = [0, 0]
   res = msg
   msg.split('').each_with_index do |char, idx|
-    next unless char in '{}'
+    next unless '{}'.include?(char)
 
     char_dict[char] += 1
     if char == '{' && char_dict['{'] == 1
