@@ -1,0 +1,70 @@
+- slug: west
+  title: West
+  url: https://training.westdri.ca/index.html
+  image_url:
+  description: Training events at SFU and other Western Universities
+  keywords:
+  - hpc
+  content_provider_type: Organisation
+  contact: training@westdri.ca
+  approved_editors: []
+- slug: acenet
+  title: ACENET
+  url: https://www.ace-net.ca/training.html
+  image_url:
+  description: ACENET offers accessible and flexible group and individual training (beginner to advanced), with a focus on customized learning events and regular core skill development opportunities.
+  keywords:
+  - hpc
+  content_provider_type: Organisation
+  contact: training@ace-net.ca
+  approved_editors: []
+- slug: scinet
+  title: SciNet
+  url: https://education.scinet.utoronto.ca/
+  image_url:
+  description: SciNet is the supercomputer centre at the University of Toronto, hosting Niagara, one of the fastest supercomputers in Canada, plus a range of other systems.
+  keywords:
+  - hpc
+  content_provider_type: Organisation
+  contact: training@ace-net.ca
+  approved_editors: []
+- slug: sharcnet
+  title: SHARCNET
+  url: https://training.sharcnet.ca/courses/
+  image_url:
+  description: SHARCNET!
+  keywords:
+  - hpc
+  content_provider_type: Organisation
+  contact: syam@sharcnet.ca
+  approved_editors: []
+- slug: calculquebec
+  title: Calcul Québec
+  url: https://www.calculquebec.ca
+  image_url:
+  description: Calcul Québec
+  keywords:
+  - hpc
+  content_provider_type: Organisation
+  contact: info@calculquebec.ca
+  approved_editors: []
+- slug: uofa_rcg
+  title: University of Alberta Research Computing
+  url: https://www.ualberta.ca/information-services-and-technology/research-computing/index.html
+  image_url:
+  description: IST’s Research Computing group collaborates with partners across Canada to deliver access to and support for the Digital Research Alliance of Canada’s (the Alliance) digital research infrastructure and research solutions across Canada at no cost to your research.
+  keywords:
+  - hpc
+  content_provider_type: Organisation
+  contact: researchsupport@ualberta.ca
+  approved_editors: []
+- slug: uvic
+  title: University of Victoria
+  url: https://www.uvic.ca
+  image_url:
+  description: University of Victoria
+  keywords:
+  - hpc
+  content_provider_type: Organisation
+  contact: sahuber@uvic.ca
+  approved_editors: []

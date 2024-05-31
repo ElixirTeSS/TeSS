@@ -1,0 +1,20 @@
+{"nodes": [
+    {"name": "Canada",
+     "country_code": "CA",
+     "member_status": "Member",
+     "description": "Digital Research Alliance of Canada",
+     "home_page": "https://www.alliancecan.ca",
+     "image_url": "",
+     "twitter": "Alliance_Can",
+     "carousel_images": [],
+     "staff": [
+       {
+         "name": "Chris Want",
+         "role": "Training coordinator",
+         "email": "cjwant@ualberta.ca",
+         "image_url": ""
+       }
+     ]
+    }
+  ]
+}

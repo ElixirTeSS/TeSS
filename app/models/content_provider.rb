@@ -107,6 +107,40 @@ class ContentProvider < ApplicationRecord
     'p'
   end
 
+  def self.logo_directory
+    File.join(File.path(Rails.root), 'config', 'data', 'logos')
+  end
+
+  def self.find_logo_file_name(slug)
+    if File.exist?(File.join(logo_directory, "#{slug}.jpg"))
+      return "#{slug}.jpg"
+    elsif File.exist?(File.join(logo_directory, "#{slug}.png"))
+      return "#{slug}.png"
+    end
+    nil
+  end
+
+  def self.load_from_array(array)
+    owner = User.get_default_user
+    array.each do |provider|
+      slug = provider["slug"]
+      content_provider = ContentProvider.find_by(slug: slug)
+      next if content_provider
+      content_provider = ContentProvider.new(provider)
+      content_provider.user = owner
+      content_provider.save!
+
+      image_file_name = find_logo_file_name(slug)
+      if image_file_name
+        content_provider.image_file_name = image_file_name
+        File.open(File.join(logo_directory, image_file_name)) do |f|
+          content_provider.image = f
+          content_provider.save!
+        end
+      end
+    end
+  end
+
   def add_editor(editor)
     if !editor.nil? and !editors.include?(editor) and !user.nil? and user.id != editor.id
       editors << editor
