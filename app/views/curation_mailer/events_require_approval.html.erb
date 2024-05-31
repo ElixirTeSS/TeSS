@@ -3,7 +3,9 @@
 </p>
 <% if @events.count.positive? %>
   <p>
-    If any of these events are incorrect or should not be shown, please follow the link to change them.
+    If any of these events are incorrect or should not be shown, please follow the link to change them.<br/>
+    If an event should not be shown, disable it on the edit page instead of deleting it to prevent rescraping.<br/>
+    If an event needs changes, lock the changed fields to prevent your changes from being overwritten by the scraper.<br/>
   </p>
 
   <% @events.each do |event| %>

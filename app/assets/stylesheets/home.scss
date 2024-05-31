@@ -138,6 +138,13 @@ ul.counter {
     min-width: 200px;
     justify-content: center;
 
+    .link-overlay {
+      background-color: white;
+      &:hover, &:focus {
+        background-color: #e8f3f6aa;
+      }
+    }
+
     .pseudolink {
       color: $link-color;
       text-decoration: underline;
@@ -349,6 +356,13 @@ ul.content-providers-grid {
     justify-content: center;
     display: flex;
     aspect-ratio: 1 / 1;
+
+    .link-overlay {
+      background-color: white;
+      &:hover, &:focus {
+        background-color: #e8f3f6aa;
+      }
+    }
 
     .provider-grid-image {
       justify-content: center;
