@@ -143,7 +143,10 @@ namespace :tess do
   task llm_post_processing: :environment do
     prompt = File.read('llm_process_prompt.txt')
     Events.each do |event|
-      unless event&.llm_object&.prompt == prompt
+      needs_processing = event&.llm_object&.needs_processing
+      new_prompt = event&.llm_object&.prompt == prompt
+      future_event = event.end > Time.zone.now
+      unless (needs_processing || new_prompt) && future_event
         event = GptIngestor.new.post_process_func(event)
         event.save!
       end
@@ -152,6 +155,10 @@ namespace :tess do
 
   desc 'open all events to being llm processed again'
   task reset_llm_status: :environment do
+    Events.where { |event| event.end > Time.zone.now }.each do |event|
+      event&.llm_object&.needs_processing = true
+      event.save!
+    end
   end
 
   desc 'mail content providers for curation of scraped events'

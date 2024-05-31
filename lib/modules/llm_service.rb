@@ -11,7 +11,8 @@ class LlmService
       model: @params[:model],
       prompt: @prompt,
       input: @input,
-      output: @output
+      output: @output,
+      needs_processing: false
     )
   end
 

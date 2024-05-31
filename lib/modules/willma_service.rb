@@ -44,15 +44,14 @@ def do_request(url, mode, data = {})
   http.use_ssl = true
   http.verify_mode = OpenSSL::SSL::VERIFY_PEER
 
-  case mode
-  when 'post'
-    request = Net::HTTP::Post.new(parsed_url.path)
-  when 'get'
-    request = Net::HTTP::Get.new(parsed_url.path)
-  else
-    puts 'whoops'
-    request = Net::HTTP::Post.new(parsed_url.path)
-  end
+  request = case mode
+            when 'post'
+              Net::HTTP::Post.new(parsed_url.path)
+            when 'get'
+              Net::HTTP::Get.new(parsed_url.path)
+            else
+              Net::HTTP::Post.new(parsed_url.path)
+            end
 
   header.each do |key, value|
     request[key] = value
@@ -64,11 +63,13 @@ def do_request(url, mode, data = {})
 end
 
 def get_first_json_from_string(msg)
-  char_dict = {}
+  char_dict = { '{': 0, '}': 0 }
   start_end = [0, 0]
   res = msg
   msg.split('').each_with_index do |char, idx|
-    char_dict[char] = char_dict.fetch(char, 0) + 1
+    next unless char in '{}'
+
+    char_dict[char] += 1
     if char == '{' && char_dict['{'] == 1
       start_end[0] = idx
     elsif char == '}' && char_dict['{'] == char_dict['}']

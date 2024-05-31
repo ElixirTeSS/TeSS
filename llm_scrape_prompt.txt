@@ -1,7 +1,7 @@
 Based on the following webpage describing a research event:
 *replace_with_event_page*
 
-Give me a json string surrounded by || describing a research themed event with the following format:
+Give me a json string describing a research themed event with the following format:
 
 title (string): The title of the event
 organizer (string): The organisation that hosts the event

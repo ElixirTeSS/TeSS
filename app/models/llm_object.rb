@@ -5,4 +5,5 @@ class LlmObject < ApplicationRecord
   validates :prompt, presence: true
   validates :input, presence: true
   validates :output, presence: true
+  validates :needs_processing, presence: true
 end
