@@ -53,6 +53,7 @@ class LearningPath < ApplicationRecord
         user.username if user
       end
       integer :user_id # Used for shadowbans
+      integer :collaborator_ids, multiple: true
       string :status do
         MaterialStatusDictionary.instance.lookup_value(self.status, 'title')
       end
