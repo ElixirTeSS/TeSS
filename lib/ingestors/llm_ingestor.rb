@@ -75,9 +75,9 @@ module Ingestors
 
     def process_llm(_url)
       scrape_dans
-      scrape_nwo
-      scrape_rug
-      scrape_tdcc
+      # scrape_nwo
+      # scrape_rug
+      # scrape_tdcc
       # json not necessary (SURF, UvA)
       # XML not necessary (wur)
     end
@@ -101,6 +101,7 @@ module Ingestors
         event.source = 'LLM'
         event.timezone = 'Amsterdam'
         add_event(event)
+        puts event
       rescue Exception => e
         puts e
         @messages << "Extract event fields failed with: #{e.message}"

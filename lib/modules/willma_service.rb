@@ -15,8 +15,23 @@ class WillmaService < LlmService
   end
 
   def run(content)
-    msg = call(content)['message']
-    res = get_first_json_from_string(msg)
+    # msg = call(content)['message']
+    # res = get_first_json_from_string(msg)
+    res = {
+      title: "Open Hour SSH: Live Q&A on Monday",
+      organizer: "Data Archive Netherlands (DANS)",
+      description: "Get all your questions answered during Open Hour for the SSH community. A live Q&A every Monday morning. Meet us at the Open Hour every Monday from 10:00 to 11:00 CEST for the Social Sciences and Humanities (SSH) community. The Open Hour is a Q&A on Open Science, data storage and Research Data Management. Register here for the Open Hour and send in your question(s).",
+      start: "2024-06-03T10:00:00+02:00",
+      end: "2024-06-03T11:00:00+02:00",
+      venue: "Online",
+      keywords: ["natural & engineering sciences", "humanities & social sciences", "life sciences"],
+      target_audience: ["researchers", "research support staff", "bachelor & master students", "PhD candidates", "teaching staff", "other"],
+      open_science: ["open software", "FAIR data", "Open Access"],
+      visible: true,
+      url: "https://dans.knaw.nl/en/agenda/open-hour-ssh-live-qa-on-monday-2/",
+      source: "LLM",
+      timezone: "Amsterdam"
+    }.to_json
     res
   end
 
