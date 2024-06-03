@@ -147,23 +147,14 @@ module Ingestors
                    end
 
         resource = set_resource_defaults(resource)
-        puts resource.valid?
         if resource.valid?
           resource.save!
           @stats[key][update ? :updated : :added] += 1
           if llm_attr
             llm_object = LlmObject.new(llm_attr.to_h)
             llm_object.event_id = resource.id
-            puts resource.attributes
-            puts llm_object.attributes
-            puts llm_object.needs_processing
-            puts llm_object.valid?
-            puts llm_object.errors.full_messages.map{|k| puts k}
             llm_object.save!
             resource.llm_object = llm_object
-            puts resource.llm_object.attributes
-            puts resource.attributes
-            puts resource.valid?
             if resource.valid?
               resource.save!
             end
@@ -177,7 +168,6 @@ module Ingestors
             @messages << " - #{m}"
           end
         end
-        puts resource
 
         resources[i] = resource
       end

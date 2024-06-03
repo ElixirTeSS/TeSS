@@ -5,8 +5,7 @@ class LlmService
     puts 'please provide child class'
   end
 
-  def llm_object
-    # LlmObject.new(
+  def llm_object_attributes
     {
       scrape_or_process: @scrape_or_process,
       model: @params[:model],
@@ -15,7 +14,6 @@ class LlmService
       output: @output,
       needs_processing: false
     }
-    # )
   end
 
   def unload_json(event, response)
@@ -48,14 +46,14 @@ class LlmService
   def scrape_func(event, event_page)
     response = scrape(event_page)
     event = unload_json(event, response)
-    event.llm_object_attributes = llm_object
+    event.llm_object_attributes = llm_object_attributes
     event
   end
 
   def post_process_func(event)
     response = process(event)
     event = unload_json(event, response)
-    # event.llm_object_attributes = llm_object
+    event.llm_object_attributes = llm_object_attributes
     event
   end
 

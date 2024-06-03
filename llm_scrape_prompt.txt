@@ -1,7 +1,7 @@
 Based on the following webpage describing a research event:
 *replace_with_event_page*
 
-Give me a json string describing a research themed event with the following format:
+Give me a valid json string describing a research themed event with the following format:
 
 title (string): The title of the event
 organizer (string): The organisation that hosts the event
@@ -12,3 +12,4 @@ venue (string): The venue where the event is hosted
 
 Instead of generating values for missing attributes, fill them with null.
 Do not change the wording of the description please.
+Make sure the last json attribute is not followed by a comma.

@@ -5,7 +5,8 @@ and the following curation criteria:
 Is this event useful for anyone rather than only people from a specific institution?
 Is this event centered around research?
 
-Give me a json string describing a research themed event with the following format.
+Give me a valid json string describing a research themed event with the following format.
+Make sure the last json attribute is not followed by a comma.
 Strictly adhere to the provided options if applicable without introducing new categories or combinations of words.
 Fill the keywords attributes with with ['domain agnostic'] if all options are relevant.
 If a specified option is not applicable or missing, fill it with null.
