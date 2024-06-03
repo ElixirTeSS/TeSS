@@ -48,14 +48,14 @@ class LlmService
   def scrape_func(event, event_page)
     response = scrape(event_page)
     event = unload_json(event, response)
-    # event.llm_object = llm_object
+    event.llm_object_attributes = llm_object
     event
   end
 
   def post_process_func(event)
     response = process(event)
     event = unload_json(event, response)
-    # event.llm_object = llm_object
+    # event.llm_object_attributes = llm_object
     event
   end
 

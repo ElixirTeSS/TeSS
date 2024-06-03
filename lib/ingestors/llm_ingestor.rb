@@ -101,7 +101,6 @@ module Ingestors
         event.source = 'LLM'
         event.timezone = 'Amsterdam'
         add_event(event)
-        puts event
       rescue Exception => e
         puts e
         @messages << "Extract event fields failed with: #{e.message}"

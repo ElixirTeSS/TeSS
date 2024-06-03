@@ -235,7 +235,7 @@ class EventsController < ApplicationController
                                   { host_institutions: [] }, :capacity, :contact, :recognition, :learning_objectives,
                                   :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency,
                                   external_resources_attributes: %i[id url title _destroy], material_ids: [],
-                                  llm_object_attributes: %i[scrape_or_process model prompt input output needs_processing],
+                                  llm_object_attributes: %i[id scrape_or_process model prompt input output needs_processing _destroy],
                                   locked_fields: [])
   end
 

@@ -331,7 +331,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.index ["lcheck_type", "lcheck_id"], name: "index_link_monitors_on_lcheck_type_and_lcheck_id"
   end
 
-  create_table "llm_object", force: :cascade do |t|
+  create_table "llm_objects", force: :cascade do |t|
+    t.bigint "event_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "scrape_or_process"
@@ -340,6 +341,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.string "input"
     t.string "output"
     t.boolean "needs_processing", default: false
+    t.index ["event_id"], name: "index_llm_objects_on_event_id"
   end
 
   create_table "materials", id: :serial, force: :cascade do |t|
@@ -618,6 +620,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
   add_foreign_key "learning_path_topic_links", "learning_paths"
   add_foreign_key "learning_paths", "content_providers"
   add_foreign_key "learning_paths", "users"
+  add_foreign_key "llm_objects", "events"
   add_foreign_key "materials", "content_providers"
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"
