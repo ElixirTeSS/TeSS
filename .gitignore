@@ -13,7 +13,7 @@
 /tmp
 config/secrets.yml
 config/sunspot.yml
-config/tess.yml
+# config/tess.yml
 config/ingestion.yml
 tmp/
 solr/test/

@@ -1,0 +1,135 @@
+default: &default
+  base_url: http://localhost:3000
+  contact_email: training@alliancecan.ca
+  sender_email: no-reply@alliancecan.ca
+  twitter_handle: # @handle
+  solr_enabled: true
+  solr_facets:
+    # see `searchable` block in app/model/*.rb for names
+    # events: [content_provider, keywords, event_types, ...]
+    # materials:
+    # trainers:
+  facets_max_age_list: ['Event', 'Material']
+  announcement_message:
+  prevent_robot_indexing: false
+  require_cookie_consent: true
+  blocked_domains:
+    - !ruby/regexp '/bad-domain\.example/'
+  sentry_dsn:
+  csp_report_uri: 
+  site:
+    title: 'Digital Research Alliance of Canada Training System'
+    title_short: Alliance Training
+    favicon: elixir/favicon.png
+    logo: alliance/Alliance_logo_Symbol.png
+    logo_alt: 'Training System'
+    logo_open_graph: ''
+    logo_email: ''
+    # Colours of the SVG icons used throughout TeSS, requires `rake assets:precompile` if changed
+    icon_primary_color: '#047EAA' # Blue by default
+    icon_secondary_color: '#F47D21' # Orange by default
+    repository: 'https://github.com/ElixirTeSS/TeSS'
+    supported_by: 'elixir_supported_by'
+    widget_example:
+    home_page: # Configuration for the sections displayed on the front page
+      catalogue_blocks: true
+      provider_grid: false
+      provider_carousel: true
+      # A list of content provider IDs to show in the front page carousel. Leave blank to show latest 5 (that have avatars set)
+      featured_providers: # e.g. [123, 5, 10, 1]
+      faq: # [who, how, why, embed, subscribe] # Questions/answers in config/en.yml: home > faq. Use empty array to hide section
+      promo_blocks: false
+      upcoming_events: # Number of events on home page. Leave blank to turn off
+      latest_materials: # Number of materials on home page. Leave blank to turn off
+      featured_trainer: false
+      counters: false # Whether or not to show number of database objects in separate blocks
+    # The order in which the tabs appear (if feature enabled)
+    tab_order: ['about', 'events', 'materials', 'elearning_materials', 'workflows', 'collections', 'trainers', 'content_providers', 'nodes']
+    # The tabs that should be collapsed under the "Directory" tab. Can be left blank to hide it.
+    # directory_tabs: ['trainers', 'content_providers', 'nodes']
+    directory_tabs: []
+    # The order in with the 'about us' tabs appear
+    about_us_tab_order: ['tess_club', 'contact', 'team', 'funding', 'acknowledgements', 'cite']
+    n_provider_ids: 5
+    calendar_event_maxlength: 5
+    content_provider_grid_long: true # true for full width in grid, false for short
+    show_provider_logo_in_event: false
+  mailer:
+    delivery_method: sendmail
+    location: /usr/sbin/sendmail
+    arguments: '-i -t'
+  gmaps:
+    center:
+      latitude: 53.4674583
+      longitude: -2.233948899999973
+    zoom:
+      latitude: 3
+      longitude: 13
+  header_notice: # HTML to display above the header
+  feature:
+    elearning_materials: false
+    events: true
+    invitation: false
+    materials: true
+    nodes: false
+    collections: false # CW: turned off
+    content_providers: true
+    subscription: true
+    registration: true
+    trainers: true # CW: turned on
+    workflows: false # CW: turned off
+    sources: false
+    user_source_creation: false # CW turned off
+    edit_suggestions: false
+    geocoding: false
+    # Possible features to disable:
+    #  biotools, topics, operations, sponsors, fairshare, county, ardc_fields_of_research,
+    #  other_types, subsets, syllabus, approved_editors address_finder
+    disabled: ['ardc_fields_of_research', 'other_types', 'subsets', 'syllabus', 'approved_editors']
+    materials_disabled: []
+    content_providers_disabled: []
+    bioschemas_testing: false
+    learning_paths: false
+  restrict_content_provider_selection: false
+  user_ingestion_methods: ['bioschemas']
+  placeholder:
+    collection: 'placeholder-collection.svg'
+    content_provider: 'placeholder-organization.svg'
+    person: 'placeholder-person.svg'
+  dictionaries:
+    cost_basis: 'cost_basis.yml'
+    difficulty: 'difficulty.yml'
+    eligibility: 'eligibility.yml'
+    event_types: 'event_types.yml'
+    licences: 'licences.yml'
+    material_status: 'material_status.yml'
+    material_type: 'material_type.yml'
+    target_audience: 'target_audience.yml'
+    trainer_experience: 'trainer_experience.yml'
+    online_keywords: 'online_keywords.yml'
+  funders:
+#    - url: https://example.com/your-funders-website
+#      logo: foo.png
+  priority_licences:
+    - MIT
+    - Apache-2.0
+    - BSD-2-Clause
+    - BSD-3-Clause
+    - LGPL-2.1
+    - GPL-3.0
+    - CC0-1.0
+    - CC-BY-4.0
+    - CC-BY-NC-4.0
+    - CC-BY-NC-ND-4.0
+    - CC-BY-NC-SA-4.0
+    - CC-BY-ND-4.0
+    - CC-BY-SA-4.0
+
+development:
+  <<: *default
+
+production:
+  <<: *default
+
+test:
+  <<: *default
