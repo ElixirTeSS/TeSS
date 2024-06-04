@@ -11,5 +11,6 @@ end (date or datetime): The local end time of the event
 venue (string): The venue where the event is hosted
 
 Instead of generating values for missing attributes, fill them with null.
-Do not change the wording of the description please.
+Summarize the description in less than 400 characters please.
 Make sure the last json attribute is not followed by a comma.
+Make sure the full json fits inside the response.

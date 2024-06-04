@@ -6,11 +6,6 @@ Is this event useful for anyone rather than only people from a specific institut
 Is this event centered around research?
 
 Give me a valid json string describing a research themed event with the following format.
-Make sure the last json attribute is not followed by a comma.
-Strictly adhere to the provided options if applicable without introducing new categories or combinations of words.
-Fill the keywords attributes with with ['domain agnostic'] if all options are relevant.
-If a specified option is not applicable or missing, fill it with null.
-The options are defined below between quotation marks. Options are separated by commas.
 
 title (string): The title of the event
 keywords (array of strings): A set of keywords based which the event can be filtered.
@@ -18,12 +13,20 @@ target_audience (array of strings): The target audience for this event.
 open_science (array of strings): The type of open science that this event advocates for, if any.
 visible (bool): Whether or not the event is relevant according to the curation criteria
 
+Make sure the last json attribute is not followed by a comma.
+Make sure the full json fits inside the response.
+Strictly adhere to the provided options if applicable without introducing new categories or combinations of words.
+Fill the keywords attributes with with ['domain agnostic'] if all options are relevant.
+If a specified option is not applicable or missing, fill it with null.
+The options are defined below between quotation marks. Options are separated by commas.
+
 keywords options:
 [
   'natural & engineering sciences',
   'humanities & social sciences',
-  'life sciences',
+  'life sciences'
 ]
+
 target_audience options:
 [
   'researchers',
@@ -39,5 +42,5 @@ open_science options:
   'open software',
   'FAIR data',
   'Open Access,
-  'citizen science',
+  'citizen science'
 ]

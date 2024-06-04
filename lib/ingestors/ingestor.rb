@@ -152,7 +152,11 @@ module Ingestors
           @stats[key][update ? :updated : :added] += 1
           if llm_attr
             llm_object = LlmObject.new(llm_attr.to_h)
-            llm_object.event_id = resource.id
+            if type == Event
+              llm_object.event_id = resource.id
+            elsif type == Material
+              llm_object.material_id = resource.id
+            end
             llm_object.save!
             resource.llm_object = llm_object
             if resource.valid?

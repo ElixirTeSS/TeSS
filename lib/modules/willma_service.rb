@@ -46,7 +46,7 @@ def do_request(url, mode, data = {})
   http = Net::HTTP.new(parsed_url.host, parsed_url.port)
   http.use_ssl = true
   http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-  http.read_timeout = 120
+  http.read_timeout = 180
 
   request = case mode
             when 'post'

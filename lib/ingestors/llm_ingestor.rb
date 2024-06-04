@@ -77,7 +77,7 @@ module Ingestors
       scrape_dans
       # scrape_nwo
       # scrape_rug
-      # scrape_tdcc
+      scrape_tdcc
       # json not necessary (SURF, UvA)
       # XML not necessary (wur)
     end
