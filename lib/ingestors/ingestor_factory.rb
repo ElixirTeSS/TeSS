@@ -29,8 +29,13 @@ module Ingestors
         Ingestors::RstIngestor,
         Ingestors::OsciIngestor,
         Ingestors::DccIngestor,
-        Ingestors::SenseIngestor,
-        Ingestors::LlmIngestor
+        Ingestors::SenseIngestor
+      ] + llm_ingestors
+    end
+
+    def self.llm_ingestors
+      [
+        Ingestors::FourtuLlmIngestor
       ]
     end
 
