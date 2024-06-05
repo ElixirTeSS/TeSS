@@ -74,10 +74,10 @@ module Ingestors
     end
 
     def process_llm(_url)
-      scrape_dans
+      # scrape_dans
       # scrape_nwo
-      # scrape_rug
-      scrape_tdcc
+      scrape_rug
+      # scrape_tdcc
       # json not necessary (SURF, UvA)
       # XML not necessary (wur)
     end
@@ -100,6 +100,7 @@ module Ingestors
         event.url = url
         event.source = 'LLM'
         event.timezone = 'Amsterdam'
+        event.nonsense_attr = 'beep'
         add_event(event)
       rescue Exception => e
         puts e

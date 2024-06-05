@@ -10,6 +10,7 @@ class WillmaService < LlmService
     @params = {
       model: model_name,
       sequence_id: model_id,
+      advanced_options: { "max_new_tokens": 4096 },
       temperature: 0
       # temperature: 0.7
     }
@@ -17,10 +18,7 @@ class WillmaService < LlmService
 
   def run(content)
     msg = call(content)['message']
-    puts msg
     res = get_first_json_from_string(msg)
-    puts '--------------------------------'
-    puts res
     res
   end
 
@@ -31,7 +29,6 @@ class WillmaService < LlmService
     }
     query_url = 'https://willma.soil.surf.nl/api/query'
     response = do_request(query_url, 'post', data)
-    puts response.code
     JSON.parse(response.body)
   end
 end
