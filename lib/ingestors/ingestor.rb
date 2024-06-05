@@ -136,7 +136,7 @@ module Ingestors
         # check for matched events
         resource.user_id ||= user.id
         resource.content_provider_id ||= provider.id
-        llm_attr = resource.delete_field(:llm_object_attributes)
+        llm_attr = resource.delete_field(:llm_object_attributes) if resource.respond_to?(:llm_object_attributes)
         resource = OpenStruct.new(resource.to_h.select { |key, _| type.attribute_names.map(&:to_sym).include?(key)})
         existing_resource = find_existing(type, resource)
 

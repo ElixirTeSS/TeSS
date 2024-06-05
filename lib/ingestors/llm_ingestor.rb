@@ -48,9 +48,9 @@ module Ingestors
         event.source = 'LLM'
         event.timezone = 'Amsterdam'
         a = Time.parse(event.start)
-        event.start = Time.local(a.year, a.month, a.day, a.hour, a.min, a.sec)
+        event.start = Time.new(a.year, a.month, a.day, a.hour, a.min, a.sec, "+00:00")
         a = Time.parse(event.end)
-        event.end = Time.local(a.year, a.month, a.day, a.hour, a.min, a.sec)
+        event.end = Time.new(a.year, a.month, a.day, a.hour, a.min, a.sec, "+00:00")
         event.set_default_times
         event.nonsense_attr = 'beep'
         add_event(event)
