@@ -36,7 +36,7 @@ end
 def do_request(url, mode, data = {})
   header = {
     'Content-Type': 'application/json',
-    'X-API-KEY': ENV.fetch('WILLMA_API_KEY')
+    'X-API-KEY': ENV.fetch('WILLMA_API_KEY', nil)
   }
 
   parsed_url = URI.parse(url)
