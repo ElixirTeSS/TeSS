@@ -1,6 +1,7 @@
 require 'test_helper'
+require 'minitest/autorun'
 
-class FourtuLlmIngestorTest < ActiveSupport::TestCase
+class FourtuGptLlmIngestorTest < ActiveSupport::TestCase
   setup do
     @user = users(:regular_user)
     @content_provider = content_providers(:another_portal_provider)
@@ -25,33 +26,27 @@ class FourtuLlmIngestorTest < ActiveSupport::TestCase
     new_title = '4TU-meeting National Technology Strategy'
     refute Event.where(title: new_title).any?
 
-    get_beep = '{ 
-      "boop": "{
-        \"name\": \"Zephyr 7B\",
-        \"id\": 0
-      }"
+    run_res = '{
+      "title":"4TU-meeting National Technology Strategy",
+      "start":"2024-07-03T12:30:00+02:00",
+      "end":"2024-07-03T19:00:00+02:00",
+      "venue":"Basecamp, Nijverheidsweg 16A, 3534 AM Utrecht (https://basecamputrecht.nl)",
+      "description":"My cool description",
+      "nonsense_attr":"My cool nonsense attribute"
     }'.gsub(/\n/, '')
-    post_beep = '{
-      "message": "Here is your JSON:
-      {
-        \"title\":\"4TU-meeting National Technology Strategy\",
-        \"start\":\"2024-07-03T12:30:00+02:00\",
-        \"end\":\"2024-07-03T19:00:00+02:00\",
-        \"venue\":\"Basecamp, Nijverheidsweg 16A, 3534 AM Utrecht (https://basecamputrecht.nl)\",
-        \"description\":\"My cool description\",
-        \"nonsense_attr\":\"My cool nonsense attribute\"
-      }
-      I am a dumb llm and I have to say something afterward even though I was specifically asked not to."
-    }'.gsub(/\n/, '')
+    mock_client = Minitest::Mock.new
+    8.times do 
+      mock_client.expect(:chat, {'choices'=> {0=> {'message'=> {'content'=> run_res}}}}, parameters: Object)
+    end
     # run task
     assert_difference 'Event.count', 1 do
       freeze_time(2019) do
-        VCR.use_cassette("ingestors/4tu_llm") do
-          WebMock.stub_request(:get, 'https://willma.soil.surf.nl/api/query').to_return(status: 200, body: get_beep)
-          WebMock.stub_request(:post, 'https://willma.soil.surf.nl/api/query').to_return(status: 200, body: post_beep)
-          with_settings({ llm_scraper: { model: 'willma', model_version: 'Zephyr 7B' } }) do
-            ingestor.read(source.url)
-            ingestor.write(@user, @content_provider)
+        VCR.use_cassette("ingestors/4tu_gpt_llm") do
+          OpenAI::Client.stub(:new, mock_client) do
+            with_settings({ llm_scraper: { model: 'chatgpt', model_version: 'GPT-3.5' } }) do
+              ingestor.read(source.url)
+              ingestor.write(@user, @content_provider)
+            end
           end
         end
       end

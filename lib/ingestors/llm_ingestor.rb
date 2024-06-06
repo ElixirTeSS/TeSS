@@ -52,7 +52,7 @@ module Ingestors
         a = Time.parse(event.end)
         event.end = Time.new(a.year, a.month, a.day, a.hour, a.min, a.sec, "+00:00")
         event.set_default_times
-        event.nonsense_attr = 'beep'
+        event.nonsense_attr = 'nonsense'
         add_event(event)
       rescue Exception => e
         puts e

@@ -8,7 +8,7 @@ class ChatgptService < LlmService
     @params = {
       # max_tokens: 50,
       # model: 'gpt-3.5-turbo-1106',
-      model: TeSS::Config.llm_scraper.model_version,
+      model: TeSS::Config.llm_scraper['model_version'],
       temperature: 0.7
     }
   end
