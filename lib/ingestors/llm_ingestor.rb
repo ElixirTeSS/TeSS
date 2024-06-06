@@ -48,11 +48,12 @@ module Ingestors
         event.source = 'LLM'
         event.timezone = 'Amsterdam'
         a = Time.parse(event.start)
-        event.start = Time.new(a.year, a.month, a.day, a.hour, a.min, a.sec, "+00:00")
+        event.start = Time.new(a.year, a.month, a.day, a.hour, a.min, a.sec, '+00:00')
         a = Time.parse(event.end)
-        event.end = Time.new(a.year, a.month, a.day, a.hour, a.min, a.sec, "+00:00")
+        event.end = Time.new(a.year, a.month, a.day, a.hour, a.min, a.sec, '+00:00')
         event.set_default_times
         event.nonsense_attr = 'nonsense'
+        event = OpenStruct.new(event.to_h.select { |key, _| (Event.attribute_names + [:online]).map(&:to_sym).include?(key) })
         add_event(event)
       rescue Exception => e
         puts e

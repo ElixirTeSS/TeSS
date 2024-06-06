@@ -43,7 +43,7 @@ module Ingestors
     def stats_summary(type)
       summary = "\n### #{type.to_s.titleize}\n\n"
 
-      [:processed, :added, :updated, :rejected].each do |key|
+      %i[processed added updated rejected].each do |key|
         summary += " - #{key.to_s.titleize}: #{stats[type][key]}\n"
       end
 
@@ -64,19 +64,17 @@ module Ingestors
         retry if (redirect_attempts -= 1) > 0
         raise e
       rescue OpenURI::HTTPError => e
-        if raise
-          raise e
-        else
-          @messages << "Couldn't open URL #{url}: #{e}"
-          nil
-        end
+        raise e if raise
+
+        @messages << "Couldn't open URL #{url}: #{e}"
+        nil
       end
     end
 
     def convert_description(input)
       return input if input.nil?
 
-      if input.match?(/<(li|p|b|i|ul|div|br|strong|em|h1)\/?>/)
+      if input.match?(%r{<(li|p|b|i|ul|div|br|strong|em|h1)/?>})
         ReverseMarkdown.convert(input, tag_border: '').strip
       else
         input
@@ -85,14 +83,15 @@ module Ingestors
 
     def convert_title(input)
       return input if input.nil?
+
       CGI.unescapeHTML(input)
     end
 
     def get_json_response(url, accept_params = 'application/json', **kwargs)
       response = RestClient::Request.new({ method: :get,
-                                         url: CGI.unescape_html(url),
-                                         verify_ssl: false,
-                                         headers: { accept: accept_params } }.merge(kwargs)).execute
+                                           url: CGI.unescape_html(url),
+                                           verify_ssl: false,
+                                           headers: { accept: accept_params } }.merge(kwargs)).execute
       # check response
       raise "invalid response code: #{response.code}" unless response.code == 200
 
@@ -137,7 +136,7 @@ module Ingestors
         resource.user_id ||= user.id
         resource.content_provider_id ||= provider.id
         llm_attr = resource.delete_field(:llm_object_attributes) if resource.respond_to?(:llm_object_attributes)
-        resource = OpenStruct.new(resource.to_h.select { |key, _| type.attribute_names.map(&:to_sym).include?(key)})
+        # resource = OpenStruct.new(resource.to_h.select { |key, _| (type.attribute_names + [:online]).map(&:to_sym).include?(key) })
         existing_resource = find_existing(type, resource)
 
         update = existing_resource
@@ -160,9 +159,7 @@ module Ingestors
             end
             llm_object.save!
             resource.llm_object = llm_object
-            if resource.valid?
-              resource.save!
-            end
+            resource.save! if resource.valid?
           end
         else
           @stats[key][:rejected] += 1
