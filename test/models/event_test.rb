@@ -671,4 +671,23 @@ class EventTest < ActiveSupport::TestCase
     assert_equal ['Fold recognition', 'Domain prediction', 'Fold prediction', 'Protein domain prediction',
                   'Protein fold prediction', 'Protein fold recognition'], @event.reload.operations_and_synonyms
   end
+
+  test 'can add an llm_object to an event' do
+    e = events(:scraper_user_event)
+    l = llm_objects(:scrape)
+    e.llm_object = l
+    e.save!
+    assert_equal e.llm_object.id, l.id
+    assert_equal l.event_id, e.id
+  end
+
+  test 'can destroy an llm_object with an event' do
+    e = events(:scraper_user_event)
+    l = llm_objects(:scrape)
+    e.llm_object = l
+    e.save!
+    assert_difference 'LlmObject.count', -1 do
+      e.destroy!
+    end
+  end
 end
