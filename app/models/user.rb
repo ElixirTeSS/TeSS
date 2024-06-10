@@ -364,6 +364,16 @@ class User < ApplicationRecord
     end
   end
 
+  def purge
+    User.transaction do
+      CREATED_RESOURCE_TYPES.each do |type|
+        send(type).find_each { |x| x.destroy }
+      end
+
+      destroy
+    end
+  end
+
   protected
 
   def reassign_resources(new_owner = User.get_default_user)
