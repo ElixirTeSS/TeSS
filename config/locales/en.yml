@@ -578,8 +578,8 @@ en:
   scraper:
     messages:
       status: 'Scraper.run: %{status}'
-      processing: 'Processing source %{num}: %{source}'
-      skipped: 'Skipped source %{num}: %{source}'
+      processing: 'Processing source: %{source}'
+      skipped: 'Skipped source: %{source}'
       processed: 'Sources processed = %{processed}'
       invalid: 'Validation error: %{error_message}'
       valid_source: 'Validation passed!'
