@@ -34,12 +34,12 @@ class Scraper
       logfile: nil,
       loglevel: 0,
       default_role: 'scraper_user',
-      username: nil,
+      username: 'scraper',
       sources: []
     })
 
     @name = config[:name]
-    @log_file = log_file || Rails.root.join(config[:logfile]).open('w+')
+    @log_file = log_file || (config[:logfile] ? Rails.root.join(config[:logfile]).open('w+') : StringIO.new)
     @log_level = config[:loglevel]
     @default_role = config[:default_role]
     @username = config[:username]

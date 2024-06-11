@@ -84,7 +84,7 @@ module TeSS
     def ingestion
       return @ingestion if @ingestion
       config_file = File.join(Rails.root, 'config', 'ingestion.yml')
-      @ingestion = YAML.safe_load(File.read(config_file)).deep_symbolize_keys! if File.exist?(config_file)
+      @ingestion = File.exist?(config_file) ? YAML.safe_load(File.read(config_file)).deep_symbolize_keys! : {}
     end
 
     def analytics_enabled
