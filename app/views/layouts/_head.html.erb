@@ -5,8 +5,8 @@
   <%= favicon_link_tag(TeSS::Config.site['favicon'], type: 'image/png') if TeSS::Config.site['favicon'] %>
   <%= stylesheet_link_tag 'application', integrity: true, media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'application', integrity: true, 'data-turbolinks-track': 'reload' %>
-  <% unless Rails.application.secrets.google_maps_api_key.blank? %>
-    <%= javascript_include_tag("https://maps.googleapis.com/maps/api/js?key=#{Rails.application.secrets.google_maps_api_key}&libraries=places") %>
+  <% unless Rails.application.config.secrets.google_maps_api_key.blank? %>
+    <%= javascript_include_tag("https://maps.googleapis.com/maps/api/js?key=#{Rails.application.config.secrets.google_maps_api_key}&libraries=places") %>
   <% end %>
 
   <%# signup_js.html_safe -%>

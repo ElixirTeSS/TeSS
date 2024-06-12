@@ -33,6 +33,11 @@ module TeSS
       end
     end
 
+    config.secrets = config_for('secrets')
+    if Rails.env.test?
+      test_secrets = YAML.safe_load(File.read(Rails.root.join('test', 'config', 'test_secrets.yml'))).deep_symbolize_keys!
+      config.secrets.merge!(test_secrets)
+    end
     config.tess = config_for(Rails.env.test? ? Pathname.new(Rails.root).join('test', 'config', 'test_tess.yml') : 'tess')
     config.tess_defaults = config_for('tess.example')
 
@@ -118,11 +123,11 @@ module TeSS
     end
 
     def analytics_enabled
-      force_analytics_enabled || (Rails.application.secrets.google_analytics_code.present? && Rails.env.production?)
+      force_analytics_enabled || (Rails.application.config.secrets.google_analytics_code.present? && Rails.env.production?)
     end
 
     def map_enabled
-      !feature['disabled'].include?('events_map') && Rails.application.secrets.google_maps_api_key.present?
+      !feature['disabled'].include?('events_map') && Rails.application.config.secrets.google_maps_api_key.present?
     end
 
     def _sentry_dsn

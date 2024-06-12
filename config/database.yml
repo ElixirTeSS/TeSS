@@ -1,11 +1,15 @@
+<%
+  db_secrets = YAML.load(File.read(Rails.root.join('config', 'secrets.yml')), aliases: true).dig(Rails.env, 'database')
+%>
+
 default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  host: <%= ENV.fetch("DB_HOST") { Rails.application.secrets[:database][:host] } %>
-  database: <%= ENV.fetch("DB_NAME") { Rails.application.secrets[:database][:name] } %>
-  username: <%= ENV.fetch("DB_USER") { Rails.application.secrets[:database][:username] } %>
-  password: <%= ENV.fetch("DB_PASSWORD") { Rails.application.secrets[:database][:password] } %>
+  host: <%= ENV.fetch("DB_HOST") { db_secrets[:host] } %>
+  database: <%= ENV.fetch("DB_NAME") { db_secrets[:name] } %>
+  username: <%= ENV.fetch("DB_USER") { db_secrets[:username] } %>
+  password: <%= ENV.fetch("DB_PASSWORD") { db_secrets[:password] } %>
 
 <% if Rails.env.development? %>
 development:

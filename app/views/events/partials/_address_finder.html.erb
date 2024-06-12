@@ -1,6 +1,6 @@
 <div class="form-group">
   <label>Address</label>
-  <% if Rails.application.secrets.google_maps_api_key.present? &&
+  <% if Rails.application.config.secrets.google_maps_api_key.present? &&
         !TeSS::Config.feature['disabled'].include?('address_finder') %>
     <input id="map-search" class="map-control form-control" type="text" placeholder="Start typing an address..."
            title="<%== t 'events.hints.address' %>">

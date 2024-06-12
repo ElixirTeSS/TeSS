@@ -1,6 +1,6 @@
 namespace :tess do
 
-  $api_key = Rails.application.secrets.bioportal_api_key
+  $api_key = Rails.application.config.secrets.bioportal_api_key
 
 
   desc 'Query BioPortal for scientific topics'

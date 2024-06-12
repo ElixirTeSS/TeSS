@@ -66,7 +66,3 @@ Rails.application.configure do
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = false
 end
-
-# Override secrets with test configuration from test/config
-test_secrets = YAML.safe_load(File.read(File.join(Rails.root, 'test', 'config', 'test_secrets.yml'))).deep_symbolize_keys!
-Rails.application.secrets.merge!(test_secrets)

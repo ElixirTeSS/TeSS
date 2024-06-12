@@ -118,7 +118,7 @@ module EventsHelper
 
   def google_maps_embed_api_tag(event)
     src = 'https://www.google.com/maps/embed/v1/place' +
-      "?key=#{Rails.application.secrets.google_maps_api_key}" +
+      "?key=#{Rails.application.config.secrets.google_maps_api_key}" +
       "&q=#{event.latitude},#{event.longitude}"
 
     content_tag(:iframe, '', width: 400, height: 250, frameborder: 0, style: 'border: 0', class: 'google-map',

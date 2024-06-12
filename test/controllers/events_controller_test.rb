@@ -1406,7 +1406,7 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test 'should hide map tab if disabled' do
-    assert Rails.application.secrets.google_maps_api_key.present?
+    assert Rails.application.config.secrets.google_maps_api_key.present?
     assert TeSS::Config.map_enabled
 
     get :index
@@ -1416,7 +1416,7 @@ class EventsControllerTest < ActionController::TestCase
     end
 
     with_settings(feature: { disabled: ['events_map'] }) do
-      assert Rails.application.secrets.google_maps_api_key.present?
+      assert Rails.application.config.secrets.google_maps_api_key.present?
       refute TeSS::Config.map_enabled
 
       get :index
@@ -1428,8 +1428,8 @@ class EventsControllerTest < ActionController::TestCase
   end
 
   test 'should hide map tab if no API key' do
-    Rails.application.secrets.stub(:google_maps_api_key, nil) do
-      refute Rails.application.secrets.google_maps_api_key.present?
+    Rails.application.config.secrets.stub(:google_maps_api_key, nil) do
+      refute Rails.application.config.secrets.google_maps_api_key.present?
       refute TeSS::Config.map_enabled
 
       get :index
@@ -1470,7 +1470,7 @@ class EventsControllerTest < ActionController::TestCase
 
   test 'should not show map if disabled' do
     with_settings(feature: { disabled: ['events_map'] }) do
-      assert Rails.application.secrets.google_maps_api_key.present?
+      assert Rails.application.config.secrets.google_maps_api_key.present?
       refute TeSS::Config.map_enabled
       get :show, params: { id: events(:one) }
       assert_response :success
