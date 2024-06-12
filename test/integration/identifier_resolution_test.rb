@@ -71,10 +71,10 @@ class IdentifierResolutionTest < ActionDispatch::IntegrationTest
 
     event.destroy!
 
-    assert_raises(ActiveRecord::RecordNotFound) do
-      get "/resolve/e#{event.id}"
+    get "/resolve/e#{event.id}"
 
-      follow_redirect!
-    end
+    follow_redirect!
+
+    assert_response :not_found
   end
 end
