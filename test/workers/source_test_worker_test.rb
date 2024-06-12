@@ -116,6 +116,32 @@ class SourceTestWorkerTest < ActiveSupport::TestCase
     FileUtils.rm(path) if File.exist?(path)
   end
 
+  test 'test ical source' do
+    mock_ingestions
+
+    source = sources(:pawsey_source)
+    assert_nil source.test_results
+
+    Sidekiq::Testing.inline! do
+      SourceTestWorker.perform_async([source.id])
+    end
+
+    source.reload
+    results = nil
+    assert_nothing_raised do
+      results = source.test_results
+    end
+    assert results
+    assert_equal 1, results[:events].length
+    sample = results[:events].detect { |e| e[:title] == 'EoI 1-Day Introduction to AMD GPUs (AMD Instinct Architecture and ROCm)' }
+    assert sample
+    assert results[:run_time] > 0
+    assert results[:finished_at] > 1.day.ago
+  ensure
+    path = source.send(:test_results_path)
+    FileUtils.rm(path) if File.exist?(path)
+  end
+
   private
 
   def mock_bioschemas(url, filename)

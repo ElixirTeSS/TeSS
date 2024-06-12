@@ -79,10 +79,10 @@ module Ingestors
         # puts "\n\ncalevent.description = #{calevent.description}"
         # puts "\n\n...        converted = #{event.description}"
 
-        event.end = calevent.dtend
+        event.end = calevent.dtend&.to_time
         unless calevent.dtstart.nil?
           dtstart = calevent.dtstart
-          event.start = dtstart
+          event.start = dtstart&.to_time
           tzid = dtstart.ical_params['tzid']
           event.timezone = tzid.first.to_s if !tzid.nil? and tzid.size > 0
         end
