@@ -5,6 +5,8 @@ require 'tzinfo'
 
 module Ingestors
   class IcalIngestor < Ingestor
+    attr_reader :icalendars
+
     def self.config
       {
         key: 'ical',
@@ -43,19 +45,25 @@ module Ingestors
       nil
     end
 
+    def full_url(url)
+      # append query  (if required)
+      query = '?ical=true'
+      return url + query unless url.to_s.downcase.ends_with? query
+      url
+    end
+
+    def fetch_events(file_url)
+      Icalendar::Event.parse(open_url(file_url,
+                                      raise: true).set_encoding('utf-8'))
+    end
+
     def process_icalendar(url)
       # process individual ics file
-      query = '?ical=true'
+      file_url = full_url(url)
 
       begin
-        # append query  (if required)
-        file_url = url
-        file_url << query unless url.to_s.downcase.ends_with? query
-
         # process file
-        events = Icalendar::Event.parse(open_url(file_url, raise: true).set_encoding('utf-8'))
-
-        # process each event
+        events = fetch_events(file_url)
         events.each do |e|
           process_event(e)
         end
@@ -67,12 +75,33 @@ module Ingestors
       nil
     end
 
+    def ical_event_online?(calevent)
+      calevent.location.downcase.include?('online')
+    end
+
+    def extract_event_start(calevent)
+      calevent.dtstart&.to_time
+    end
+
+    def extract_event_timezone(calevent)
+      return nil if calevent.dtstart.nil?
+      tzid = calevent.dtstart.ical_params['tzid']
+      # Sometimes it's a string ...
+      return tzid if tzid.is_a?(String)
+      # Sometimes it's an array ...
+      return tzid.first.to_s if !tzid.nil? and tzid.size > 0
+    end
+
+    def extract_url(calevent)
+      calevent.url.to_s
+    end
+
     def process_event(calevent)
       # puts "calevent: #{calevent.inspect}"
       begin
         # set fields
         event = OpenStruct.new
-        event.url = calevent.url.to_s
+        event.url = extract_url(calevent)
         event.title = calevent.summary.to_s
         event.description = process_description calevent.description
 
@@ -80,15 +109,11 @@ module Ingestors
         # puts "\n\n...        converted = #{event.description}"
 
         event.end = calevent.dtend&.to_time
-        unless calevent.dtstart.nil?
-          dtstart = calevent.dtstart
-          event.start = dtstart&.to_time
-          tzid = dtstart.ical_params['tzid']
-          event.timezone = tzid.first.to_s if !tzid.nil? and tzid.size > 0
-        end
+        event.start = extract_event_start(calevent)
+        event.timezone = extract_event_timezone(calevent)
 
         event.venue = calevent.location.to_s
-        if calevent.location.downcase.include?('online')
+        if ical_event_online?(calevent)
           event.online = true
           event.city = nil
           event.postcode = nil
