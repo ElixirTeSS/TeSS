@@ -124,6 +124,10 @@ class ContentProvider < ApplicationRecord
     owner = User.get_default_user
     array.each do |provider|
       slug = provider["slug"]
+
+      sources = provider['sources']
+      provider.delete('sources')
+
       content_provider = ContentProvider.find_by(slug: slug)
       next if content_provider
       content_provider = ContentProvider.new(provider)
@@ -136,6 +140,17 @@ class ContentProvider < ApplicationRecord
         File.open(File.join(logo_directory, image_file_name)) do |f|
           content_provider.image = f
           content_provider.save!
+        end
+      end
+
+      if sources
+        sources.each do |source|
+          Source.create!(content_provider: content_provider,
+                         url: source['url'],
+                         method: source['method'],
+                         enabled: true,
+                         approval_status: :approved,
+                         user: owner)
         end
       end
     end

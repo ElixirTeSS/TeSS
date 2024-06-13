@@ -8,6 +8,9 @@
   content_provider_type: Organisation
   contact: training@westdri.ca
   approved_editors: []
+  sources:
+    - url: 'https://calendar.google.com/calendar/ical/c_931e1c03612d34e93731445887914964ac4c406fd45b3c4e024af73264391906%40group.calendar.google.com/public/basic.ics'
+      method: 'drac_ical'
 - slug: acenet
   title: ACENET
   url: https://www.ace-net.ca/training.html
@@ -28,6 +31,9 @@
   content_provider_type: Organisation
   contact: training@ace-net.ca
   approved_editors: []
+  sources:
+    - url: 'https://education.scinet.utoronto.ca/local/scinet_calendarexport/export_execute.php?userid=2&authtoken=87c66db3057c76c6703c72e6c493b715fb519a8b&preset_what=all&preset_time=custom'
+      method: 'drac_ical'
 - slug: sharcnet
   title: SHARCNET
   url: https://training.sharcnet.ca/courses/
@@ -38,6 +44,9 @@
   content_provider_type: Organisation
   contact: syam@sharcnet.ca
   approved_editors: []
+  sources:
+    - url: 'https://calendar.google.com/calendar/ical/a71ndbga760lr1fand0tpph3fs%40group.calendar.google.com/public/basic.ics'
+      method: 'drac_ical'
 - slug: calculquebec
   title: Calcul Québec
   url: https://www.calculquebec.ca
@@ -48,6 +57,9 @@
   content_provider_type: Organisation
   contact: info@calculquebec.ca
   approved_editors: []
+  sources:
+    - url: 'https://calendar.google.com/calendar/ical/c_31c1c5b25138df63ac99f406f0290009e9a0e3348780c1aeb6dc8b04bc231fa1%40group.calendar.google.com/public/basic.ics'
+      method: 'drac_ical'
 - slug: uofa_rcg
   title: University of Alberta Research Computing
   url: https://www.ualberta.ca/information-services-and-technology/research-computing/index.html
@@ -58,6 +70,9 @@
   content_provider_type: Organisation
   contact: researchsupport@ualberta.ca
   approved_editors: []
+  sources:
+    - url: 'https://calendar.google.com/calendar/ical/c_5b8a364e6906c7f2364f5cb7fb7401eceb9605a0e548b456d4e5c381d457bfaa%40group.calendar.google.com/public/basic.ics'
+      method: 'drac_ical'
 - slug: uvic
   title: University of Victoria
   url: https://www.uvic.ca
