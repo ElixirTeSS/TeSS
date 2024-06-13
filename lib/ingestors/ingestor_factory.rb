@@ -8,6 +8,7 @@ module Ingestors
         Ingestors::EventbriteIngestor,
         Ingestors::EventCsvIngestor,
         Ingestors::IcalIngestor,
+        Ingestors::DracIcalIngestor,
         Ingestors::LeidenIngestor,
         Ingestors::LibcalIngestor,
         Ingestors::MaastrichtIngestor,
