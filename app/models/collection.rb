@@ -83,10 +83,6 @@ class Collection < ApplicationRecord
   end
 
   # implement methods to allow processing as resource
-  def last_scraped
-    nil
-  end
-
   def content_provider
     nil
   end
