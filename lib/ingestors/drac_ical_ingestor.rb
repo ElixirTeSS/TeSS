@@ -1,5 +1,7 @@
 module Ingestors
   class DracIcalIngestor < IcalIngestor
+    # The ics files from Google tend to embed the timezone in
+    # the calendar, not the events
     attr_reader :default_timezone
 
     def self.config
@@ -13,12 +15,12 @@ module Ingestors
     private
 
     def full_url(url)
-      # Don't append '?ical=true' to URL
+      # Don't append '?ical=true' to URL, Google doesn't like it
       url
     end
 
     def fetch_events(file_url)
-      # Fetch once, read twice
+      # Fetch once, read twice (to get default timezone)
       fetched = open_url(file_url, raise: true).set_encoding('utf-8')
 
       # Note, each Calendar has events associated with it, but there may be
@@ -36,10 +38,35 @@ module Ingestors
     end
 
     def extract_url(calevent)
-      # ics exported from Google doesn't have a URL field, so ...
+      # ics exported from Google doesn't have a URL field, so
+      # we construct a Rube Goldberg machine to get it ...
+
       return calevent.url.to_s if calevent.url
       return nil unless calevent.description
-      parse_description_url(calevent.description)
+      url = parse_description_url(calevent.description)
+      return url if url
+      return extract_url_in_parenthesis(calevent.location)
+    end
+
+    def extract_url_in_parenthesis(text)
+      return nil unless text
+
+      # Maybe the URL is in parenthesis? (e.g., SHARCNET)
+      m = text.match(/\(.*(http\S+).*\)/)
+      unless m.nil?
+        return m[1]
+      end
+      nil
+    end
+
+    def extract_url_alone_on_line(text)
+      return nil unless text
+
+      m = text.match(/^(http\S+)$/)
+      unless m.nil?
+        return m[1]
+      end
+      nil
     end
 
     def parse_description_url(description)
@@ -50,6 +77,7 @@ module Ingestors
         return link
       end
 
+      # No URL found, so assume the description is plain text
       lines = description.split(/\n/)
       lines.each_with_index do |line, index|
         # URL on same line
@@ -68,6 +96,13 @@ module Ingestors
             end
           end
         end
+      end
+
+      # Hail Mary pass ... ?
+      lines.each_with_index do |line, index|
+        url = extract_url_in_parenthesis(line)
+        url = extract_url_alone_on_line(line) unless url
+        return url if url
       end
 
       nil
