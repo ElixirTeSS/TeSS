@@ -83,3 +83,6 @@
   content_provider_type: Organisation
   contact: sahuber@uvic.ca
   approved_editors: []
+  sources:
+    - url: 'https://calendar.google.com/calendar/ical/c_4663bbcf2c01ffe0adfc57efbb69a815ddd0a0cb404a9cf4bb7f90765fd99ecf%40group.calendar.google.com/public/basic.ics'
+      method: 'drac_ical'
