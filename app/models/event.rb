@@ -109,8 +109,8 @@ class Event < ApplicationRecord
   enum presence: { onsite: 0, online: 1, hybrid: 2 }
 
   belongs_to :user
-  has_one :llm_object, inverse_of: :event, dependent: :destroy
-  accepts_nested_attributes_for :llm_object, allow_destroy: true
+  has_one :llm_interaction, inverse_of: :event, dependent: :destroy
+  accepts_nested_attributes_for :llm_interaction, allow_destroy: true
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
   has_one :link_monitor, as: :lcheck, dependent: :destroy
   has_many :collection_items, as: :resource

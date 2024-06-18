@@ -1,6 +1,6 @@
 class AddLlmCheck < ActiveRecord::Migration[7.0]
   def change
-    create_table :llm_objects do |t|
+    create_table :llm_interactions do |t|
       t.belongs_to :event, foreign_key: true
       t.datetime :created_at
       t.datetime :updated_at
@@ -11,8 +11,7 @@ class AddLlmCheck < ActiveRecord::Migration[7.0]
       t.string :output
       t.boolean :needs_processing, default: false
     end
-    add_reference :events, :llm_object, foreign_key: true
+    add_reference :events, :llm_interaction, foreign_key: true
     add_column :events, :open_science, :string, array: true, default: []
-    add_column :materials, :llm_processed, :bool, default: false
   end
 end

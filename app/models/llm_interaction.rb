@@ -1,4 +1,4 @@
-class LlmObject < ApplicationRecord
+class LlmInteraction < ApplicationRecord
   belongs_to :event
   validates :scrape_or_process, presence: true
   validates :model, presence: true
