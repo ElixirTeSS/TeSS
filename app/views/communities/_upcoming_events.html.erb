@@ -1,0 +1,11 @@
+<section id="upcoming_events">
+  <h3>
+    Upcoming events
+    <%= link_to("See all #{@community.name} events", events_path(**@community.filters), class: 'btn btn-sm btn-default pull-right') %>
+  </h3>
+  <% if @events.present? %>
+    <%= render partial: 'common/masonry_grid', locals: { objects: @events } %>
+  <% else %>
+    <span class="muted">No upcoming events found.</span>
+  <% end %>
+</section>
