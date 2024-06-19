@@ -163,6 +163,10 @@ default: &default
 #        node: United Kingdom
 #      flag: 🇬🇧
 #      description: Some text about what the community is bla bla bla
+#      country_code: 'GB'
+#      featured_providers:
+#        node:
+#          name: United Kingdom
 development:
   <<: *default
 
