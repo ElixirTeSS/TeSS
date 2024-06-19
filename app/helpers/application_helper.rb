@@ -693,6 +693,7 @@ module ApplicationHelper
   end
 
   def current_user_country
-    Locator.instance.lookup(ENV.fetch('MOCK_IP') { request.remote_ip })&.dig('country')
+    remote_ip = ENV.fetch('MOCK_IP') { Rails.env.production? ? request.remote_ip : '130.88.0.0' }
+    Locator.instance.lookup(remote_ip)&.dig('country')
   end
 end
