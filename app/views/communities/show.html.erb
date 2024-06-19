@@ -1,5 +1,5 @@
 
-<div class="row">
+<div class="row community-page">
   <section class="col-md-9">
     <%# Welcome text %>
     <div class="welcome-text">
@@ -26,10 +26,21 @@
     </div>
   </section>
   <div class="col-md-3">
-    <section id="featured_trainer">
-      <h5 class="text-center"><%= 'Featured Trainer' %></h5>
-      <%= render partial: 'common/masonry_grid', locals: { objects: [@featured_trainer] } %>
-    </section>
+    <% if @featured_trainer %>
+      <section id="featured_trainer">
+        <h5 class="text-center">Featured Trainer</h5>
+        <%= render partial: 'common/masonry_grid', locals: { objects: [@featured_trainer] } %>
+      </section>
+    <% end %>
+    <% if @community.featured_providers %>
+      <% cache(['community', @community.id, 'featured_provider'], expires_in: 24.hours) do %>
+        <% prov = ContentProvider.joins(:node).where(**@community.featured_providers).select { |p| p.materials.any? || p.events.not_finished.any? }.sample %>
+        <section id="featured_provider">
+          <h5 class="text-center">Featured Provider</h5>
+          <%= render partial: 'common/masonry_grid', locals: { objects: [prov] } %>
+        </section>
+      <% end %>
+    <% end %>
   </div>
 </div>
 

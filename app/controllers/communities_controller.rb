@@ -19,7 +19,7 @@ class CommunitiesController < ApplicationController
 
     @resources = @resources.sort_by(&:created_at).reverse
 
-    @featured_trainer = set_featured_trainer
+    @featured_trainer = nil # set_featured_trainer
     @events = set_upcoming_events
     @materials = set_latest_materials
     @catalogue_count_strings = set_catalogue_count_strings
@@ -37,10 +37,7 @@ class CommunitiesController < ApplicationController
     Material.search_and_filter(
       nil,
       '',
-      {
-        'max_age' => '100 months',
-        **@community.filters
-      },
+      { **@community.filters },
       sort_by: 'new',
       per_page: 10 * n_materials
     )&.results&.group_by(&:content_provider_id)&.map { |_p_id, p_materials| p_materials&.first }&.first(n_materials)

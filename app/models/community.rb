@@ -1,7 +1,7 @@
 class Community
   include ActiveModel::Model
 
-  attr_accessor :id, :name, :description, :flag, :filters, :country_code
+  attr_accessor :id, :name, :description, :flag, :filters, :country_code, :featured_providers
 
   def self.find(id)
     return nil if id.nil?
