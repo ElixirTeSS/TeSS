@@ -4,8 +4,8 @@
   <% country_name = "the #{country_name}" if country_name.start_with?('United') %>
   <%= link_to community_path(community.id), class: 'link-overlay mb-4', id: 'community-banner' do %>
     <div class="resource-type-title">
-      <h4><%= community.flag %> Connecting from <%= country_name %>?</h4>
+      <h4><%= community.flag %> <%= t('home.local_content_banner.title', country_name: country_name) %></h4>
     </div>
-      Visit the <%= community.name %> community page to find local training.
+    <%= t('home.local_content_banner.body', community_name: community.name) %>
   <% end %>
 <% end %>

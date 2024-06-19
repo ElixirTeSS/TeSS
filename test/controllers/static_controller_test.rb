@@ -269,7 +269,7 @@ class StaticControllerTest < ActionController::TestCase
       with_settings({ site: { home_page: { communities: true } } }) do
         get :home
         assert_response :success
-        assert_select '#community-banner', text: /Visit the UK training community page to find local training./
+        assert_select '#community-banner', text: /Visit the UK training portal to browse local training./
       end
     end
   end
