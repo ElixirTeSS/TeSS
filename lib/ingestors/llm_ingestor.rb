@@ -15,7 +15,7 @@ module Ingestors
     def read(url)
       begin
         process_llm(url)
-      rescue Exception => e
+      rescue StandardError => e
         @messages << "#{self.class.name} failed with: #{e.message}"
       end
 
@@ -55,7 +55,7 @@ module Ingestors
         event.nonsense_attr = 'nonsense'
         event = OpenStruct.new(event.to_h.select { |key, _| (Event.attribute_names + [:online]).map(&:to_sym).include?(key) })
         add_event(event)
-      rescue Exception => e
+      rescue StandardError => e
         puts e
         @messages << "Extract event fields failed with: #{e.message}"
       end
