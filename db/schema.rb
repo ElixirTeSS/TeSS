@@ -227,8 +227,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.string "cost_basis"
     t.string "cost_currency"
     t.string "fields", default: [], array: true
+    t.bigint "llm_interaction_id"
     t.string "open_science", default: [], array: true
     t.boolean "visible", default: true
+    t.index ["llm_interaction_id"], name: "index_events_on_llm_interaction_id"
     t.index ["presence"], name: "index_events_on_presence"
     t.index ["slug"], name: "index_events_on_slug", unique: true
     t.index ["user_id"], name: "index_events_on_user_id"
@@ -331,7 +333,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.index ["lcheck_type", "lcheck_id"], name: "index_link_monitors_on_lcheck_type_and_lcheck_id"
   end
 
-  create_table "llm_objects", force: :cascade do |t|
+  create_table "llm_interactions", force: :cascade do |t|
     t.bigint "event_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -341,7 +343,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.string "input"
     t.string "output"
     t.boolean "needs_processing", default: false
-    t.index ["event_id"], name: "index_llm_objects_on_event_id"
+    t.index ["event_id"], name: "index_llm_interactions_on_event_id"
   end
 
   create_table "materials", id: :serial, force: :cascade do |t|
@@ -377,7 +379,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.text "contact"
     t.text "learning_objectives"
     t.string "fields", default: [], array: true
-    t.boolean "llm_processed", default: false
     t.index ["content_provider_id"], name: "index_materials_on_content_provider_id"
     t.index ["slug"], name: "index_materials_on_slug", unique: true
     t.index ["user_id"], name: "index_materials_on_user_id"
@@ -616,11 +617,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
   add_foreign_key "content_providers", "users"
   add_foreign_key "event_materials", "events"
   add_foreign_key "event_materials", "materials"
+  add_foreign_key "events", "llm_interactions"
   add_foreign_key "events", "users"
   add_foreign_key "learning_path_topic_links", "learning_paths"
   add_foreign_key "learning_paths", "content_providers"
   add_foreign_key "learning_paths", "users"
-  add_foreign_key "llm_objects", "events"
+  add_foreign_key "llm_interactions", "events"
   add_foreign_key "materials", "content_providers"
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"
