@@ -139,6 +139,36 @@ namespace :tess do
     puts "Finished successfully, output written to: #{log.path}"
   end
 
+  desc 'run LLM post processing'
+  task llm_post_processing: :environment do
+    llm_service_hash = {
+      chatgpt: Llm::ChatgptService,
+      willma: Llm::WillmaService
+    }
+    llm_service_class = llm_service_hash.fetch(TeSS::Config.llm_scraper['model'].to_sym, nil)
+    return unless llm_service_class
+
+    prompt = File.read('llm_process_prompt.txt')
+    Events.each do |event|
+      needs_processing = event&.llm_interaction&.needs_processing
+      new_prompt = event&.llm_interaction&.prompt == prompt
+      future_event = event.end > Time.zone.now
+      next if (needs_processing || new_prompt) && future_event
+
+      llm_service = llm_service_class.new
+      event = llm_service.post_process_func(event)
+      event.save!
+    end
+  end
+
+  desc 'open all events to being llm processed again'
+  task reset_llm_status: :environment do
+    Events.where { |event| event.end > Time.zone.now }.each do |event|
+      event&.llm_interaction&.needs_processing = true
+      event.save!
+    end
+  end
+
   desc 'mail content providers for curation of scraped events'
   task event_curation_mails: :environment do
     cut_off_time = Time.zone.now - 1.week
