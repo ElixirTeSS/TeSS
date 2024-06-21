@@ -135,7 +135,6 @@ module Ingestors
         # check for matched events
         resource.user_id ||= user.id
         resource.content_provider_id ||= provider.id
-        # llm_attr = resource.delete_field(:llm_interaction_attributes) if resource.respond_to?(:llm_interaction_attributes)
         existing_resource = find_existing(type, resource)
 
         update = existing_resource
@@ -149,13 +148,6 @@ module Ingestors
         if resource.valid?
           resource.save!
           @stats[key][update ? :updated : :added] += 1
-          # if llm_attr
-          #   llm_interaction = LlmInteraction.new(llm_attr.to_h)
-          #   llm_interaction.event_id = resource.id if type == Event
-          #   llm_interaction.save!
-          #   resource.llm_interaction = llm_interaction
-          #   resource.save! if resource.valid?
-          # end
         else
           @stats[key][:rejected] += 1
           title = resource.title

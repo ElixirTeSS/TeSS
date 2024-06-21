@@ -25,6 +25,8 @@ module Ingestors
 
     private
 
+    include Llm
+
     def process_llm(_url)
       puts 'please provide child class'
     end
