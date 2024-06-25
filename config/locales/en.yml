@@ -33,6 +33,32 @@ en:
     learning_path_topics:
       short: Topics
       long: Learning path topics
+  dictionaries:
+    languages:
+      eng: 'English'
+      fre: 'French'
+      deu: 'German'
+      spa: 'Spanish'
+      dut: 'Dutch'
+      bul: 'Bulgarian'
+      hrv: 'Croatian'
+      ces: 'Czech'
+      dan: 'Danish'
+      est: 'Estonian'
+      fin: 'Finnish'
+      ell: 'Greek'
+      hun: 'Hungarian'
+      gle: 'Irish'
+      ita: 'Italian'
+      lav: 'Latvian'
+      lit: 'Lithuanian'
+      mlt: 'Maltese'
+      pol: 'Polish'
+      por: 'Portugeuse'
+      ron: 'Romanian'
+      slk: 'Slovak'
+      slv: 'Slovenian'
+      swe: 'Swedish'
   pundit:
     default: 'You are not authorised to perform this action.'
     material_policy:
@@ -63,6 +89,7 @@ en:
           online: Online
           onsite: Face-to-face
           hybrid: Hybrid
+        language: 'Language of instruction'
   about:
     registry: >
       TeSS is a platform that was developed to provide a one-stop shop for trainers and trainees to discover
@@ -426,6 +453,7 @@ en:
       fields: 'Select Fields of Research to better classify your event.'
       hosts: ''
       keywords: "Provide words or terms that clearly identify the training event's topics."
+      language: 'Language of instruction'
       materials: 'Add any training materials that are associated with the training event.'
       objectives: 'What knowledge, skills, or abilities should your audience gain from completing the training?'
       organizer: ''
@@ -606,6 +634,8 @@ en:
     categories:
       user: Owner
       organizer: Organiser
+    titles:
+      language: 'Language'
   errors:
     500: "Apologies, TeSS encountered an error whilst handling your request (500 Internal Server Error)."
     503: "Apologies, TeSS is temporarily down or unavailable due to maintenance (503 Service Unavailable)."

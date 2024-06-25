@@ -11,6 +11,11 @@ module SearchHelper
 
   def filter_link(name, value, count, html_options = {}, &block)
     parameters = search_and_facet_params
+
+    # TODO: is there a better way?
+    if name == 'language'
+      title = render_language_name(value)
+    end
     title ||= (html_options.delete(:title) || truncate(value.to_s, length: 50))
 
     #if there's already a filter of the same facet type, create/add to an array
@@ -34,6 +39,10 @@ module SearchHelper
 
   def remove_filter_link(name, value, html_options = {}, &block)
     parameters = search_and_facet_params
+    # TODO: is there a better way?
+    if name == 'language'
+      title = render_language_name(value)
+    end
     title ||= (html_options.delete(:title) || truncate(value.to_s, length: 50))
 
     #delete a filter from an array or delete the whole facet if it is the only one

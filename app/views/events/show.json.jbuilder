@@ -5,7 +5,7 @@ fields = [
 
   :keywords, :event_types, :fields,
 
-  :start, :end, :duration, :timezone,
+  :start, :end, :duration, :timezone, :language,
 
   :organizer, :sponsors, :contact, :host_institutions,
 
