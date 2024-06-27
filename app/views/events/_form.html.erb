@@ -52,7 +52,7 @@
 
   <!-- Field: Language -->
   <%= f.input :language, collection: LanguageDictionary.instance.options_for_select,
-      prompt: 'Select a language...', input_html: { title: t('events.hints.language') } %>
+      prompt: t('events.prompts.language'), input_html: { title: t('events.hints.language') } %>
 
   <!-- Field: Prerequisites -->
   <%= f.input :prerequisites, as: :markdown_area, input_html: { rows: '3', title: t('events.hints.prerequisites') } %>
