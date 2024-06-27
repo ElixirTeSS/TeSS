@@ -403,6 +403,20 @@ class EventTest < ActiveSupport::TestCase
     assert event.valid?
   end
 
+  test 'validates language if present' do
+    event = Event.new(title: 'An event', url: 'https://myevent.com', language: 'eng', user: users(:regular_user))
+    assert event.valid?
+
+    # Okay if not present
+    event.language = nil
+    assert event.valid?
+
+    # Not okay if not a known ISO-639-2 code
+    event.language = 'huh'
+    refute event.valid?
+    assert event.errors.added?(:language, 'must be a controlled vocabulary term')
+  end
+
   test 'validates URL format' do
     event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user))
 

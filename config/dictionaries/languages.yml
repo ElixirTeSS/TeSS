@@ -1,0 +1,52 @@
+# Subset of iso-639-2 (3 letter codes), 24 official EU languages
+# See: https://id.loc.gov/vocabulary/iso639-2.html
+# See config/locales for how these languages are rendered
+---
+eng:
+  uri: http://id.loc.gov/vocabulary/iso639-2/eng
+fre:
+  uri: http://id.loc.gov/vocabulary/iso639-2/fre
+deu:
+  uri: http://id.loc.gov/vocabulary/iso639-2/deu
+spa:
+  uri: http://id.loc.gov/vocabulary/iso639-2/spa
+dut:
+  uri: http://id.loc.gov/vocabulary/iso639-2/dut
+bul:
+  uri: http://id.loc.gov/vocabulary/iso639-2/bul
+hrv:
+  uri: http://id.loc.gov/vocabulary/iso639-2/hrv
+ces:
+  uri: http://id.loc.gov/vocabulary/iso639-2/ces
+dan:
+  uri: http://id.loc.gov/vocabulary/iso639-2/dan
+est:
+  uri: http://id.loc.gov/vocabulary/iso639-2/est
+fin:
+  uri: http://id.loc.gov/vocabulary/iso639-2/fin
+ell:
+  uri: http://id.loc.gov/vocabulary/iso639-2/ell
+hun:
+  uri: http://id.loc.gov/vocabulary/iso639-2/hun
+gle:
+  uri: http://id.loc.gov/vocabulary/iso639-2/gle
+ita:
+  uri: http://id.loc.gov/vocabulary/iso639-2/ita
+lav:
+  uri: http://id.loc.gov/vocabulary/iso639-2/lav
+lit:
+  uri: http://id.loc.gov/vocabulary/iso639-2/lit
+mlt:
+  uri: http://id.loc.gov/vocabulary/iso639-2/mlt
+pol:
+  uri: http://id.loc.gov/vocabulary/iso639-2/pol
+por:
+  uri: http://id.loc.gov/vocabulary/iso639-2/por
+ron:
+  uri: http://id.loc.gov/vocabulary/iso639-2/ron
+slk:
+  uri: http://id.loc.gov/vocabulary/iso639-2/slk
+slv:
+  uri: http://id.loc.gov/vocabulary/iso639-2/slv
+swe:
+  uri: http://id.loc.gov/vocabulary/iso639-2/swe

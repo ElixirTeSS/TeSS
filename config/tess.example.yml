@@ -106,6 +106,7 @@ default: &default
     target_audience: 'target_audience.yml'
     trainer_experience: 'trainer_experience.yml'
     online_keywords: 'online_keywords.yml'
+    language: 'languages.yml'
   funders:
 #    - url: https://example.com/your-funders-website
 #      logo: foo.png

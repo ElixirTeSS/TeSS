@@ -234,8 +234,8 @@ class EventsController < ApplicationController
                                   { node_names: [] }, { target_audience: [] }, { eligibility: [] }, :visible,
                                   { host_institutions: [] }, :capacity, :contact, :recognition, :learning_objectives,
                                   :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency,
-                                  external_resources_attributes: %i[id url title _destroy], material_ids: [],
-                                  locked_fields: [])
+                                  :language, external_resources_attributes: %i[id url title _destroy],
+                                  material_ids: [], locked_fields: [])
   end
 
   def event_report_params
