@@ -3,7 +3,8 @@ module HasLanguage
   extend ActiveSupport::Concern
 
   included do
-    validates :language, controlled_vocabulary_or_nil: { dictionary: 'LanguageDictionary' }
+    validates :language, controlled_vocabulary: { dictionary: 'LanguageDictionary',
+                                                  allow_nil: true }
 
     if TeSS::Config.solr_enabled
       # :nocov:
