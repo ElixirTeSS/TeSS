@@ -321,7 +321,7 @@ class ActiveSupport::TestCase
     def facet_value(ff)
       # The language facet should never be 'Fish'
       # because it comes from ISO-639-2
-      return 'eng' if ff == 'language'
+      return 'en' if ff == 'language'
 
       'Fish'
     end

@@ -22,14 +22,18 @@ class LanguageDictionary < Dictionary
       map { |key, _value| render_language_name(key) }
   end
 
+  def render_language_name(code)
+    # I18nData lookup wants uppercase key
+    # TODO: is capitalized a good choice for all locales?
+    i18ndata_code = code.to_s.upcase
+    I18nData.languages(I18n.locale)[i18ndata_code].capitalize
+  end
+
   private
 
   def dictionary_filepath
     get_file_path 'language', DEFAULT_FILE
   end
 
-  def render_language_name(code)
-    I18n.t("dictionaries.languages.#{code}")
-  end
 
 end

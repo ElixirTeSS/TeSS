@@ -647,8 +647,7 @@ module ApplicationHelper
   end
 
   def render_language_name(code)
-    # ISO-639-2 to localized name
-    t("dictionaries.languages.#{code}")
+    LanguageDictionary.instance.render_language_name(code)
   end
 
   class TabActivator
