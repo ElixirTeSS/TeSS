@@ -117,8 +117,14 @@ services:
       - test-db-data:/var/lib/postgresql/data
 volumes:
   db-data:
+    name: ${PREFIX}_db-data
   solr-data:
+    name: ${PREFIX}_solr-data
   redis-data:
+    name: ${PREFIX}_redis-data
   bundle-cache:
+    name: ${PREFIX}_bundle-cache
   node_modules:
+    name: ${PREFIX}_node_modules
   test-db-data:
+    name: ${PREFIX}_test-db-data
