@@ -612,6 +612,8 @@ en:
       organizer: Organiser
     titles:
       language: 'Language'
+  languages: # Only needed to override default names from I18nData
+    el: 'Greek'
   errors:
     500: "Apologies, TeSS encountered an error whilst handling your request (500 Internal Server Error)."
     503: "Apologies, TeSS is temporarily down or unavailable due to maintenance (503 Service Unavailable)."
