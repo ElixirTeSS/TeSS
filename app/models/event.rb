@@ -18,6 +18,7 @@ class Event < ApplicationRecord
   include FuzzyDictionaryMatch
   include WithTimezone
   include HasEdamTerms
+  include HasLanguage
 
   before_validation :fix_keywords, on: :create, if: :scraper_record
   before_validation :presence_default
@@ -189,7 +190,8 @@ class Event < ApplicationRecord
 
   def self.facet_fields
     field_list = %w[ content_provider keywords scientific_topics operations tools fields online event_types
-                     start venue city country organizer sponsors target_audience eligibility user node collections ]
+                     start venue city country organizer sponsors target_audience eligibility language
+                     user node collections ]
 
     field_list.delete('operations') if TeSS::Config.feature['disabled'].include? 'operations'
     field_list.delete('scientific_topics') if TeSS::Config.feature['disabled'].include? 'topics'

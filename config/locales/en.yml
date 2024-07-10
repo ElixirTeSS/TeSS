@@ -63,6 +63,7 @@ en:
           online: Online
           onsite: Face-to-face
           hybrid: Hybrid
+        language: 'Language of instruction'
   about:
     registry: >
       TeSS is a platform that was developed to provide a one-stop shop for trainers and trainees to discover
@@ -426,6 +427,7 @@ en:
       fields: 'Select Fields of Research to better classify your event.'
       hosts: ''
       keywords: "Provide words or terms that clearly identify the training event's topics."
+      language: 'Language of instruction'
       materials: 'Add any training materials that are associated with the training event.'
       objectives: 'What knowledge, skills, or abilities should your audience gain from completing the training?'
       organizer: ''
@@ -441,6 +443,8 @@ en:
       timezone: 'Select the appropriate timezone'
       title: 'Add a title for your training event.'
       url: 'Enter a valid URL for the event landing page.'
+    prompts:
+      language: 'Select a language...'
     long: 'Long events'
     pick_date: 'Pick a range of dates for a better collection of events.'
   materials:
@@ -606,6 +610,10 @@ en:
     categories:
       user: Owner
       organizer: Organiser
+    titles:
+      language: 'Language'
+  languages: # Only needed to override default names from I18nData
+    el: 'Greek'
   errors:
     500: "Apologies, TeSS encountered an error whilst handling your request (500 Internal Server Error)."
     503: "Apologies, TeSS is temporarily down or unavailable due to maintenance (503 Service Unavailable)."
