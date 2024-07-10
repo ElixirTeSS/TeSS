@@ -550,4 +550,36 @@ class ContentProvidersControllerTest < ActionController::TestCase
       assert_select '.masonry-brick.media-item.long', count: 0
     end
   end
+
+  test 'should show unverified users content provider to themselves' do
+    sign_in users(:unverified_user)
+    content_provider = users(:unverified_user).content_providers.create!(title: 'Hello', description: 'World',
+                                                                         url: 'https://example.com/content_provider')
+
+    get :show, params: { id: content_provider }
+
+    assert_response :success
+    assert_select '.unverified-notice',
+                  text: 'This content provider will not be publicly visible until your registration has been approved by an administrator.'
+  end
+
+  test 'should show unverified users content provider to admin' do
+    content_provider = users(:unverified_user).content_providers.create!(title: 'Hello', description: 'World',
+                                                                         url: 'https://eexample.com/content_provider')
+    sign_in users(:admin)
+
+    get :show, params: { id: content_provider }
+
+    assert_response :success
+    assert_select '.unverified-notice',
+                  text: 'This content provider will not be publicly visible until your registration has been approved by an administrator.'
+  end
+
+  test 'should not show unverified users content provider anon user' do
+    content_provider = users(:unverified_user).content_providers.create!(title: 'Hello', description: 'World',
+                                                                         url: 'https://example.com/content_provider')
+
+    get :show, params: { id: content_provider }
+    assert_response :forbidden
+  end
 end

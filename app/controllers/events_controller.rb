@@ -60,6 +60,7 @@ class EventsController < ApplicationController
   # GET /events/1.json
   # GET /events/1.ics
   def show
+    authorize @event
     @bioschemas = @event.to_bioschemas
     respond_to do |format|
       format.html
