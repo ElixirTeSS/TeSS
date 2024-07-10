@@ -63,6 +63,7 @@ en:
           online: Online
           onsite: Face-to-face
           hybrid: Hybrid
+        language: 'Language of instruction'
   about:
     registry: >
       TeSS is a platform that was developed to provide a one-stop shop for trainers and trainees to discover
@@ -164,7 +165,7 @@ en:
       <h5>Leadership</h5>
       <ul><li>Carole Goble</li><li>Hedi Peterson</li><li>Alexia Cardona</li></ul>
       <h5>Project Management</h5>
-      <ul><li>Munazah Andrabi</li></ul>
+      <ul><li>Munazah Andrabi</li><li>Phil Reed</li></ul>
       <h5>Software Engineering</h5>
       <ul><li>Finn Bacall</li><li>Ivan Kuzmin</li></ul>
       <h5>Community Engagement</h5>
@@ -326,6 +327,7 @@ en:
       workflows: "Create training workflows to visualise learning steps and link to resources specific to your training needs."
       providers: "Browse training providers to discover training resources they offer and follow links to their materials and courses."
       trainers: "Browse a directory of trainers based on their skills and expertise."
+      learning_paths: "Follow organized pathways of training resources leading you towards specific learning objectives."
       events_count: "%{total_events} upcoming events, %{last_month_events} added last month"
     providers:
       title: Providers
@@ -425,6 +427,7 @@ en:
       fields: 'Select Fields of Research to better classify your event.'
       hosts: ''
       keywords: "Provide words or terms that clearly identify the training event's topics."
+      language: 'Language of instruction'
       materials: 'Add any training materials that are associated with the training event.'
       objectives: 'What knowledge, skills, or abilities should your audience gain from completing the training?'
       organizer: ''
@@ -440,6 +443,8 @@ en:
       timezone: 'Select the appropriate timezone'
       title: 'Add a title for your training event.'
       url: 'Enter a valid URL for the event landing page.'
+    prompts:
+      language: 'Select a language...'
     long: 'Long events'
     pick_date: 'Pick a range of dates for a better collection of events.'
   materials:
@@ -605,11 +610,16 @@ en:
     categories:
       user: Owner
       organizer: Organiser
+    titles:
+      language: 'Language'
+  languages: # Only needed to override default names from I18nData
+    el: 'Greek'
   errors:
     500: "Apologies, TeSS encountered an error whilst handling your request (500 Internal Server Error)."
     503: "Apologies, TeSS is temporarily down or unavailable due to maintenance (503 Service Unavailable)."
     422: "The request you sent was well-formed but the change you wanted was rejected (422 Unprocessable Entity)."
     404: "The requested page could not be found - you may have mistyped the address or the page may have moved (404 Not Found)."
+    406: "The requested format is not available (406 Not Acceptable)."
   warnings:
     link_broken: TeSS has been unable to access this %{resource_type}'s URL since %{fail_date} - the page may have been moved.
     archived: This %{resource_type} has been archived, its content may no longer be relevant.

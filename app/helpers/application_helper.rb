@@ -646,6 +646,10 @@ module ApplicationHelper
     end.select { |f| f.rows.any? && !IGNORED_FILTERS.include?(f.field_name.to_s) }
   end
 
+  def render_language_name(code)
+    LanguageDictionary.instance.render_language_name(code)
+  end
+
   class TabActivator
     # An object to determine if a tab/tab-pane should be active.
     def initialize

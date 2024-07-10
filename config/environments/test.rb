@@ -52,6 +52,10 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
   config.action_mailer.asset_host = TeSS::Config.base_url
+
+  # LanguageDictionary test does some French testing
+  config.i18n.available_locales = [:en, :fr]
+  config.i18n.default_locale = :en
 end
 
 # Override secrets with test configuration from test/config
