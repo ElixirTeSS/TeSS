@@ -43,12 +43,8 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
-  # Don't raises error for missing translations
-  # config.i18n.raise_on_missing_translations = true
-  # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
-  # the I18n.default_locale when a translation cannot be found).
-  config.i18n.fallbacks = [I18n.default_locale]
-
+  # Raises error for missing translations
+  config.i18n.raise_on_missing_translations = true
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
   config.action_mailer.asset_host = TeSS::Config.base_url
