@@ -28,14 +28,9 @@ class LanguageDictionary < Dictionary
   end
 
   def render_language_name(code)
-    begin
-      I18n.t("languages.#{code.downcase}", raise: true)
-    rescue I18n::MissingTranslationData
-      # I18nData lookup wants uppercase key
-      # TODO: is capitalized a good choice for all locales?
-      i18ndata_code = code.to_s.upcase
-      I18nData.languages(I18n.locale)[i18ndata_code].capitalize
-    end
+    i18ndata_code = code.to_s.upcase
+    I18n.t("languages.#{code.to_s.downcase}",
+           default: I18nData.languages(I18n.locale)[i18ndata_code].capitalize)
   end
 
 end
