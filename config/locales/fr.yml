@@ -1,5 +1,16 @@
 fr:
+  activerecord:
+    attributes:
+      event:
+        language: "Langue d’enseignement"
   features:
     about:
       short: 'À propos'
       long: 'À propos'
+  dictionaries:
+    languages:
+      eng: 'Anglais'
+      fre: 'Français'
+  facets:
+    titles:
+      language: 'Langue'
