@@ -286,11 +286,16 @@ class Event < ApplicationRecord
   end
 
   def self.not_finished
-    where('events.end > ? OR events.end IS NULL', Time.now)
+    where('events.end >= ?', Time.now).where.not(end: nil)
   end
 
   def self.finished
     where('events.end < ?', Time.now).where.not(end: nil)
+  end
+
+  def self.needs_processing(llm_prompt)
+    joins('LEFT OUTER JOIN llm_interactions ON llm_interactions.event_id = events.id')
+      .where('llm_interactions.needs_processing = ? OR llm_interactions.prompt != ?', true, llm_prompt)
   end
 
   # Ticket #423

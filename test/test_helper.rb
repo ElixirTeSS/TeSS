@@ -5,9 +5,9 @@ require 'simplecov-lcov'
 SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
 
 SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new([
-  SimpleCov::Formatter::HTMLFormatter,
-  SimpleCov::Formatter::LcovFormatter
-])
+                                                                  SimpleCov::Formatter::HTMLFormatter,
+                                                                  SimpleCov::Formatter::LcovFormatter
+                                                                ])
 
 SimpleCov.start do
   add_filter '.gems'
@@ -17,7 +17,7 @@ SimpleCov.start do
 end
 
 ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../../config/environment', __FILE__)
+require File.expand_path('../config/environment', __dir__)
 require 'rails/test_help'
 require 'webmock/minitest'
 require 'minitest/mock'
@@ -26,8 +26,11 @@ require 'vcr'
 require_relative './schema_helper'
 
 WebMock.disable_net_connect!(allow_localhost: true, allow: 'api.codacy.com')
-Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(
-  fast_fail: true, color: true, detailed_skip: false, slow_count: 10)] unless ENV['RM_INFO']
+unless ENV['RM_INFO']
+  Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(
+    fast_fail: true, color: true, detailed_skip: false, slow_count: 10
+  )]
+end
 
 VCR.configure do |config|
   config.cassette_library_dir = 'test/vcr_cassettes'
@@ -60,11 +63,11 @@ class ActiveSupport::TestCase
     orig_config = {}
     settings.each do |k, v|
       orig_config[k] = TeSS::Config[k]
-      if !overwrite && TeSS::Config[k].is_a?(Hash) && v.is_a?(Hash)
-        TeSS::Config[k] = v.with_indifferent_access.reverse_merge!(TeSS::Config[k])
-      else
-        TeSS::Config[k] = v
-      end
+      TeSS::Config[k] = if !overwrite && TeSS::Config[k].is_a?(Hash) && v.is_a?(Hash)
+                          v.with_indifferent_access.reverse_merge!(TeSS::Config[k])
+                        else
+                          v
+                        end
     end
     block.call
   ensure
@@ -144,34 +147,33 @@ class ActiveSupport::TestCase
 
   # Mock remote images so paperclip doesn't break:
   def mock_images
-    WebMock.stub_request(:any, /http\:\/\/example\.com\/(.+)\.png/).to_return(
+    WebMock.stub_request(:any, %r{http://example\.com/(.+)\.png}).to_return(
       status: 200, body: File.read(File.join(Rails.root, 'test/fixtures/files/image.png')),
       headers: { content_type: 'image/png' }
     )
 
-    WebMock.stub_request(:any, "http://image.host/another_image.png").to_return(
+    WebMock.stub_request(:any, 'http://image.host/another_image.png').to_return(
       status: 200, body: File.read(File.join(Rails.root, 'test/fixtures/files/another_image.png')),
       headers: { content_type: 'image/png' }
     )
 
-    WebMock.stub_request(:any, "http://malicious.host/image.png").to_return(
+    WebMock.stub_request(:any, 'http://malicious.host/image.png').to_return(
       status: 200, body: File.read(File.join(Rails.root, 'test/fixtures/files/bad.js')), headers: { content_type: 'image/png' }
     )
 
-    WebMock.stub_request(:any, "http://text.host/text.txt").to_return(
+    WebMock.stub_request(:any, 'http://text.host/text.txt').to_return(
       status: 200, body: File.read(File.join(Rails.root, 'test/fixtures/files/text.txt')), headers: { content_type: 'text/plain' }
     )
 
-    WebMock.stub_request(:any, "http://404.host/image.png").to_return(status: 404)
+    WebMock.stub_request(:any, 'http://404.host/image.png').to_return(status: 404)
 
-    WebMock.stub_request(:get, "https://bio.tools/api/tool?q=Training%20Material%20Example").
-      with(:headers => { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Ruby' }).
-      to_return(:status => 200, :body => "", :headers => {})
+    WebMock.stub_request(:get, 'https://bio.tools/api/tool?q=Training%20Material%20Example')
+           .with(headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Ruby' })
+           .to_return(status: 200, body: '', headers: {})
 
-    WebMock.stub_request(:get, "https://bio.tools/api/tool?q=Material%20with%20suggestions").
-      with(:headers => { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Ruby' }).
-      to_return(:status => 200, :body => "", :headers => {})
-
+    WebMock.stub_request(:get, 'https://bio.tools/api/tool?q=Material%20with%20suggestions')
+           .with(headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Ruby' })
+           .to_return(status: 200, body: '', headers: {})
   end
 
   def mock_orcids
@@ -223,7 +225,7 @@ class ActiveSupport::TestCase
      { url: 'https://www.eventbriteapi.com/v3/organizations/34338661734', status: 404 }].each do |opts|
       url = opts.delete(:url)
       method = opts.delete(:method) || :get
-      opts[:body] = File.open(Rails.root.join( 'test', 'fixtures', 'files', 'ingestion', opts.delete(:filename))) if opts.key?(:filename)
+      opts[:body] = File.open(Rails.root.join('test', 'fixtures', 'files', 'ingestion', opts.delete(:filename))) if opts.key?(:filename)
       opts[:status] ||= 200
       opts[:headers] ||= {}
 
@@ -233,22 +235,22 @@ class ActiveSupport::TestCase
 
   def mock_biotools
     biotools_file = File.read("#{Rails.root}/test/fixtures/files/annotation.json")
-    WebMock.stub_request(:get, /data.bioontology.org/).
-      to_return(:status => 200, :headers => {}, :body => biotools_file)
+    WebMock.stub_request(:get, /data.bioontology.org/)
+           .to_return(status: 200, headers: {}, body: biotools_file)
   end
 
   def mock_nominatim
-    nominatim_file = File.read(File.join(Rails.root, ['test', 'fixtures','files', 'nominatim.json'] ))
-    kensington_file = File.read(File.join(Rails.root,['test', 'fixtures', 'files', 'geocode_kensington.json'] ))
+    nominatim_file = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'nominatim.json']))
+    kensington_file = File.read(File.join(Rails.root, ['test', 'fixtures', 'files', 'geocode_kensington.json']))
 
-    WebMock.stub_request(:get, /nominatim.openstreetmap.org/).
-      to_return(:status => 200, :headers => {}, :body => nominatim_file)
+    WebMock.stub_request(:get, /nominatim.openstreetmap.org/)
+           .to_return(status: 200, headers: {}, body: nominatim_file)
 
     # geocoder overrides
     Geocoder.configure(lookup: :test, ip_lookup: :test)
-    Geocoder::Lookup::Test.add_stub( "1 Bryce Avenue, Kensington, Western Australia, 6151, Australia", JSON.parse(kensington_file) )
-    Geocoder::Lookup::Test.add_stub( "Pawsey Supercomputing Centre, 1 Bryce Avenue, Kensington, Western Australia, 6151, Australia", [] )
-    Geocoder::Lookup::Test.add_stub( "Australia", [{ "address"=>{ "country"=>"Australia", "country_code"=>"au"} }] )
+    Geocoder::Lookup::Test.add_stub('1 Bryce Avenue, Kensington, Western Australia, 6151, Australia', JSON.parse(kensington_file))
+    Geocoder::Lookup::Test.add_stub('Pawsey Supercomputing Centre, 1 Bryce Avenue, Kensington, Western Australia, 6151, Australia', [])
+    Geocoder::Lookup::Test.add_stub('Australia', [{ 'address' => { 'country' => 'Australia', 'country_code' => 'au' } }])
   end
 
   def assert_permitted(policy, user, action, *opts)
@@ -260,7 +262,7 @@ class ActiveSupport::TestCase
   end
 
   def mock_timezone(tz = ActiveSupport::TimeZone.all.sample.tzinfo.identifier)
-    @_prev_tz = ENV['TZ']  # Time zone should not affect test result
+    @_prev_tz = ENV['TZ'] # Time zone should not affect test result
     ENV['TZ'] = tz
   end
 
@@ -322,7 +324,7 @@ class ActiveSupport::TestCase
       if @collection.any?
         c = @collection.first.class
         f = c.facet_fields.map do |ff|
-          { field_name: ff.to_sym, rows: (1 + rand(4)).times.map { { value: 'Fish', count: (1 + rand(4)) } } }
+          { field_name: ff.to_sym, rows: rand(1..4).times.map { { value: 'Fish', count: rand(1..4) } } }
         end
         JSON.parse(f.to_json, object_class: OpenStruct)
       else
@@ -334,17 +336,16 @@ end
 
 # Minitest's `stub` method but ignores any blocks
 class Object
-
-  def blockless_stub name, val_or_callable, *block_args
+  def blockless_stub name, val_or_callable, *_block_args
     new_name = "__minitest_stub__#{name}"
 
     metaclass =
 
       class << self
-        self;
+        self
       end
 
-    if respond_to? name and not methods.map(&:to_s).include? name.to_s then
+    if respond_to? name and !methods.map(&:to_s).include? name.to_s
       metaclass.send :define_method, name do |*args|
         super(*args)
       end
@@ -353,7 +354,7 @@ class Object
     metaclass.send :alias_method, new_name, name
 
     metaclass.send :define_method, name do |*args|
-      ret = if val_or_callable.respond_to? :call then
+      ret = if val_or_callable.respond_to? :call
               val_or_callable.call(*args)
             else
               val_or_callable

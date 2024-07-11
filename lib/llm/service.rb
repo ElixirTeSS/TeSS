@@ -29,7 +29,7 @@ module Llm
 
     def scrape(event_page)
       @scrape_or_process = 'scrape'
-      @prompt = File.read('lib/llm/llm_prompts/llm_scrape_prompt.txt')
+      @prompt = File.read(File.join(Rails.root, 'lib', 'llm', 'llm_prompts', 'llm_scrape_prompt.txt'))
       @input = event_page
       content = @prompt.gsub('*replace_with_event_page*', event_page)
       @output = run(content)
@@ -39,7 +39,7 @@ module Llm
     def process(event)
       @scrape_or_process = 'process'
       event_json = JSON.generate(event.to_json)
-      @prompt = File.read('lib/llm/llm_prompts/llm_process_prompt.txt')
+      @prompt = File.read(File.join(Rails.root, 'lib', 'llm', 'llm_prompts', 'llm_process_prompt.txt'))
       @input = event_json
       content = @prompt.gsub('*replace_with_event*', event_json)
       @output = run(content)

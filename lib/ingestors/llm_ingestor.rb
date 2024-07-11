@@ -32,15 +32,11 @@ module Ingestors
     end
 
     def get_event_from_css(url, event_page) # rubocop:disable Metrics
-      event_page.css('script, link').each { |node| node.remove }
-      event_page = event_page.text.squeeze(" \n").squeeze("\n").squeeze("\t").squeeze(' ')
-      llm_service_hash = {
-        chatgpt: Llm::ChatgptService,
-        willma: Llm::WillmaService
-      }
-      llm_service_class = llm_service_hash.fetch(TeSS::Config.llm_scraper['model'].to_sym, nil)
+      llm_service_class = Llm.service_hash.fetch(TeSS::Config.llm_scraper['model'].to_sym, nil)
       return unless llm_service_class
 
+      event_page.css('script, link').each { |node| node.remove }
+      event_page = event_page.text.squeeze(" \n").squeeze("\n").squeeze("\t").squeeze(' ')
       begin
         llm_service = llm_service_class.new
         event = OpenStruct.new

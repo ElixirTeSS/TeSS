@@ -25,8 +25,8 @@ class FourtuWillmaLlmIngestorTest < ActiveSupport::TestCase
     new_title = '4TU-meeting National Technology Strategy'
     refute Event.where(title: new_title).any?
 
-    get_body = '{ 
-      "boop": "{
+    get_body = '{
+      "my_option": "{
         \"name\": \"Zephyr 7B\",
         \"id\": 0
       }"
@@ -46,7 +46,7 @@ class FourtuWillmaLlmIngestorTest < ActiveSupport::TestCase
     # run task
     assert_difference 'Event.count', 1 do
       freeze_time(2019) do
-        VCR.use_cassette("ingestors/4tu_llm") do
+        VCR.use_cassette('ingestors/4tu_llm') do
           WebMock.stub_request(:get, 'https://willma.soil.surf.nl/api/query').to_return(status: 200, body: get_body)
           WebMock.stub_request(:post, 'https://willma.soil.surf.nl/api/query').to_return(status: 200, body: post_body)
           with_settings({ llm_scraper: { model: 'willma', model_version: 'Zephyr 7B' } }) do
