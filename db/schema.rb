@@ -14,17 +14,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "activities", id: :serial, force: :cascade do |t|
-    t.string "trackable_type"
+  create_table "activities", force: :cascade do |t|
     t.integer "trackable_id"
-    t.string "owner_type"
+    t.string "trackable_type"
     t.integer "owner_id"
+    t.string "owner_type"
     t.string "key"
     t.text "parameters"
-    t.string "recipient_type"
     t.integer "recipient_id"
-    t.datetime "created_at", precision: nil
-    t.datetime "updated_at", precision: nil
+    t.string "recipient_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["key"], name: "index_activities_on_key"
     t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
     t.index ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type"
@@ -36,7 +36,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.bigint "user_id"
     t.string "name"
     t.jsonb "properties"
-    t.datetime "time", precision: nil
+    t.datetime "time"
     t.index ["name", "time"], name: "index_ahoy_events_on_name_and_time"
     t.index ["properties"], name: "index_ahoy_events_on_properties", opclass: :jsonb_path_ops, using: :gin
     t.index ["user_id"], name: "index_ahoy_events_on_user_id"
@@ -68,7 +68,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.string "app_version"
     t.string "os_version"
     t.string "platform"
-    t.datetime "started_at", precision: nil
+    t.datetime "started_at"
     t.index ["user_id"], name: "index_ahoy_visits_on_user_id"
     t.index ["visit_token"], name: "index_ahoy_visits_on_visit_token", unique: true
   end
@@ -79,21 +79,21 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.index ["field", "value"], name: "index_autocomplete_suggestions_on_field_and_value", unique: true
   end
 
-  create_table "bans", id: :serial, force: :cascade do |t|
+  create_table "bans", force: :cascade do |t|
     t.integer "user_id"
     t.integer "banner_id"
     t.boolean "shadow"
     t.text "reason"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["banner_id"], name: "index_bans_on_banner_id"
     t.index ["user_id"], name: "index_bans_on_user_id"
   end
 
-  create_table "collaborations", id: :serial, force: :cascade do |t|
+  create_table "collaborations", force: :cascade do |t|
     t.integer "user_id"
-    t.string "resource_type"
     t.integer "resource_id"
+    t.string "resource_type"
     t.index ["resource_type", "resource_id"], name: "index_collaborations_on_resource_type_and_resource_id"
     t.index ["user_id"], name: "index_collaborations_on_user_id"
   end
@@ -110,13 +110,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.index ["resource_type", "resource_id"], name: "index_collection_items_on_resource"
   end
 
-  create_table "collections", id: :serial, force: :cascade do |t|
+  create_table "collections", force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.text "image_url"
     t.boolean "public", default: true
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "user_id"
     t.string "slug"
     t.string "keywords", default: [], array: true
@@ -128,13 +128,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.index ["user_id"], name: "index_collections_on_user_id"
   end
 
-  create_table "content_providers", id: :serial, force: :cascade do |t|
+  create_table "content_providers", force: :cascade do |t|
     t.text "title"
     t.text "url"
     t.text "image_url"
     t.text "description"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "slug"
     t.string "keywords", default: [], array: true
     t.integer "user_id"
@@ -159,33 +159,33 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.index ["user_id"], name: "index_content_providers_users_on_user_id"
   end
 
-  create_table "edit_suggestions", id: :serial, force: :cascade do |t|
+  create_table "edit_suggestions", force: :cascade do |t|
     t.text "name"
     t.text "text"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "suggestible_id"
     t.string "suggestible_type"
     t.json "data_fields", default: {}
     t.index ["suggestible_id", "suggestible_type"], name: "index_edit_suggestions_on_suggestible_id_and_suggestible_type"
   end
 
-  create_table "event_materials", id: :serial, force: :cascade do |t|
+  create_table "event_materials", force: :cascade do |t|
     t.integer "event_id"
     t.integer "material_id"
     t.index ["event_id"], name: "index_event_materials_on_event_id"
     t.index ["material_id"], name: "index_event_materials_on_material_id"
   end
 
-  create_table "events", id: :serial, force: :cascade do |t|
+  create_table "events", force: :cascade do |t|
     t.string "external_id"
     t.string "title"
     t.string "subtitle"
     t.string "url"
     t.string "organizer"
     t.text "description"
-    t.datetime "start", precision: nil
-    t.datetime "end", precision: nil
+    t.datetime "start"
+    t.datetime "end"
     t.string "sponsors", default: [], array: true
     t.text "venue"
     t.string "city"
@@ -194,8 +194,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.string "postcode"
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "source", default: "tess"
     t.string "slug"
     t.integer "content_provider_id"
@@ -227,38 +227,35 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.string "cost_basis"
     t.string "cost_currency"
     t.string "fields", default: [], array: true
-    t.bigint "llm_interaction_id"
-    t.string "open_science", default: [], array: true
     t.boolean "visible", default: true
-    t.index ["llm_interaction_id"], name: "index_events_on_llm_interaction_id"
     t.index ["presence"], name: "index_events_on_presence"
     t.index ["slug"], name: "index_events_on_slug", unique: true
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 
-  create_table "external_resources", id: :serial, force: :cascade do |t|
+  create_table "external_resources", force: :cascade do |t|
     t.integer "source_id"
     t.text "url"
     t.string "title"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "source_type"
     t.index ["source_id", "source_type"], name: "index_external_resources_on_source_id_and_source_type"
   end
 
-  create_table "field_locks", id: :serial, force: :cascade do |t|
-    t.string "resource_type"
+  create_table "field_locks", force: :cascade do |t|
     t.integer "resource_id"
+    t.string "resource_type"
     t.string "field"
     t.index ["resource_type", "resource_id"], name: "index_field_locks_on_resource_type_and_resource_id"
   end
 
-  create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
+  create_table "friendly_id_slugs", force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
     t.string "sluggable_type", limit: 50
     t.string "scope"
-    t.datetime "created_at", precision: nil
+    t.datetime "created_at"
     t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
@@ -322,14 +319,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.index ["user_id"], name: "index_learning_paths_on_user_id"
   end
 
-  create_table "link_monitors", id: :serial, force: :cascade do |t|
+  create_table "link_monitors", force: :cascade do |t|
     t.string "url"
     t.integer "code"
-    t.datetime "failed_at", precision: nil
-    t.datetime "last_failed_at", precision: nil
+    t.datetime "failed_at"
+    t.datetime "last_failed_at"
     t.integer "fail_count"
-    t.string "lcheck_type"
     t.integer "lcheck_id"
+    t.string "lcheck_type"
     t.index ["lcheck_type", "lcheck_id"], name: "index_link_monitors_on_lcheck_type_and_lcheck_id"
   end
 
@@ -346,17 +343,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.index ["event_id"], name: "index_llm_interactions_on_event_id"
   end
 
-  create_table "materials", id: :serial, force: :cascade do |t|
+  create_table "materials", force: :cascade do |t|
     t.text "title"
     t.string "url"
     t.string "doi"
     t.date "remote_updated_date"
     t.date "remote_created_date"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "description"
     t.string "target_audience", default: [], array: true
-    t.string "keywords", default: [], array: true
     t.string "authors", default: [], array: true
     t.string "contributors", default: [], array: true
     t.string "licence", default: "notspecified"
@@ -367,6 +363,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.date "last_scraped"
     t.boolean "scraper_record", default: false
     t.string "resource_type", default: [], array: true
+    t.string "keywords", default: [], array: true
     t.string "other_types"
     t.date "date_created"
     t.date "date_modified"
@@ -384,23 +381,23 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.index ["user_id"], name: "index_materials_on_user_id"
   end
 
-  create_table "node_links", id: :serial, force: :cascade do |t|
+  create_table "node_links", force: :cascade do |t|
     t.integer "node_id"
-    t.string "resource_type"
     t.integer "resource_id"
+    t.string "resource_type"
     t.index ["node_id"], name: "index_node_links_on_node_id"
     t.index ["resource_type", "resource_id"], name: "index_node_links_on_resource_type_and_resource_id"
   end
 
-  create_table "nodes", id: :serial, force: :cascade do |t|
+  create_table "nodes", force: :cascade do |t|
     t.string "name"
     t.string "member_status"
     t.string "country_code"
     t.string "home_page"
     t.string "twitter"
     t.string "carousel_images", array: true
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "slug"
     t.integer "user_id"
     t.text "image_url"
@@ -409,9 +406,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.index ["user_id"], name: "index_nodes_on_user_id"
   end
 
-  create_table "ontology_term_links", id: :serial, force: :cascade do |t|
-    t.string "resource_type"
+  create_table "ontology_term_links", force: :cascade do |t|
     t.integer "resource_id"
+    t.string "resource_type"
     t.string "term_uri"
     t.string "field"
     t.index ["field"], name: "index_ontology_term_links_on_field"
@@ -419,14 +416,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.index ["term_uri"], name: "index_ontology_term_links_on_term_uri"
   end
 
-  create_table "profiles", id: :serial, force: :cascade do |t|
+  create_table "profiles", force: :cascade do |t|
     t.text "firstname"
     t.text "surname"
     t.text "image_url"
     t.text "email"
     t.text "website"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "user_id"
     t.string "slug"
     t.boolean "public", default: false
@@ -445,18 +442,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.index ["slug"], name: "index_profiles_on_slug", unique: true
   end
 
-  create_table "roles", id: :serial, force: :cascade do |t|
+  create_table "roles", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "title"
   end
 
-  create_table "sessions", id: :serial, force: :cascade do |t|
+  create_table "sessions", force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"
-    t.datetime "created_at", precision: nil
-    t.datetime "updated_at", precision: nil
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
@@ -464,8 +461,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
   create_table "sources", force: :cascade do |t|
     t.bigint "content_provider_id"
     t.bigint "user_id"
-    t.datetime "created_at", precision: nil
-    t.datetime "finished_at", precision: nil
+    t.datetime "created_at"
+    t.datetime "finished_at"
     t.string "url"
     t.string "method"
     t.integer "records_read"
@@ -477,19 +474,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.boolean "enabled"
     t.string "token"
     t.integer "approval_status"
-    t.datetime "updated_at", precision: nil
+    t.datetime "updated_at"
     t.index ["content_provider_id"], name: "index_sources_on_content_provider_id"
     t.index ["user_id"], name: "index_sources_on_user_id"
   end
 
-  create_table "staff_members", id: :serial, force: :cascade do |t|
+  create_table "staff_members", force: :cascade do |t|
     t.string "name"
     t.string "role"
     t.string "email"
     t.text "image_url"
     t.integer "node_id"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "image_file_name"
     t.string "image_content_type"
     t.bigint "image_file_size"
@@ -497,60 +494,60 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.index ["node_id"], name: "index_staff_members_on_node_id"
   end
 
-  create_table "stars", id: :serial, force: :cascade do |t|
+  create_table "stars", force: :cascade do |t|
     t.integer "user_id"
-    t.string "resource_type"
     t.integer "resource_id"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.string "resource_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["resource_type", "resource_id"], name: "index_stars_on_resource_type_and_resource_id"
     t.index ["user_id"], name: "index_stars_on_user_id"
   end
 
-  create_table "subscriptions", id: :serial, force: :cascade do |t|
+  create_table "subscriptions", force: :cascade do |t|
     t.integer "user_id"
-    t.datetime "last_sent_at", precision: nil
+    t.datetime "last_sent_at"
     t.text "query"
     t.json "facets"
     t.integer "frequency"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "subscribable_type"
-    t.datetime "last_checked_at", precision: nil
+    t.datetime "last_checked_at"
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
-  create_table "users", id: :serial, force: :cascade do |t|
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+  create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "username"
     t.integer "role_id"
     t.string "authentication_token"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at", precision: nil
-    t.datetime "remember_created_at", precision: nil
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at", precision: nil
-    t.datetime "last_sign_in_at", precision: nil
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
     t.string "confirmation_token"
-    t.datetime "confirmed_at", precision: nil
-    t.datetime "confirmation_sent_at", precision: nil
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
-    t.datetime "locked_at", precision: nil
+    t.datetime "locked_at"
     t.string "slug"
     t.string "provider"
     t.string "uid"
     t.string "identity_url"
     t.string "invitation_token"
-    t.datetime "invitation_created_at", precision: nil
-    t.datetime "invitation_sent_at", precision: nil
-    t.datetime "invitation_accepted_at", precision: nil
+    t.datetime "invitation_created_at"
+    t.datetime "invitation_sent_at"
+    t.datetime "invitation_accepted_at"
     t.integer "invitation_limit"
     t.string "invited_by_type"
     t.bigint "invited_by_id"
@@ -559,14 +556,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.string "image_file_name"
     t.string "image_content_type"
     t.bigint "image_file_size"
-    t.datetime "image_updated_at", precision: nil
+    t.datetime "image_updated_at"
     t.index ["authentication_token"], name: "index_users_on_authentication_token"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["identity_url"], name: "index_users_on_identity_url", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
-    t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by_type_and_invited_by_id"
+    t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role_id"], name: "index_users_on_role_id"
     t.index ["slug"], name: "index_users_on_slug", unique: true
@@ -574,25 +571,25 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
-  create_table "widget_logs", id: :serial, force: :cascade do |t|
+  create_table "widget_logs", force: :cascade do |t|
     t.string "widget_name"
     t.string "action"
-    t.string "resource_type"
     t.integer "resource_id"
+    t.string "resource_type"
     t.text "data"
     t.json "params"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["resource_type", "resource_id"], name: "index_widget_logs_on_resource_type_and_resource_id"
   end
 
-  create_table "workflows", id: :serial, force: :cascade do |t|
+  create_table "workflows", force: :cascade do |t|
     t.string "title"
     t.string "description"
     t.integer "user_id"
     t.json "workflow_content"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "slug"
     t.string "target_audience", default: [], array: true
     t.string "keywords", default: [], array: true
@@ -617,12 +614,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
   add_foreign_key "content_providers", "users"
   add_foreign_key "event_materials", "events"
   add_foreign_key "event_materials", "materials"
-  add_foreign_key "events", "llm_interactions"
   add_foreign_key "events", "users"
   add_foreign_key "learning_path_topic_links", "learning_paths"
   add_foreign_key "learning_paths", "content_providers"
   add_foreign_key "learning_paths", "users"
-  add_foreign_key "llm_interactions", "events"
   add_foreign_key "materials", "content_providers"
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"
