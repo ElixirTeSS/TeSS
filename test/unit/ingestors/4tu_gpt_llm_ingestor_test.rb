@@ -35,13 +35,13 @@ class FourtuGptLlmIngestorTest < ActiveSupport::TestCase
       "nonsense_attr":"My cool nonsense attribute"
     }'.gsub(/\n/, '')
     mock_client = Minitest::Mock.new
-    8.times do 
-      mock_client.expect(:chat, {'choices'=> {0=> {'message'=> {'content'=> run_res}}}}, parameters: Object)
+    8.times do
+      mock_client.expect(:chat, { 'choices' => { 0 => { 'message' => { 'content' => run_res } } } }, parameters: Object)
     end
     # run task
     assert_difference 'Event.count', 1 do
       freeze_time(2019) do
-        VCR.use_cassette("ingestors/4tu_gpt_llm") do
+        VCR.use_cassette('ingestors/4tu_gpt_llm') do
           OpenAI::Client.stub(:new, mock_client) do
             with_settings({ llm_scraper: { model: 'chatgpt', model_version: 'GPT-3.5' } }) do
               ingestor.read(source.url)

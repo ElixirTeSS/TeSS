@@ -2,6 +2,10 @@ require 'test_helper'
 require 'minitest/autorun'
 
 class LlmServiceTest < ActiveSupport::TestCase
+  def setup
+    mock_llm_requests
+  end
+
   test 'service_hash_contains_all_subclasses' do
     hash_set = (Llm.service_hash.values + [Llm::Service]).map { |c| c.name.split('::').last.to_sym }.to_set
     classes_set = Llm.constants.filter { |c| Llm.const_get(c).is_a?(Class) }.to_set
@@ -48,26 +52,6 @@ class LlmServiceTest < ActiveSupport::TestCase
   end
 
   test 'test willma scrape' do
-    get_body = {
-      "my_option": {
-        "name": 'Zephyr 7B',
-        "id": 0
-      }
-    }.to_json
-    post_body = '{
-      "message": "Here is your JSON:
-      {
-        \"title\":\"my_title\",
-        \"start\":\"2024-07-03T12:30:00+02:00\",
-        \"end\":\"2024-07-03T19:00:00+02:00\",
-        \"venue\":\"my_venue\",
-        \"description\":\"my_description\",
-      }
-      I am a dumb llm and I have to say something afterward even though I was specifically asked not to."
-    }'.gsub(/\n/, '')
-    # run task
-    WebMock.stub_request(:get, 'https://willma.soil.surf.nl/api/models').to_return(status: 200, body: get_body)
-    WebMock.stub_request(:post, 'https://willma.soil.surf.nl/api/query').to_return(status: 200, body: post_body)
     with_settings({ llm_scraper: { model: 'willma', model_version: 'Zephyr 7B' } }) do
       result = Llm::WillmaService.new.scrape('my_html')
       assert result['title'] = 'my_title'

@@ -145,6 +145,30 @@ class ActiveSupport::TestCase
     end
   end
 
+  def mock_llm_requests
+    get_body = [
+      {
+        "name": 'Zephyr 7B',
+        "id": 0
+      }
+    ].to_json
+    post_body = '{
+      "message": "Here is your JSON:
+      {
+        \"title\":\"4TU-meeting National Technology Strategy\",
+        \"start\":\"2024-07-03T12:30:00+02:00\",
+        \"end\":\"2024-07-03T19:00:00+02:00\",
+        \"venue\":\"Basecamp, Nijverheidsweg 16A, 3534 AM Utrecht (https://basecamputrecht.nl)\",
+        \"description\":\"My cool description\",
+        \"nonsense_attr\":\"My cool nonsense attribute\"
+      }
+      I am a dumb llm and I have to say something afterward even though I was specifically asked not to."
+    }'.gsub(/\n/, '')
+    # run task
+    WebMock.stub_request(:get, 'https://willma.soil.surf.nl/api/models').to_return(status: 200, body: get_body)
+    WebMock.stub_request(:post, 'https://willma.soil.surf.nl/api/query').to_return(status: 200, body: post_body)
+  end
+
   # Mock remote images so paperclip doesn't break:
   def mock_images
     WebMock.stub_request(:any, %r{http://example\.com/(.+)\.png}).to_return(

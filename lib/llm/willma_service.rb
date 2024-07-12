@@ -9,7 +9,7 @@ module Llm
       model_name = TeSS::Config.llm_scraper['model_version']
       model_url = 'https://willma.soil.surf.nl/api/models'
       parsed_response = JSON.parse(do_request(model_url, 'get', {}).body)
-      model_id = parsed_response.values.select { |i| i['name'] == model_name }.first['id']
+      model_id = parsed_response.select { |i| i['name'] == model_name }.first['id']
       @params = {
         model: model_name,
         sequence_id: model_id,
