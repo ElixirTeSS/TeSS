@@ -106,6 +106,36 @@ default: &default
     target_audience: 'target_audience.yml'
     trainer_experience: 'trainer_experience.yml'
     online_keywords: 'online_keywords.yml'
+  languages:
+    # For the Event language of instruction
+    # 24 EU official languages by default
+    # See 2-letter codes from ISO 639-
+    # https://id.loc.gov/vocabulary/iso639-1.html
+    # e.g., http://id.loc.gov/vocabulary/iso639-1/en
+    - en # English
+    - fr # French
+    - de # German
+    - es # Spanish
+    - nl # Dutch
+    - bg # Bulgarian
+    - hr # Croatian
+    - cs # Czech
+    - da # Danish
+    - et # Estonian
+    - fi # Finnish
+    - el # Greek
+    - hu # Hungarian
+    - ga # Irish
+    - it # Italian
+    - lv # Latvian
+    - lt # Lithuanian
+    - mt # Maltese
+    - pl # Polish
+    - pt # Portugeuse
+    - ro # Romanian
+    - sk # Slovak
+    - sl # Slovenian
+    - sv # Swedish
   funders:
 #    - url: https://example.com/your-funders-website
 #      logo: foo.png

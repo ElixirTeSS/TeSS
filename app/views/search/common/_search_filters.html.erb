@@ -18,7 +18,7 @@ Globals
            when 'organizer'
              'Organiser'
            else
-             category.humanize
+             t("facets.titles.#{category}", default: category.humanize)
            end %></b>:
     <% if value.is_a?(Array) %>
       <% value.each_with_index do |val, j| %>

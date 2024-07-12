@@ -320,11 +320,22 @@ class ActiveSupport::TestCase
 
     private
 
+    def facet_value(ff)
+      # The language facet should never be 'Fish'
+      # because it comes from ISO-639-2
+      return 'en' if ff == 'language'
+
+      'Fish'
+    end
+
     def mock_facets
       if @collection.any?
         c = @collection.first.class
         f = c.facet_fields.map do |ff|
-          { field_name: ff.to_sym, rows: rand(1..4).times.map { { value: 'Fish', count: rand(1..4) } } }
+          { field_name: ff.to_sym, rows: rand(1..4).times.map do
+                                           { value: facet_value(ff),
+                                             count: rand(1..4) }
+                                         end }
         end
         JSON.parse(f.to_json, object_class: OpenStruct)
       else

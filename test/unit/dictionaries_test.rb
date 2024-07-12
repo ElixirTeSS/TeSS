@@ -288,4 +288,32 @@ class DictionariesTest < ActiveSupport::TestCase
     assert_nil EventTypeDictionary.instance.lookup('dropin')
     assert_nil LicenceDictionary.instance.lookup('YouTube')
   end
+
+  test 'language dictionary' do
+    dic = LanguageDictionary.instance
+    assert dic.is_a?(LanguageDictionary)
+    assert_not_nil dic, 'language dictionary should exist'
+
+    key = 'en'
+    assert_not_nil dic.lookup(key), "#{key}: key not found"
+
+    key = 'yo'
+    assert_nil dic.lookup(key), "#{key}: invalid key was found?"
+
+    saved_locale = I18n.locale
+
+    # Test the language rendering for 'en' locale
+    I18n.locale = 'en'
+    assert dic.render_language_name('de') == 'German'
+    # Greek goes through I18n, not I18nData (too verbose)
+    assert dic.render_language_name('el') == 'Greek'
+
+    # Make sure French works ...
+    I18n.locale = 'fr'
+    assert dic.render_language_name('en') == 'Anglais'
+    assert dic.render_language_name('fr') == 'Français'
+
+    I18n.locale = saved_locale
+  end
+
 end

@@ -442,4 +442,37 @@ class UserTest < ActiveSupport::TestCase
       end
     end
   end
+
+  test 'purges user and all resources' do
+    user = users(:regular_user)
+    event = events(:one)
+    material = materials(:good_material)
+    workflow = workflows(:one)
+    content_provider = content_providers(:goblet)
+    source = sources(:unapproved_source)
+    collection = collections(:one)
+    node = nodes(:good)
+
+    assert_equal user, event.user
+    assert_equal user, material.user
+    assert_equal user, workflow.user
+    assert_equal user, content_provider.user
+    assert_equal user, source.user
+    assert_equal user, collection.user
+    assert_equal user, node.user
+
+    assert_difference('User.count', -1) do
+      assert_difference('Profile.count', -1) do
+        assert user.purge
+      end
+    end
+
+    assert_raise(ActiveRecord::RecordNotFound) { event.reload }
+    assert_raise(ActiveRecord::RecordNotFound) { material.reload }
+    assert_raise(ActiveRecord::RecordNotFound) { workflow.reload }
+    assert_raise(ActiveRecord::RecordNotFound) { content_provider.reload }
+    assert_raise(ActiveRecord::RecordNotFound) { source.reload }
+    assert_raise(ActiveRecord::RecordNotFound) { collection.reload }
+    assert_raise(ActiveRecord::RecordNotFound) { node.reload }
+  end
 end
