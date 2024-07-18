@@ -623,6 +623,7 @@ en:
   warnings:
     link_broken: TeSS has been unable to access this %{resource_type}'s URL since %{fail_date} - the page may have been moved.
     archived: This %{resource_type} has been archived, its content may no longer be relevant.
+    unverified: This %{resource_type} will not be publicly visible until your registration has been approved by an administrator.
   footer:
     eu_funding: >
       TeSS has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No. <a href="https://cordis.europa.eu/project/rcn/198519_en.html", target="_blank">676559</a>.

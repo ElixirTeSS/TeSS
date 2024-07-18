@@ -28,6 +28,7 @@ class MaterialsController < ApplicationController
   # GET /materials/1
   # GET /materials/1.json
   def show
+    authorize @material
     @bioschemas = @material.to_bioschemas
     respond_to do |format|
       format.html
