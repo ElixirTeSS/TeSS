@@ -1,0 +1,16 @@
+Based on the following webpage describing a research event:
+*replace_with_event_page*
+
+Give me a valid json string describing a research themed event with the following format:
+
+title (string): The title of the event
+organizer (string): The organisation that hosts the event
+description (string): A description of what will happen at the event
+start (date or datetime): The local starting time of the event
+end (date or datetime): The local end time of the event
+venue (string): The venue where the event is hosted
+
+Instead of generating values for missing attributes, fill them with null.
+Summarize the description in less than 400 characters please.
+Make sure the last json attribute is not followed by a comma.
+Make sure the full json fits inside the response.

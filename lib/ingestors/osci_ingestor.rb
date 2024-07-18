@@ -37,8 +37,8 @@ module Ingestors
         event_page.each do |event_data|
           next if event_data.get_attribute('class').include?('no-events')
 
-          beep = event_data.css("div[id*=calendar-my-calendar]")
-          beep.each do |boop|
+          event_cal = event_data.css("div[id*=calendar-my-calendar]")
+          event_cal.each do |boop|
             event = OpenStruct.new
             el = boop.css("h3[class='event-title summary']")[0]
             url_str = el.css("a")[0].get_attribute('href')

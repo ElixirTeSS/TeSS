@@ -139,6 +139,16 @@ namespace :tess do
     puts "Finished successfully, output written to: #{log.path}"
   end
 
+  desc 'run LLM post processing'
+  task llm_post_processing: :environment do
+    Llm.post_processing_task
+  end
+
+  desc 'open all events to being llm processed again'
+  task reset_llm_status: :environment do
+    Llm.reset_llm_status_task
+  end
+
   desc 'mail content providers for curation of scraped events'
   task event_curation_mails: :environment do
     cut_off_time = Time.zone.now - 1.week

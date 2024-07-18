@@ -110,6 +110,8 @@ class Event < ApplicationRecord
   enum presence: { onsite: 0, online: 1, hybrid: 2 }
 
   belongs_to :user
+  has_one :llm_interaction, inverse_of: :event, dependent: :destroy
+  accepts_nested_attributes_for :llm_interaction, allow_destroy: true
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
   has_one :link_monitor, as: :lcheck, dependent: :destroy
   has_many :collection_items, as: :resource
@@ -286,11 +288,16 @@ class Event < ApplicationRecord
   end
 
   def self.not_finished
-    where('events.end > ? OR events.end IS NULL', Time.now)
+    where('events.end >= ? OR events.end IS NULL', Time.now)
   end
 
   def self.finished
     where('events.end < ?', Time.now).where.not(end: nil)
+  end
+
+  def self.needs_processing(llm_prompt)
+    joins('LEFT OUTER JOIN llm_interactions ON llm_interactions.event_id = events.id')
+      .where('llm_interactions.needs_processing = ? OR llm_interactions.prompt != ?', true, llm_prompt)
   end
 
   # Ticket #423

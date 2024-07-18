@@ -331,6 +331,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_24_200355) do
     t.index ["lcheck_type", "lcheck_id"], name: "index_link_monitors_on_lcheck_type_and_lcheck_id"
   end
 
+  create_table "llm_interactions", force: :cascade do |t|
+    t.bigint "event_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string "scrape_or_process"
+    t.string "model"
+    t.string "prompt"
+    t.string "input"
+    t.string "output"
+    t.boolean "needs_processing", default: false
+    t.index ["event_id"], name: "index_llm_interactions_on_event_id"
+  end
+
   create_table "materials", force: :cascade do |t|
     t.text "title"
     t.string "url"
