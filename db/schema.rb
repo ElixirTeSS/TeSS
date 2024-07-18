@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_24_200355) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_18_100022) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -227,6 +227,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_24_200355) do
     t.string "cost_basis"
     t.string "cost_currency"
     t.string "fields", default: [], array: true
+    t.string "open_science", default: [], array: true
     t.boolean "visible", default: true
     t.string "language"
     t.index ["presence"], name: "index_events_on_presence"
@@ -619,6 +620,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_24_200355) do
   add_foreign_key "learning_path_topic_links", "learning_paths"
   add_foreign_key "learning_paths", "content_providers"
   add_foreign_key "learning_paths", "users"
+  add_foreign_key "llm_interactions", "events"
   add_foreign_key "materials", "content_providers"
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"
