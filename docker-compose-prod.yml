@@ -17,6 +17,7 @@ services:
       - '3000:3000'
     volumes:
       - uploads:/code/public/system
+      - log:/code/log
       - ./config/tess.yml:/code/config/tess.yml
       - ./config/secrets.yml:/code/config/secrets.yml
     environment:
