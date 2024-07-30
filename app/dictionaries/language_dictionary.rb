@@ -1,6 +1,5 @@
 # Dictionary of Languages
 class LanguageDictionary < Dictionary
-
   # Not really a dictionary (an array) ...
   def initialize
     @dictionary = TeSS::Config.languages
@@ -23,14 +22,14 @@ class LanguageDictionary < Dictionary
 
   def values_for_search(keys)
     return unless keys
-    @dictionary.select { |key| keys.include?(key) }.
-      map { |key| render_language_name(key) }
+
+    @dictionary.select { |key| keys.include?(key) }
+               .map { |key| render_language_name(key) }
   end
 
   def render_language_name(code)
     i18ndata_code = code.to_s.upcase
     I18n.t("languages.#{code.to_s.downcase}",
-           default: I18nData.languages(I18n.locale)[i18ndata_code].capitalize)
+           default: I18nData.languages(I18n.locale)[i18ndata_code]&.capitalize)
   end
-
 end
