@@ -253,8 +253,8 @@ en:
       TeSS supports the following Bioschemas profiles:<br/>
       <strong>for events that are courses</strong>
       <ul>
-      <li><a target='_blank', href='https://bioschemas.org/profiles/CourseInstance/0.9-DRAFT'>CourseInstance</a></li>
-      <li><a target='_blank', href='https://bioschemas.org/profiles/Course/0.10-DRAFT'>Course</a></li>
+      <li><a target='_blank', href='https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE'>CourseInstance</a></li>
+      <li><a target='_blank', href='https://bioschemas.org/profiles/Course/1.0-RELEASE'>Course</a></li>
       </ul>
       <strong>for other events</strong>
       <ul>
