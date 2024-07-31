@@ -103,3 +103,4 @@ volumes:
   solr-data:
   redis-data:
   uploads:
+  log:
