@@ -19,6 +19,15 @@
     <li><%= about_nav_link('Manual Registration', registering_resources_path, 'manual') %></li>
   </ul>
 
+  <!-- REGISTERING YOUR LEARNING PATHS -->
+  <ul class="nav nav-stacked <%= show_active(show, 'learningpaths') %>">
+    <li class="about-page-category">
+      <%= link_to 'Learning Paths', learning_paths_path %>
+    </li>
+    <li><%= about_nav_link('Subheading 1', learning_paths_path, 'subheading1') %></li> <!-- placeholder -->
+    <li><%= about_nav_link('Subheading 2', learning_paths_path, 'subheading2') %></li>
+  </ul>
+
   <!-- DEVELOPERS -->
   <ul class="nav nav-stacked <%= show_active(show, 'developers') %>">
     <li class="about-page-category">

@@ -311,6 +311,35 @@ en:
       <p>To do so, first register for a free account. Members of academic institutions may be able to log-in via LS-Login.</p>
       <p>Once registered and logged in, the 'register event' and 'register material' buttons will become visible on the
       events and materials tabs. Alternatively click here:</p>
+    learning_paths: 
+      register_lp_in: "Learning Paths in %{site_name}"
+      what: >
+        <b>What is a learning path?</b> A learning path is a pathway that guides learners through a set of modules 
+        (courses/materials) to be undertaken progressively (from lower- to higher-order thinking skills) 
+        to acquire the desired knowledge and skills on a subject by the end of the pathway.
+      editorial: >
+        <p>There are several roles associated with learning paths in general:</p>
+        <ul>
+        <li><b>Author</b>: Individuals and organisations involved in the preparation, creation or presentation 
+        of the published work.</li>
+        <li><b>Contributor</b>: Individuals and organisations that contributed to the published work but are not authors.</li>
+        <li><b>Collaborator</b>: An individual who has been granted editing rights to a material, topic or learning path 
+        by the individual (owner) who created it.</li>
+        <li><b>Curator</b>: An individual who has been granted permission to create a learning path in TeSS
+        while following their community&rsquo;s editorial process.</li>
+        <li><b>Owner</b>: An individual who has created a material, topic or learning path in TeSS.</li></ul>
+        <p>Before registering a learning path, a training provider must: </p>
+        <ol><li>Assign a learning path curator (owner).</li>
+        <li>Contact the TeSS team to add the learning path curator permission to their account.</li></ol>
+        <p>After these tasks are completed:</p>
+        <ul><li>A learning path curator has permission to create learning paths for their provider.</li>
+        <li>It is the responsibility of the learning path curator to curate and implement any protocols 
+        required by the community providing the learning path. 
+        For example, learning paths from the ELIXIR community will follow the protocol created by the 
+        ELIXIR Training Platform/Learning Paths Focus Group.</li></ul>
+        <p>Governance: Maintaining the learning path</p>
+        <ol><li>It is the responsibility of the learning path curator to maintain their community&raquo;s learning paths.</li>
+        <li>The curator can assign collaborators to work on each learning path, depending on the expertise required.</li></ol>
   home:
     welcome: |
       How can <span class="text-primary">TeSS</span> help you?

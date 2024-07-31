@@ -17,9 +17,13 @@ module MaterialsHelper
 
 Accepting will add a topic to the resource and rejecting will remove the suggestion permanently"
 
-  LEARNING_PATHS_INFO = "A Learning Path is a pathway that guides learners through a set of learning modules \
+  LEARNING_PATHS_INFO = "A learning path is a pathway that guides learners through a set of learning modules \
 (courses/materials) to be undertaken progressively (from lower- to higher-order thinking skills) \
-to acquire the desired knowledge and skills on a subject by the end of the pathway.".freeze
+to acquire the desired knowledge and skills on a subject by the end of the pathway. \n\n\
+1. Register training materials.\n\
+2. Create a learning path topic and add materials to it (repeat for each topic). \n\
+3. Register a learning path and add learning path topics to it. \n\
+".freeze
 
   def materials_info
     MATERIALS_INFO % { link: link_to('see here for details on automatic registration',
