@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_18_100022) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -227,7 +227,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.string "cost_basis"
     t.string "cost_currency"
     t.string "fields", default: [], array: true
+    t.string "open_science", default: [], array: true
     t.boolean "visible", default: true
+    t.string "language"
     t.index ["presence"], name: "index_events_on_presence"
     t.index ["slug"], name: "index_events_on_slug", unique: true
     t.index ["user_id"], name: "index_events_on_user_id"
@@ -328,6 +330,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
     t.integer "lcheck_id"
     t.string "lcheck_type"
     t.index ["lcheck_type", "lcheck_id"], name: "index_link_monitors_on_lcheck_type_and_lcheck_id"
+  end
+
+  create_table "llm_interactions", force: :cascade do |t|
+    t.bigint "event_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string "scrape_or_process"
+    t.string "model"
+    t.string "prompt"
+    t.string "input"
+    t.string "output"
+    t.boolean "needs_processing", default: false
+    t.index ["event_id"], name: "index_llm_interactions_on_event_id"
   end
 
   create_table "materials", force: :cascade do |t|
@@ -605,6 +620,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_064523) do
   add_foreign_key "learning_path_topic_links", "learning_paths"
   add_foreign_key "learning_paths", "content_providers"
   add_foreign_key "learning_paths", "users"
+  add_foreign_key "llm_interactions", "events"
   add_foreign_key "materials", "content_providers"
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"

@@ -681,4 +681,33 @@ class CollectionsControllerTest < ActionController::TestCase
     response_events = body.dig('data', 'relationships', 'events', 'data')
     assert_equal [events[1].id, events[0].id], response_events.map { |e| e['id'].to_i }
   end
+
+  test 'should show unverified users collection to themselves' do
+    sign_in users(:unverified_user)
+    collection = users(:unverified_user).collections.create!(title: 'Hello', description: 'World', public: true)
+
+    get :show, params: { id: collection }
+
+    assert_response :success
+    assert_select '.unverified-notice',
+                  text: 'This collection will not be publicly visible until your registration has been approved by an administrator.'
+  end
+
+  test 'should show unverified users collection to admin' do
+    collection = users(:unverified_user).collections.create!(title: 'Hello', description: 'World', public: true)
+    sign_in users(:admin)
+
+    get :show, params: { id: collection }
+
+    assert_response :success
+    assert_select '.unverified-notice',
+                  text: 'This collection will not be publicly visible until your registration has been approved by an administrator.'
+  end
+
+  test 'should not show unverified users collection anon user' do
+    collection = users(:unverified_user).collections.create!(title: 'Hello', description: 'World', public: true)
+
+    get :show, params: { id: collection }
+    assert_response :forbidden
+  end
 end

@@ -646,6 +646,10 @@ module ApplicationHelper
     end.select { |f| f.rows.any? && !IGNORED_FILTERS.include?(f.field_name.to_s) }
   end
 
+  def render_language_name(code)
+    LanguageDictionary.instance.render_language_name(code)
+  end
+
   class TabActivator
     # An object to determine if a tab/tab-pane should be active.
     def initialize
@@ -681,5 +685,10 @@ module ApplicationHelper
   def archived_notice(resource)
     content_tag('div', t('warnings.archived', resource_type: resource.model_name.human.downcase),
                 class: 'alert alert-warning mb-4 archived-notice')
+  end
+
+  def unverified_notice(resource)
+    content_tag('div', t('warnings.unverified', resource_type: resource.model_name.human.downcase),
+                class: 'alert alert-warning mb-4 unverified-notice')
   end
 end

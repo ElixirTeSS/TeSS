@@ -23,6 +23,7 @@ class WorkflowsController < ApplicationController
   # GET /workflows/1
   # GET /workflows/1.json
   def show
+    authorize @workflow
     @skip_flash_messages_in_header = true # we will handle flash messages in the 'workflows' layout
     respond_to do |format|
       format.html { render layout: 'workflows' }

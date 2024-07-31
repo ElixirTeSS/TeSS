@@ -141,7 +141,7 @@ Rails.application.routes.draw do
   get 'job_status' => 'application#job_status'
 
   # error pages
-  %w( 404 422 500 503 ).each do |code|
+  %w( 404 406 422 500 503 ).each do |code|
     get code, to: 'application#handle_error', status_code: code
   end
 

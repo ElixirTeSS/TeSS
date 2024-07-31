@@ -5,6 +5,8 @@
   </div>
 
   <div id="content">
+    <%= unverified_notice(@content_provider) if @content_provider.from_unverified_or_rejected? %>
+
     <div class="content-actions">
       <div class="content-viewer-actions">
         <%= external_link_button 'View home page', @content_provider.url if @content_provider.url.present? %>
