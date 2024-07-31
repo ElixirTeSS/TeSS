@@ -49,7 +49,7 @@ module Ingestors
 
         event_page2 = Nokogiri::HTML5.parse(open_url(event.url.to_s, raise: true)).css('main#main-content div.entry__inner')
         sleep(1) unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/lcrdm.yml')
-        event.description = recursive_description_func(event_page2)
+        event.description = lcrdm_recursive_description_func(event_page2)
 
         event.source = 'LCRDM'
         event.timezone = 'Amsterdam'
@@ -63,12 +63,12 @@ module Ingestors
   end
 end
 
-def recursive_description_func(css, res = '')
-  if css.is_a?(Nokogiri::XML::Element) || css&.length == 1
+def lcrdm_recursive_description_func(css, res = '')
+  if css.is_a?(Nokogiri::XML::Element)
     res += css.text.strip
   else
     css.each do |css2|
-      res += recursive_description_func(css2, res)
+      res += lcrdm_recursive_description_func(css2, res)
     end
   end
   res
