@@ -25,6 +25,15 @@ to acquire the desired knowledge and skills on a subject by the end of the pathw
 3. Register a learning path and add learning path topics to it. \n\
 ".freeze
 
+  LEARNING_PATH_TOPICS_INFO = "A learning path topic is an ordered list of training materials. \
+A topic can be given a competency level (beginner, intermediate, advanced), description and set of keywords. \
+A learning path contains an ordered list of one or more topics, \
+where each topic has one competency level for all its materials. \n\n\
+1. Register training materials.\n\
+2. Create a learning path topic and add materials to it (repeat for each topic). \n\
+3. Register a learning path and add learning path topics to it. \n\
+".freeze
+
   def materials_info
     MATERIALS_INFO % { link: link_to('see here for details on automatic registration',
                                   registering_resources_path(anchor: 'automatic')) }
@@ -37,6 +46,10 @@ to acquire the desired knowledge and skills on a subject by the end of the pathw
 
   def learning_paths_info
     LEARNING_PATHS_INFO
+  end
+
+  def learning_path_topics_info
+    LEARNING_PATH_TOPICS_INFO
   end
 
   # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags

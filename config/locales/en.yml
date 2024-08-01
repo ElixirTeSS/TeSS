@@ -312,9 +312,9 @@ en:
       <p>Once registered and logged in, the 'register event' and 'register material' buttons will become visible on the
       events and materials tabs. Alternatively click here:</p>
     learning_paths: 
-      register_lp_in: "Learning Paths in %{site_name}"
+      register_in: "Learning Paths in %{site_name}"
       what: >
-        <b>What is a learning path?</b> A learning path is a pathway that guides learners through a set of modules 
+        A learning path is a pathway that guides learners through a set of modules 
         (courses/materials) to be undertaken progressively (from lower- to higher-order thinking skills) 
         to acquire the desired knowledge and skills on a subject by the end of the pathway.
       editorial: >
@@ -330,7 +330,7 @@ en:
         <li><b>Owner</b>: An individual who has created a material, topic or learning path in TeSS.</li></ul>
         <p>Before registering a learning path, a training provider must: </p>
         <ol><li>Assign a learning path curator (owner).</li>
-        <li>Contact the TeSS team to add the learning path curator permission to their account.</li></ol>
+        <li>Contact the TeSS team to assign the learning path curator role to their account.</li></ol>
         <p>After these tasks are completed:</p>
         <ul><li>A learning path curator has permission to create learning paths for their provider.</li>
         <li>It is the responsibility of the learning path curator to curate and implement any protocols 
@@ -354,8 +354,8 @@ en:
         <p>To <a href='about/registering'>register training materials follow the instructions here</a>. 
         If your training material is already registered, skip this step. 
         Each material can be assigned a competency level (beginner, intermediate, advanced).</p>
-      creating_topcis: >
-        <p>A learning path topic is an ordered list of training materials or events. 
+      creating_topics: >
+        <p>A learning path topic is an ordered list of training materials. 
         A topic can be assigned a competency level (beginner, intermediate, advanced), 
         description and set of keywords. A learning path contains an ordered list of one or more topics. </p>
         <p>To create a learning path topic:</p>
@@ -415,7 +415,7 @@ en:
         <li>To browse all topics, click the 'Topics' button on the top-right.</li>
         <li>Alternatively, you can click in the search box, type your query and press Enter.</li>
         <li>Click to view a learning path. Read the summary box. The details of the included training materials 
-        or events appear below; click each item to open it. Information about the content provider appears on the left.</li> 
+        appear below; click each item to open it. Information about the content provider appears on the left.</li> 
         <li>To create a personal collection of your favourite learning paths, click the star icon at the top of each 
         learning path to add them to a list. You can view your starred resources later by clicking the user icon 
         at the top-right of the screen then 'My stars'.  To use the star feature you need to be a registered TeSS user.</li>
@@ -424,7 +424,7 @@ en:
         <li>You can browse the learning path topics, using the filters on the left to select keywords or date.</li>
         <li>Alternatively, click in the search box and type a query, then press Enter to view the results.</li>
         <li>Click the title of a topic to view it. 
-        From the topic page, you can view all training materials and events, in order.</li></ol>
+        From the topic page, you can view all training materials, in order.</li></ol>
   home:
     welcome: |
       How can <span class="text-primary">TeSS</span> help you?
