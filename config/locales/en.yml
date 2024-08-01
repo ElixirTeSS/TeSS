@@ -351,7 +351,7 @@ en:
         tess-support@googlegroups.com to request permission.</p>
         <p>The three steps to register a learning path are described in full detail below.</p> 
       training_material: >
-        <p>To <%== t('register training materials follow the instructions here', registering_resources_path: registering_resources_path) %>. 
+        <p>To <a href='%{registering_resources_path}'>register training materials follow the instructions here</a>. 
         If your training material is already registered, skip this step. 
         Each material can be assigned a competency level (beginner, intermediate, advanced).</p>
       creating_topics: >
