@@ -451,15 +451,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_18_100022) do
     t.string "title"
   end
 
-  create_table "sessions", force: :cascade do |t|
-    t.string "session_id", null: false
-    t.text "data"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
-    t.index ["updated_at"], name: "index_sessions_on_updated_at"
-  end
-
   create_table "sources", force: :cascade do |t|
     t.bigint "content_provider_id"
     t.bigint "user_id"
