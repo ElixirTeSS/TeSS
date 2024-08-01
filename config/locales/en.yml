@@ -338,7 +338,7 @@ en:
         For example, learning paths from the ELIXIR community will follow the protocol created by the 
         ELIXIR Training Platform/Learning Paths Focus Group.</li></ul>
         <p>Governance: Maintaining the learning path</p>
-        <ol><li>It is the responsibility of the learning path curator to maintain their community&raquo;s learning paths.</li>
+        <ol><li>It is the responsibility of the learning path curator to maintain their community's learning paths.</li>
         <li>The curator can assign collaborators to work on each learning path, depending on the expertise required.</li></ol>
       overview: >
         <p>To register a learning path you need to follow the three steps described below:</p>
@@ -351,7 +351,7 @@ en:
         tess-support@googlegroups.com to request permission.</p>
         <p>The three steps to register a learning path are described in full detail below.</p> 
       training_material: >
-        <p>To <a href='about/registering'>register training materials follow the instructions here</a>. 
+        <p>To <%== t('register training materials follow the instructions here', registering_resources_path: registering_resources_path) %>. 
         If your training material is already registered, skip this step. 
         Each material can be assigned a competency level (beginner, intermediate, advanced).</p>
       creating_topics: >
@@ -390,7 +390,7 @@ en:
         <li>Repeat step 3 to add multiple topics.</li>
         <li>You can reorder the topics using the arrow icons.</li>
         <li>The learning path will be public by default. Untick the 'Public' box if you want to hide this learning path 
-        from anyone who isn&raquo;t the creator or a collaborator.</li>
+        from anyone who isn't the creator or a collaborator.</li>
         <li>When you have finished, click the 'Register learning path' button.</li></ol>
       collaborators: >
         <p>Collaborators are TeSS users who can edit a learning path or topic after it has been created. 
@@ -420,7 +420,7 @@ en:
         learning path to add them to a list. You can view your starred resources later by clicking the user icon 
         at the top-right of the screen then 'My stars'.  To use the star feature you need to be a registered TeSS user.</li>
       view_topics: >
-        <ol><li>On the 'Learning paths' tab, click the 'Topics' button at the top-right.</li>
+        <ol><li>On the 'Learning paths' tab, click the 'Manage Topics' button at the top-right.</li>
         <li>You can browse the learning path topics, using the filters on the left to select keywords or date.</li>
         <li>Alternatively, click in the search box and type a query, then press Enter to view the results.</li>
         <li>Click the title of a topic to view it. 
