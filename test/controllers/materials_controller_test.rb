@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class MaterialsControllerTest < ActionController::TestCase
-
-  include Committee::Test::Methods
   include Devise::Test::ControllerHelpers
   include ActiveJob::TestHelper
 
