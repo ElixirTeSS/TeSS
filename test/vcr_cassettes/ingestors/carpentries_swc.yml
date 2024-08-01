@@ -1,0 +1,527 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://feeds.carpentries.org/swc_upcoming_workshops.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Date:
+      - Wed, 31 Jul 2024 11:54:20 GMT
+      Last-Modified:
+      - Wed, 31 Jul 2024 06:10:26 GMT
+      Etag:
+      - W/"b875d1aa655b1ed4c329b0153d22ee38"
+      X-Amz-Server-Side-Encryption:
+      - AES256
+      Server:
+      - AmazonS3
+      Vary:
+      - Accept-Encoding
+      X-Cache:
+      - Hit from cloudfront
+      Via:
+      - 1.1 7a75fb682b615437ad3681fe1db7cc60.cloudfront.net (CloudFront)
+      X-Amz-Cf-Pop:
+      - LHR61-P4
+      X-Amz-Cf-Id:
+      - AXw9Lq0fah_VW3P0TOAQ9gK-A0_jltdcHGHHP3OJfdcKU1IO-cl1Dw==
+      Age:
+      - '3946'
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        [
+          {
+            "instructors": "Emmah Kimachas,Christine Markwalter",
+            "end_date": "2024-08-01",
+            "url": "https://duke-malaria-collaboratory.github.io/2024-07-29-DiscovR/",
+            "administrator_id": 343,
+            "curriculum": "swc-reproducible-science",
+            "venue": "Noble Hotel, Eldoret, Kenya",
+            "longitude": 35.29913227710058,
+            "slug": "2024-07-29-DiscovR",
+            "tag_name": "automated-email,SWC",
+            "helpers": null,
+            "host_name": "Duke University",
+            "country": "KE",
+            "latitude": 0.5120956662995352,
+            "start_date": "2024-07-29"
+          },
+          {
+            "instructors": "Marie HIDJO,Daniel Adediran,TAJUDEEN AKINOSHO,Didier Barradas-Bautista",
+            "end_date": "2024-08-16",
+            "url": "https://dexwel.github.io/2024-08-12-NiTheCS-Online",
+            "administrator_id": 302,
+            "curriculum": "mix-and-match",
+            "venue": "The National Institute for Theoretical and Computational Sciences - NITheCS",
+            "longitude": 28.0310649004687,
+            "slug": "2024-08-12-NiTheCS-Online",
+            "tag_name": "automated-email,online,SWC",
+            "helpers": null,
+            "host_name": "National Institute for Theoretical and Computational Sciences",
+            "country": "ZA",
+            "latitude": -26.19161850646137,
+            "start_date": "2024-08-12"
+          }
+        ]
+  recorded_at: Wed, 02 Jan 2019 20:00:00 GMT
+- request:
+    method: get
+    uri: https://feeds.carpentries.org/amy_curricula.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Date:
+      - Wed, 31 Jul 2024 10:39:49 GMT
+      Last-Modified:
+      - Wed, 31 Jul 2024 06:10:26 GMT
+      Etag:
+      - W/"a4d69fefb975161609f011b360517b30"
+      X-Amz-Server-Side-Encryption:
+      - AES256
+      Server:
+      - AmazonS3
+      Vary:
+      - Accept-Encoding
+      X-Cache:
+      - Hit from cloudfront
+      Via:
+      - 1.1 d197f8a5ee91a2a382d846998b15ceb6.cloudfront.net (CloudFront)
+      X-Amz-Cf-Pop:
+      - LHR61-P4
+      X-Amz-Cf-Id:
+      - Qo3VYa4T-6slI4896EXodALscRW6tzV30AjBZ1zN8w_Y0129r8Eg7g==
+      Age:
+      - '8417'
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        [
+          {
+            "name": "Data Carpentry (Ecology with Python)",
+            "slug": "dc-ecology-python",
+            "description": "Our most general purpose workshop. Covers data organization, cleaning, analysis, and plotting (with R or Python). Intended for anyone working with tabular data (data with rows and columns).",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Data Carpentry (Ecology with R)",
+            "slug": "dc-ecology-r",
+            "description": "Our most general purpose workshop. Covers data organization, cleaning, analysis, and plotting (with R or Python). Intended for anyone working with tabular data (data with rows and columns).",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Data Carpentry (Economics)",
+            "slug": "dc-economics",
+            "description": "",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Data Carpentry (Foundations of Astronomical Data Science) *Note: Available for Self-Organised workshops only",
+            "slug": "dc-astronomy-py",
+            "description": "The Foundations of Astronomical Data Science curriculum covers a range of core concepts necessary to efficiently study the ever-growing datasets developed in modern astronomy.",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Data Carpentry (Genomics)",
+            "slug": "dc-genomics",
+            "description": "Focuses on core principles for efficient and reproducible research with sequencing data. Learners will learn to write custom Bash scripts to automate an analysis pipeline and will be introduced to commonly used bioinformatics tools and file formats. Taught using Amazon Web Services.",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Data Carpentry (Geospatial) *Note: Available for Self-Organised workshops only",
+            "slug": "dc-geospatial",
+            "description": "Focuses on using specialized geospatial R packages. Includes short introduction to geospatial concepts and basic R. Does not cover data organization or cleaning. For a more general workshop covering those topics, see our Ecology and Social Sciences curricula.",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Data Carpentry (Image Processing)",
+            "slug": "dc-image-processing",
+            "description": "This curriculum teaches the concepts and skills needed to write automated processing pipelines for image data with Python. Using examples from morphometrics, the curriculum covers the steps of a typical image processing workflow: loading images, masking, blurring and thresholding data, and ends with a capstone challenge to provide a chance for additional practice.",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Data Carpentry (other)",
+            "slug": "dc-other",
+            "description": "Data Carpentry (other)",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Data Carpentry (Social Sciences with Python)",
+            "slug": "dc-socsci-python",
+            "description": "Covers data organization, cleaning, analysis, and plotting. Intended for people working with restricted-response interview or survey data.",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Data Carpentry (Social Sciences with R)",
+            "slug": "dc-socsci-r",
+            "description": "Data Carpentry (Social Sciences with R)",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Don't know yet",
+            "slug": "unknown",
+            "description": "Don't know yet",
+            "carpentry": "",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Library Carpentry (Intro to Data, Unix Shell, Git, and/or OpenRefine)",
+            "slug": "lc",
+            "description": "Intended for people working in libraries and the information sciences. Introduces terminology used in software development and data science. Covers introduction to the Bash shell, data cleaning, and working collaboratively via Git/GitHub.",
+            "carpentry": "LC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Library Carpentry (other)",
+            "slug": "lc-other",
+            "description": "Library Carpentry (other)",
+            "carpentry": "LC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Mix & Match",
+            "slug": "mix-and-match",
+            "description": "Workshop teaching a single lesson (e.g. only git, only r, etc.) or with lessons mixed across curricula.",
+            "carpentry": "",
+            "active": true,
+            "mix_match": true
+          },
+          {
+            "name": "Software Carpentry in Spanish (Shell, Git, Python)",
+            "slug": "swc-es-python",
+            "description": "Software Carpentry in Spanish (shell, git, Python)",
+            "carpentry": "SWC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Software Carpentry in Spanish (Shell, Git, R)",
+            "slug": "swc-es-r",
+            "description": "Software Carpentry in Spanish (shell, git, R)",
+            "carpentry": "SWC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Software Carpentry (other)",
+            "slug": "swc-other",
+            "description": "Software Carpentry (other)",
+            "carpentry": "SWC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Software Carpentry (Shell, Git, Plotting and Programming in Python)",
+            "slug": "swc-python-gapminder",
+            "description": "Our more introductory Python lesson. Covers tabular data and other core data structures, conditionals and loops, writing custom functions, and building custom plots. Includes introduction to JupyterLab and strategies for getting help. All SWC workshops include Bash shell scripting and version control with Git.",
+            "carpentry": "SWC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Software Carpentry (Shell, Git, Programming with Python)",
+            "slug": "swc-python",
+            "description": "Our more advanced Python lesson. Covers core data structures, conditionals and loops, writing custom functions, and running programs from the command line. For audiences with no programming experience, see our Plotting and Programming in Python lesson. All SWC workshops include Bash shell scripting and version control with Git.",
+            "carpentry": "SWC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Software Carpentry (Shell, Git, Programming with R)",
+            "slug": "swc-r",
+            "description": "Our more advanced R lesson. Covers core data structures, using conditionals and loops, writing custom functions, and running programs from the command line. For audiences with no programming experience, see our R for Reproducible Scientific Analysis lesson. All SWC workshops include Bash shell scripting and version control with Git.",
+            "carpentry": "SWC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Software Carpentry (Shell, Git, R for Reproducible Scientific Analysis)",
+            "slug": "swc-reproducible-science",
+            "description": "Our more introductory R lesson. Covers tabular data and other core data structures, using conditionals and loops, writing custom functions, and creating publication-quality graphics. Includes introduction to to RStudio and strategies for getting help. All SWC workshops include Bash shell scripting and version control with Git.",
+            "carpentry": "SWC",
+            "active": true,
+            "mix_match": false
+          }
+        ]
+  recorded_at: Wed, 02 Jan 2019 20:00:00 GMT
+- request:
+    method: get
+    uri: https://feeds.carpentries.org/amy_curricula.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Date:
+      - Wed, 31 Jul 2024 10:39:49 GMT
+      Last-Modified:
+      - Wed, 31 Jul 2024 06:10:26 GMT
+      Etag:
+      - W/"a4d69fefb975161609f011b360517b30"
+      X-Amz-Server-Side-Encryption:
+      - AES256
+      Server:
+      - AmazonS3
+      Vary:
+      - Accept-Encoding
+      X-Cache:
+      - Hit from cloudfront
+      Via:
+      - 1.1 7a75fb682b615437ad3681fe1db7cc60.cloudfront.net (CloudFront)
+      X-Amz-Cf-Pop:
+      - LHR61-P4
+      X-Amz-Cf-Id:
+      - XsrVPa7emunWmdr0OqNfrK3idfDgKQij1Uw_DD0e1J84Ykowh7OTNQ==
+      Age:
+      - '8417'
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        [
+          {
+            "name": "Data Carpentry (Ecology with Python)",
+            "slug": "dc-ecology-python",
+            "description": "Our most general purpose workshop. Covers data organization, cleaning, analysis, and plotting (with R or Python). Intended for anyone working with tabular data (data with rows and columns).",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Data Carpentry (Ecology with R)",
+            "slug": "dc-ecology-r",
+            "description": "Our most general purpose workshop. Covers data organization, cleaning, analysis, and plotting (with R or Python). Intended for anyone working with tabular data (data with rows and columns).",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Data Carpentry (Economics)",
+            "slug": "dc-economics",
+            "description": "",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Data Carpentry (Foundations of Astronomical Data Science) *Note: Available for Self-Organised workshops only",
+            "slug": "dc-astronomy-py",
+            "description": "The Foundations of Astronomical Data Science curriculum covers a range of core concepts necessary to efficiently study the ever-growing datasets developed in modern astronomy.",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Data Carpentry (Genomics)",
+            "slug": "dc-genomics",
+            "description": "Focuses on core principles for efficient and reproducible research with sequencing data. Learners will learn to write custom Bash scripts to automate an analysis pipeline and will be introduced to commonly used bioinformatics tools and file formats. Taught using Amazon Web Services.",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Data Carpentry (Geospatial) *Note: Available for Self-Organised workshops only",
+            "slug": "dc-geospatial",
+            "description": "Focuses on using specialized geospatial R packages. Includes short introduction to geospatial concepts and basic R. Does not cover data organization or cleaning. For a more general workshop covering those topics, see our Ecology and Social Sciences curricula.",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Data Carpentry (Image Processing)",
+            "slug": "dc-image-processing",
+            "description": "This curriculum teaches the concepts and skills needed to write automated processing pipelines for image data with Python. Using examples from morphometrics, the curriculum covers the steps of a typical image processing workflow: loading images, masking, blurring and thresholding data, and ends with a capstone challenge to provide a chance for additional practice.",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Data Carpentry (other)",
+            "slug": "dc-other",
+            "description": "Data Carpentry (other)",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Data Carpentry (Social Sciences with Python)",
+            "slug": "dc-socsci-python",
+            "description": "Covers data organization, cleaning, analysis, and plotting. Intended for people working with restricted-response interview or survey data.",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Data Carpentry (Social Sciences with R)",
+            "slug": "dc-socsci-r",
+            "description": "Data Carpentry (Social Sciences with R)",
+            "carpentry": "DC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Don't know yet",
+            "slug": "unknown",
+            "description": "Don't know yet",
+            "carpentry": "",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Library Carpentry (Intro to Data, Unix Shell, Git, and/or OpenRefine)",
+            "slug": "lc",
+            "description": "Intended for people working in libraries and the information sciences. Introduces terminology used in software development and data science. Covers introduction to the Bash shell, data cleaning, and working collaboratively via Git/GitHub.",
+            "carpentry": "LC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Library Carpentry (other)",
+            "slug": "lc-other",
+            "description": "Library Carpentry (other)",
+            "carpentry": "LC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Mix & Match",
+            "slug": "mix-and-match",
+            "description": "Workshop teaching a single lesson (e.g. only git, only r, etc.) or with lessons mixed across curricula.",
+            "carpentry": "",
+            "active": true,
+            "mix_match": true
+          },
+          {
+            "name": "Software Carpentry in Spanish (Shell, Git, Python)",
+            "slug": "swc-es-python",
+            "description": "Software Carpentry in Spanish (shell, git, Python)",
+            "carpentry": "SWC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Software Carpentry in Spanish (Shell, Git, R)",
+            "slug": "swc-es-r",
+            "description": "Software Carpentry in Spanish (shell, git, R)",
+            "carpentry": "SWC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Software Carpentry (other)",
+            "slug": "swc-other",
+            "description": "Software Carpentry (other)",
+            "carpentry": "SWC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Software Carpentry (Shell, Git, Plotting and Programming in Python)",
+            "slug": "swc-python-gapminder",
+            "description": "Our more introductory Python lesson. Covers tabular data and other core data structures, conditionals and loops, writing custom functions, and building custom plots. Includes introduction to JupyterLab and strategies for getting help. All SWC workshops include Bash shell scripting and version control with Git.",
+            "carpentry": "SWC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Software Carpentry (Shell, Git, Programming with Python)",
+            "slug": "swc-python",
+            "description": "Our more advanced Python lesson. Covers core data structures, conditionals and loops, writing custom functions, and running programs from the command line. For audiences with no programming experience, see our Plotting and Programming in Python lesson. All SWC workshops include Bash shell scripting and version control with Git.",
+            "carpentry": "SWC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Software Carpentry (Shell, Git, Programming with R)",
+            "slug": "swc-r",
+            "description": "Our more advanced R lesson. Covers core data structures, using conditionals and loops, writing custom functions, and running programs from the command line. For audiences with no programming experience, see our R for Reproducible Scientific Analysis lesson. All SWC workshops include Bash shell scripting and version control with Git.",
+            "carpentry": "SWC",
+            "active": true,
+            "mix_match": false
+          },
+          {
+            "name": "Software Carpentry (Shell, Git, R for Reproducible Scientific Analysis)",
+            "slug": "swc-reproducible-science",
+            "description": "Our more introductory R lesson. Covers tabular data and other core data structures, using conditionals and loops, writing custom functions, and creating publication-quality graphics. Includes introduction to to RStudio and strategies for getting help. All SWC workshops include Bash shell scripting and version control with Git.",
+            "carpentry": "SWC",
+            "active": true,
+            "mix_match": false
+          }
+        ]
+  recorded_at: Wed, 02 Jan 2019 20:00:00 GMT
+recorded_with: VCR 6.2.0
