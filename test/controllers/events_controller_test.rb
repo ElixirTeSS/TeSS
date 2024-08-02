@@ -1513,4 +1513,36 @@ class EventsControllerTest < ActionController::TestCase
       assert_select '.small-avatar', count: 0
     end
   end
+
+  test 'should show unverified users event to themselves' do
+    sign_in users(:unverified_user)
+    event = users(:unverified_user).events.create!(title: 'Hello', description: 'World',
+                                                   url: 'https://example.com/event')
+
+    get :show, params: { id: event }
+
+    assert_response :success
+    assert_select '.unverified-notice',
+                  text: 'This event will not be publicly visible until your registration has been approved by an administrator.'
+  end
+
+  test 'should show unverified users event to admin' do
+    event = users(:unverified_user).events.create!(title: 'Hello', description: 'World',
+                                                   url: 'https://eexample.com/event')
+    sign_in users(:admin)
+
+    get :show, params: { id: event }
+
+    assert_response :success
+    assert_select '.unverified-notice',
+                  text: 'This event will not be publicly visible until your registration has been approved by an administrator.'
+  end
+
+  test 'should not show unverified users event anon user' do
+    event = users(:unverified_user).events.create!(title: 'Hello', description: 'World',
+                                                   url: 'https://example.com/event')
+
+    get :show, params: { id: event }
+    assert_response :forbidden
+  end
 end

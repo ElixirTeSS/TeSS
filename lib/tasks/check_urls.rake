@@ -77,11 +77,14 @@ end
 # to store as "code" which might be tracked back to a particular problem.
 def get_bad_response(url)
   begin
-    sleep(rand(10))
+    host = URI.parse(url).host rescue nil
+    if @prev_host == host
+      n = rand(4) + 1
+      sleep(n)
+    end
+    @prev_host = host
     response = HTTParty.head(url, verify: false)
-    #puts "#{response.code}, #{url}"
-    return nil if response.code.to_s =~ /2[0-9]{2}/  # Success!
-    return nil if response.code.to_s =~ /3[0-9]{2}/  # Redirection
+    return nil if response.code >= 200 && response.code < 400 # Success or redirects are OK
     return response.code
   rescue EOFError => e
     puts "  #{e.class.name}: #{e}"

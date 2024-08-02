@@ -63,6 +63,7 @@ en:
           online: Online
           onsite: Face-to-face
           hybrid: Hybrid
+        language: 'Language of instruction'
   about:
     registry: >
       TeSS is a platform that was developed to provide a one-stop shop for trainers and trainees to discover
@@ -164,7 +165,7 @@ en:
       <h5>Leadership</h5>
       <ul><li>Carole Goble</li><li>Hedi Peterson</li><li>Alexia Cardona</li></ul>
       <h5>Project Management</h5>
-      <ul><li>Munazah Andrabi</li></ul>
+      <ul><li>Munazah Andrabi</li><li>Phil Reed</li></ul>
       <h5>Software Engineering</h5>
       <ul><li>Finn Bacall</li><li>Ivan Kuzmin</li></ul>
       <h5>Community Engagement</h5>
@@ -252,8 +253,8 @@ en:
       TeSS supports the following Bioschemas profiles:<br/>
       <strong>for events that are courses</strong>
       <ul>
-      <li><a target='_blank', href='https://bioschemas.org/profiles/CourseInstance/0.9-DRAFT'>CourseInstance</a></li>
-      <li><a target='_blank', href='https://bioschemas.org/profiles/Course/0.10-DRAFT'>Course</a></li>
+      <li><a target='_blank', href='https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE'>CourseInstance</a></li>
+      <li><a target='_blank', href='https://bioschemas.org/profiles/Course/1.0-RELEASE'>Course</a></li>
       </ul>
       <strong>for other events</strong>
       <ul>
@@ -310,6 +311,120 @@ en:
       <p>To do so, first register for a free account. Members of academic institutions may be able to log-in via LS-Login.</p>
       <p>Once registered and logged in, the 'register event' and 'register material' buttons will become visible on the
       events and materials tabs. Alternatively click here:</p>
+    learning_paths: 
+      register_in: "Learning Paths in %{site_name}"
+      what: >
+        A learning path is a pathway that guides learners through a set of modules 
+        (courses/materials) to be undertaken progressively (from lower- to higher-order thinking skills) 
+        to acquire the desired knowledge and skills on a subject by the end of the pathway.
+      editorial: >
+        <p>There are several roles associated with learning paths in general:</p>
+        <ul>
+        <li><b>Author</b>: Individuals and organisations involved in the preparation, creation or presentation 
+        of the published work.</li>
+        <li><b>Contributor</b>: Individuals and organisations that contributed to the published work but are not authors.</li>
+        <li><b>Collaborator</b>: An individual who has been granted editing rights to a material, topic or learning path 
+        by the individual (owner) who created it.</li>
+        <li><b>Curator</b>: An individual who has been granted permission to create a learning path in TeSS
+        while following their community&rsquo;s editorial process.</li>
+        <li><b>Owner</b>: An individual who has created a material, topic or learning path in TeSS.</li></ul>
+        <p>Before registering a learning path, a training provider must: </p>
+        <ol><li>Assign a learning path curator (owner).</li>
+        <li>Contact the TeSS team to assign the learning path curator role to their account.</li></ol>
+        <p>After these tasks are completed:</p>
+        <ul><li>A learning path curator has permission to create learning paths for their provider.</li>
+        <li>It is the responsibility of the learning path curator to curate and implement any protocols 
+        required by the community providing the learning path. 
+        For example, learning paths from the ELIXIR community will follow the protocol created by the 
+        ELIXIR Training Platform/Learning Paths Focus Group.</li></ul>
+        <p>Governance: Maintaining the learning path</p>
+        <ol><li>It is the responsibility of the learning path curator to maintain their community's learning paths.</li>
+        <li>The curator can assign collaborators to work on each learning path, depending on the expertise required.</li></ol>
+      overview: >
+        <p>To register a learning path you need to follow the three steps described below:</p>
+        <ol><li>Register Training Materials</li>
+        <li>Create a learning path topic and add materials to it (repeat for each topic)</li>
+        <li>Register a learning path and add learning path topics to it</li></ol>
+        <p>To register a learning path and its topics, first log in. The 'Register learning path' button 
+        will become visible on the learning paths page, and the 'Create topic' button will become visible 
+        on the learning paths topic page. If you do not see these buttons, contact 
+        tess-support@googlegroups.com to request permission.</p>
+        <p>The three steps to register a learning path are described in full detail below.</p> 
+      training_material: >
+        <p>To <a href='%{registering_resources_path}'>register training materials follow the instructions here</a>. 
+        If your training material is already registered, skip this step. 
+        Each material can be assigned a competency level (beginner, intermediate, advanced).</p>
+      creating_topics: >
+        <p>A learning path topic is an ordered list of training materials. 
+        A topic can be assigned a competency level (beginner, intermediate, advanced), 
+        description and set of keywords. A learning path contains an ordered list of one or more topics. </p>
+        <p>To create a learning path topic:</p>
+        <ol><li>On the 'Learning paths' tab, click the 'Topics' button at the top-right.</li>
+        <li>Click the 'Create topic' button at the top-right.</li>
+        <li>Give the topic a title, description and keywords.</li>
+        <li>Select the competency level of this topic, from 'Beginner', 'Intermediate' and 'Advanced'.</li>
+        <li>To add a training material to the topic, click in the 'Add a new material' box and begin to type its name. 
+        Select the correct material. You can provide a comment to be displayed with the material, 
+        if you wish to provide additional context or explain which parts of the material are relevant to the topic.</li>
+        <li>Repeat step 5 to add multiple materials for this topic, all at the same competency level.</li>
+        <li>You can reorder the materials using the arrow icons.</li>
+        <li>When you have finished, click the 'Create topic' button.</li></ol>
+      topic_naming: >
+        <p>When giving your learning path topic a title, please use a descriptive name. 
+        This will also prevent potential overlaps with identical or similar names used by other content providers, 
+        thereby reducing the risk of mistakenly selecting the wrong topics.</p>
+        <p>Examples of good topic names:</p>
+        <ul><li>BIOL30561 Topic 1: Introduction to Galaxy</li>
+        <li>Module 3: Moving into coding environments</li></ul>
+        <p>Examples of poor topic names:</p>
+        <ul><li>Topic 3</li><li>Python</li></ul>
+      paths: >
+        <p>After you have created all your topics, and added training materials to them, 
+        you are ready to register your learning path.</p>
+        <ol><li>On the 'Learning paths' tab, click the 'Register learning path' button at the top-right.</li>
+        <li>Complete both the compulsory fields: title, description and fields like scientific topics, keywords, 
+        licence, status, DOI, content provider, authors, contributors, target audiences, prerequisites, 
+        learning objectives, nodes. We recommend filling as many of these fields as possible to have a rich 
+        metadata associated with your course.</li>
+        <li>For each topic, click in the 'Add a new topic' box and begin to type its name. Select the correct topic.</li> 
+        <li>Repeat step 3 to add multiple topics.</li>
+        <li>You can reorder the topics using the arrow icons.</li>
+        <li>The learning path will be public by default. Untick the 'Public' box if you want to hide this learning path 
+        from anyone who isn't the creator or a collaborator.</li>
+        <li>When you have finished, click the 'Register learning path' button.</li></ol>
+      collaborators: >
+        <p>Collaborators are TeSS users who can edit a learning path or topic after it has been created. 
+        Only the learning path or topic owner can add and remove collaborators. To add a collaborator:</p>
+        <ol><li>Navigate to the page for that learning path or topic.</li>
+        <li>Click the 'Collaborators' button at the top-right of the page.</li> 
+        <li>Start to type the name or username of the collaborator you wish to add and select them. 
+        The collaborator needs to be  a registered user of TeSS.</li>
+        <li>Repeat for any additional collaborators.</li>
+        <li>When you have finished, click the 'Done' button.</li></ol>
+      updating_paths: >
+        <p>To update a learning path or topic, you need to be the owner or a collaborator:</p>
+        <ol><li>Navigate to the page for that learning path or topic.</li>
+        <li>Click the 'Edit' button at the top-right of the page.</li> 
+        <li>Make your changes then click the 'Update learning path' button at the bottom.</li></ol>
+        <p>If you wish to delete the learning path or topic, use the 'Delete' button next to the 'Edit' button 
+        on the page for that item.</p>
+      view_paths: >
+        <p>Learning paths can be browsed and searched in TeSS. They are organised by topic.</p>
+        <ol><li>To view the learning paths, click 'Learning paths' in the main menu. 
+        (Tip: To view a learning path you do not need to be logged in to TeSS.)</li> 
+        <li>To browse all topics, click the 'Topics' button on the top-right.</li>
+        <li>Alternatively, you can click in the search box, type your query and press Enter.</li>
+        <li>Click to view a learning path. Read the summary box. The details of the included training materials 
+        appear below; click each item to open it. Information about the content provider appears on the left.</li> 
+        <li>To create a personal collection of your favourite learning paths, click the star icon at the top of each 
+        learning path to add them to a list. You can view your starred resources later by clicking the user icon 
+        at the top-right of the screen then 'My stars'.  To use the star feature you need to be a registered TeSS user.</li>
+      view_topics: >
+        <ol><li>On the 'Learning paths' tab, click the 'Manage Topics' button at the top-right.</li>
+        <li>You can browse the learning path topics, using the filters on the left to select keywords or date.</li>
+        <li>Alternatively, click in the search box and type a query, then press Enter to view the results.</li>
+        <li>Click the title of a topic to view it. 
+        From the topic page, you can view all training materials, in order.</li></ol>
   home:
     welcome: |
       How can <span class="text-primary">TeSS</span> help you?
@@ -426,6 +541,7 @@ en:
       fields: 'Select Fields of Research to better classify your event.'
       hosts: ''
       keywords: "Provide words or terms that clearly identify the training event's topics."
+      language: 'Language of instruction'
       materials: 'Add any training materials that are associated with the training event.'
       objectives: 'What knowledge, skills, or abilities should your audience gain from completing the training?'
       organizer: ''
@@ -441,6 +557,8 @@ en:
       timezone: 'Select the appropriate timezone'
       title: 'Add a title for your training event.'
       url: 'Enter a valid URL for the event landing page.'
+    prompts:
+      language: 'Select a language...'
     long: 'Long events'
     pick_date: 'Pick a range of dates for a better collection of events.'
   materials:
@@ -606,14 +724,20 @@ en:
     categories:
       user: Owner
       organizer: Organiser
+    titles:
+      language: 'Language'
+  languages: # Only needed to override default names from I18nData
+    el: 'Greek'
   errors:
     500: "Apologies, TeSS encountered an error whilst handling your request (500 Internal Server Error)."
     503: "Apologies, TeSS is temporarily down or unavailable due to maintenance (503 Service Unavailable)."
     422: "The request you sent was well-formed but the change you wanted was rejected (422 Unprocessable Entity)."
     404: "The requested page could not be found - you may have mistyped the address or the page may have moved (404 Not Found)."
+    406: "The requested format is not available (406 Not Acceptable)."
   warnings:
     link_broken: TeSS has been unable to access this %{resource_type}'s URL since %{fail_date} - the page may have been moved.
     archived: This %{resource_type} has been archived, its content may no longer be relevant.
+    unverified: This %{resource_type} will not be publicly visible until your registration has been approved by an administrator.
   footer:
     eu_funding: >
       TeSS has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No. <a href="https://cordis.europa.eu/project/rcn/198519_en.html", target="_blank">676559</a>.

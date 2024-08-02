@@ -5,7 +5,7 @@ class CollectionPolicy < ResourcePolicy
   end
 
   def show?
-    @record.public? || manage?
+    (!@record.from_unverified_or_rejected? && @record.public?) || manage?
   end
 
   def curate?

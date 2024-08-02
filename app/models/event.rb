@@ -18,6 +18,7 @@ class Event < ApplicationRecord
   include FuzzyDictionaryMatch
   include WithTimezone
   include HasEdamTerms
+  include HasLanguage
 
   before_validation :fix_keywords, on: :create, if: :scraper_record
   before_validation :presence_default
@@ -109,6 +110,8 @@ class Event < ApplicationRecord
   enum presence: { onsite: 0, online: 1, hybrid: 2 }
 
   belongs_to :user
+  has_one :llm_interaction, inverse_of: :event, dependent: :destroy
+  accepts_nested_attributes_for :llm_interaction, allow_destroy: true
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
   has_one :link_monitor, as: :lcheck, dependent: :destroy
   has_many :collection_items, as: :resource
@@ -189,7 +192,8 @@ class Event < ApplicationRecord
 
   def self.facet_fields
     field_list = %w[ content_provider keywords scientific_topics operations tools fields online event_types
-                     start venue city country organizer sponsors target_audience eligibility user node collections ]
+                     start venue city country organizer sponsors target_audience eligibility language
+                     user node collections ]
 
     field_list.delete('operations') if TeSS::Config.feature['disabled'].include? 'operations'
     field_list.delete('scientific_topics') if TeSS::Config.feature['disabled'].include? 'topics'
@@ -284,11 +288,16 @@ class Event < ApplicationRecord
   end
 
   def self.not_finished
-    where('events.end > ? OR events.end IS NULL', Time.now)
+    where('events.end >= ? OR events.end IS NULL', Time.now)
   end
 
   def self.finished
     where('events.end < ?', Time.now).where.not(end: nil)
+  end
+
+  def self.needs_processing(llm_prompt)
+    joins('LEFT OUTER JOIN llm_interactions ON llm_interactions.event_id = events.id')
+      .where('llm_interactions.needs_processing = ? OR llm_interactions.prompt != ?', true, llm_prompt)
   end
 
   # Ticket #423

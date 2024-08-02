@@ -15,6 +15,7 @@ class ContentProvidersController < ApplicationController
   end
 
   def show
+    authorize @content_provider
     respond_to do |format|
       format.html
       format.json
