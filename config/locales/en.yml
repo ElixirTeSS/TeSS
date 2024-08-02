@@ -330,7 +330,8 @@ en:
         <li><b>Owner</b>: An individual who has created a material, topic or learning path in TeSS.</li></ul>
         <p>Before registering a learning path, a training provider must: </p>
         <ol><li>Assign a learning path curator (owner).</li>
-        <li>Contact the TeSS team to assign the learning path curator role to their account.</li></ol>
+        <li>Contact the TeSS team to assign the learning path curator role to their account.</li>
+        <li>Complete your internal editorial processes (if any) before you start registering the learning paths on TeSS.</li></ol>
         <p>After these tasks are completed:</p>
         <ul><li>A learning path curator has permission to create learning paths for their provider.</li>
         <li>It is the responsibility of the learning path curator to curate and implement any protocols 
