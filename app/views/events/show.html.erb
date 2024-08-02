@@ -63,12 +63,7 @@
         </p>
         <%= display_attribute(@event, :timezone) %>
         <%= display_attribute(@event, :duration) %>
-        <% if @event.language %>
-          <%= display_attribute(@event, :language) do |value|
-                render_language_name(value)
-              end %>
-        <% end %>
-
+        <%= display_attribute(@event, :language) { |value| render_language_name(value) } %>
         <!-- Field: description -->
         <div class="description">
           <%= google_maps_javascript_api_tag(@event) if @event.show_map? %>

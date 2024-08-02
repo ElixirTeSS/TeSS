@@ -1545,4 +1545,28 @@ class EventsControllerTest < ActionController::TestCase
     get :show, params: { id: event }
     assert_response :forbidden
   end
+
+  test 'should create event without language specified' do
+    sign_in users(:regular_user)
+    assert_difference('Event.count', 1) do
+      post :create, params: { event: { description: @event.description, title: @event.title, url: @event.url,
+                                       language: '' } }
+    end
+    assert_redirected_to event_path(assigns(:event))
+    refute assigns(:event).language.present?
+  end
+
+  test 'should display language of instruction' do
+    get :show, params: { id: events(:one) }
+    assert_response :success
+    assert_select 'strong', text: 'Language of instruction:'
+  end
+
+  test 'should not display language of instruction if not specified' do
+    event = users(:regular_user).events.create!(title: 'No language', url: 'https://example.com/nolang', language: '')
+
+    get :show, params: { id: event }
+    assert_response :success
+    assert_select 'strong', text: 'Language of instruction:', count: 0
+  end
 end

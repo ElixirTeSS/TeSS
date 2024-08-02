@@ -411,6 +411,10 @@ class EventTest < ActiveSupport::TestCase
     event.language = nil
     assert event.valid?
 
+    # Okay if blank
+    event.language = ''
+    assert event.valid?
+
     # Not okay if not a known ISO-639-2 code
     event.language = 'yo'
     refute event.valid?
