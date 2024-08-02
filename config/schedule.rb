@@ -35,12 +35,12 @@ end
 if !schedules['ingestions'].nil?
   every :"#{schedules['ingestions']['every']}", at: "#{schedules['ingestions']['at']}" do
     rake 'tess:automated_ingestion'
-    rake 'tess:llm_post_processing' if TeSS::Config.llm_scraper['model_version'].present?
+    rake 'tess:llm_post_processing'
   end
 else
   every :day, at: '3am' do
     rake 'tess:automated_ingestion'
-    rake 'tess:llm_post_processing' if TeSS::Config.llm_scraper['model_version'].present?
+    rake 'tess:llm_post_processing'
   end
 end
 
