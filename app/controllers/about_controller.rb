@@ -12,6 +12,9 @@ class AboutController < ApplicationController
   def registering
   end
 
+  def learning_paths
+  end
+
   def developers
   end
 
