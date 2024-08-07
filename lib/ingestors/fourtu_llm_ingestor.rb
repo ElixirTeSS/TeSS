@@ -19,7 +19,7 @@ module Ingestors
       event_page = Nokogiri::HTML5.parse(open_url(url, raise: true)).css('.searchresults')[0].css('a.searchresult')
       event_page.each do |event_data|
         new_url = event_data['href']
-        sleep(1) unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/4tu_llm.yml')
+        sleep(1) unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/4tu_willma_llm.yml')
         new_event_page = Nokogiri::HTML5.parse(open_url(new_url, raise: true)).css('body').css('main, .page-header__content')
         get_event_from_css(new_url, new_event_page)
       end

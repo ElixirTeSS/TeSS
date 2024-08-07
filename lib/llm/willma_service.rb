@@ -7,9 +7,13 @@ module Llm
     require 'openai'
     def initialize
       model_name = TeSS::Config.llm_scraper['model_version']
+      login_url = 'https://willma.soil.surf.nl/api/login'
+      JSON.parse(do_request(login_url, 'post', {}).body)
+
       model_url = 'https://willma.soil.surf.nl/api/models'
       parsed_response = JSON.parse(do_request(model_url, 'get', {}).body)
       model_id = parsed_response.select { |i| i['name'] == model_name }.first['id']
+
       @params = {
         model: model_name,
         sequence_id: model_id,
@@ -29,7 +33,7 @@ module Llm
         'sequence_id': @params[:sequence_id],
         'input': prompt
       }
-      query_url = 'https://willma.soil.surf.nl/api/query'
+      query_url = 'https://willma.soil.surf.nl/api/chat/completions'
       response = do_request(query_url, 'post', data)
       JSON.parse(response.body)
     end

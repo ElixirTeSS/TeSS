@@ -29,7 +29,7 @@ class FourtuWillmaLlmIngestorTest < ActiveSupport::TestCase
     # run task
     assert_difference 'Event.count', 1 do
       freeze_time(2019) do
-        VCR.use_cassette('ingestors/4tu_llm') do
+        VCR.use_cassette('ingestors/4tu_willma_llm') do
           with_settings({ llm_scraper: { model: 'willma', model_version: 'Zephyr 7B' } }) do
             ingestor.read(source.url)
             ingestor.write(@user, @content_provider)
@@ -38,10 +38,10 @@ class FourtuWillmaLlmIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 4, ingestor.events.count
+    assert_equal 2, ingestor.events.count
     assert ingestor.materials.empty?
     assert_equal 1, ingestor.stats[:events][:added]
-    assert_equal 3, ingestor.stats[:events][:updated]
+    assert_equal 1, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
     # check event does exist
