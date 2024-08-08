@@ -368,9 +368,9 @@ ul.content-providers-grid {
       justify-content: center;
       display: flex;
       img {
-        max-width: 100px;
-        max-height: 100px;
-        object-fit: cover;
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
       }
     }
   }
