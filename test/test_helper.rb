@@ -165,8 +165,9 @@ class ActiveSupport::TestCase
       I am a dumb llm and I have to say something afterward even though I was specifically asked not to."
     }'.gsub(/\n/, '')
     # run task
+    WebMock.stub_request(:get, 'https://willma.soil.surf.nl/api/login').to_return(status: 200, body: '')
     WebMock.stub_request(:get, 'https://willma.soil.surf.nl/api/models').to_return(status: 200, body: get_body)
-    WebMock.stub_request(:post, 'https://willma.soil.surf.nl/api/query').to_return(status: 200, body: post_body)
+    WebMock.stub_request(:post, 'https://willma.soil.surf.nl/api/chat/completions').to_return(status: 200, body: post_body)
   end
 
   # Mock remote images so paperclip doesn't break:
