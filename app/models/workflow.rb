@@ -62,6 +62,7 @@ class Workflow < ApplicationRecord
   auto_strip_attributes :title, squish: false
 
   validates :title, presence: true
+  validates :keywords, length: { maximum: 20 }
 
   clean_array_fields(:keywords, :contributors, :authors, :target_audience)
 
