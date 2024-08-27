@@ -32,8 +32,8 @@ class ContentProvider < ApplicationRecord
 
   # Validate the URL is in correct format via valid_url gem
   validates :url, url: true
-
   validates :content_provider_type, presence: true, inclusion: { in: PROVIDER_TYPE }
+  validates :keywords, length: { maximum: 20 }
 
   clean_array_fields(:keywords)
 

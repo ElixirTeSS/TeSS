@@ -75,6 +75,7 @@ class LearningPath < ApplicationRecord
   after_validation :normalize_order
 
   validates :title, :description, presence: true
+  validates :keywords, length: { maximum: 20 }
 
   clean_array_fields(:keywords, :contributors, :authors, :target_audience)
   update_suggestions(:keywords, :contributors, :authors, :target_audience)

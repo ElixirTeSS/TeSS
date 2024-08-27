@@ -708,4 +708,16 @@ class EventTest < ActiveSupport::TestCase
       e.destroy!
     end
   end
+
+  test 'validates keywords length' do
+    event = events(:one)
+    keywords = 20.times.map { |i| "keyword_#{i}" }
+    event.keywords = keywords
+    assert event.valid?
+
+    event.keywords = keywords + ['extra_keyword']
+
+    refute event.valid?
+    assert event.errors.added?(:keywords, :too_long, count: 20)
+  end
 end
