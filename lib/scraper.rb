@@ -34,12 +34,12 @@ class Scraper
       logfile: nil,
       loglevel: 0,
       default_role: 'scraper_user',
-      username: nil,
+      username: 'scraper',
       sources: []
     })
 
     @name = config[:name]
-    @log_file = log_file || Rails.root.join(config[:logfile]).open('w+')
+    @log_file = log_file || (config[:logfile] ? Rails.root.join(config[:logfile]).open('w+') : StringIO.new)
     @log_level = config[:loglevel]
     @default_role = config[:default_role]
     @username = config[:username]
@@ -73,73 +73,11 @@ class Scraper
       }
 
       data_sources.each do |key, sources|
-        source_start = Time.now
         log '', 1
         log t('scraper.messages.sources_size', sources_size: sources.size) + " (from #{key})", 1
         sources.each do |source|
-          output = ''
+          scrape(source, user)
           processed += 1
-          log '', 1
-          if source.enabled
-            log t('scraper.messages.processing', source: source.content_provider&.title, num: processed.to_s), 1
-          else
-            log t('scraper.messages.skipped', source: source.content_provider&.title, num: processed.to_s), 1
-            next
-          end
-          if validate_source(source)
-            log t('scraper.messages.valid_source'), 2
-            output.concat "**Provider:** #{source.content_provider.title}\n\n"
-            output.concat "<span style='url-wrap'>**URL:** #{source.url}</span>\n\n"
-            output.concat "**Method:** #{source.ingestor_title}\n\n"
-
-            # get ingestor
-            ingestor = Ingestors::IngestorFactory.get_ingestor(source.method)
-
-            # set token
-            ingestor.token = source.token
-
-            # read records
-            ingestor.read(source.url)
-            unless ingestor.messages.blank?
-              output.concat "\n## Reading\n\n"
-              ingestor.messages.each { |m| output.concat "#{m}\n" }
-              ingestor.messages.clear
-            end
-
-            # write resources
-            ingestor.write(user, source.content_provider)
-            unless ingestor.messages.blank?
-              output.concat "\n## Writing\n\n"
-              ingestor.messages.each { |m| output.concat "#{m}\n" }
-              ingestor.messages.clear
-            end
-
-            # update source
-            source.records_read = ingestor.ingested
-            source.records_written = (ingestor.added + ingestor.updated)
-            source.resources_added = ingestor.added
-            source.resources_updated = ingestor.updated
-            source.resources_rejected = ingestor.rejected
-            log "Source URL[#{source.url}] resources read[#{source.records_read}]" +
-                  ", added[#{source.resources_added}]" +
-                  ", updated[#{source.resources_updated}]" +
-                  ", rejected[#{source.resources_rejected}]", 2
-          end
-        rescue StandardError => e
-          output.concat "\n**Failed:** #{e.message}\n\n"
-          log "Ingestor: #{ingestor.class} failed with: #{e.message}\t#{e.backtrace[0]}", 2
-        ensure
-          source.finished_at = Time.now
-          run_time = source.finished_at - source_start
-          output.concat "\n**Finished at:** #{source.finished_at.strftime '%H:%M on %A, %d %B %Y (UTC)'}\n"
-          output.concat "\n**Run time:** #{run_time.round(2)}s\n"
-          source.log = output
-          begin
-            # only update enabled sources
-            source.save! if source.enabled && !source.is_a?(Scraper::ConfigSource)
-          rescue StandardError => e
-            log t('scraper.messages.bad_source_save', error_message: e.message), 2
-          end
         end
       end
 
@@ -163,6 +101,72 @@ class Scraper
     log 'Done.', 0
     @log_file.rewind
     @log_file
+  end
+
+  def scrape(source, user = get_user, index: 0)
+    source_start = Time.now
+    output = ''
+    log '', 1
+    if source.enabled
+      log t('scraper.messages.processing', source: source.content_provider&.title, num: index.to_s), 1
+    else
+      log t('scraper.messages.skipped', source: source.content_provider&.title, num: index.to_s), 1
+      return
+    end
+    if validate_source(source)
+      log t('scraper.messages.valid_source'), 2
+      output.concat "**Provider:** #{source.content_provider.title}\n\n"
+      output.concat "<span style='url-wrap'>**URL:** #{source.url}</span>\n\n"
+      output.concat "**Method:** #{source.ingestor_title}\n\n"
+
+      # get ingestor
+      ingestor = Ingestors::IngestorFactory.get_ingestor(source.method)
+
+      # set token
+      ingestor.token = source.token
+
+      # read records
+      ingestor.read(source.url)
+      unless ingestor.messages.blank?
+        output.concat "\n## Reading\n\n"
+        ingestor.messages.each { |m| output.concat "#{m}\n" }
+        ingestor.messages.clear
+      end
+
+      # write resources
+      ingestor.write(user, source.content_provider)
+      unless ingestor.messages.blank?
+        output.concat "\n## Writing\n\n"
+        ingestor.messages.each { |m| output.concat "#{m}\n" }
+        ingestor.messages.clear
+      end
+
+      # update source
+      source.records_read = ingestor.ingested
+      source.records_written = (ingestor.added + ingestor.updated)
+      source.resources_added = ingestor.added
+      source.resources_updated = ingestor.updated
+      source.resources_rejected = ingestor.rejected
+      log "Source URL[#{source.url}] resources read[#{source.records_read}]" +
+            ", added[#{source.resources_added}]" +
+            ", updated[#{source.resources_updated}]" +
+            ", rejected[#{source.resources_rejected}]", 2
+    end
+  rescue StandardError => e
+    output.concat "\n**Failed:** #{e.message}\n\n"
+    log "Ingestor: #{ingestor.class} failed with: #{e.message}\t#{e.backtrace[0]}", 2
+  ensure
+    source.finished_at = Time.now
+    run_time = source.finished_at - source_start
+    output.concat "\n**Finished at:** #{source.finished_at.strftime '%H:%M on %A, %d %B %Y (UTC)'}\n"
+    output.concat "\n**Run time:** #{run_time.round(2)}s\n"
+    source.log = output
+    begin
+      # only update enabled sources
+      source.save! if source.enabled && !source.is_a?(Scraper::ConfigSource)
+    rescue StandardError => e
+      log t('scraper.messages.bad_source_save', error_message: e.message), 2
+    end
   end
 
   private

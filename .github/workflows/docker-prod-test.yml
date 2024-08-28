@@ -14,4 +14,4 @@ jobs:
           cp docker/tess.docker-test.yml config/tess.yml
           cp config/secrets.example.yml config/secrets.yml
       - name: Build
-        run: docker-compose -f docker-compose-prod.yml build
+        run: docker compose -f docker-compose-prod.yml build

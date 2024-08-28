@@ -1,0 +1,67 @@
+.learning-path-topics {
+
+}
+
+.learning-path-topic {
+  position: relative;
+  padding: 1em 0 1em 2em;
+  margin-left: 2em;
+  border-left: 2px solid #ccc;
+
+  .learning-path-topic-order {
+    position: absolute;
+    left: -1em;
+    top: 1.5em;
+    border-radius: 50%;
+    width: 2em;
+    line-height: 2em;
+    height: 2em;
+    text-align: center;
+    background: $badge-bg;
+    color: $badge-color;
+  }
+
+  .learning-path-topic-title {
+    cursor: pointer;
+  }
+
+
+  .learning-path-topic-desc {
+    border-width: 0;
+    padding: 1em;
+    margin-bottom: 1em;
+    border-radius: 0;
+  }
+
+  .learning-path-topic-contents {
+    display: none;
+  }
+}
+
+.learning-path-item {
+  text-align: center;
+  border-image-slice: 80;
+  border-image-width: 80px;
+  .link-overlay {
+    height: 12em;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+  }
+}
+
+.learning-path-bg-1 {
+  border-image-source: image-url("modern/learning_paths/learning-path-bg-1.svg");
+}
+
+.learning-path-bg-2 {
+  border-image-source: image-url("modern/learning_paths/learning-path-bg-2.svg");
+}
+
+.learning-path-bg-3 {
+  border-image-source: image-url("modern/learning_paths/learning-path-bg-3.svg");
+}
+
+.learning-path-bg-4 {
+  border-image-source: image-url("modern/learning_paths/learning-path-bg-4.svg");
+}

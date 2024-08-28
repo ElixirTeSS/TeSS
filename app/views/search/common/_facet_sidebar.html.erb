@@ -58,11 +58,12 @@ Variable that should be available
                                                                                 count: '-',
                                                                                 enable_text: 'Show disabled events',
                                                                                 disable_text: 'Hide disabled events' } %>
-  <% elsif resource_type.name == 'Material' %>
+  <% elsif resource_type.name == 'Material' || resource_type.name == 'LearningPath' %>
+    <% resource_name = resource_type.model_name.human.downcase.pluralize %>
     <%= render partial: 'search/common/facet_sidebar_boolean_filter', locals: { facet_field: 'include_archived',
                                                                                 count: '-',
-                                                                                enable_text: 'Show archived materials',
-                                                                                disable_text: 'Hide archived materials' } %>
+                                                                                enable_text: "Show archived #{resource_name}",
+                                                                                disable_text: "Hide archived #{resource_name}" } %>
   <% end %>
 
   <% if TeSS::Config.facets_max_age_list.include?(resource_type.name) %>

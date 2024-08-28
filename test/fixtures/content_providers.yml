@@ -9,6 +9,7 @@ goblet:
   node: good
   content_provider_type: Portal
   contact: contact@goblet.org
+  event_curation_email: curation@goblet.org
 
 iann:
   title: iAnn

@@ -60,6 +60,13 @@ class ApplicationPolicy
     return ((request.post? or request.put? or request.patch?) and request.format.json?)
   end
 
+  def curators_and_admin
+    @user && (
+      @user.has_role?(:curator) ||
+        @user.has_role?(:admin) ||
+        @user.has_role?(:scraper_user))
+  end
+
   def scope
     Pundit.policy_scope!(user, record.class)
   end

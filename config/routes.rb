@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   #get 'static/home'
   get 'about' => 'about#tess', as: 'about'
   get 'about/registering' => 'about#registering', as: 'registering_resources'
+  get 'about/learning_paths' => 'about#learning_paths', as: 'registering_learning_paths'
   get 'about/developers' => 'about#developers', as: 'developers'
   get 'about/us' => 'about#us', as: 'us'
 
@@ -116,6 +117,9 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :learning_paths, concerns: %i[collaboratable activities]
+  resources :learning_path_topics, concerns: %i[collaboratable activities]
+
   get 'elearning_materials' => 'materials#index', defaults: { 'resource_type' => 'e-learning' }
 
   get 'invitees' => 'users#invitees'
@@ -138,7 +142,7 @@ Rails.application.routes.draw do
   get 'job_status' => 'application#job_status'
 
   # error pages
-  %w( 404 422 500 503 ).each do |code|
+  %w( 404 406 422 500 503 ).each do |code|
     get code, to: 'application#handle_error', status_code: code
   end
 

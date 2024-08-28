@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_19_101101) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_18_100022) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -145,6 +145,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_19_101101) do
     t.bigint "image_file_size"
     t.datetime "image_updated_at"
     t.string "contact"
+    t.string "event_curation_email"
     t.index ["node_id"], name: "index_content_providers_on_node_id"
     t.index ["slug"], name: "index_content_providers_on_slug", unique: true
     t.index ["user_id"], name: "index_content_providers_on_user_id"
@@ -226,7 +227,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_19_101101) do
     t.string "cost_basis"
     t.string "cost_currency"
     t.string "fields", default: [], array: true
+    t.string "open_science", default: [], array: true
     t.boolean "visible", default: true
+    t.string "language"
     t.index ["presence"], name: "index_events_on_presence"
     t.index ["slug"], name: "index_events_on_slug", unique: true
     t.index ["user_id"], name: "index_events_on_user_id"
@@ -261,6 +264,63 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_19_101101) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
+  create_table "learning_path_topic_items", force: :cascade do |t|
+    t.bigint "topic_id"
+    t.string "resource_type"
+    t.bigint "resource_id"
+    t.text "comment"
+    t.integer "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["resource_type", "resource_id"], name: "index_learning_path_topic_items_on_resource"
+    t.index ["topic_id"], name: "index_learning_path_topic_items_on_topic_id"
+  end
+
+  create_table "learning_path_topic_links", force: :cascade do |t|
+    t.bigint "learning_path_id"
+    t.bigint "topic_id"
+    t.integer "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["learning_path_id"], name: "index_learning_path_topic_links_on_learning_path_id"
+    t.index ["topic_id"], name: "index_learning_path_topic_links_on_topic_id"
+  end
+
+  create_table "learning_path_topics", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.integer "user_id"
+    t.string "keywords", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "difficulty_level", default: "notspecified"
+  end
+
+  create_table "learning_paths", force: :cascade do |t|
+    t.text "title"
+    t.text "description"
+    t.string "doi"
+    t.string "target_audience", default: [], array: true
+    t.string "authors", default: [], array: true
+    t.string "contributors", default: [], array: true
+    t.string "licence", default: "notspecified"
+    t.string "difficulty_level", default: "notspecified"
+    t.string "slug"
+    t.bigint "user_id"
+    t.bigint "content_provider_id"
+    t.string "keywords", default: [], array: true
+    t.text "prerequisites"
+    t.text "learning_objectives"
+    t.string "status"
+    t.string "learning_path_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "public", default: true
+    t.index ["content_provider_id"], name: "index_learning_paths_on_content_provider_id"
+    t.index ["slug"], name: "index_learning_paths_on_slug", unique: true
+    t.index ["user_id"], name: "index_learning_paths_on_user_id"
+  end
+
   create_table "link_monitors", force: :cascade do |t|
     t.string "url"
     t.integer "code"
@@ -270,6 +330,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_19_101101) do
     t.integer "lcheck_id"
     t.string "lcheck_type"
     t.index ["lcheck_type", "lcheck_id"], name: "index_link_monitors_on_lcheck_type_and_lcheck_id"
+  end
+
+  create_table "llm_interactions", force: :cascade do |t|
+    t.bigint "event_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string "scrape_or_process"
+    t.string "model"
+    t.string "prompt"
+    t.string "input"
+    t.string "output"
+    t.boolean "needs_processing", default: false
+    t.index ["event_id"], name: "index_llm_interactions_on_event_id"
   end
 
   create_table "materials", force: :cascade do |t|
@@ -376,15 +449,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_19_101101) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "title"
-  end
-
-  create_table "sessions", force: :cascade do |t|
-    t.string "session_id", null: false
-    t.text "data"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
-    t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
   create_table "sources", force: :cascade do |t|
@@ -544,6 +608,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_19_101101) do
   add_foreign_key "event_materials", "events"
   add_foreign_key "event_materials", "materials"
   add_foreign_key "events", "users"
+  add_foreign_key "learning_path_topic_links", "learning_paths"
+  add_foreign_key "learning_paths", "content_providers"
+  add_foreign_key "learning_paths", "users"
+  add_foreign_key "llm_interactions", "events"
   add_foreign_key "materials", "content_providers"
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"

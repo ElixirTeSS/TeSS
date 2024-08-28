@@ -1,0 +1,38 @@
+<li class="masonry-brick media-item large learning-path-item learning-path-bg-<%= (learning_path.id % 4) + 1 -%>">
+  <%= link_to learning_path, class: 'link-overlay' do %>
+    <%= item_order_badge(collection_item) if defined? collection_item %>
+
+    <div class="masonry-brick-heading">
+      <div class="masonry-icons">
+        <% if current_user&.is_admin? %>
+          <%= missing_icon(learning_path) %>
+          <%= scrape_status_icon(learning_path) %>
+          <%= suggestion_icon(learning_path) %>
+        <% end %>
+      </div>
+      <div class="sub-heading">
+        <%= display_attribute_no_label(learning_path, :learning_path_type) %>
+      </div>
+      <h4 class="mb-3"><%= learning_path.title %></h4>
+    </div>
+
+    <div class="clearfix">
+      <div class="pull-right">
+        <% if controller_name != 'content_providers' && learning_path.content_provider %>
+          <%= image_tag(learning_path.content_provider.image.url, class: 'provider-avatar') %>
+        <% end %>
+      </div>
+
+      <div>
+        <span class="label label-default"><i class="fa fa-folder-open"></i> <%= pluralize(learning_path.topics.count, 'topic') %></span>
+        <span class="label label-default"><i class="fa fa-book"></i> <%= pluralize(learning_path.topics_materials.count, 'materials') %></span>
+      </div>
+
+      <div>
+        <%= keywords_and_topics(learning_path, limit: 10) %>
+      </div>
+    </div>
+
+    <%= item_comment(collection_item) if defined? collection_item %>
+  <% end %>
+</li>

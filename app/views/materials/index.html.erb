@@ -12,7 +12,7 @@
     <% content_for :buttons do %>
       <!-- Register button -->
       <%= link_to new_material_path, class: 'btn btn-primary' do %>
-        Register training material
+        <%= t('register.buttons.materials') %>
       <% end %>
       <!-- Info -->
       <%= info_button("What are materials in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>

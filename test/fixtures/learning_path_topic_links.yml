@@ -1,0 +1,16 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+link1a:
+  learning_path: one
+  order: 2
+  topic: good_and_bad
+
+link1b:
+  learning_path: one
+  order: 1
+  topic: goblet_things
+
+link2a:
+  learning_path: two
+  order: 1
+  topic: good_and_bad

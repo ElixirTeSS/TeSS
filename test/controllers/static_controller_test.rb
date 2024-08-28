@@ -229,4 +229,56 @@ class StaticControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test 'should show latest materials' do
+    my_materials = [materials(:good_material), materials(:interpro)]
+    Material.stub(:search_and_filter, MockSearch.new(my_materials)) do
+      with_settings({ site: { home_page: { latest_materials: 5 } } }) do
+        get :home
+        assert_select 'section#latest_materials', count: 1
+        assert_select 'section#latest_materials h2', count: 1
+        assert_select 'section#latest_materials ul', count: 2
+      end
+    end
+  end
+
+  test 'should show featured trainer' do
+    with_settings({ site: { home_page: { featured_trainer: true } } }) do
+      get :home
+      assert_select 'section#featured_trainer', count: 1
+      assert_select 'section#featured_trainer h2', count: 1
+      assert_select 'section#featured_trainer li', count: 1
+    end
+  end
+
+  test 'should show event counts in counter blocks' do
+    params = events(:one).attributes.symbolize_keys
+    params.delete(:id)
+    params = params.merge({ start: Time.zone.now + 1.week, end: Time.zone.now + 1.week + 8.hours })
+    111.times do |i|
+      Event.create(params.merge(url: "#{params[:url]}##{i}"))
+    end
+    with_settings({ site: { home_page: { counters: true } } }) do
+      get :home
+      assert_select 'div#resource_count', text: '112', count: 1
+    end
+  end
+
+  test 'should show provider grid' do
+    mock_images
+    ContentProvider.destroy_all
+    regular = users(:regular_user)
+    unverified = users(:unverified_user)
+    regular_provider = regular.content_providers.create!(title: 'Regular Provider',
+                                                         image_url: 'http://example.com/goblet.png',
+                                                         url: 'https://providers.com/p1')
+    another_provider = regular.content_providers.create!(title: 'Another Regular Provider',
+                                                         image_url: 'http://example.com/goblet.png',
+                                                         url: 'https://providers.com/p3')
+    with_settings({ site: { home_page: { provider_grid: true } } }) do
+      get :home
+      assert_select 'section#content_providers_grid', count: 1
+      assert_select 'section#content_providers_grid li.provider-grid-tile', count: 2
+    end
+  end
 end

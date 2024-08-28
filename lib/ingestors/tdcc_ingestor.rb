@@ -27,7 +27,7 @@ module Ingestors
 
     def process_tdcc(url)
       sleep(1) unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/tdcc.yml')
-      event_page = Nokogiri::HTML5.parse(open_url(url.to_s, raise: true)).css("div[class='archive__content grid']")[0].css("div[class='column span-4-sm span-8-md span-6-lg']")
+      event_page = Nokogiri::HTML5.parse(open_url(url.to_s, raise: true)).css("div[class='archive__content grid']")[0].css("div[class='post-item__inner']")
       event_page.each do |event_data|
         event = OpenStruct.new
 

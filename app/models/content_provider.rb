@@ -10,9 +10,10 @@ class ContentProvider < ApplicationRecord
   include HasFriendlyId
   include CurationQueue
 
-  has_many :materials, :dependent => :destroy
-  has_many :events, :dependent => :destroy
-  has_many :sources, :dependent => :destroy
+  has_many :materials, dependent: :destroy
+  has_many :events, dependent: :destroy
+  has_many :sources, dependent: :destroy
+  has_many :learning_paths, dependent: :destroy
 
   belongs_to :user
   belongs_to :node, optional: true

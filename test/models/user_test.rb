@@ -2,6 +2,8 @@ require 'test_helper'
 require 'ostruct'
 
 class UserTest < ActiveSupport::TestCase
+  include ActionMailer::TestHelper
+
   setup do
     mock_images
     @user_data = users(:regular_user)
@@ -272,6 +274,8 @@ class UserTest < ActiveSupport::TestCase
     source = sources(:unapproved_source)
     collection = collections(:one)
     node = nodes(:good)
+    learning_path = learning_paths(:one)
+    learning_path_topic = learning_path_topics(:good_and_bad)
 
     assert_equal user, event.user
     assert_equal user, material.user
@@ -291,6 +295,13 @@ class UserTest < ActiveSupport::TestCase
     assert_equal default_user, source.reload.user
     assert_equal default_user, collection.reload.user
     assert_equal default_user, node.reload.user
+
+    admin = users(:admin)
+    assert_equal admin, learning_path.user
+    assert_equal admin, learning_path_topic.user
+    admin.destroy!
+    assert_equal default_user, learning_path.reload.user
+    assert_equal default_user, learning_path_topic.reload.user
   end
 
   test 'merge users' do
@@ -416,5 +427,52 @@ class UserTest < ActiveSupport::TestCase
     assert user.save
     assert_equal 'space', user.username
     assert_equal 'new-user@example.com', user.email
+  end
+
+  test 'should not send confirmation email when creating default user' do
+    User.get_default_user.update!(role_id: Role.approved.id,
+                                  username: 'default_user2',
+                                  email: 'defaultuser2@example.com')
+
+    assert_no_enqueued_emails do
+      with_settings(force_user_confirmation: true) do
+        assert_difference('User.count', 1) do
+          User.create_default_user
+        end
+      end
+    end
+  end
+
+  test 'purges user and all resources' do
+    user = users(:regular_user)
+    event = events(:one)
+    material = materials(:good_material)
+    workflow = workflows(:one)
+    content_provider = content_providers(:goblet)
+    source = sources(:unapproved_source)
+    collection = collections(:one)
+    node = nodes(:good)
+
+    assert_equal user, event.user
+    assert_equal user, material.user
+    assert_equal user, workflow.user
+    assert_equal user, content_provider.user
+    assert_equal user, source.user
+    assert_equal user, collection.user
+    assert_equal user, node.user
+
+    assert_difference('User.count', -1) do
+      assert_difference('Profile.count', -1) do
+        assert user.purge
+      end
+    end
+
+    assert_raise(ActiveRecord::RecordNotFound) { event.reload }
+    assert_raise(ActiveRecord::RecordNotFound) { material.reload }
+    assert_raise(ActiveRecord::RecordNotFound) { workflow.reload }
+    assert_raise(ActiveRecord::RecordNotFound) { content_provider.reload }
+    assert_raise(ActiveRecord::RecordNotFound) { source.reload }
+    assert_raise(ActiveRecord::RecordNotFound) { collection.reload }
+    assert_raise(ActiveRecord::RecordNotFound) { node.reload }
   end
 end

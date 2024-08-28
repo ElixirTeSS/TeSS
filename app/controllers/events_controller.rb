@@ -48,7 +48,7 @@ class EventsController < ApplicationController
     @events = events_set.to_set.to_a
 
     # now customize the list by moving all events longer than 3 days into a separate array
-    @long_events, @events = @events.partition { |e| e.end.nil? || e.start.nil? || e.start + TeSS::Config.site.fetch(:calendar_event_maxlength, 5).to_i.days < e.end }
+    @long_events, _short_events = @events.partition { |e| e.end.nil? || e.start.nil? || e.start + TeSS::Config.site.fetch(:calendar_event_maxlength, 5).to_i.days < e.end }
 
     respond_to do |format|
       format.js
@@ -60,6 +60,7 @@ class EventsController < ApplicationController
   # GET /events/1.json
   # GET /events/1.ics
   def show
+    authorize @event
     @bioschemas = @event.to_bioschemas
     respond_to do |format|
       format.html
@@ -233,8 +234,9 @@ class EventsController < ApplicationController
                                   :timezone, :content_provider_id, { collection_ids: [] }, { node_ids: [] },
                                   { node_names: [] }, { target_audience: [] }, { eligibility: [] }, :visible,
                                   { host_institutions: [] }, :capacity, :contact, :recognition, :learning_objectives,
-                                  :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency,
+                                  :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency, :language,
                                   external_resources_attributes: %i[id url title _destroy], material_ids: [],
+                                  llm_interaction_attributes: %i[id scrape_or_process model prompt input output needs_processing _destroy],
                                   locked_fields: [])
   end
 

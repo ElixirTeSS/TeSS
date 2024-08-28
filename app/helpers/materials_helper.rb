@@ -17,6 +17,22 @@ module MaterialsHelper
 
 Accepting will add a topic to the resource and rejecting will remove the suggestion permanently"
 
+  LEARNING_PATHS_INFO = "A learning path is a pathway that guides learners through a set of learning modules \
+(courses/materials) to be undertaken progressively (from lower- to higher-order thinking skills) \
+to acquire the desired knowledge and skills on a subject by the end of the pathway. \n\n\
+1. Register training materials.\n\
+2. Create a learning path topic and add materials to it (repeat for each topic). \n\
+3. Register a learning path and add learning path topics to it. \n\
+".freeze
+
+  LEARNING_PATH_TOPICS_INFO = "A learning path topic is an ordered list of training materials. \
+A topic can be given a competency level (beginner, intermediate, advanced), description and set of keywords. \
+A learning path contains an ordered list of one or more topics, \
+where each topic has one competency level for all its materials. \n\n\
+1. Register training materials.\n\
+2. Create a learning path topic and add materials to it (repeat for each topic). \n\
+3. Register a learning path and add learning path topics to it. \n\
+".freeze
 
   def materials_info
     MATERIALS_INFO % { link: link_to('see here for details on automatic registration',
@@ -26,6 +42,14 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
   def elearning_materials_info
     ELEARNING_MATERIALS_INFO % { link: link_to('see here for details on automatic registration',
                                   registering_resources_path(anchor: 'automatic')) }
+  end
+
+  def learning_paths_info
+    LEARNING_PATHS_INFO
+  end
+
+  def learning_path_topics_info
+    LEARNING_PATH_TOPICS_INFO
   end
 
   # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags
@@ -108,7 +132,17 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
     end
   end
 
-  def keywords_and_topics(material)
-    (material.scientific_topic_names | material.operation_names | material.keywords).join(', ')
+  def keywords_and_topics(resource, limit: nil)
+    tags = []
+
+    [:scientific_topic_names, :operation_names, :keywords].each do |field|
+      tags |= resource.send(field) if resource.respond_to?(field)
+    end
+
+    tags = tags.first(limit) if limit
+
+    tags.map do |tag|
+      content_tag(:span, tag, class: 'label label-info')
+    end.join(' ').html_safe
   end
 end

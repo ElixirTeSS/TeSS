@@ -1,7 +1,7 @@
 <% cache(['home', 'upcoming_events', @events]) do %>
   <section id="upcoming_events">
     <div class="tab-content">
-      <h2 class="text-center"><%= 'Upcoming events' %></h2>
+      <h2 class="text-center"><%= link_to('Upcoming events', events_path, class: 'home-title-link' ) %></h2>
       <ul class="tab-pane fade in active">
         <%= render partial: 'common/masonry_grid', locals: { objects: @events } %>
       </ul>

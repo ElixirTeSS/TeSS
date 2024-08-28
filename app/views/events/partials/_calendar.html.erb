@@ -4,7 +4,7 @@
   </div>
 
   <ul class="list-unstyled">
-    <% events.each do |event| %>
+    <% events.filter{|e| e.start.to_date == date}.each do |event| %>
       <li class= "calendar-text">
         <%= link_to "#{event.title}", event, class: 'clear-both', 'title': "#{l event.start, format: :time_short} - #{l event.end, format: :time_short}" %>
       </li>

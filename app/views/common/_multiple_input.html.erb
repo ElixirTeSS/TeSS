@@ -10,7 +10,7 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
 %>
 
 <% label ||= f.object.class.human_attribute_name(field_name) %>
-<% model_name ||= f.object.class.name.underscore %>
+<% model_name ||= f.object.class.model_name.param_key %>
 <% form_field_name = "#{model_name}[#{field_name.to_s}]" %>
 <% suggestions ||= [] %>
 <% suggestions_url ||= nil %>
@@ -24,7 +24,7 @@ render :partial => 'common/multiple_input', :locals => {:field_name => 'keywords
 <% classes += ' hidden' if hidden %>
 <% classes += ' has-error' if errors.size > 0 %>
 
-<div class=<%= classes %> title='<%= title %>'>
+<div class="<%= classes -%>" title="<%= title -%>" id="<%= "multi_input_#{field_name}" -%>">
   <% if required %>
     <label class="control-label string required">
       <abbr title="required">*</abbr>

@@ -11,7 +11,7 @@
     <% content_for :buttons do %>
       <!-- Register button -->
       <%= link_to new_event_path, class: 'btn btn-primary' do %>
-        Register event
+        <%= t('register.buttons.events') %>
       <% end %>
       <!-- Info -->
       <%= info_button("What are events in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>

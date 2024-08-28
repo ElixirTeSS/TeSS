@@ -1,4 +1,4 @@
-<% features = ['events', 'materials', 'workflows', 'trainers'].select { |f| TeSS::Config.feature[f] } %>
+<% features = ['events', 'materials', 'learning_paths', 'trainers'].select { |f| TeSS::Config.feature[f] } %>
 
 <section id="catalogue">
   <h2 class="text-center"><%= t('home.catalogue.title') %></h2>
@@ -8,7 +8,7 @@
       <li class="resource-type">
         <%= link_to polymorphic_path(feature), class: 'link-overlay' do %>
           <div class="resource-type-title">
-            <%= image_tag(asset_path("modern/icons/#{feature}-icon.svg"), alt: feature.titleize) %>
+            <%= image_tag(asset_path("modern/icons/#{feature.dasherize}-icon.svg"), alt: feature.titleize) %>
             <h3><%= t("features.#{feature}.long").titleize %></h3>
           </div>
 

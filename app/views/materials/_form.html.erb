@@ -21,7 +21,7 @@
   <hr />
 
   <!-- Field: Resource Type -->
-  <%= f.multi_input :resource_type, label: 'Resource types', errors: @material.errors[:material_types],
+  <%= f.multi_input :resource_type, label: 'Resource types', errors: @material.errors[:resource_type],
                     title: t('materials.hints.resource_type'), visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Scientific Topics -->

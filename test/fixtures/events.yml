@@ -11,6 +11,7 @@ one:
   start: 2015-11-23 10:16:33
   end: 2015-11-23 10:16:33
   sponsors: ["MyString"]
+  language: 'en'
   venue: MyText
   city: MyString
   county: MyString
@@ -101,7 +102,7 @@ iann_event:
   eligibility: [ registration_of_interest ]
 
 scraper_user_event:
-  title: material owned by scraper'
+  title: material owned by scraper
   url: http://myurl.com
   description: 'this is my material'
   user: scraper_user
