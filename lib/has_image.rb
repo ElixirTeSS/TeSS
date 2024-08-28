@@ -48,7 +48,8 @@ module HasImage
             self.errors.delete(:image_content_type)
           rescue URI::InvalidURIError
             return
-          rescue Errno::ECONNREFUSED, OpenURI::HTTPError, OpenSSL::SSL::SSLError
+          rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH, OpenURI::HTTPError, OpenSSL::SSL::SSLError,
+            Net::OpenTimeout, Net::ReadTimeout, SocketError
             self.errors.add(:image_url, 'could not be accessed')
           rescue PrivateAddressCheck::PrivateConnectionAttemptedError
             self.errors.add(:image_url, 'could not be accessed') # Keep the error message the same as above
