@@ -141,9 +141,7 @@ namespace :tess do
 
   desc 'run LLM post processing'
   task llm_post_processing: :environment do
-    return unless TeSS::Config.llm_scraper['model_version'].present?
-
-    Llm.post_processing_task
+    Llm.post_processing_task if TeSS::Config.llm_scraper['model_version'].present?
   end
 
   desc 'open all events to being llm processed again'
