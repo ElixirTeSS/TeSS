@@ -28,7 +28,7 @@
   classes += ' hidden' if hidden
 %>
 
-<div class=<%= classes-%>>
+<div class="<%= classes -%>">
   <%= f.label field_name %><%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
 
   <%= content_tag(:div, data: data) do %>

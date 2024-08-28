@@ -65,6 +65,13 @@
 <%= display_attribute(resource, :remote_updated_date) if resource.respond_to?(:remote_updated_date) %>
 <%= display_attribute(resource, :scientific_topics) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
 
+<% if resource.is_a?(LearningPath) %>
+  <%= display_attribute(resource, :status) { |value| material_status_title_for_label(value) } %>
+  <%= display_attribute(resource, :target_audience) { |values| values.map { |x| target_audience_title_for_label(x) }.join(', ') } %>
+  <%= display_attribute(resource, :prerequisites, markdown: true) %>
+  <%= display_attribute(resource, :learning_objectives, markdown: true) %>
+<% end %>
+
 <% if resource.respond_to?(:operations) -%>
   <%= display_attribute(resource, :operations) { |values| values.map { |x| x.preferred_label }.join(', ') } %>
 <% end %>

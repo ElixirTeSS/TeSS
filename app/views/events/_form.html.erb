@@ -3,7 +3,7 @@
   <%= render partial: 'common/error_summary', locals: { resource: @event } %>
 
   <!-- Field: Disabled -->
-  <%= f.input :visible, input_html: { title: t('events.hints.visible') } %>
+  <%= f.input :visible, label: 'Show this event?', input_html: { title: t('events.hints.visible') } %>
 
   <!-- Field: presence -->
   <div class="form-group">
@@ -49,6 +49,10 @@
 
   <!-- Field: Duration -->
   <%= f.input :duration, as: :string, input_html: { title: t('events.hints.duration') } %>
+
+  <!-- Field: Language -->
+  <%= f.input :language, collection: LanguageDictionary.instance.options_for_select,
+      prompt: t('events.prompts.language'), include_blank: true, input_html: { title: t('events.hints.language') } %>
 
   <!-- Field: Prerequisites -->
   <%= f.input :prerequisites, as: :markdown_area, input_html: { rows: '3', title: t('events.hints.prerequisites') } %>

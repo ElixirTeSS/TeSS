@@ -16,4 +16,15 @@ class BanTest < ActiveSupport::TestCase
     assert user.shadowbanned?
     assert event.reload.from_shadowbanned?
   end
+
+  test 'banner nullified when user destroyed' do
+    user = users(:shadowbanned_user)
+    ban = user.ban
+    banner = ban.banner
+    assert banner
+
+    banner.destroy!
+
+    assert_nil ban.reload.banner
+  end
 end

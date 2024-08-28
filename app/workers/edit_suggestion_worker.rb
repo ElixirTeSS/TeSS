@@ -72,7 +72,10 @@ class EditSuggestionWorker
         end
       end
     rescue StandardError => exception
-      logger.error("Suggestible #{suggestible.inspect} threw an exception when checking BioPortal: #{exception}\nTrace: \n\t#{exception.backtrace.join("\n\t")}\n\nBioPortal response (#{response.code}):\n#{response.body}")
+      error = "Suggestible #{suggestible.inspect} threw an exception when checking BioPortal: #{exception}\n"+
+        "Trace: \n\t#{exception.backtrace.join("\n\t")}"
+      error += "\n\nBioPortal response (#{response.code}):\n#{response.body}" if response
+      logger.error(error)
     end
 
     # Create some topics and an edit_suggestion if some annotations were returned

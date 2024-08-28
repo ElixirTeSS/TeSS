@@ -403,6 +403,24 @@ class EventTest < ActiveSupport::TestCase
     assert event.valid?
   end
 
+  test 'validates language if present' do
+    event = Event.new(title: 'An event', url: 'https://myevent.com', language: 'en', user: users(:regular_user))
+    assert event.valid?
+
+    # Okay if not present
+    event.language = nil
+    assert event.valid?
+
+    # Okay if blank
+    event.language = ''
+    assert event.valid?
+
+    # Not okay if not a known ISO-639-2 code
+    event.language = 'yo'
+    refute event.valid?
+    assert event.errors.added?(:language, 'must be a controlled vocabulary term')
+  end
+
   test 'validates URL format' do
     event = Event.new(title: 'An event', timezone: 'UTC', user: users(:regular_user))
 
@@ -495,13 +513,13 @@ class EventTest < ActiveSupport::TestCase
     event = Event.new(
       title: 'An event',
       timezone: 'UTC',
-      user: user,
+      user:,
       url: 'https://events.com/1',
       keywords: ['fun times'],
       nodes: [node],
       external_resources_attributes: { '0' => { title: 'test', url: 'https://external-resource.com' } },
       materials: [material],
-      scientific_topic_names: ['Proteins', 'DNA'],
+      scientific_topic_names: %w[Proteins DNA],
       operation_names: ['Variant calling']
     )
 
@@ -524,7 +542,7 @@ class EventTest < ActiveSupport::TestCase
               assert_nil dup.url
               assert_equal [material], dup.materials
               assert_equal [node], dup.nodes
-              assert_equal ['Proteins', 'DNA'], dup.scientific_topic_names
+              assert_equal %w[Proteins DNA], dup.scientific_topic_names
               assert_equal ['Variant calling'], dup.operation_names
               assert_equal 1, dup.external_resources.length
               assert_equal 'test', dup.external_resources.first.title
@@ -670,5 +688,24 @@ class EventTest < ActiveSupport::TestCase
     @event.save!
     assert_equal ['Fold recognition', 'Domain prediction', 'Fold prediction', 'Protein domain prediction',
                   'Protein fold prediction', 'Protein fold recognition'], @event.reload.operations_and_synonyms
+  end
+
+  test 'can add an llm_interaction to an event' do
+    e = events(:scraper_user_event)
+    l = llm_interactions(:scrape)
+    e.llm_interaction = l
+    e.save!
+    assert_equal e.llm_interaction.id, l.id
+    assert_equal l.event_id, e.id
+  end
+
+  test 'can destroy an llm_interaction with an event' do
+    e = events(:scraper_user_event)
+    l = llm_interactions(:scrape)
+    e.llm_interaction = l
+    e.save!
+    assert_difference 'LlmInteraction.count', -1 do
+      e.destroy!
+    end
   end
 end

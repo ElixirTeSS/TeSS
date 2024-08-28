@@ -1,0 +1,126 @@
+<%= simple_form_for @learning_path, html: { id: 'learning_path_form', class: 'prevent-enter-submit' } do |f| %>
+
+  <%= render partial: 'common/error_summary', locals: { resource: @learning_path } %>
+
+  <% # Required Fields    -%>
+
+  <!-- Field: Title -->
+  <%= f.input :title, as: :string, input_html: { title: t('learning_paths.hints.title'), placeholder: t('learning_paths.hints.title') } %>
+
+  <!-- Field: Description -->
+  <%= f.input :description, as: :markdown_area, label: 'Description',
+              input_html: { rows: '5', title: t('learning_paths.hints.description') } %>
+
+  <!-- Field: Scientific Topics -->
+  <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
+                      id_field: :uri, label_field: :preferred_label,
+                      visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
+
+  <!-- Field: Keywords -->
+  <%= f.multi_input :keywords, title: t('learning_paths.hints.keywords'), visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
+
+  <!-- Field: Licence -->
+  <%= f.input :licence, collection: licence_options_for_select, as: :grouped_select, group_method: :last, group_label_method: :first,
+              input_html: { title: t('learning_paths.hints.licence'), class: 'js-select2' },
+              prompt: 'Select a licence...', errors: @learning_path.errors[:licence],
+              visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
+
+  <!-- Field: Status -->
+  <%= f.input :status, collection: MaterialStatusDictionary.instance.options_for_select, prompt: 'Select a status...',
+              errors: @learning_path.errors[:status], input_html: { title: t('learning_paths.hints.status') },
+              visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
+
+  <!-- Field: DOI -->
+  <%= f.input :doi, input_html: { title: t('learning_paths.hints.doi') },
+              visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
+
+  <!-- Field: Provider -->
+  <%= f.input :content_provider_id, collection: current_user.get_editable_providers, label_method: :title, value_method: :id,
+              include_blank: true, label: t('learning_paths.hints.providers'),
+              visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
+
+  <!-- Field: Authors -->
+  <%= f.multi_input :authors, suggestions_url: people_autocomplete_suggestions_path, title: t('learning_paths.hints.authors'),
+                    visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
+
+  <!-- Field: Contributors -->
+  <%= f.multi_input :contributors, suggestions_url: people_autocomplete_suggestions_path, title: t('learning_paths.hints.contributors'),
+                    visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
+
+  <!-- Field: Target Audience -->
+  <%= f.multi_input :target_audience, label: 'Target audiences', errors: @learning_path.errors[:target_audience],
+                    title: t('events.hints.targets'), visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
+
+  <!-- Field: Prerequisites -->
+  <%= f.input :prerequisites, as: :markdown_area,
+              input_html: { rows: '3', title: t('learning_paths.hints.prerequisites') },
+              visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
+
+  <!-- Field: Learning Objectives-->
+  <%= f.input :learning_objectives, as: :markdown_area,
+              input_html: { rows: '3', title: t('learning_paths.hints.objectives') },
+              visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
+
+  <!-- Nodes: check feature enabled -->
+  <% if TeSS::Config.feature['nodes'] %>
+    <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes' %>
+  <% end %>
+
+  <hr>
+
+  <%
+    form_field_name = 'learning_path[topic_links_attributes]'
+    items = @learning_path.topic_links
+    data = { role: 'collection-items-group',
+             url: learning_path_topics_path,
+             prefix: form_field_name,
+             'label-field' => 'title',
+             'id-field' => 'id',
+             'resource-type' => 'Topic',
+             template: 'autocompleter/learning_path_topic' }
+    transform_function ||= nil
+    group_by ||= nil
+    data['transform-function'] = transform_function if transform_function
+    data['group-by'] = group_by if group_by
+
+    json = items.map do |item|
+      { item: { id: item.id, order: item.order, resource_id: item.topic_id, resource_type: 'Topic',
+                title: item.topic.title, url: polymorphic_path(item.topic) },
+        prefix: form_field_name }
+    end.to_json
+
+    placeholder_text = "Add a new topic"
+  %>
+
+  <div class="form-group">
+    <%= f.label 'Topics' %>
+
+    <p class="help-block">
+      Re-order items by clicking and dragging the icon on the left-hand side.
+    </p>
+
+    <%= content_tag(:div, data: data) do %>
+      <%= content_tag :script, json.html_safe, type: 'application/json', data: { role: 'autocompleter-existing' } %>
+
+      <ul data-role="autocompleter-list" class="collection-items">
+        <%# Populated via javascript from the JSON above %>
+      </ul>
+
+      <input type="text" data-role="autocompleter-input" autocomplete="off" class="form-control"
+             placeholder="<%= placeholder_text %>">
+    <% end %>
+  </div>
+
+  <hr>
+
+  <%= f.input :public,
+              hint: "Un-ticking this box will hide this learning path from anyone who isn't the creator or a collaborator." %>
+
+  <!-- Form Buttons -->
+  <div class="form-group">
+    <%= f.submit (f.object.new_record? ? "Register" : "Update") + " learning path", :class => 'btn btn-primary mr-2' %>
+    <%= link_to 'Back', :back, class: "btn btn-default mr-2" %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                learning_paths_path, :class => 'btn btn-default' %>
+  </div>
+<% end %>

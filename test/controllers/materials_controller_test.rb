@@ -1370,19 +1370,19 @@ class MaterialsControllerTest < ActionController::TestCase
       sign_in users(:regular_user)
       get :new
       assert_response :success
-      assert_select "div.hidden" do |div|
-        assert_select "label", text: 'Licence', count: 1
-        assert_select "label", text: 'Status', count: 0
+      assert_select 'div.hidden' do |div|
+        assert_select 'label', text: 'Licence', count: 1
+        assert_select 'label', text: 'Status', count: 0
       end
-      assert_select 'div[hidden]' do |el|
-        assert_select el, "label", text: 'Resource types', count: 1
-        assert_select el, "label", text: 'Scientific topics', count: 1
-        assert_select el, "label", text: 'Keywords', count: 0
-        assert_select el, "label", text: 'Operations', count: 0
+      assert_select 'div.hidden' do |el|
+        assert_select el, 'label', text: 'Resource types', count: 1
+        assert_select el, 'label', text: 'Scientific topics', count: 1
+        assert_select el, 'label', text: 'Keywords', count: 0
+        assert_select el, 'label', text: 'Operations', count: 0
       end
-      assert_select "label", {:count=>1, :text=>"Status"}
-      assert_select "label", {:count=>1, :text=>"Keywords"}
-      assert_select "label", {:count=>1, :text=>"Operations"}
+      assert_select 'label', { count: 1, text: 'Status' }
+      assert_select 'label', { count: 1, text: 'Keywords' }
+      assert_select 'label', { count: 1, text: 'Operations' }
     end
   end
 
@@ -1426,5 +1426,46 @@ class MaterialsControllerTest < ActionController::TestCase
         assert_response :unprocessable_entity
       end
     end
+  end
+
+  test 'should show unverified users material to themselves' do
+    sign_in users(:unverified_user)
+    material = users(:unverified_user).materials.create!(description: @material.description,
+                                              title: @material.title, url: 'http://example.com/dodgy-event',
+                                              doi: 'https://doi.org/10.10067/SEA.2019.22', status: 'active',
+                                              licence: 'CC-BY-4.0', contact: 'default contact',
+                                              keywords: %w{ dodgy event unverified user })
+
+    get :show, params: { id: material }
+
+    assert_response :success
+    assert_select '.unverified-notice',
+                  text: 'This material will not be publicly visible until your registration has been approved by an administrator.'
+  end
+
+  test 'should show unverified users material to admin' do
+    material = users(:unverified_user).materials.create!(description: @material.description,
+                                              title: @material.title, url: 'http://example.com/dodgy-event',
+                                              doi: 'https://doi.org/10.10067/SEA.2019.22', status: 'active',
+                                              licence: 'CC-BY-4.0', contact: 'default contact',
+                                              keywords: %w{ dodgy event unverified user })
+    sign_in users(:admin)
+
+    get :show, params: { id: material }
+
+    assert_response :success
+    assert_select '.unverified-notice',
+                  text: 'This material will not be publicly visible until your registration has been approved by an administrator.'
+  end
+
+  test 'should not show unverified users material anon user' do
+    material = users(:unverified_user).materials.create!(description: @material.description,
+                                              title: @material.title, url: 'http://example.com/dodgy-event',
+                                              doi: 'https://doi.org/10.10067/SEA.2019.22', status: 'active',
+                                              licence: 'CC-BY-4.0', contact: 'default contact',
+                                              keywords: %w{ dodgy event unverified user })
+
+    get :show, params: { id: material }
+    assert_response :forbidden
   end
 end

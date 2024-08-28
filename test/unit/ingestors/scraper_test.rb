@@ -263,6 +263,31 @@ class ScraperTest < ActiveSupport::TestCase
     refute logfile_contains(logfile, "Source URL[#{approval_requested_source.url}]")
   end
 
+  test 'scrape a specific source' do
+    provider = content_providers(:portal_provider)
+    source = Source.create!(url: 'https://somewhere.com/stuff', method: 'bioschemas',
+                            enabled: true, approval_status: 'approved',
+                            content_provider: provider, user: users(:admin))
+    file = Rails.root.join('test', 'fixtures', 'files', 'ingestion', 'nbis-course-instances.json')
+    WebMock.stub_request(:get, source.url).to_return(status: 200, headers: {}, body: file.read)
+    scraper = Scraper.new
+
+    refute provider.events.where(url: 'https://uppsala.instructure.com/courses/75565').exists?
+    assert_difference('provider.events.count', 23) do
+      scraper.scrape(source)
+    end
+    assert provider.events.where(url: 'https://uppsala.instructure.com/courses/75565').exists?
+    source.reload
+    assert_equal 23, source.records_read
+    assert_equal 23, source.records_written
+    assert_equal 23, source.resources_added
+    assert_equal 0, source.resources_updated
+    assert_equal 0, source.resources_rejected
+    assert source.finished_at > 1.day.ago
+    assert_includes source.log, 'Bioschemas summary'
+    assert_includes source.log, '- CourseInstances: 23'
+  end
+
   private
 
   def check_task_finished(logfile)

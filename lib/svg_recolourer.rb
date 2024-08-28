@@ -7,7 +7,7 @@ class SvgRecolourer
   }
 
   # Paths in which SVGs should be recoloured
-  PATHS = ['images/modern/icons']
+  PATHS = ['images/modern/icons', 'images/modern/learning_paths']
 
   def initialize(filename, &block)
     @filename = filename

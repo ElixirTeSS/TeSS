@@ -747,6 +747,14 @@ class EventsControllerTest < ActionController::TestCase
     # find the one which will be first
     assert_equal Event.count, rss_events.items.count
     assert Event.friendly.find(rss_events.items.first.link.split('/').last.strip)
+
+    event = rss_events.items.detect { |i| i.link == event_url(events(:event_with_external_resource)) }
+    assert_not_nil event
+    assert_equal 'External Resource Event', event.title
+    description = event.description
+    assert_includes description, '12 December 2016 @ 10:00 - 12:00'
+    assert_includes description, 'this is my material'
+    assert_includes description, 'AnOrganizer'
   end
 
   test 'should include parameters in RSS file' do
@@ -1504,5 +1512,61 @@ class EventsControllerTest < ActionController::TestCase
       assert_response :success
       assert_select '.small-avatar', count: 0
     end
+  end
+
+  test 'should show unverified users event to themselves' do
+    sign_in users(:unverified_user)
+    event = users(:unverified_user).events.create!(title: 'Hello', description: 'World',
+                                                   url: 'https://example.com/event')
+
+    get :show, params: { id: event }
+
+    assert_response :success
+    assert_select '.unverified-notice',
+                  text: 'This event will not be publicly visible until your registration has been approved by an administrator.'
+  end
+
+  test 'should show unverified users event to admin' do
+    event = users(:unverified_user).events.create!(title: 'Hello', description: 'World',
+                                                   url: 'https://eexample.com/event')
+    sign_in users(:admin)
+
+    get :show, params: { id: event }
+
+    assert_response :success
+    assert_select '.unverified-notice',
+                  text: 'This event will not be publicly visible until your registration has been approved by an administrator.'
+  end
+
+  test 'should not show unverified users event anon user' do
+    event = users(:unverified_user).events.create!(title: 'Hello', description: 'World',
+                                                   url: 'https://example.com/event')
+
+    get :show, params: { id: event }
+    assert_response :forbidden
+  end
+
+  test 'should create event without language specified' do
+    sign_in users(:regular_user)
+    assert_difference('Event.count', 1) do
+      post :create, params: { event: { description: @event.description, title: @event.title, url: @event.url,
+                                       language: '' } }
+    end
+    assert_redirected_to event_path(assigns(:event))
+    refute assigns(:event).language.present?
+  end
+
+  test 'should display language of instruction' do
+    get :show, params: { id: events(:one) }
+    assert_response :success
+    assert_select 'strong', text: 'Language of instruction:'
+  end
+
+  test 'should not display language of instruction if not specified' do
+    event = users(:regular_user).events.create!(title: 'No language', url: 'https://example.com/nolang', language: '')
+
+    get :show, params: { id: event }
+    assert_response :success
+    assert_select 'strong', text: 'Language of instruction:', count: 0
   end
 end
