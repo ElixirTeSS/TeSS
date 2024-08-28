@@ -53,6 +53,6 @@ class DansIngestorTest < ActiveSupport::TestCase
     assert_equal 'Amsterdam', event.timezone
     assert_equal ['Social Sciences and Humanities', 'Training &amp; Outreach', 'Consultancy'], event.keywords
     assert_equal Time.zone.parse('Mon, 13 Feb 2023 09:00:00.000000000 UTC +00:00'), event.start
-    assert_nil event.end
+    assert_equal Time.zone.parse('Mon, 13 Feb 2023 17:00:00.000000000 UTC +00:00'), event.end
   end
 end
