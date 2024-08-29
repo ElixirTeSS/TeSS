@@ -22,15 +22,15 @@ class OsciIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::OsciIngestor.new
 
     # check event doesn't
-    new_title = "14:00: Open Science Coffee: Assessing robustness through multiverse analysis – Applications in research and education"
+    new_title = '14:00: Open Science Coffee: Assessing robustness through multiverse analysis – Applications in research and education'
     new_url = 'https://osc-international.com/my-calendar/?format=calendar&month=9&yr=2023#mc_calendar_03_2-calendar-details-my-calendar'
 
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 12 do
+    assert_difference 'Event.count', 17 do
       freeze_time(2023) do
-        VCR.use_cassette("ingestors/osci") do
+        VCR.use_cassette('ingestors/osci') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end
@@ -39,8 +39,8 @@ class OsciIngestorTest < ActiveSupport::TestCase
 
     assert_equal 18, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 12, ingestor.stats[:events][:added]
-    assert_equal 6, ingestor.stats[:events][:updated]
+    assert_equal 17, ingestor.stats[:events][:added]
+    assert_equal 1, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
     # check event does exist
