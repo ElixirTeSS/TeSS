@@ -10,6 +10,10 @@
     <h2><%=t("features.learning_paths.long")%></h2>
 
     <% content_for :buttons do %>
+      <!-- Subscribe button -->
+      <% if TeSS::Config.feature['subscription'] %>
+        <%= render partial: 'subscriptions/subscribe_button', locals: { type: LearningPath.name } %>
+      <% end %>
       <!-- Register button -->
       <% if policy(LearningPath).create? %>
         <%= link_to new_learning_path_path, class: 'btn btn-primary' do %>
@@ -28,8 +32,7 @@
     <% end %>
 
     <%= render partial: "search/common/search_panel", locals: { resources: @learning_paths_results,
-                                                                resource_type: LearningPath,
-                                                                show_subscription_button: true } %>
+                                                                resource_type: LearningPath } %>
 
     <%= render partial: 'common/masonry_grid', locals: { objects: @learning_paths } %>
 

@@ -10,6 +10,10 @@
     <h2><%=t("features.elearning_materials.long")%></h2>
 
     <% content_for :buttons do %>
+      <!-- Subscribe button -->
+      <% if TeSS::Config.feature['subscription'] %>
+        <%= render partial: 'subscriptions/subscribe_button', locals: { type: ElearningMaterial.name } %>
+      <% end %>
       <!-- Register button -->
       <%= link_to new_material_path, class: 'btn btn-primary' do %>
         Register training material
@@ -21,8 +25,7 @@
     <% end %>
 
     <%= render partial: "search/common/search_panel", locals: { resources: @materials_results,
-                                                                resource_type: ElearningMaterial,
-                                                                show_subscription_button: true } %>
+                                                                resource_type: ElearningMaterial } %>
 
     <%= render partial: 'common/masonry_grid', locals: { objects: @materials } %>
 

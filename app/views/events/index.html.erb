@@ -9,6 +9,10 @@
   <div id="content">
     <h2><%=t("features.events.long")%></h2>
     <% content_for :buttons do %>
+      <!-- Subscribe button -->
+      <% if TeSS::Config.feature['subscription'] %>
+        <%= render partial: 'subscriptions/subscribe_button', locals: { type: Event.name } %>
+      <% end %>
       <!-- Register button -->
       <%= link_to new_event_path, class: 'btn btn-primary' do %>
         <%= t('register.buttons.events') %>
@@ -32,8 +36,7 @@
     <% end %>
 
     <%= render partial: "search/common/search_panel", locals: { resources: @events_results,
-                                                                resource_type: Event,
-                                                                show_subscription_button: true } %>
+                                                                resource_type: Event } %>
 
     <%# ACTUAL RESULTS LIST %>
     <% unless @events.blank? %>
