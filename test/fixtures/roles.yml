@@ -23,3 +23,7 @@ basic_user:
 unverified_user: # Content requires approval before being visible
   name: unverified_user
   title: New user
+
+learning_path_curator:
+  name: learning_path_curator
+  title: Learning path curator

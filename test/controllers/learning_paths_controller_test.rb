@@ -63,6 +63,10 @@ class LearningPathsControllerTest < ActionController::TestCase
     get :new
     assert_response :success
 
+    sign_in users(:learning_path_curator)
+    get :new
+    assert_response :success
+
     sign_in users(:admin)
     get :new
     assert_response :success
@@ -78,6 +82,12 @@ class LearningPathsControllerTest < ActionController::TestCase
   #logged in but insufficient permissions = ERROR
   test 'should get edit for learning_path owner' do
     sign_in @learning_path.user
+    get :edit, params: { id: @learning_path }
+    assert_response :success
+  end
+
+  test 'should get edit for learning path curator' do
+    sign_in users(:learning_path_curator)
     get :edit, params: { id: @learning_path }
     assert_response :success
   end
@@ -99,6 +109,14 @@ class LearningPathsControllerTest < ActionController::TestCase
   #CREATE TEST
   test 'should create learning_path for curator' do
     sign_in users(:curator)
+    assert_difference('LearningPath.count') do
+      post :create, params: { learning_path: { title: @learning_path.title, description: @learning_path.description } }
+    end
+    assert_redirected_to learning_path_path(assigns(:learning_path))
+  end
+
+  test 'should create learning_path for learning_path_curator' do
+    sign_in users(:learning_path_curator)
     assert_difference('LearningPath.count') do
       post :create, params: { learning_path: { title: @learning_path.title, description: @learning_path.description } }
     end
@@ -339,8 +357,8 @@ class LearningPathsControllerTest < ActionController::TestCase
     assert_select 'a.btn[href=?]', learning_path_path(@learning_path), count: 0 #No Edit
   end
 
-  test 'show action buttons when curator' do
-    sign_in users(:curator)
+  test 'show action buttons when learning_path_curator' do
+    sign_in users(:learning_path_curator)
 
     get :show, params: { id: @learning_path }
 
@@ -365,7 +383,7 @@ class LearningPathsControllerTest < ActionController::TestCase
   end
 
   test 'should allow access to private learning_paths if privileged' do
-    sign_in users(:curator)
+    sign_in users(:learning_path_curator)
     get :show, params: { id: learning_paths(:in_development_learning_path) }
     assert_response :success
   end
