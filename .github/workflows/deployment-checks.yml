@@ -1,4 +1,4 @@
-name: Asset compilation
+name: Deployment checks
 
 on: [push, pull_request]
 
@@ -35,3 +35,5 @@ jobs:
           bundle exec rake db:setup
       - run: bundle exec rake assets:precompile
         name: Run asset compilation
+      - run: bundle exec whenever --update-crontab --set environment="$ENV"
+        name: Run whenever update
