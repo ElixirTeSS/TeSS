@@ -14,7 +14,7 @@ class EventSerializer < ApplicationSerializer
              :target_audience, :eligibility, :recognition, :learning_objectives,
              :prerequisites, :tech_requirements,
 
-             :source, :slug, :last_scraped, :scraper_record, :created_at, :updated_at
+             :slug, :last_scraped, :scraper_record, :created_at, :updated_at
 
   attribute :report, if: -> { policy(object).view_report? }
 

@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class MaterialsControllerTest < ActionController::TestCase
-
   include Devise::Test::ControllerHelpers
   include ActiveJob::TestHelper
 
@@ -9,6 +8,8 @@ class MaterialsControllerTest < ActionController::TestCase
     mock_images
     mock_biotools
     @material = materials(:good_material)
+    @event = events(:one)
+    @collection = collections(:two)
     @user = users(:regular_user)
     @material.user_id = @user.id
     @material.save!
@@ -368,6 +369,8 @@ class MaterialsControllerTest < ActionController::TestCase
 
   test 'should show material as json' do
     @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @material.events << events(:one)
+    @material.collections << collections(:one)
     @material.save!
 
     get :show, params: { id: @material, format: :json }
@@ -381,6 +384,8 @@ class MaterialsControllerTest < ActionController::TestCase
 
   test 'should show material as json-api' do
     @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @material.events << @event
+    @material.collections << @collection
     @material.save!
 
     get :show, params: { id: @material, format: :json_api }
@@ -395,6 +400,8 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal @material.title, body['data']['attributes']['title']
     assert_equal @material.scientific_topic_uris.first, body['data']['attributes']['scientific-topics'].first['uri']
     assert_equal material_path(assigns(:material)), body['data']['links']['self']
+    assert_equal @event.id.to_s, body['data']['relationships']['events']['data'][0]['id']
+    assert_equal @collection.id.to_s, body['data']['relationships']['collections']['data'][0]['id']
   end
 
   #UPDATE TEST
