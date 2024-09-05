@@ -1,6 +1,6 @@
 <% community = Community.for_country(current_user_country) %>
 <% if community %>
-  <% country_name = current_user_country.dig('names', 'en') %>
+  <% country_name = current_user_country.dig('names', I18n.locale.to_s) || current_user_country.dig('names', 'en')%>
   <% country_name = "the #{country_name}" if country_name.start_with?('United') %>
   <%= link_to community_path(community.id), class: 'link-overlay mb-4', id: 'community-banner' do %>
     <div class="resource-type-title">
