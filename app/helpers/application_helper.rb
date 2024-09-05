@@ -691,9 +691,4 @@ module ApplicationHelper
     content_tag('div', t('warnings.unverified', resource_type: resource.model_name.human.downcase),
                 class: 'alert alert-warning mb-4 unverified-notice')
   end
-
-  def current_user_country
-    remote_ip = ENV.fetch('MOCK_IP') { Rails.env.production? ? request.remote_ip : '130.88.0.0' }
-    Locator.instance.lookup(remote_ip)&.dig('country')
-  end
 end

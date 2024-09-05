@@ -311,4 +311,20 @@ class StaticControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test 'should not show registration button if disabled for country' do
+    with_settings({ blocked_countries: ['gb'] }) do
+      Locator.instance.stub(:lookup, { 'country' => { 'iso_code' => 'GB' } }) do
+        get :home
+        assert_response :success
+        assert_select '.dropdown-item a', text: 'Register', count: 0
+      end
+
+      Locator.instance.stub(:lookup, { 'country' => { 'iso_code' => 'FR' } }) do
+        get :home
+        assert_response :success
+        assert_select '.dropdown-item a', text: 'Register', count: 1
+      end
+    end
+  end
 end
