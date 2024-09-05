@@ -38,14 +38,8 @@
 
 <%= render partial: 'static/home/promo_blocks' if TeSS::Config.site.dig('home_page', 'promo_blocks') %>
 
-<% cache(['home', 'upcoming_events', @events]) do %>
-  <%= render partial: 'static/home/upcoming_events' %>
-<% end if @events.present? %>
+<%= render partial: 'static/home/upcoming_events' if @events.present? %>
 
-<% cache(['home', 'latest_materials', @materials]) do %>
-  <%= render partial: 'static/home/latest_materials' %>
-<% end if @materials.present? %>
+<%= render partial: 'static/home/latest_materials' if @materials.present? %>
 
-<% cache(['home', 'featured_trainer', @featured_trainer]) do %>
-  <%= render partial: 'static/home/featured_trainer' %>
-<% end if @featured_trainer.present? %>
+<%= render partial: 'static/home/featured_trainer' if TeSS::Config.site.dig('home_page', 'featured_trainer') %>
