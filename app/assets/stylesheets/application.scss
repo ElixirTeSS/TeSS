@@ -1009,3 +1009,9 @@ td.day .calendar-text {
   max-height: 20pc;
   overflow-y: scroll;
 }
+span.translation_missing {
+  background-color: #ffcccc;
+}
+span.translation_present {
+  background-color: #ccffcc;
+}

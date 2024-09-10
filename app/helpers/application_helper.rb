@@ -707,4 +707,15 @@ module ApplicationHelper
                   back_to: url_for(self_url_params)
     menu_item text, url, class: "ml-3"
   end
+
+  if ENV["HIGHLIGHT_TRANSLATIONS"]
+    def t(...)
+      # Note: missing translation will be a span contained in this one
+      # (So the CSS of that span will get precedence).
+      super do |translation, resolved_key|
+        content_tag(:span, translation, title: resolved_key,
+                   class: "translation_present")
+      end
+    end
+  end
 end
