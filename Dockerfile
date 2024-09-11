@@ -1,4 +1,4 @@
-ARG RUBY_VERSION=3.2.2
+ARG RUBY_VERSION=3.2.5
 
 #use ruby base image
 FROM ruby:$RUBY_VERSION-slim AS base
