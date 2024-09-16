@@ -26,18 +26,24 @@ module Ingestors
     private
 
     def process_dcc(url)
-      event_page = Nokogiri::HTML5.parse(open_url(url.to_s, raise: true)).css("div[class='archive__content grid']")[0].css("div[class='column span-4-sm span-8-md span-6-lg']")
+      # event_page = Nokogiri::HTML5.parse(open_url(url.to_s, raise: true)).css('main > .archive__content.grid > .column.span-4-sm.span-4-md.span-6-lg')
+      event_page = Nokogiri::HTML5.parse(open_url(url.to_s, raise: true)).css('main > article > .archive__grid > .column > .archive__content > .column')
       event_page.each do |event_data|
         event = OpenStruct.new
 
-        event.url = event_data.css("h2[class='post-item__title h5']")[0].css("a")[0].get_attribute('href')
-        event.title = event_data.css("h2[class='post-item__title h5']")[0].css("a")[0].text.strip
+        event.url = event_data.css('h2.post-item__title > a')[0].get_attribute('href')
+        event.title = event_data.css('h2.post-item__title > a')[0].text.strip
 
-        start_str = event_data.css("ul[class='post-item__meta']")[0].css("li")[0].text.strip.split('—')
-        event.start = Time.zone.parse(start_str[0])
-        event.end = Time.zone.parse(start_str[0]).beginning_of_day + Time.zone.parse(start_str[1]).seconds_since_midnight.seconds
+        start_str = event_data.css('ul.post-item__meta > li')[0].text.strip.split('—')
+        if start_str[1].include?(':')
+          event.start = Time.zone.parse(start_str[0])
+          event.end = Time.zone.parse(start_str[0]).beginning_of_day + Time.zone.parse(start_str[1]).seconds_since_midnight.seconds
+        else
+          event.start = Time.zone.parse(start_str[0])
+          event.end = Time.zone.parse(start_str[1])
+        end
 
-        event.venue = event_data.css("ul[class='post-item__meta']")[0].css("li")[1].text.strip
+        event.venue = event_data.css('ul.post-item__meta > li')[1].text.strip
 
         event.source = 'DCC'
         event.timezone = 'Amsterdam'
