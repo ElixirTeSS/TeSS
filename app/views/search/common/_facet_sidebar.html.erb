@@ -13,11 +13,14 @@ Variable that should be available
 
 <%
   extras = if resource_type.name == 'Event'
-             [['Earliest', 'early'], ['Latest', 'late'], ['Most recent', 'new']]
+             [[t('sidebar.sort.values.earliest'), 'early'],
+              [t('sidebar.sort.values.latest'), 'late'],
+              [t('sidebar.sort.values.most_recent'), 'new']]
            elsif resource_type.name == 'Source'
-             [['Most recent', 'new'], ['Last finished', 'finished']]
+             [[t('sidebar.sort.values.most_recent'), 'new'],
+              [t('sidebar.sort.values.last_finished'), 'finished']]
            else
-             [['Most recent', 'new']]
+             [[t('sidebar.sort.values.most_recent'), 'new']]
            end %>
 
 <%= render partial: 'search/common/sort_by', locals: { resources: resource_type, extras: extras } %>
