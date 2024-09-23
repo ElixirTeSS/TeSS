@@ -85,8 +85,8 @@ class EdamOntologyTest < ActiveSupport::TestCase
     assert Edam::Ontology.instance.scoped_lookup_by_name('Proteins', OBO_EDAM.topics)
     refute Edam::Ontology.instance.scoped_lookup_by_name('Proteins', OBO_EDAM.operations)
 
-    refute Edam::Ontology.instance.scoped_lookup_by_name('Analysis', OBO_EDAM.topics)
-    assert Edam::Ontology.instance.scoped_lookup_by_name('Analysis', OBO_EDAM.operations)
+    refute Edam::Ontology.instance.scoped_lookup_by_name('Data analysis', OBO_EDAM.topics)
+    assert Edam::Ontology.instance.scoped_lookup_by_name('Data analysis', OBO_EDAM.operations)
 
     assert Edam::Ontology.instance.scoped_lookup_by_name('Sequence analysis', OBO_EDAM.topics)
     assert Edam::Ontology.instance.scoped_lookup_by_name('Sequence analysis', OBO_EDAM.operations)
@@ -96,9 +96,9 @@ class EdamOntologyTest < ActiveSupport::TestCase
 
     # Allow unscoping of the scoped lookup!
     assert Edam::Ontology.instance.scoped_lookup_by_name('Proteins', :_)
-    assert Edam::Ontology.instance.scoped_lookup_by_name('Analysis', :_)
+    assert Edam::Ontology.instance.scoped_lookup_by_name('Data analysis', :_)
 
     assert Edam::Ontology.instance.scoped_lookup_by_name('Proteins')
-    assert Edam::Ontology.instance.scoped_lookup_by_name('Analysis')
+    assert Edam::Ontology.instance.scoped_lookup_by_name('Data analysis')
   end
 end

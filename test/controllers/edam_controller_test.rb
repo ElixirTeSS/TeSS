@@ -49,7 +49,7 @@ class EdamControllerTest < ActionController::TestCase
     get :terms, params: { filter: 'data', format: :json }
     assert_response :success
     res = JSON.parse(response.body)
-    assert_equal 17, res.length
+    assert_equal 26, res.length
     assert_includes res.map { |t| t['preferred_label'] }, 'Database management'
   end
 
