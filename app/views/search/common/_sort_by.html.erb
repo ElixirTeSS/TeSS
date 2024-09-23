@@ -2,17 +2,19 @@
 Parameters:
 Extras - Array of Arrays with options for select
 e.g.
- [['Earliest', 'early'], ['Latest', 'late']]
+ [[t('sidebar.sort.values.earliest'), 'early'],
+  [t('sidebar.sort.values.latest'), 'late']]
 %>
 <% if defined? extras %>
     <% extras = extras.reverse! || false %>
 <% end %>
 
+
 <% options = [
-    ['Title ascending', 'asc'],
-    ['Title descending', 'desc'],
-    ['Last modified', 'mod'],
-  # ['Relevance', 'rel']
+    [t('sidebar.sort.values.title_ascending'), 'asc'],
+    [t('sidebar.sort.values.title_descending'), 'desc'],
+    [t('sidebar.sort.values.last_modified'), 'mod'],
+  # [t('sidebar.sort.values.relevance'), 'rel']
 ] %>
 
 <% if extras %>
@@ -21,7 +23,7 @@ e.g.
 <% end %>
 
 <ul class="unstyled nav-simple facet-sort-wrap">
-  <li><h4 class="nav-heading">Sort</h4></li>
+  <li><h4 class="nav-heading"><%= t('sidebar.sort.heading') %></h4></li>
   <li class="sidebar-group">
     <ul>
       <li class="facet-sort-group">

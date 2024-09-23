@@ -748,3 +748,15 @@ en:
   mailer:
     events_require_approval:
       subject: "Last week's events on %{site_name}"
+  sidebar:
+    sort:
+      heading: Sort
+      values:
+        title_ascending: Title ascending
+        title_descending: Title descending
+        last_modified: Last modified
+        relevance: Relevance
+        earliest: Earliest
+        latest: Latest
+        most_recent: Most recent
+        last_finished: Last finished
