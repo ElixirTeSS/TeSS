@@ -8,7 +8,7 @@ class EdamControllerTest < ActionController::TestCase
     assert_response :success
 
     res = JSON.parse(response.body)
-    assert_equal 2, res.length
+    assert_equal 3, res.length
     assert_includes res.map { |t| t['preferred_label'] }, 'Metabolomics'
   end
 
@@ -38,7 +38,7 @@ class EdamControllerTest < ActionController::TestCase
     get :terms, params: { filter: 'data', format: :json }
     assert_response :success
     res = JSON.parse(response.body)
-    assert_equal 17, res.length
+    assert_equal 27, res.length
     assert_includes res.map { |t| t['preferred_label'] }, 'Database management'
 
     get :terms, params: { filter: 'xylophone', format: :json }
@@ -49,7 +49,7 @@ class EdamControllerTest < ActionController::TestCase
     get :terms, params: { filter: 'data', format: :json }
     assert_response :success
     res = JSON.parse(response.body)
-    assert_equal 17, res.length
+    assert_equal 27, res.length
     assert_includes res.map { |t| t['preferred_label'] }, 'Database management'
   end
 

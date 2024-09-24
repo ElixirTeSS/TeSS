@@ -674,13 +674,13 @@ class EventTest < ActiveSupport::TestCase
   end
 
   test 'scientific_topics_and_synonyms' do
-    @event.scientific_topic_names = ['Data governance']
+    @event.scientific_topic_names = ['Data management']
     @event.save!
-    assert_equal ['Data governance', 'Data stewardship'], @event.reload.scientific_topics_and_synonyms
+    assert_equal ['Data management', 'Metadata management', 'Research data management (RDM)'], @event.reload.scientific_topics_and_synonyms
 
-    @event.scientific_topic_names = ['Data governance', 'Data stewardship']
+    @event.scientific_topic_names = ['Data management', 'Metadata management', 'Research data management (RDM)']
     @event.save!
-    assert_equal ['Data governance', 'Data stewardship'], @event.reload.scientific_topics_and_synonyms
+    assert_equal ['Data management', 'Metadata management', 'Research data management (RDM)'], @event.reload.scientific_topics_and_synonyms
   end
 
   test 'operations_and_synonyms' do
