@@ -2,8 +2,8 @@ class EditSuggestion < ApplicationRecord
   belongs_to :suggestible, polymorphic: true
   after_create :init_data_fields
 
-  has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
-  has_ontology_terms(:operations, branch: OBO_EDAM.operations)
+  has_ontology_terms(:scientific_topics, branch: EDAM.topics)
+  has_ontology_terms(:operations, branch: EDAM.operations)
 
   # data_fields: json field for storing any additional parameters
   # such as latitude, longitude &c.

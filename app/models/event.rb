@@ -121,8 +121,8 @@ class Event < ApplicationRecord
   has_many :materials, through: :event_materials
   has_many :widget_logs, as: :resource
 
-  has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
-  has_ontology_terms(:operations, branch: OBO_EDAM.operations)
+  has_ontology_terms(:scientific_topics, branch: EDAM.topics)
+  has_ontology_terms(:operations, branch: EDAM.operations)
 
   has_many :stars, as: :resource, dependent: :destroy
 
