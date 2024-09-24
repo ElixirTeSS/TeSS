@@ -676,11 +676,11 @@ class EventTest < ActiveSupport::TestCase
   test 'scientific_topics_and_synonyms' do
     @event.scientific_topic_names = ['Cybersecurity']
     @event.save!
-    assert_equal ['Cybersecurity', 'Data security'], @event.reload.scientific_topics_and_synonyms
+    assert_equal ['Cybersecurity', 'Data security', 'Computer security'], @event.reload.scientific_topics_and_synonyms
 
-    @event.scientific_topic_names = ['Cybersecurity', 'Data security']
+    @event.scientific_topic_names = ['Cybersecurity', 'Data security', 'Computer security']
     @event.save!
-    assert_equal ['Cybersecurity', 'Data security'], @event.reload.scientific_topics_and_synonyms
+    assert_equal ['Cybersecurity', 'Data security', 'Computer security'], @event.reload.scientific_topics_and_synonyms
   end
 
   test 'operations_and_synonyms' do
