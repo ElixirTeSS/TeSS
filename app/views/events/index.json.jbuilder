@@ -18,10 +18,5 @@ json.array!(@events) do |event|
 
   json.url
 
-  json.external_resources do
-    event.external_resources.each do |external_resource|
-      json.partial! 'common/external_resource', external_resource: external_resource
-    end
-  end
-
+  json.external_resources event.external_resources, partial: 'common/external_resource', as: :external_resource
 end

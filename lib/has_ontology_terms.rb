@@ -3,7 +3,7 @@
 #
 # class Model < ApplicationRecord
 #
-#   has_ontology_terms(:operations, branch: OBO_EDAM.operations)
+#   has_ontology_terms(:operations, branch: EDAM.operations)
 #
 # end
 #

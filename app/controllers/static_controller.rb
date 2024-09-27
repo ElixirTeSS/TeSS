@@ -35,7 +35,10 @@ class StaticController < ApplicationController
     return nil unless TeSS::Config.site.dig('home_page', 'featured_trainer')
 
     srand(Date.today.beginning_of_day.to_i)
-    Trainer.order(:id).sample(1)
+    trainers = Trainer.joins(:user).order(:id)
+    f_trainers = trainers.where.not(users: { image_file_size: nil })
+    trainers = f_trainers.exists? ? f_trainers : trainers
+    trainers.sample(1)
   end
 
   def set_content_providers

@@ -35,7 +35,7 @@ class EdamOntologyTest < ActiveSupport::TestCase
   test 'should lookup topic by name if ambiguous' do
     ['Mapping', 'Structure analysis', 'Nucleic acid structure analysis', 'Structure prediction',
      'Sequence assembly', 'Sequence analysis', 'Protein structure analysis'].each do |label|
-      topic = Edam::Ontology.instance.scoped_lookup_by_name(label, OBO_EDAM.topics)
+      topic = Edam::Ontology.instance.scoped_lookup_by_name(label, EDAM.topics)
 
       assert topic
       assert_match /.+topic_/, topic.uri
@@ -82,23 +82,23 @@ class EdamOntologyTest < ActiveSupport::TestCase
   end
 
   test 'scoped name lookup' do
-    assert Edam::Ontology.instance.scoped_lookup_by_name('Proteins', OBO_EDAM.topics)
-    refute Edam::Ontology.instance.scoped_lookup_by_name('Proteins', OBO_EDAM.operations)
+    assert Edam::Ontology.instance.scoped_lookup_by_name('Proteins', EDAM.topics)
+    refute Edam::Ontology.instance.scoped_lookup_by_name('Proteins', EDAM.operations)
 
-    refute Edam::Ontology.instance.scoped_lookup_by_name('Analysis', OBO_EDAM.topics)
-    assert Edam::Ontology.instance.scoped_lookup_by_name('Analysis', OBO_EDAM.operations)
+    refute Edam::Ontology.instance.scoped_lookup_by_name('Data analysis', EDAM.topics)
+    assert Edam::Ontology.instance.scoped_lookup_by_name('Data analysis', EDAM.operations)
 
-    assert Edam::Ontology.instance.scoped_lookup_by_name('Sequence analysis', OBO_EDAM.topics)
-    assert Edam::Ontology.instance.scoped_lookup_by_name('Sequence analysis', OBO_EDAM.operations)
+    assert Edam::Ontology.instance.scoped_lookup_by_name('Sequence analysis', EDAM.topics)
+    assert Edam::Ontology.instance.scoped_lookup_by_name('Sequence analysis', EDAM.operations)
 
-    refute Edam::Ontology.instance.scoped_lookup_by_name('Monster trucks', OBO_EDAM.topics)
-    refute Edam::Ontology.instance.scoped_lookup_by_name('Monster trucks', OBO_EDAM.operations)
+    refute Edam::Ontology.instance.scoped_lookup_by_name('Monster trucks', EDAM.topics)
+    refute Edam::Ontology.instance.scoped_lookup_by_name('Monster trucks', EDAM.operations)
 
     # Allow unscoping of the scoped lookup!
     assert Edam::Ontology.instance.scoped_lookup_by_name('Proteins', :_)
-    assert Edam::Ontology.instance.scoped_lookup_by_name('Analysis', :_)
+    assert Edam::Ontology.instance.scoped_lookup_by_name('Data analysis', :_)
 
     assert Edam::Ontology.instance.scoped_lookup_by_name('Proteins')
-    assert Edam::Ontology.instance.scoped_lookup_by_name('Analysis')
+    assert Edam::Ontology.instance.scoped_lookup_by_name('Data analysis')
   end
 end

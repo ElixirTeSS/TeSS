@@ -1,5 +1,6 @@
 <div class="wrapper collapsing-wrapper">
   <div id="content">
+    <%= unverified_notice(@workflow) if @workflow.from_unverified_or_rejected? %>
     <div class="content-actions">
       <div class="content-viewer-actions">
         <%= render partial: 'common/identifiers_dot_org_button', locals: { resource: @workflow } if TeSS::Config.identifiers_prefix %>

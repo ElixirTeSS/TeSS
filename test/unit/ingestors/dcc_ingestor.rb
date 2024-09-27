@@ -22,23 +22,23 @@ class DccIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::DccIngestor.new
 
     # check event doesn't
-    new_title = "DCC-PO dag"
-    new_url = 'https://dcc-po.nl/agenda/dcc-po-dag/'
+    new_title = 'Training FAIR data management'
+    new_url = 'https://dcc-po.nl/agenda/training-fair-data-management/'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 1 do
+    assert_difference 'Event.count', 2 do
       freeze_time(2019) do
-        VCR.use_cassette("ingestors/dcc") do
+        VCR.use_cassette('ingestors/dcc') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end
       end
     end
 
-    assert_equal 1, ingestor.events.count
+    assert_equal 2, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 1, ingestor.stats[:events][:added]
+    assert_equal 2, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -51,8 +51,8 @@ class DccIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'DCC', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal Time.zone.parse('Mon, 09 Oct 2019 10:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Mon, 09 Oct 2019 16:30:00.000000000 UTC +00:00'), event.end
+    assert_equal Time.zone.parse('Fri, 30 Sep 2019 09:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Sat, 14 Oct 2019 17:00:00.000000000 UTC +00:00'), event.end
     assert_equal 'Domstad, Utrecht', event.venue
   end
 end

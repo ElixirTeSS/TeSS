@@ -29,7 +29,7 @@ class UtwenteIngestorTest < ActiveSupport::TestCase
     # run task
     assert_difference 'Event.count', 1 do
       freeze_time(2019) do
-        VCR.use_cassette("ingestors/utwente") do
+        VCR.use_cassette('ingestors/utwente') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end
@@ -51,8 +51,8 @@ class UtwenteIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'University of Twente', event.organizer
-    assert_equal Time.zone.parse('Thu, 09 Nov 2023 00:00:00 +0000'), event.start
-    assert_equal Time.zone.parse('Thu, 09 Nov 2023 00:00:00 +0000'), event.end
+    assert_equal Time.zone.parse('Thu, 09 Nov 2023 09:00:00 +0000'), event.start
+    assert_equal Time.zone.parse('Thu, 09 Nov 2023 17:00:00 +0000'), event.end
     assert_equal 'Waaier', event.venue
   end
 end

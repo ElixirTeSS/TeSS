@@ -3,7 +3,7 @@ module Edam
     include Singleton
 
     def initialize
-      super('EDAM_unstable-1.26_dev.owl', Edam::Term)
+      super('EDAM_unstable-1.26_dev_2024-09-24.owl', Edam::Term)
     end
 
     def uri
@@ -11,11 +11,11 @@ module Edam
     end
 
     def all_topics
-      find_by(OBO.inSubset, OBO_EDAM.topics)
+      find_by(OBO.inSubset, EDAM.topics)
     end
 
     def all_operations
-      find_by(OBO.inSubset, OBO_EDAM.operations)
+      find_by(OBO.inSubset, EDAM.operations)
     end
 
     def lookup_by_name(name)

@@ -29,7 +29,7 @@ class DtlsIngestorTest < ActiveSupport::TestCase
     # run task
     assert_difference 'Event.count', 4 do
       freeze_time(2019) do
-        VCR.use_cassette("ingestors/dtls") do
+        VCR.use_cassette('ingestors/dtls') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end
@@ -53,7 +53,7 @@ class DtlsIngestorTest < ActiveSupport::TestCase
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'Wageningen Campus', event.city
     assert_equal 'Netherlands', event.country
-    assert_equal Time.zone.parse('Mon, 13 Feb 2023 00:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Fri, 17 Feb 2023 00:00:00.000000000 UTC +00:00'), event.end
+    assert_equal Time.zone.parse('Mon, 13 Feb 2023 09:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Fri, 17 Feb 2023 17:00:00.000000000 UTC +00:00'), event.end
   end
 end

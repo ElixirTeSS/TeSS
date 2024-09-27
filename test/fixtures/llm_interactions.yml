@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+scrape:
+  scrape_or_process: 'scrape'
+  model: 'Zephyr 7B'
+  prompt: 'Give JSON please'
+  input: 'Give JSON please'
+  output: 'Give JSON please'
+  needs_processing: false
+different_prompt:
+  scrape_or_process: 'scrape'
+  model: 'Zephyr 7B'
+  prompt: 'different_prompt'
+  input: 'Give JSON please'
+  output: 'Give JSON please'
+  needs_processing: false
+needs_processing:
+  scrape_or_process: 'scrape'
+  model: 'Zephyr 7B'
+  prompt: 'Give JSON please'
+  input: 'Give JSON please'
+  output: 'Give JSON please'
+  needs_processing: true

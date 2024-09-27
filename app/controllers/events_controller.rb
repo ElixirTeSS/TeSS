@@ -60,6 +60,7 @@ class EventsController < ApplicationController
   # GET /events/1.json
   # GET /events/1.ics
   def show
+    authorize @event
     @bioschemas = @event.to_bioschemas
     respond_to do |format|
       format.html
@@ -233,9 +234,10 @@ class EventsController < ApplicationController
                                   :timezone, :content_provider_id, { collection_ids: [] }, { node_ids: [] },
                                   { node_names: [] }, { target_audience: [] }, { eligibility: [] }, :visible,
                                   { host_institutions: [] }, :capacity, :contact, :recognition, :learning_objectives,
-                                  :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency,
-                                  :language, external_resources_attributes: %i[id url title _destroy],
-                                  material_ids: [], locked_fields: [])
+                                  :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency, :language,
+                                  external_resources_attributes: %i[id url title _destroy], material_ids: [],
+                                  llm_interaction_attributes: %i[id scrape_or_process model prompt input output needs_processing _destroy],
+                                  locked_fields: [])
   end
 
   def event_report_params

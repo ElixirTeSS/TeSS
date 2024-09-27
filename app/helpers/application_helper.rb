@@ -718,4 +718,9 @@ module ApplicationHelper
       end
     end
   end
+
+  def unverified_notice(resource)
+    content_tag('div', t('warnings.unverified', resource_type: resource.model_name.human.downcase),
+                class: 'alert alert-warning mb-4 unverified-notice')
+  end
 end

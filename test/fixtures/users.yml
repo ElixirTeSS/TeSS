@@ -78,7 +78,6 @@ banned_user:
   role: user
   authentication_token: <%= Devise.friendly_token %>
 
-
 shadowbanned_user:
   username: Chad O'Band
   email: 'sbanned@notarealdomain.org'
@@ -151,3 +150,10 @@ upcase_username_and_email:
   email: 'MixedCaseEmail@example.com'
   encrypted_password: <%= Devise::Encryptor.digest(User, 'private') %>
   confirmed_at: <%= Time.zone.now %>
+
+learning_path_curator:
+  username: 'lp_cur8r'
+  email: 'lpc@example.com'
+  encrypted_password: 'learning_paths_curator_encrypted_password'
+  confirmed_at: <%= Time.zone.now %>
+  role: learning_path_curator

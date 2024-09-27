@@ -8,6 +8,8 @@ class EventsControllerTest < ActionController::TestCase
   setup do
     mock_images
     @event = events(:one)
+    @material = materials(:good_material)
+    @collection = collections(:two)
     u = users(:regular_user)
     @event.user = u
     @event.save!
@@ -282,6 +284,8 @@ class EventsControllerTest < ActionController::TestCase
 
   test 'should show event as json-api' do
     @event.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @event.materials << @material
+    @event.collections << @collection
     @event.save!
 
     get :show, params: { id: @event, format: :json_api }
@@ -297,6 +301,8 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal @event.title, body['data']['attributes']['title']
     assert_equal @event.scientific_topic_uris.first, body['data']['attributes']['scientific-topics'].first['uri']
     assert_equal event_path(assigns(:event)), body['data']['links']['self']
+    assert_equal @material.id.to_s, body['data']['relationships']['materials']['data'][0]['id']
+    assert_equal @collection.id.to_s, body['data']['relationships']['collections']['data'][0]['id']
     assert_equal 'application/vnd.api+json; charset=utf-8', response.content_type, 'response content_type not matched.'
   end
 
@@ -1512,5 +1518,61 @@ class EventsControllerTest < ActionController::TestCase
       assert_response :success
       assert_select '.small-avatar', count: 0
     end
+  end
+
+  test 'should show unverified users event to themselves' do
+    sign_in users(:unverified_user)
+    event = users(:unverified_user).events.create!(title: 'Hello', description: 'World',
+                                                   url: 'https://example.com/event')
+
+    get :show, params: { id: event }
+
+    assert_response :success
+    assert_select '.unverified-notice',
+                  text: 'This event will not be publicly visible until your registration has been approved by an administrator.'
+  end
+
+  test 'should show unverified users event to admin' do
+    event = users(:unverified_user).events.create!(title: 'Hello', description: 'World',
+                                                   url: 'https://eexample.com/event')
+    sign_in users(:admin)
+
+    get :show, params: { id: event }
+
+    assert_response :success
+    assert_select '.unverified-notice',
+                  text: 'This event will not be publicly visible until your registration has been approved by an administrator.'
+  end
+
+  test 'should not show unverified users event anon user' do
+    event = users(:unverified_user).events.create!(title: 'Hello', description: 'World',
+                                                   url: 'https://example.com/event')
+
+    get :show, params: { id: event }
+    assert_response :forbidden
+  end
+
+  test 'should create event without language specified' do
+    sign_in users(:regular_user)
+    assert_difference('Event.count', 1) do
+      post :create, params: { event: { description: @event.description, title: @event.title, url: @event.url,
+                                       language: '' } }
+    end
+    assert_redirected_to event_path(assigns(:event))
+    refute assigns(:event).language.present?
+  end
+
+  test 'should display language of instruction' do
+    get :show, params: { id: events(:one) }
+    assert_response :success
+    assert_select 'strong', text: 'Language of instruction:'
+  end
+
+  test 'should not display language of instruction if not specified' do
+    event = users(:regular_user).events.create!(title: 'No language', url: 'https://example.com/nolang', language: '')
+
+    get :show, params: { id: event }
+    assert_response :success
+    assert_select 'strong', text: 'Language of instruction:', count: 0
   end
 end

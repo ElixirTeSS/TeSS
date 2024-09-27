@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class MaterialsControllerTest < ActionController::TestCase
-
   include Devise::Test::ControllerHelpers
   include ActiveJob::TestHelper
 
@@ -9,6 +8,8 @@ class MaterialsControllerTest < ActionController::TestCase
     mock_images
     mock_biotools
     @material = materials(:good_material)
+    @event = events(:one)
+    @collection = collections(:two)
     @user = users(:regular_user)
     @material.user_id = @user.id
     @material.save!
@@ -368,6 +369,8 @@ class MaterialsControllerTest < ActionController::TestCase
 
   test 'should show material as json' do
     @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @material.events << events(:one)
+    @material.collections << collections(:one)
     @material.save!
 
     get :show, params: { id: @material, format: :json }
@@ -381,6 +384,8 @@ class MaterialsControllerTest < ActionController::TestCase
 
   test 'should show material as json-api' do
     @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @material.events << @event
+    @material.collections << @collection
     @material.save!
 
     get :show, params: { id: @material, format: :json_api }
@@ -395,6 +400,8 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal @material.title, body['data']['attributes']['title']
     assert_equal @material.scientific_topic_uris.first, body['data']['attributes']['scientific-topics'].first['uri']
     assert_equal material_path(assigns(:material)), body['data']['links']['self']
+    assert_equal @event.id.to_s, body['data']['relationships']['events']['data'][0]['id']
+    assert_equal @collection.id.to_s, body['data']['relationships']['collections']['data'][0]['id']
   end
 
   #UPDATE TEST
@@ -1426,5 +1433,46 @@ class MaterialsControllerTest < ActionController::TestCase
         assert_response :unprocessable_entity
       end
     end
+  end
+
+  test 'should show unverified users material to themselves' do
+    sign_in users(:unverified_user)
+    material = users(:unverified_user).materials.create!(description: @material.description,
+                                              title: @material.title, url: 'http://example.com/dodgy-event',
+                                              doi: 'https://doi.org/10.10067/SEA.2019.22', status: 'active',
+                                              licence: 'CC-BY-4.0', contact: 'default contact',
+                                              keywords: %w{ dodgy event unverified user })
+
+    get :show, params: { id: material }
+
+    assert_response :success
+    assert_select '.unverified-notice',
+                  text: 'This material will not be publicly visible until your registration has been approved by an administrator.'
+  end
+
+  test 'should show unverified users material to admin' do
+    material = users(:unverified_user).materials.create!(description: @material.description,
+                                              title: @material.title, url: 'http://example.com/dodgy-event',
+                                              doi: 'https://doi.org/10.10067/SEA.2019.22', status: 'active',
+                                              licence: 'CC-BY-4.0', contact: 'default contact',
+                                              keywords: %w{ dodgy event unverified user })
+    sign_in users(:admin)
+
+    get :show, params: { id: material }
+
+    assert_response :success
+    assert_select '.unverified-notice',
+                  text: 'This material will not be publicly visible until your registration has been approved by an administrator.'
+  end
+
+  test 'should not show unverified users material anon user' do
+    material = users(:unverified_user).materials.create!(description: @material.description,
+                                              title: @material.title, url: 'http://example.com/dodgy-event',
+                                              doi: 'https://doi.org/10.10067/SEA.2019.22', status: 'active',
+                                              licence: 'CC-BY-4.0', contact: 'default contact',
+                                              keywords: %w{ dodgy event unverified user })
+
+    get :show, params: { id: material }
+    assert_response :forbidden
   end
 end

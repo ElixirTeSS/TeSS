@@ -22,7 +22,8 @@ class Event < ApplicationRecord
 
   before_validation :fix_keywords, on: :create, if: :scraper_record
   before_validation :presence_default
-  before_save :check_country_name # :set_default_times
+  before_save :check_country_name
+  before_save :set_default_times
   before_save :geocoding_cache_lookup, if: :address_will_change?
   after_save :enqueue_geocoding_worker, if: :address_changed?
 
@@ -110,6 +111,8 @@ class Event < ApplicationRecord
   enum presence: { onsite: 0, online: 1, hybrid: 2 }
 
   belongs_to :user
+  has_one :llm_interaction, inverse_of: :event, dependent: :destroy
+  accepts_nested_attributes_for :llm_interaction, allow_destroy: true
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
   has_one :link_monitor, as: :lcheck, dependent: :destroy
   has_many :collection_items, as: :resource
@@ -118,8 +121,8 @@ class Event < ApplicationRecord
   has_many :materials, through: :event_materials
   has_many :widget_logs, as: :resource
 
-  has_ontology_terms(:scientific_topics, branch: OBO_EDAM.topics)
-  has_ontology_terms(:operations, branch: OBO_EDAM.operations)
+  has_ontology_terms(:scientific_topics, branch: EDAM.topics)
+  has_ontology_terms(:operations, branch: EDAM.operations)
 
   has_many :stars, as: :resource, dependent: :destroy
 
@@ -263,9 +266,9 @@ class Event < ApplicationRecord
 
     self.start = start + 9.hours if start.hour == 0 # hour set to 0 if not otherwise defined...
 
-    return if self.end
-
-    if online?
+    if self.end
+      self.end = self.end + 17.hours if self.end.hour == 0 # hour set to 0 if not otherwise defined...
+    elsif online?
       self.end = start + 1.hour
     else
       diff = 17 - start.hour
@@ -286,11 +289,16 @@ class Event < ApplicationRecord
   end
 
   def self.not_finished
-    where('events.end > ? OR events.end IS NULL', Time.now)
+    where('events.end >= ? OR events.end IS NULL', Time.now)
   end
 
   def self.finished
     where('events.end < ?', Time.now).where.not(end: nil)
+  end
+
+  def self.needs_processing(llm_prompt)
+    joins('LEFT OUTER JOIN llm_interactions ON llm_interactions.event_id = events.id')
+      .where('llm_interactions.needs_processing = ? OR llm_interactions.prompt != ?', true, llm_prompt)
   end
 
   # Ticket #423

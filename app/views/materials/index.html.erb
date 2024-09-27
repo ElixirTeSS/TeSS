@@ -10,6 +10,10 @@
     <h2><%=t("features.materials.long")%></h2>
 
     <% content_for :buttons do %>
+      <!-- Subscribe button -->
+      <% if TeSS::Config.feature['subscription'] %>
+        <%= render partial: 'subscriptions/subscribe_button', locals: { type: Material.name } %>
+      <% end %>
       <!-- Register button -->
       <%= link_to new_material_path, class: 'btn btn-primary' do %>
         <%= t('register.buttons.materials') %>
@@ -21,8 +25,7 @@
     <% end %>
 
     <%= render partial: "search/common/search_panel", locals: { resources: @materials_results,
-                                                                resource_type: Material,
-                                                                show_subscription_button: true } %>
+                                                                resource_type: Material } %>
 
     <%= render partial: 'common/masonry_grid', locals: { objects: @materials } %>
 

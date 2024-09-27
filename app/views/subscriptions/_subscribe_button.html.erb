@@ -5,10 +5,10 @@
 %>
 
 <% if show_calendar_sub || show_email_sub || show_rss_sub %>
-  <div class="btn-group">
-    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <a class="btn btn-primary">
+    <div type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       Subscribe <span class="caret"></span>
-    </button>
+    </div>
     <ul class="dropdown-menu">
       <% if show_email_sub %>
         <li>
@@ -36,7 +36,7 @@
         <% end %>
       <% end %>
     </ul>
-  </div>
+  </a>
 
   <% if show_email_sub %>
       <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="subscribe-email-modal-title" id="subscribe-email-modal">

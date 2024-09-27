@@ -255,4 +255,33 @@ class WorkflowsControllerTest < ActionController::TestCase
     assert_select '.identifiers-button'
     assert_select '#identifiers-link[value=?]', "http://example.com/identifiers/banana:w#{@workflow.id}"
   end
+
+  test 'should show unverified users workflow to themselves' do
+    sign_in users(:unverified_user)
+    workflow = users(:unverified_user).workflows.create!(title: 'Hello', description: 'World', public: true)
+
+    get :show, params: { id: workflow }
+
+    assert_response :success
+    assert_select '.unverified-notice',
+                  text: 'This workflow will not be publicly visible until your registration has been approved by an administrator.'
+  end
+
+  test 'should show unverified users workflow to admin' do
+    workflow = users(:unverified_user).workflows.create!(title: 'Hello', description: 'World', public: true)
+    sign_in users(:admin)
+
+    get :show, params: { id: workflow }
+
+    assert_response :success
+    assert_select '.unverified-notice',
+                  text: 'This workflow will not be publicly visible until your registration has been approved by an administrator.'
+  end
+
+  test 'should not show unverified users workflow anon user' do
+    workflow = users(:unverified_user).workflows.create!(title: 'Hello', description: 'World', public: true)
+
+    get :show, params: { id: workflow }
+    assert_response :forbidden
+  end
 end

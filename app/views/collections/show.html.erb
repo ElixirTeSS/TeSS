@@ -4,6 +4,7 @@
   </div>
 
   <div id="content">
+    <%= unverified_notice(@collection) if @collection.from_unverified_or_rejected? %>
     <div class="content-actions">
       <div class="content-manager-actions">
         <% if policy(@collection).manage? %>

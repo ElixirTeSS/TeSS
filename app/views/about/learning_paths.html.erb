@@ -1,0 +1,72 @@
+<div class="wrapper">
+  <div id="sidebar" class="popout-sidebar">
+    <%= render partial: 'about_nav', locals: { show: 'learning_paths' } %>
+  </div>
+
+  <div id="content">
+    <div class="about-block">
+      <!-- REGISTERING LEARNING PATHS IN TESS -->
+      <div id="how">
+        <h2><%== t('register.learning_paths.register_in', site_name: TeSS::Config.site['title_short']) %></h2>
+
+        <h3 id="what">What is a learning path?</h3>
+        <p><%== t 'register.learning_paths.what' %></p>
+
+        <h3 id="editorial">Editorial process for 
+          <%== t('register.learning_paths.register_in', site_name: TeSS::Config.site['title_short']) %></h3>
+
+        <%== t 'register.learning_paths.editorial' %>
+      </div>
+
+      <!-- OVERVIEW OF REGISTERING LEARNING PATHS -->
+      <div id="overview" class="odd-about-block">
+        <h3>Overview of registering learning paths</h3>
+        <%== t 'register.learning_paths.overview' %>
+
+      </div>
+
+      <!-- TRAINING MATERIAL -->
+      <div id="training_material" class="even-about-block">
+        <h3>Training material</h3>
+        <h4>Registering training materials</h4>
+        <%== t('register.learning_paths.training_material', registering_resources_path: registering_resources_path) %>
+      </div>
+
+      <!-- LEARNING PATH TOPICS  -->
+      <div id="topics" class="odd-about-block">
+        <h3>Learning path topics</h3>
+        <h4>Creating topics</h4>
+        <%== t 'register.learning_paths.creating_topics' %>
+
+        <h4>Give your topics good names</h4>
+        <%== t 'register.learning_paths.topic_naming' %>
+      </div>
+
+      <!-- REGISTERING LEARNING PATHS -->
+      <div id="register_paths" class="even-about-block">
+        <h3>Registering learning paths</h3>
+        <%== t 'register.learning_paths.paths' %>
+
+        <h4>Managing collaborators</h4>
+        <%== t 'register.learning_paths.collaborators' %>
+
+        <h4>Updating learning paths</h4>
+        <%== t 'register.learning_paths.updating_paths' %>
+      </div>
+
+      <!-- VIEWING LEARNING PATHS  -->
+      <div id="viewing" class="odd-about-block">
+        <h3>Viewing learning paths</h3>
+        <%== t 'register.learning_paths.view_paths' %>
+
+        <h4>Viewing topics</h4>
+        <%== t 'register.learning_paths.view_topics' %>
+      </div>
+
+    </div>
+
+    <hr/>
+
+    <%= render partial: 'links', locals: { show: 'learningpaths' } %>
+  </div>
+</div>
