@@ -119,8 +119,10 @@ class ApplicationController < ActionController::Base
   end
 
   def from_blocked_country?
-    TeSS::Config.blocked_countries.present? &&
-      TeSS::Config.blocked_countries.include?(current_user_country['iso_code'].downcase)
+    return unless TeSS::Config.blocked_countries.present?
+    user_country = current_user_country
+    return unless user_country
+    TeSS::Config.blocked_countries.include?(user_country['iso_code'].downcase)
   end
 
   helper_method :current_user_country, :from_blocked_country?
