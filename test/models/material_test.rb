@@ -391,6 +391,72 @@ class MaterialTest < ActiveSupport::TestCase
     assert_not_includes material.external_resources, new_resource, 'Should preserve oldest external resource'
   end
 
+  test 'should set external resources from params' do
+    material = materials(:good_material)
+    assert_empty material.external_resources
+
+    assert_difference('ExternalResource.count', 2) do
+      material.update!(external_resources: [{ title: 'Cool Website!', url: 'https://tess.elixir-uk.org/' },
+                                            { title: 'Cooler Website!', url: 'https://tess.elixir-europe.org/' }])
+    end
+
+    er = material.reload.external_resources
+    assert_equal 2, er.count
+    assert_equal 'Cool Website!', er[0].title
+    assert_equal 'https://tess.elixir-uk.org/', er[0].url
+    assert_equal 'Cooler Website!', er[1].title
+    assert_equal 'https://tess.elixir-europe.org/', er[1].url
+  end
+
+  test 'should remove redundant external resources and preserve IDs of retained ones' do
+    material = materials(:material_with_external_resource)
+    original_resources = material.external_resources.to_a
+    assert_equal 3, original_resources.length
+
+    # [
+    #   { url: "https://tess.elixir-uk.org/", title: "TeSS" },
+    #   { url: "https://bio.tools/tool/SR-Tesseler", title: "SR-Tesseler" },
+    #   { url: "https://fairsharing.org/bsg-p123456", title: "Share Fairing" }
+    # ]
+
+    assert_difference('ExternalResource.count', -1) do
+      material.update!(external_resources: [{ title: 'TeSS', url: 'https://tess.elixir-uk.org/' },
+                                            { title: 'Changed title', url: 'https://bio.tools/tool/SR-Tesseler' }])
+    end
+
+    er = material.reload.external_resources
+    assert_equal 2, er.count
+    assert_equal 'TeSS', er[0].title
+    assert_equal 'https://tess.elixir-uk.org/', er[0].url
+    assert_equal original_resources[0].id, er[0].id, 'Should have preserved original ExternalResource'
+    assert_equal 'Changed title', er[1].title
+    assert_equal 'https://bio.tools/tool/SR-Tesseler', er[1].url
+    assert_not_equal original_resources[1].id, er[1].id, 'Should have replaced modified ExternalResource'
+  end
+
+  test 'can set external resources using objects or params' do
+    material = materials(:material_with_external_resource)
+    original_resources = material.external_resources.to_a
+    assert_equal 3, original_resources.length
+
+    assert_no_difference('ExternalResource.count') do
+      material.update!(external_resources: original_resources.first(2) +
+        [{ title: 'Zombocom', url: 'https://zombo.com' }])
+    end
+
+    er = material.reload.external_resources
+    assert_equal 3, er.count
+    assert_equal 'TeSS', er[0].title
+    assert_equal 'https://tess.elixir-uk.org/', er[0].url
+    assert_equal original_resources[0].id, er[0].id, 'Should have preserved first ExternalResource'
+    assert_equal 'SR-Tesseler', er[1].title
+    assert_equal 'https://bio.tools/tool/SR-Tesseler', er[1].url
+    assert_equal original_resources[1].id, er[1].id, 'Should have preserved second ExternalResource'
+    assert_equal 'Zombocom', er[2].title
+    assert_equal 'https://zombo.com', er[2].url
+    assert_not_equal original_resources[2].id, er[2].id, 'Should have replaced third ExternalResource'
+  end
+
   test 'verified users scope' do
     bad_user = users(:unverified_user)
     bad_material = bad_user.materials.build(title: 'bla', url: 'http://example.com/spam', description: 'vvv',
