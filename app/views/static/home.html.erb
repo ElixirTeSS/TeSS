@@ -22,6 +22,8 @@
 }
 </script>
 
+<%= render partial: 'communities/banner' if TeSS::Config.site.dig('home_page', 'communities') %>
+
 <%= render partial: 'static/home/welcome' %>
 
 <%= render partial: 'static/home/counters' if TeSS::Config.site.dig('home_page', 'counters') %>
@@ -40,4 +42,4 @@
 
 <%= render partial: 'static/home/latest_materials' if @materials.present? %>
 
-<%= render partial: 'static/home/featured_trainer'  if TeSS::Config.site.dig('home_page', 'featured_trainer') %>
+<%= render partial: 'static/home/featured_trainer' if TeSS::Config.site.dig('home_page', 'featured_trainer') %>

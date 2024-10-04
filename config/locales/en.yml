@@ -502,6 +502,9 @@ en:
             <li><strong>Calendar</strong> - See new events directly to your online calendar.</li>
             <li><strong>RSS feed</strong> - View new events in an RSS reader.</li>
           </ul>
+    local_content_banner:
+      title: Connecting from %{country_name}?
+      body: Visit the %{community_name} portal to browse local training.
   privacy:
     registration: |
       <p>When you register with TeSS we ask for a username, password and email address.</p>

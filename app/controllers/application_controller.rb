@@ -113,6 +113,20 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def current_user_country
+    remote_ip = ENV.fetch('MOCK_IP') { Rails.env.production? ? request.remote_ip : '130.88.0.0' }
+    Locator.instance.lookup(remote_ip)&.dig('country')
+  end
+
+  def from_blocked_country?
+    return unless TeSS::Config.blocked_countries.present?
+    user_country = current_user_country
+    return unless user_country
+    TeSS::Config.blocked_countries.include?(user_country['iso_code'].downcase)
+  end
+
+  helper_method :current_user_country, :from_blocked_country?
+
   protected
 
   def configure_permitted_parameters

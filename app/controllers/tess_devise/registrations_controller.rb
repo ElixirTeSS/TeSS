@@ -1,6 +1,7 @@
 class TessDevise::RegistrationsController < Devise::RegistrationsController
   # Inspired by http://stackoverflow.com/questions/3546289/override-devise-registrations-controller
   before_action :check_captcha, only: :create
+  before_action :check_country_blocked, only: [:create, :new]
   before_action :set_breadcrumbs, only: :edit
 
   # Set the after update path to be user's show page
@@ -28,6 +29,10 @@ class TessDevise::RegistrationsController < Devise::RegistrationsController
       self.resource = resource_class.new sign_up_params
       respond_with_navigational(resource) { render :new }
     end
+  end
+
+  def check_country_blocked
+    head :forbidden if from_blocked_country?
   end
 
   def set_breadcrumbs
