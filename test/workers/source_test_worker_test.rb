@@ -105,7 +105,7 @@ class SourceTestWorkerTest < ActiveSupport::TestCase
     assert sample
     assert results[:run_time] > 0
     assert results[:finished_at] > 1.day.ago
-    ext_res = sample[:external_resources_attributes]
+    ext_res = sample[:external_resources]
     assert_equal 1, ext_res.length
     res = ext_res.first
     assert res.is_a?(Hash)
