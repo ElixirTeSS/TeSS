@@ -33,4 +33,20 @@ module HasExternalResources
     resources = external_resources.to_a.sort_by { |x| x.created_at || 1.year.from_now }
     (resources - resources.uniq { |r| [r.url, r.title] }).each(&:mark_for_destruction)
   end
+
+  # Allow setting of external resources from an array of hashes/params.
+  # Unlike `external_resources_attributes=`, this will clear any redundant external resources, and will preserve any
+  # existing external resources with the same title & URL.
+  def external_resources=(ers)
+    existing = external_resources
+    objs = ers.map do |er|
+      if er.is_a?(ExternalResource)
+        er
+      else
+        existing.detect { |ex| ex.url == er[:url] && ex.title == er[:title] } || external_resources.build(er)
+      end
+    end
+
+    super(objs)
+  end
 end

@@ -174,6 +174,7 @@ class MaterialsController < ApplicationController
                                      { operation_names: [] }, { operation_uris: [] },
                                      { node_ids: [] }, { node_names: [] }, { fields: [] },
                                      external_resources_attributes: [:id, :url, :title, :_destroy],
+                                     external_resources: [:url, :title],
                                      event_ids: [], locked_fields: [])
   end
 
