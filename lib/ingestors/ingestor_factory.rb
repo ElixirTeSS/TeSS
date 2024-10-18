@@ -29,7 +29,8 @@ module Ingestors
         Ingestors::RstIngestor,
         Ingestors::OsciIngestor,
         Ingestors::DccIngestor,
-        Ingestors::SenseIngestor
+        Ingestors::SenseIngestor,
+        Ingestors::VuMaterialIngestor,
       ] + llm_ingestors
     end
 
