@@ -25,18 +25,31 @@ module Ingestors
 
     private
 
-    def process_rst(url)
-      rst_url = 'https://researchsoftwaretraining.nl/resources/'
-      material_page = Nokogiri::HTML5.parse(open_url(rst_url.to_s, raise: true)).css("div[class='inner_content cf']").first.css('p > a')
-      material_page.each_with_index do |el, idx|
+    def process_rst(_url)
+      rst_url = 'https://www.esciencecenter.nl/training-materials/'
+
+      material_page = Nokogiri::HTML5.parse(open_url(rst_url.to_s, raise: true)).css('h3.wp-block-heading')
+      material_page.each_with_index do |el, _idx|
         material = OpenStruct.new
         material.title = el&.text
-        material.url = el&.get_attribute('href')
-        material.description = material.title
+        parent = el.parent
+        material.url = parent.css('.wp-block-buttons > .wp-block-button > a').first.get_attribute('href')
+        material.description = rst_recursive_description_func(parent.css('p'))
         add_material(material)
       rescue Exception => e
         @messages << "Extract event fields failed with: #{e.message}"
       end
     end
   end
+end
+
+def rst_recursive_description_func(css, res = '')
+  if css.is_a?(Nokogiri::XML::Element)
+    res += css.text.strip
+  else
+    css.each do |css2|
+      res += rst_recursive_description_func(css2, res)
+    end
+  end
+  res
 end
