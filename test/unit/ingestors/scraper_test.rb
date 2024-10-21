@@ -289,7 +289,7 @@ class ScraperTest < ActiveSupport::TestCase
     assert_includes source.log, '- CourseInstances: 23'
   end
 
-  def beep # rubocop:disable Metrics/AbcSize
+  def set_up_event_check
     provider = content_providers(:portal_provider)
     @source = Source.create!(url: 'https://somewhere.com/stuff', method: 'bioschemas',
                              enabled: true, approval_status: 'approved',
@@ -307,20 +307,23 @@ class ScraperTest < ActiveSupport::TestCase
   end
 
   test 'event_check_stale' do
-    beep
-    with_settings({ scraper_event_check: { enabled: true, stale_threshold: 0.3 } }) do
-      assert_not @scraper.event_check_stale(@source)
-      @source.content_provider.events.each do |event|
-        event.last_scraped = 10.days.freeze.ago
-        event.timezone = 'Amsterdam'
-        event.save!
+    freeze_time(2019) do
+      set_up_event_check
+      with_settings({ scraper_event_check: { enabled: true, stale_threshold: 0.3 } }) do
+        assert_not @scraper.event_check_stale(@source)
+        @source.content_provider.events.each do |event|
+          event.last_scraped = 10.days.freeze.ago
+          event.timezone = 'Amsterdam'
+          event.save!
+          event.reload
+        end
+        assert @scraper.event_check_stale(@source)
       end
-      assert @scraper.event_check_stale(@source)
     end
   end
 
   test 'event_check_rejected' do
-    beep
+    set_up_event_check
     with_settings({ scraper_event_check: { enabled: true, rejected_threshold: 0.3 } }) do
       assert_not @scraper.event_check_rejected(@source)
       @source.records_written = 10

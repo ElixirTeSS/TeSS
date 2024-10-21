@@ -168,8 +168,8 @@ class Scraper
     end
   end
 
-  def scraper_event_check(data_sources)
-    return unless TeSS::Config&.scraper_event_check&.enabled
+  def scraper_event_check(_data_sources)
+    return unless TeSS::Config&.scraper_event_check&.[]('enabled')
 
     data_sources.each do |_key, sources|
       sources.each do |source|
@@ -183,6 +183,8 @@ class Scraper
     return unless TeSS::Config&.scraper_event_check&.[]('stale_threshold')
 
     scraper_events = get_scraper_events(source.content_provider.events.not_finished)
+    return if scraper_events.count.zero?
+
     stale_warning = scraper_events.filter(&:stale?).count / scraper_events.count > TeSS::Config.scraper_event_check['stale_threshold']
 
     if stale_warning && TeSS::Config.sentry_enabled?
@@ -195,7 +197,7 @@ class Scraper
   end
 
   def event_check_rejected(source)
-    return unless TeSS::Config&.scraper_event_check&.[]('rejected_threshold')
+    return unless TeSS::Config&.scraper_event_check&.[]('rejected_threshold') && (source.records_written + source.resources_rejected).positive?
 
     rejected_warning = source.resources_rejected.to_f / (source.records_written + source.resources_rejected) > TeSS::Config.scraper_event_check['rejected_threshold']
     if rejected_warning && TeSS::Config.sentry_enabled?
