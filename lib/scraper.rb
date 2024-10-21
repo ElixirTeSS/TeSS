@@ -79,6 +79,8 @@ class Scraper
         end
       end
 
+      scraper_event_check(data_sources)
+
       log '', 1
       log t('scraper.messages.processed', processed:), 1
 
@@ -232,5 +234,45 @@ class Scraper
       log "User found: username[#{user.username}] role[#{user.role.name}]", 1
     end
     user
+  end
+
+  def scraper_event_check(data_sources)
+    return unless TeSS::Config&.scraper_event_check&.enabled && TeSS::Config.sentry_enabled?
+
+    data_sources.each do |_key, sources|
+      sources.each do |source|
+        event_check_rejected(source)
+        event_check_stale(source)
+      end
+    end
+  end
+
+  def event_check_stale(source)
+    return unless TeSS::Config&.scraper_event_check&.stale_threshold
+
+    scraper_events = get_scraper_events(source.content_provider.events)
+    stale_warning = scraper_events.filter(&:stale?).count / scraper_events.count > TeSS::Config.scraper_event_check.stale_threshold
+    return unless stale_warning
+
+    Sentry.capture_message(
+      "Warning: #{source.content_provider.title} has too many stale events. Check if the scraper is still working properly.",
+      level: :warning
+    )
+  end
+
+  def event_check_rejected(source)
+    return unless TeSS::Config&.scraper_event_check&.rejected_threshold
+
+    rejected_warning = source.resources_rejected / (source.records_written + source.resources_rejected) > TeSS::Config.scraper_event_check.rejected_threshold
+    return unless rejected_warning
+
+    Sentry.capture_message(
+      "Warning: #{source.content_provider.title} has too many rejected events. Check if the scraper is still working properly.",
+      level: :warning
+    )
+  end
+
+  def get_scraper_events(event_list)
+    event_list.filter { |e| e.respond_to?(:last_scraped) && !e.last_scraped.nil? && e.scraper_record }
   end
 end
