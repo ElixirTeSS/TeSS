@@ -478,7 +478,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
     dateless_event.save!
 
     get :show, params: { id: @content_provider }
-    assert_select 'a[href=?]', '#events', text: 'Events (3)'
+    assert_select 'a[href=?]', '#events', text: 'Events (2)' # 2 Upcoming events
     # this is a bit fragile. may be nicer to use a regex if it breaks
     assert_select 'div#events div.search-results-count', text: /Showing 2 events/ do
       assert_select 'span', text: '(also found 1 past event)'
