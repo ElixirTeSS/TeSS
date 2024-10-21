@@ -65,6 +65,36 @@ en:
           hybrid: Hybrid
         language: 'Language of instruction'
   about:
+    headings:
+      events: Events
+      materials: Materials
+      workflows: Training Workflows
+      learning_paths: Learning Paths
+      educational_resource: Educational Resource
+      subscribe: Subscribe
+      widgets_and_api: Widgets & API
+    sidebar:
+      what_is: 'What is %{title}?'
+      what_we_catalogue: 'What we catalogue'
+      subscribing_to_notifications: 'Subscribing to notifications'
+      widgets_and_api: Widgets & API
+      registering_content: 'Registering Content'
+      automatic_registration: 'Automatic Registration'
+      manual_registration: 'Manual Registration'
+      learning_paths: 'Learning Paths'
+      editorial_process: 'Editorial process'
+      overview_of_registering_learning_paths: 'Overview of registering learning paths'
+      learning_path_topics: 'Learning path topics'
+      registering_learning_paths: 'Registering learning paths'
+      viewing_learning_paths: 'Viewing learning paths'
+      developers: 'Developers'
+      code_and_data: 'Code and Data'
+      widgets: 'Widgets'
+      api: 'API'
+      about_us: 'About Us'
+    links:
+      learn_more_widgets: Learn more about Widgets
+      learn_more_api: Learn more about our API
     registry: >
       TeSS is a platform that was developed to provide a one-stop shop for trainers and trainees to discover
       online information and content, including training materials, events and interactive tutorials.
@@ -121,6 +151,8 @@ en:
     discover_events: Discover Events
     collect_materials: "%{site_name} collects materials from %{count} content providers."
     discover_materials: Discover Materials
+    discover_learning_paths: Discover Learning Paths
+    discover_workflows: Discover Workflows
   developer:
     license: >
       TeSS is committed to the FAIR principles: making data findable, accessible, interoperable and re-usable.

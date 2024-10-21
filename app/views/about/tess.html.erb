@@ -15,7 +15,7 @@
       <!-- EVENTS-->
       <% if TeSS::Config.feature['events'] == true %>
         <div id="events" class="row <%= next_about_block(@feature_count += 1) %>">
-          <h3 class="col-lg-12">Events</h3>
+          <h3 class="col-lg-12"><%= t('about.headings.events') %></h3>
           <div class="col-lg-2 col-lg-push-10 about-resource-icon">
             <%= image_tag('modern/icons/events-icon.svg', height: '65px', alt: 'Events') %>
           </div>
@@ -36,7 +36,7 @@
       <!-- MATERIALS-->
       <% if TeSS::Config.feature['materials'] == true %>
         <div id="materials" class="row <%= next_about_block(@feature_count += 1) %>">
-          <h3 class="col-lg-12">Materials</h3>
+          <h3 class="col-lg-12"><%= t('about.headings.materials') %></h3>
 
           <div class="col-lg-2 col-lg-push-10 about-resource-icon">
             <%= image_tag('modern/icons/materials-icon.svg', height: '65px', alt: 'Materials') %>
@@ -60,7 +60,7 @@
       <!-- WORKFLOWS -->
       <% if TeSS::Config.feature['workflows'] == true %>
         <div id="workflows" class="row <%= next_about_block(@feature_count += 1) %>">
-          <h3 class="col-lg-12">Training Workflows</h3>
+          <h3 class="col-lg-12"><%= t('about.headings.workflows') %></h3>
           <div class="col-lg-2 col-lg-push-10 about-resource-icon">
             <%= link_to workflows_path do %>
               <%= image_tag('modern/icons/workflows-icon.svg', height: "65px", alt: "Workflows") %>
@@ -75,23 +75,23 @@
           <div class="col-lg-12">
             <!-- INDIVIDUAL WORKFLOW TYPES-->
             <div class="sub-about-block">
-              <h4>Learning Paths</h4>
+              <h4><%= t('about.headings.learning_paths') %></h4>
               <p><%== t 'about.learning_paths' %></p>
 
               <%= link_to registering_learning_paths_path do %>
-                Discover Learning Paths <i class="icon icon-sm arrow-right-icon"></i>
+                <%= t('about.discover_learning_paths') %><i class="icon icon-sm arrow-right-icon"></i>
               <% end %>
             </div>
 
             <div class="sub-about-block">
-              <h4>Educational Resource</h4>
+              <h4><%= t('about.headings.educational_resource') %></h4>
               <p><%== t 'about.resources' %></p>
             </div>
 
             <br/>
 
             <%= link_to workflows_path do %>
-              Discover Workflows <i class="icon icon-sm arrow-right-icon"></i>
+              <%= t('about.discover_workflows') %> <i class="icon icon-sm arrow-right-icon"></i>
             <% end %>
           </div>
         </div>
@@ -100,7 +100,7 @@
       <!-- SUBSCRIBE-->
       <% if TeSS::Config.feature['subscription'] %>
         <div id="subscribe" class="<%= next_about_block(@feature_count += 1) %>">
-          <h3>Subscribe</h3>
+          <h3><%= t('about.headings.subscribe') %></h3>
           <p><%== t 'about.subscribe' %></p>
           <p><%== t('about.subscription_manager', subscriptions_path: subscriptions_path) %></p>
           <%= image_tag 'about/subscription.png', style: 'width: 80%' %>
@@ -109,10 +109,12 @@
 
       <!-- WIDGET & API -->
       <div id="widget" class="<%= next_about_block(@feature_count += 1) %>">
-        <h3>Widgets & API</h3>
+        <h3><%= t('about.headings.widgets_and_api') %></h3>
         <p><%== t 'about.widgets_and_api' %></p>
-        <%= link_to 'Learn more about Widgets', developers_path(anchor: 'widgets'), class: 'btn btn-default' %>
-        <%= link_to 'Learn more about our API', developers_path(anchor: 'api'), class: 'btn btn-default' %>
+        <%= link_to t('about.links.learn_more_widgets'),
+            developers_path(anchor: 'widgets'), class: 'btn btn-default' %>
+        <%= link_to t('about.links.learn_more_api'),
+            developers_path(anchor: 'api'), class: 'btn btn-default' %>
       </div>
     </div>
 
