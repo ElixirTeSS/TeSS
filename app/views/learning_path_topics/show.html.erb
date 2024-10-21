@@ -48,7 +48,7 @@
       <% materials = @learning_path_topic.material_items %>
       <% materials_count = materials.count %>
       <% events = @learning_path_topic.event_items %>
-      <% events_count = events.count %>
+      <% events_count = events.not_finished.count %>
       <% activator = tab_activator %>
       <ul class="nav nav-tabs">
         <%= tab('Materials', icon_class_for_model('materials'), 'materials', activator: activator,

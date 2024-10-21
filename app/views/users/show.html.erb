@@ -131,7 +131,7 @@
       <% upcoming_events = @user.events.not_finished %>
       <% past_events = @user.events.finished %>
       <% events = upcoming_events.limit(resource_limit) %>
-      <% events_count =  @user.events.count %>
+      <% events_count =  @user.events.not_finished.count %>
       <% workflows = @user.workflows.visible_by(current_user).limit(resource_limit) %>
       <% workflows_count =  @user.workflows.visible_by(current_user).count %>
       <% collections = @user.collections.visible_by(current_user).limit(resource_limit) %>

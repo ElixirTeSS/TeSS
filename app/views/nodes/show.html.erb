@@ -23,7 +23,7 @@
       <% upcoming_events = @node.related_events.from_verified_users.not_finished %>
       <% past_events = @node.related_events.from_verified_users.finished %>
       <% events = upcoming_events.limit(resource_limit) %>
-      <% events_count =  @node.related_events.from_verified_users.count %>
+      <% events_count =  @node.related_events.from_verified_users.not_finished.count %>
       <% activator = tab_activator %>
       <ul class="nav nav-tabs">
         <% if TeSS::Config.feature['materials'] %>
