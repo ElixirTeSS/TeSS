@@ -23,11 +23,11 @@ class OdisseiIngestorTest < ActiveSupport::TestCase
 
     # check event doesn't
     new_title = 'ODISSEI Conference 2024'
-    new_url = 'https://odissei-data.nl/calendar/odissei-conference-2024/'
+    new_url = 'https://odissei-data.nl/event/odissei-conference-2024/'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 2 do
+    assert_difference 'Event.count', 4 do
       freeze_time(2019) do
         VCR.use_cassette('ingestors/odissei') do
           ingestor.read(source.url)
@@ -36,9 +36,9 @@ class OdisseiIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 2, ingestor.events.count
+    assert_equal 4, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 2, ingestor.stats[:events][:added]
+    assert_equal 4, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -51,9 +51,9 @@ class OdisseiIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'ODISSEI', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal Time.zone.parse('Tue, 10 Dec 2024 09:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Tue, 10 Dec 2024 17:00:00.000000000 UTC +00:00'), event.end
-    assert_equal 'Supernova, Jaarbeurs Utrecht       Jaarbeursplein 6   Utrecht,   3521AL  Netherlands', event.venue
+    assert_equal Time.zone.parse('Tue, 10 Dec 2019 09:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Tue, 10 Dec 2019 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal 'Jaarbeurs', event.venue
     refute event.online?
   end
 end

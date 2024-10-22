@@ -31,22 +31,30 @@ module Ingestors
       workshop_title_list = []
       workshop_url_list = []
       event_page = Nokogiri::HTML5.parse(open_url(odissei_url.to_s,
-                                                  raise: true)).css("div[class='tribe-events-calendar-list']").first.css("div[class='tribe-common-g-row tribe-events-calendar-list__event-row']")
+                                                  raise: true)).css('.events.archive > .event')
       event_page.each do |event_section|
         event = OpenStruct.new
-        el = event_section.css("div[class='tribe-events-calendar-list__event-details tribe-common-g-col']").first
-        event.title = el.css("a[class='tribe-events-calendar-list__event-title-link tribe-common-anchor-thin']").first.text.gsub("\n", ' ').gsub("\t", '')
-        event.url = el.css("a[class='tribe-events-calendar-list__event-title-link tribe-common-anchor-thin']").first.get_attribute('href')
-        event.description = el.css("div[class='tribe-events-calendar-list__event-description tribe-common-b2 tribe-common-a11y-hidden']").first.css('p').first.text
-        sleep(1) unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/odissei.yml')
-        el = Nokogiri::HTML5.parse(open_url(event.url.to_s, raise: true)).css("div[id='tribe-events-content']").first
-        venue_css = el&.css("div[class='tribe-events-meta-group tribe-events-meta-group-venue']")&.first&.css('dl')
-        next unless venue_css
+        event.title = event_section.css('.event-information > .event-title > a').first.text
+        event.url = event_section.css('.event-information > .event-title > a').first.get_attribute('href')
+        event.description = event_section.css('.event-teaser > p').first.text
+        event.venue = event_section.css('.event-location').first.text || 'unknown'
 
-        event.venue = recursive_description_func(venue_css).gsub("\n", ' ').gsub("\t", '')
-        times = scrape_start_and_end_time(el.css("div[class='tribe-events-meta-group tribe-events-meta-group-details']").first)
-        event.start = times[0]
-        event.end = times[1]
+        year = Time.zone.now.year
+        month = event_section.css('.event-day > div > strong').first.text
+        day = event_section.css('.event-day-number').first.text
+        times = event_section.css('.event-time').first.text.split('-')
+        event.start = Time.zone.parse("#{year} #{month} #{day}")
+        event.start = event.start.change(year: year + 1) if event.start < Time.zone.now - 2.weeks
+        event.end = event.start
+        if times.length == 2
+          for separator in [':', '.']
+            hour, min = times[0].split(separator) if times[0].split(separator).length == 2
+            event.start = event.start.change(hour:, min:)
+            hour, min = times[1].split(separator) if times[0].split(separator).length == 2
+            event.end = event.end.change(hour:, min:)
+          end
+        end
+
         event.source = 'ODISSEI'
         event.timezone = 'Amsterdam'
         event.set_default_times
@@ -58,39 +66,7 @@ module Ingestors
   end
 end
 
-def scrape_start_and_end_time(el)
-  start_date = el&.css("abbr[class='tribe-events-abbr tribe-events-start-date published dtstart']")&.first
-  start_time = el&.css("div[class='tribe-events-abbr tribe-events-start-time published dtstart']")&.first
-  start_date_time = el&.css("abbr[class='tribe-events-abbr tribe-events-start-datetime updated published dtstart']")&.first
-  end_date_time = el&.css("abbr[class='tribe-events-abbr tribe-events-end-datetime dtend']")&.first
-  if start_time
-    start_date = start_time.get_attribute('title').strip
-    end_date = start_date
-    time = start_time.text.strip
-    if time.include?('-')
-      start_time = time.split('-')[0].strip
-      end_time = time.split('-')[1].strip
-    else
-      start_time = time
-      end_time = [time.to_i + 1, 18].max.to_s + ':00'
-    end
-  elsif start_date_time
-    start_date = start_date_time.get_attribute('title').strip
-    start_time = start_date_time.text.split('@').last.strip
-    end_date = end_date_time.get_attribute('title').strip
-    end_time = end_date_time.text.split('@').last.strip
-  else
-    start_date = start_date.get_attribute('title').strip
-    end_date = start_date
-    start_time = '09:00'
-    end_time = '17:00'
-  end
-  event_start = Time.zone.parse(start_date + ' ' + start_time)
-  event_end = Time.zone.parse(end_date + ' ' + end_time)
-  [event_start, event_end]
-end
-
-def recursive_description_func(css, res = '')
+def odissei_recursive_description_func(css, res = '')
   if css.length == 1
     res += css.text.strip
   else
