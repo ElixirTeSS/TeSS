@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class RstIngestorTest < ActiveSupport::TestCase
+class VuMaterialIngestorTest < ActiveSupport::TestCase
   setup do
     @user = users(:regular_user)
     @content_provider = content_providers(:portal_provider)
@@ -12,24 +12,24 @@ class RstIngestorTest < ActiveSupport::TestCase
     reset_timezone
   end
 
-  test 'can ingest materials from rst' do
+  test 'can ingest materials from vu' do
     source = @content_provider.sources.build(
-      url: 'https://researchsoftwaretraining.nl/resources/',
-      method: 'rst',
+      url: 'https://vu.nl/en/education/phd-courses',
+      method: 'vu_material',
       enabled: true
     )
 
-    ingestor = Ingestors::RstIngestor.new
+    ingestor = Ingestors::VuMaterialIngestor.new
 
     # check materials don't exist
-    new_title = 'Software Carpentry'
-    new_url = 'https://software-carpentry.org/lessons/'
+    new_title = 'Writing and presenting'
+    new_url = 'https://vu.nl/en/education/phd-courses/writing-and-presenting'
     refute Material.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference('Material.count', 11) do
+    assert_difference('Material.count', 169) do
       freeze_time(2019) do
-        VCR.use_cassette('ingestors/rst') do
+        VCR.use_cassette('ingestors/vu_material') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
         end
@@ -43,7 +43,6 @@ class RstIngestorTest < ActiveSupport::TestCase
     assert_equal new_url, material.url
 
     # check other fields
-    # assert_equal 'Software Carpentry lessons introduce basic lab skills for research computing. They cover three core topics: the Unix shell, version control with Git, and a programming language (Python or R). ',
-    #              material.description
+    assert_equal 'In this course students will be trained in two important academic skills: writing, and presenting.', material.description
   end
 end

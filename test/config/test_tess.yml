@@ -70,7 +70,25 @@ default: &default
     material_type: 'material_type.yml'
     target_audience: 'target_audience.yml'
     trainer_experience: 'trainer_experience.yml'
-
+  communities:
+    uk:
+      name: UK training
+      filters:
+        node: United Kingdom
+      flag: 🇬🇧
+      description: Some text about what the community is bla bla bla
+      country_code: GB
+    be:
+      name: Belgium Corner
+      filters:
+        node: Belgium
+      flag: 🇧🇪
+      description: Waffles etc.
+      country_code: BE
+    cool:
+      name: Cool Crew
+      flag: 😎
+      description: Only cool ppl allowed
 development:
   <<: *default
 

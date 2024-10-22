@@ -1,0 +1,11 @@
+<section id="latest_materials">
+  <h3>
+    Latest materials
+    <%= link_to("See all #{@community.name} materials", materials_path(**@community.filters), class: 'btn btn-sm btn-default pull-right') %>
+  </h3>
+  <% if @materials.present? %>
+    <%= render partial: 'common/masonry_grid', locals: { objects: @materials } %>
+  <% else %>
+    <span class="muted">No recent materials found.</span>
+  <% end %>
+</section>

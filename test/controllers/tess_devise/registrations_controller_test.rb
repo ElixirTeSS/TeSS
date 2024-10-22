@@ -124,5 +124,45 @@ module TessDevise
       put :update, params: { user: { username: 'cooldude99' } }
       assert_redirected_to assigns(:user)
     end
+
+    test 'should not register user from blocked country' do
+      assert_no_difference('User.count') do
+        Locator.instance.stub(:lookup, { 'country' => { 'iso_code' => 'GB' } }) do
+          with_settings({ blocked_countries: ['gb'] }) do
+            post :create, params: {
+              user: {
+                username: 'mileyfan1997',
+                email: 'h4nn4hm0nt4n4@example.com',
+                password: '12345678',
+                password_confirmation: '12345678',
+                processing_consent: '1'
+              }
+            }
+          end
+
+          assert_response :forbidden
+        end
+      end
+    end
+
+    test 'should register user if country not blocked' do
+      assert_difference('User.count') do
+        Locator.instance.stub(:lookup, { 'country' => { 'iso_code' => 'FR' } }) do
+          with_settings({ blocked_countries: ['gb'] }) do
+            post :create, params: {
+              user: {
+                username: 'mileyfan1997',
+                email: 'h4nn4hm0nt4n4@example.com',
+                password: '12345678',
+                password_confirmation: '12345678',
+                processing_consent: '1'
+              }
+            }
+          end
+
+          assert_redirected_to root_path
+        end
+      end
+    end
   end
 end

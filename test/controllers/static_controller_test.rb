@@ -225,7 +225,7 @@ class StaticControllerTest < ActionController::TestCase
         get :home
         assert_select 'section#upcoming_events', count: 1
         assert_select 'section#upcoming_events h2', count: 1
-        assert_select 'section#upcoming_events ul', count: 2
+        assert_select 'section#upcoming_events .link-overlay', count: 2
       end
     end
   end
@@ -237,7 +237,7 @@ class StaticControllerTest < ActionController::TestCase
         get :home
         assert_select 'section#latest_materials', count: 1
         assert_select 'section#latest_materials h2', count: 1
-        assert_select 'section#latest_materials ul', count: 2
+        assert_select 'section#latest_materials .link-overlay', count: 2
       end
     end
   end
@@ -279,6 +279,52 @@ class StaticControllerTest < ActionController::TestCase
       get :home
       assert_select 'section#content_providers_grid', count: 1
       assert_select 'section#content_providers_grid li.provider-grid-tile', count: 2
+    end
+  end
+
+  test 'should show community banner if matching community for country' do
+    Locator.instance.stub(:lookup, { 'country' => { 'iso_code' => 'GB', 'names' => { 'en' => 'United Kingdom' } } }) do
+      with_settings({ site: { home_page: { communities: true } } }) do
+        get :home
+        assert_response :success
+        assert_select '#community-banner', text: /Visit the UK training portal to browse local training./
+      end
+    end
+  end
+
+  test 'should not show community banner if no matching community for country' do
+    Locator.instance.stub(:lookup, { 'country' => { 'iso_code' => 'SE', 'names' => { 'en' => 'Sweden' } } }) do
+      with_settings({ site: { home_page: { communities: true } } }) do
+        get :home
+        assert_response :success
+        assert_select '#community-banner', count: 0
+      end
+    end
+  end
+
+  test 'should not show community banner if feature disabled' do
+    Locator.instance.stub(:lookup, { 'country' => { 'iso_code' => 'GB', 'names' => { 'en' => 'United Kingdom' } } }) do
+      with_settings({ site: { home_page: { communities: false } } }) do
+        get :home
+        assert_response :success
+        assert_select '#community-banner', count: 0
+      end
+    end
+  end
+
+  test 'should not show registration button if disabled for country' do
+    with_settings({ blocked_countries: ['gb'] }) do
+      Locator.instance.stub(:lookup, { 'country' => { 'iso_code' => 'GB' } }) do
+        get :home
+        assert_response :success
+        assert_select '.dropdown-item a', text: 'Register', count: 0
+      end
+
+      Locator.instance.stub(:lookup, { 'country' => { 'iso_code' => 'FR' } }) do
+        get :home
+        assert_response :success
+        assert_select '.dropdown-item a', text: 'Register', count: 1
+      end
     end
   end
 end

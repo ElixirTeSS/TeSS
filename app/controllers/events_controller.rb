@@ -235,7 +235,8 @@ class EventsController < ApplicationController
                                   { node_names: [] }, { target_audience: [] }, { eligibility: [] }, :visible,
                                   { host_institutions: [] }, :capacity, :contact, :recognition, :learning_objectives,
                                   :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency, :language,
-                                  external_resources_attributes: %i[id url title _destroy], material_ids: [],
+                                  external_resources_attributes: %i[id url title _destroy],
+                                  external_resources: [:url, :title], material_ids: [],
                                   llm_interaction_attributes: %i[id scrape_or_process model prompt input output needs_processing _destroy],
                                   locked_fields: [])
   end
