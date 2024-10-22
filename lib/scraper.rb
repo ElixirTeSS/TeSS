@@ -168,15 +168,17 @@ class Scraper
     end
   end
 
-  def scraper_event_check(_data_sources)
-    return unless TeSS::Config&.scraper_event_check&.[]('enabled')
+  def scraper_event_check(data_sources)
+    result = false
+    return result unless TeSS::Config&.scraper_event_check&.[]('enabled')
 
     data_sources.each do |_key, sources|
       sources.each do |source|
-        event_check_rejected(source)
-        event_check_stale(source)
+        result ||= event_check_rejected(source)
+        result ||= event_check_stale(source)
       end
     end
+    result
   end
 
   def event_check_stale(source)
