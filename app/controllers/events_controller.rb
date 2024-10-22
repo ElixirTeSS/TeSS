@@ -212,7 +212,7 @@ class EventsController < ApplicationController
   def redirect
     @event.widget_logs.create(widget_name: params[:widget],
                               action: "#{controller_name}##{action_name}",
-                              data: @event.url, params:)
+                              data: @event.url, params: params.merge({ referrer: request.referrer }))
 
     redirect_to @event.url, allow_other_host: true
   end
@@ -236,7 +236,7 @@ class EventsController < ApplicationController
                                   { host_institutions: [] }, :capacity, :contact, :recognition, :learning_objectives,
                                   :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency, :language,
                                   external_resources_attributes: %i[id url title _destroy],
-                                  external_resources: [:url, :title], material_ids: [],
+                                  external_resources: %i[url title], material_ids: [],
                                   llm_interaction_attributes: %i[id scrape_or_process model prompt input output needs_processing _destroy],
                                   locked_fields: [])
   end
