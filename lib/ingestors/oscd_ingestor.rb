@@ -25,8 +25,9 @@ module Ingestors
 
     private
 
-    def process_oscd(_url)
-      url = 'https://osc-delft.github.io/events'
+    def process_oscd(url)
+      # url = 'https://osc-delft.github.io/events'
+      # url = 'https://osceindhoven.github.io/events'
 
       event_page = Nokogiri::HTML5.parse(open_url(url.to_s, raise: true)).css('.article-post').children
       first_event = true
@@ -68,15 +69,15 @@ end
 def oscd_fix_time(date_str)
   date_str.split(',').each do |str|
     str.strip.split(' ').each_cons(2) do |el1, el2|
-      if is_month?(el1) && el2.to_i.positive?
-        event_start = Time.zone.parse([el1, el2].join(' '))
-        event_end = Time.zone.parse([el1, el2].join(' '))
-        if event_start < (Time.zone.now - 2.weeks)
-          event_start = event_start.change(year: event_start.year + 1)
-          event_end = event_end.change(year: event_start.year + 1)
-        end
-        return event_start, event_end
+      next unless is_month?(el1) && el2.to_i.positive?
+
+      event_start = Time.zone.parse([el1, el2].join(' '))
+      event_end = Time.zone.parse([el1, el2].join(' '))
+      if event_start < (Time.zone.now - 2.weeks)
+        event_start = event_start.change(year: event_start.year + 1)
+        event_end = event_end.change(year: event_start.year + 1)
       end
+      return event_start, event_end
     end
   end
 end
