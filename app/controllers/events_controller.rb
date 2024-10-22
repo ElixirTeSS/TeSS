@@ -212,7 +212,8 @@ class EventsController < ApplicationController
   def redirect
     @event.widget_logs.create(widget_name: params[:widget],
                               action: "#{controller_name}##{action_name}",
-                              data: @event.url, params: params.merge({ referrer: request.referrer }))
+                              referrer: request.referrer,
+                              data: @event.url, params:)
 
     redirect_to @event.url, allow_other_host: true
   end
