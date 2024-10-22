@@ -26,17 +26,22 @@
       <% upcoming_events = @content_provider.events.from_verified_users.not_finished.not_disabled %>
       <% past_events = @content_provider.events.from_verified_users.finished.not_disabled %>
       <% events = upcoming_events.limit(resource_limit) %>
-      <% events_count =  @content_provider.events.from_verified_users.not_disabled.count %>
+      <% e = @content_provider.events.from_verified_users.not_disabled %>
+      <% events_count = e.count %>
+      <% not_finished_events_count = e.not_finished.count %>
       <% sources = @content_provider.sources.order(enabled: :desc, finished_at: :desc) %>
       <% activator = tab_activator %>
       <ul class="nav nav-tabs">
-        <%= tab('Materials', icon_class_for_model('materials'), 'materials', activator: activator,
-                disabled: { check: materials_count.zero?, message: 'No associated training materials' },
-                count: materials_count) %>
-
-        <%= tab('Events', icon_class_for_model('events'), 'events', activator: activator,
-                disabled: { check: events_count.zero?, message: 'No associated events' },
-                count: events_count) %>
+        <% if TeSS::Config.feature['materials'] %>
+          <%= tab('Materials', icon_class_for_model('materials'), 'materials', activator: activator,
+                  disabled: { check: materials_count.zero?, message: 'No registered training materials' },
+                  count: materials_count) %>
+        <% end %>
+        <% if TeSS::Config.feature['events'] %>
+          <%= tab('Events', icon_class_for_model('events'), 'events', activator: activator,
+                  disabled: { check: events_count.zero?, message: 'No associated events' },
+                  count: not_finished_events_count.zero? && events_count.positive? ? '0*' : not_finished_events_count) %>
+        <% end %>
 
         <% if TeSS::Config.feature['sources'] && policy(@content_provider).update? %>
           <%= tab('Sources', icon_class_for_model('sources'), 'sources', count: sources.count, activator: activator) %>

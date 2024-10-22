@@ -404,17 +404,18 @@ class UsersControllerTest < ActionController::TestCase
   test 'should show tabs for resource types and link to view all' do
     sign_in(@user)
 
-    assert @user.events.not_finished.count > 0
-    assert @user.materials.count > 1
-    assert @user.collections.count > 1
-    assert @user.workflows.count > 1
+    travel_to(Date.new(2024, 10, 21)) do
+      assert @user.events.not_finished.count > 0
+      assert @user.materials.count > 1
+      assert @user.collections.count > 1
+      assert @user.workflows.count > 1
 
-    UsersHelper.stub(:user_profile_resource_limit, 1) do
-      get :show, params: { id: @user }
+      UsersHelper.stub(:user_profile_resource_limit, 1) do
+        get :show, params: { id: @user }
+      end
     end
-
     # Tabs
-    assert_select 'a[data-toggle="tab"]', text: "Events (#{@user.events.count})"
+    assert_select 'a[data-toggle="tab"]', text: "Events (#{@user.events.not_finished.count})"
     assert_select 'a[data-toggle="tab"]', text: "Materials (#{@user.materials.count})"
     assert_select 'a[data-toggle="tab"]', text: "Collections (#{@user.collections.count})"
     assert_select 'a[data-toggle="tab"]', text: "Workflows (#{@user.workflows.count})"
@@ -437,7 +438,7 @@ class UsersControllerTest < ActionController::TestCase
       get :show, params: { id: user }
     end
 
-    assert_select 'a[data-toggle="tab"]', text: "Events (#{user.events.count})"
+    assert_select 'a[data-toggle="tab"]', text: "Events (0*)"
     assert_select '#events a[href=?]', events_path(user: user.username, include_expired: true)
   end
 

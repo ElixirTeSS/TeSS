@@ -23,7 +23,9 @@
       <% upcoming_events = @node.related_events.from_verified_users.not_finished %>
       <% past_events = @node.related_events.from_verified_users.finished %>
       <% events = upcoming_events.limit(resource_limit) %>
-      <% events_count =  @node.related_events.from_verified_users.count %>
+      <% e = @node.events.from_verified_users.not_disabled %>
+      <% events_count = e.count %>
+      <% not_finished_events_count = e.not_finished.count %>
       <% activator = tab_activator %>
       <ul class="nav nav-tabs">
         <% if TeSS::Config.feature['materials'] %>
@@ -33,8 +35,8 @@
         <% end %>
         <% if TeSS::Config.feature['events'] %>
           <%= tab('Events', icon_class_for_model('events'), 'events', activator: activator,
-                  disabled: { check: events_count.zero?, message: 'No registered events' },
-                  count: events_count) %>
+                  disabled: { check: events_count.zero?, message: 'No associated events' },
+                  count: not_finished_events_count.zero? && events_count.positive? ? '0*' : not_finished_events_count) %>
         <% end %>
         <% if TeSS::Config.feature['content_providers'] %>
           <%= tab('Providers', icon_class_for_model('content_providers'), 'content_providers', activator: activator,
