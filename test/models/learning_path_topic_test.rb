@@ -70,4 +70,19 @@ class LearningPathTopicTest < ActiveSupport::TestCase
     assert_equal [1, 2], learning_path_topic.event_items.pluck(:order)
     assert_equal [events(:two), events(:one)], learning_path_topic.event_items.map(&:resource)
   end
+
+  test 'next_item, previous_item' do
+    learning_path_topic = learning_path_topics(:empty_topic)
+    item1 = learning_path_topic.items.create!(resource: materials(:biojs), order: 1)
+    item2 = learning_path_topic.items.create!(resource: materials(:interpro), order: 2)
+    item3 = learning_path_topic.items.create!(resource: materials(:good_material), order: 3)
+
+    assert_equal item2, item1.next_item
+    assert_equal item3, item2.next_item
+    assert_nil item3.next_item
+
+    assert_equal item2, item3.previous_item
+    assert_equal item1, item2.previous_item
+    assert_nil item1.previous_item
+  end
 end

@@ -19,6 +19,14 @@ class LearningPathTopicItem < ApplicationRecord
                                                 topic_title: self.topic.title })
   end
 
+  def previous_item
+    topic.items.where(order: order - 1).first
+  end
+
+  def next_item
+    topic.items.where(order: order + 1).first
+  end
+
   private
 
   def set_order
