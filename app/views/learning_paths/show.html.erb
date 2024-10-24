@@ -60,7 +60,7 @@
 
       <div class="learning-path-topics">
         <% @learning_path.topic_links.joins(:topic).each do |lpt| %>
-          <div class="learning-path-topic">
+          <div class="learning-path-topic" id="topic-<%= lpt.id -%>">
             <div class="learning-path-topic-order"><%= lpt.order %></div>
             <div class="learning-path-topic-title">
               <h4><%= lpt.topic.title %> <i class="icon icon-md expand-icon"></i></h4>
@@ -79,8 +79,9 @@
               <% end %>
 
               <ul style="padding-left: 0; overflow: auto;">
-                <% lpt.topic.materials.each do |object| %>
-                  <%= render object %>
+                <% lpt.topic.material_items.each do |object| %>
+                  <%= render partial: object.to_partial_path, locals: { learning_path_topic_item: object,
+                                                                        topic_link: lpt } %>
                 <% end %>
               </ul>
             </div>

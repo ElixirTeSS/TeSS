@@ -1,2 +1,3 @@
 <% resource = learning_path_topic_item.resource %>
-<%= render partial: resource, locals: { collection_item: learning_path_topic_item } %>
+<% locals = local_assigns.merge(collection_item: local_assigns.delete(:learning_path_topic_item)) %>
+<%= render partial: resource, locals: locals %>

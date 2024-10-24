@@ -670,6 +670,9 @@ en:
       resource_type: 'Select the type of resource that best matches the learning path. '
       url: 'Preferred URL to direct people to your learning path landing page.'
       version: 'Indicate the current version of the learning path.'
+    next_topic: Next topic
+    next_item: Next
+    end_of: End of learning path
   profile:
     user:
       disclaimer: >
