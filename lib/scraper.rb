@@ -79,6 +79,8 @@ class Scraper
         end
       end
 
+      scraper_event_check(data_sources)
+
       log '', 1
       log t('scraper.messages.processed', processed:), 1
 
@@ -164,6 +166,53 @@ class Scraper
     rescue StandardError => e
       log t('scraper.messages.bad_source_save', error_message: e.message), 2
     end
+  end
+
+  def scraper_event_check(data_sources)
+    result = false
+    return result unless TeSS::Config&.scraper_event_check&.[]('enabled')
+
+    data_sources.each do |_key, sources|
+      sources.each do |source|
+        result ||= event_check_rejected(source)
+        result ||= event_check_stale(source)
+      end
+    end
+    result
+  end
+
+  def event_check_stale(source)
+    return unless TeSS::Config&.scraper_event_check&.[]('stale_threshold')
+
+    scraper_events = get_scraper_events(source.content_provider.events.not_finished)
+    return if scraper_events.count.zero?
+
+    stale_warning = scraper_events.filter(&:stale?).count / scraper_events.count > TeSS::Config.scraper_event_check['stale_threshold']
+
+    if stale_warning && TeSS::Config.sentry_enabled?
+      Sentry.capture_message(
+        "Warning: #{source.content_provider.title} has too many stale events. Check if the scraper is still working properly.",
+        level: :warning
+      )
+    end
+    stale_warning
+  end
+
+  def event_check_rejected(source)
+    return unless TeSS::Config&.scraper_event_check&.[]('rejected_threshold') && (source.records_written + source.resources_rejected).positive?
+
+    rejected_warning = source.resources_rejected.to_f / (source.records_written + source.resources_rejected) > TeSS::Config.scraper_event_check['rejected_threshold']
+    if rejected_warning && TeSS::Config.sentry_enabled?
+      Sentry.capture_message(
+        "Warning: #{source.content_provider.title} has too many rejected events. Check if the scraper is still working properly.",
+        level: :warning
+      )
+    end
+    rejected_warning
+  end
+
+  def get_scraper_events(event_list)
+    event_list.filter { |e| e.respond_to?(:last_scraped) && !e.last_scraped.nil? && e.scraper_record }
   end
 
   private

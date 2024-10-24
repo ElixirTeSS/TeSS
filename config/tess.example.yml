@@ -158,6 +158,10 @@ default: &default
   llm_scraper:
     model:
     model_version:
+  scraper_event_check:
+    enabled: false
+    stale_threshold: 0.3
+    rejected_threshold: 0.3
   communities:
 #    uk:
 #      name: UK training
