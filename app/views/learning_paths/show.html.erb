@@ -80,7 +80,8 @@
 
               <ul style="padding-left: 0; overflow: auto;">
                 <% lpt.topic.material_items.each do |object| %>
-                  <%= render partial: object.to_partial_path, locals: { learning_path_topic_item: object,
+                  <%= render partial: object.to_partial_path, locals: { show_order: false,
+                                                                        learning_path_topic_item: object,
                                                                         topic_link: lpt } %>
                 <% end %>
               </ul>
