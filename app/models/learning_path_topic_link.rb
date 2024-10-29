@@ -7,6 +7,14 @@ class LearningPathTopicLink < ApplicationRecord
 
   validates :topic_id, uniqueness: { scope: %i[learning_path_id], message: 'already included in learning path' }
 
+  def previous_topic
+    learning_path.topic_links.where(order: order - 1).first
+  end
+
+  def next_topic
+    learning_path.topic_links.where(order: order + 1).first
+  end
+
   private
 
   def set_order

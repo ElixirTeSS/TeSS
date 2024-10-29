@@ -260,6 +260,8 @@ document.addEventListener("turbolinks:load", function(e) {
 
     Collections.init();
 
+    LearningPaths.init();
+
     $('.tess-expandable').each(function () {
         var limit = this.dataset.heightLimit || 300;
 
@@ -326,12 +328,6 @@ document.addEventListener("turbolinks:load", function(e) {
         }, 1);
     });
 
-    $('.learning-path-topic-title').click(function () {
-        const container = $(this).closest('.learning-path-topic');
-        const contents = container.find('.learning-path-topic-contents');
-        $(this).find('.expand-icon, .collapse-icon').toggleClass('collapse-icon').toggleClass('expand-icon');
-        contents.slideToggle();
-    });
 });
 
 function truncateWithEllipses(text, max)

@@ -89,4 +89,19 @@ class LearningPathTest < ActiveSupport::TestCase
     assert_equal [1, 2], learning_path.topic_links.pluck(:order)
     assert_equal [learning_path_topics(:goblet_things), learning_path_topics(:good_and_bad)], learning_path.topic_links.map(&:topic)
   end
+
+  test 'next_topic, previous_topic' do
+    learning_path = learning_paths(:in_development_learning_path)
+    topic_link1 = learning_path.topic_links.create!(topic: learning_path_topics(:good_and_bad), order: 1)
+    topic_link2 = learning_path.topic_links.create!(topic: learning_path_topics(:goblet_things), order: 2)
+    topic_link3 = learning_path.topic_links.create!(topic: learning_path_topics(:empty_topic), order: 3)
+
+    assert_equal topic_link2, topic_link1.next_topic
+    assert_equal topic_link3, topic_link2.next_topic
+    assert_nil topic_link3.next_topic
+
+    assert_equal topic_link2, topic_link3.previous_topic
+    assert_equal topic_link1, topic_link2.previous_topic
+    assert_nil topic_link1.previous_topic
+  end
 end

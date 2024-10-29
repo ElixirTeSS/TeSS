@@ -1,0 +1,23 @@
+<h4 class="nav-heading"><%= LearningPath.model_name.human %></h4>
+<div class="nav-block learning-path-navigation">
+  <%= link_to(topic_link.learning_path.title, topic_link.learning_path) %><br/>
+  <%= topic_link.topic.title %>
+
+  <%= item_comment(topic_item) %>
+
+  <div>
+    <% next_item = topic_item.next_item %>
+    <% if next_item %>
+      <strong><%= t('learning_paths.next_item') %>:</strong><br/>
+      <%= link_to(next_item.resource.title, polymorphic_path(next_item.resource, **learning_path_breadcrumb_param(topic_link, next_item))) %>
+    <% else %>
+      <% next_topic = topic_link.next_topic %>
+      <% if next_topic %>
+        <strong><%= t('learning_paths.next_topic') %>:</strong><br/>
+        <%= link_to(next_topic.topic.title, learning_path_path(next_topic.learning_path, anchor: "topic-#{next_topic.id}")) %>
+      <% else %>
+        <span class="empty"><%= t('learning_paths.end_of') %></span>
+      <% end %>
+    <% end %>
+  </div>
+</div>
