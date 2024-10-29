@@ -798,3 +798,7 @@ en:
         latest: Latest
         most_recent: Most recent
         last_finished: Last finished
+  collections:
+    show:
+      curate_materials: "Curate materials"
+      curate_events: "Curate events"
