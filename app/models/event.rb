@@ -464,6 +464,27 @@ class Event < ApplicationRecord
     self.presence = value
   end
 
+  # Method to ensure a good spread of events by picking one from each content provider until the limit hit,
+  # or no more events in set.
+  def self.from_varied_providers(events, count)
+    provider_events = events.group_by(&:content_provider_id)
+
+    events = []
+    events_left = true
+    while events_left && (events.length < count) do
+      events_left = false
+      provider_events.each_value do |p_events|
+        if p_events.any?
+          events << p_events.shift
+          break if events.length == count
+          events_left ||= p_events.any?
+        end
+      end
+    end
+
+    events
+  end
+
   private
 
   def allowed_url
