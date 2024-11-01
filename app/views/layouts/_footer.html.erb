@@ -15,37 +15,37 @@
 
       <div class="col-sm-4 col-xs-6 text-left">
         <div class="footer-item">
-          <%= link_to "About #{TeSS::Config.site['title_short']}", about_path %>
+          <%= link_to t('footer.about', title: TeSS::Config.site['title_short']), about_path %>
         </div>
         <div class="footer-item">
-          <%= link_to 'Funding & acknowledgements', us_path(anchor: 'funding') %>
+          <%= link_to t('footer.funding'), us_path(anchor: 'funding') %>
         </div>
         <div class="footer-item">
-          <%= link_to 'Privacy', privacy_path %>
+          <%= link_to t('footer.privacy'), privacy_path %>
         </div>
         <% if cookie_consent.required? %>
           <div class="footer-item">
-            <%= link_to 'Cookie preferences', cookies_consent_path %>
+            <%= link_to t('footer.cookie_preferences'), cookies_consent_path %>
           </div>
         <% end %>
       </div>
 
       <div class="col-sm-4 col-xs-6 text-left">
         <div class="footer-item">
-          Version: <code><%= app_version_text -%></code>
+          <%= t('footer.version') %> <code><%= app_version_text -%></code>
         </div>
 
         <div class="footer-item">
-          <%= link_to 'Source code', TeSS::Config.site['repository'], target: '_blank', rel: 'noopener' %>
+          <%= link_to t('footer.source_code'), TeSS::Config.site['repository'], target: '_blank', rel: 'noopener' %>
         </div>
 
         <div class="footer-item">
-          <%= link_to 'API documentation', asset_path('api/json_api', skip_pipeline: true) %>
+          <%= link_to t('footer.api_documentation'), asset_path('api/json_api', skip_pipeline: true) %>
         </div>
 
         <% if TeSS::Config.feature['bioschemas_testing'] %>
           <div class="footer-item">
-            <%= link_to 'Bioschemas testing tool', bioschemas_test_path %>
+            <%= link_to t('footer.bioschemas_testing_tool'), bioschemas_test_path %>
           </div>
         <% end %>
       </div>
