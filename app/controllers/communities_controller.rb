@@ -46,17 +46,18 @@ class CommunitiesController < ApplicationController
   def set_upcoming_events
     n_events = 5
 
-    Event.search_and_filter(
+    events = Event.search_and_filter(
       nil,
       '',
       {
-        'include_expired' => 'true',
         'start' => "#{10.years.ago.beginning_of_day}/",
         **@community.filters
       },
       sort_by: 'early',
       per_page: 5 * n_events
-    ).results.group_by(&:content_provider_id).map { |_p_id, p_events| p_events.first }.first(n_events)
+    ).results
+
+    @events = Event.from_varied_providers(events, n_events).sort_by(&:created_at).reverse
   end
 
   def set_community
