@@ -670,6 +670,9 @@ en:
       resource_type: 'Select the type of resource that best matches the learning path. '
       url: 'Preferred URL to direct people to your learning path landing page.'
       version: 'Indicate the current version of the learning path.'
+    next_topic: Next topic
+    next_item: Next
+    end_of: End of learning path
   profile:
     user:
       disclaimer: >
@@ -775,7 +778,15 @@ en:
     archived: This %{resource_type} has been archived, its content may no longer be relevant.
     unverified: This %{resource_type} will not be publicly visible until your registration has been approved by an administrator.
   footer:
-    eu_funding: >
+    about: "About %{title}"
+    funding: Funding & acknowledgements
+    privacy: Privacy
+    cookie_preferences: Cookie preferences
+    version: 'Version:'
+    source_code: Source code
+    api_documentation: API documentation
+    bioschemas_testing_tool: Bioschemas testing tool
+    eu_funding_html: >
       TeSS has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No. <a href="https://cordis.europa.eu/project/rcn/198519_en.html", target="_blank">676559</a>.
   time:
     formats:
@@ -795,3 +806,7 @@ en:
         latest: Latest
         most_recent: Most recent
         last_finished: Last finished
+  collections:
+    show:
+      curate_materials: "Curate materials"
+      curate_events: "Curate events"

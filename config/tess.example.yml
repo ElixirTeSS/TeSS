@@ -91,6 +91,7 @@ default: &default
     content_providers_disabled: []
     bioschemas_testing: false
     learning_paths: false
+    collection_curation: true
   restrict_content_provider_selection: false
   user_ingestion_methods: ['bioschemas']
   placeholder:
@@ -158,6 +159,10 @@ default: &default
   llm_scraper:
     model:
     model_version:
+  scraper_event_check:
+    enabled: false
+    stale_threshold: 0.3
+    rejected_threshold: 0.3
   communities:
 #    uk:
 #      name: UK training

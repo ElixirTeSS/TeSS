@@ -89,6 +89,10 @@ default: &default
       name: Cool Crew
       flag: 😎
       description: Only cool ppl allowed
+  scraper_event_check:
+    enabled: false
+    stale_threshold: 0.3
+    rejected_threshold: 0.3
 development:
   <<: *default
 
