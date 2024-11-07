@@ -1701,6 +1701,8 @@ components:
           properties:
             data:
               type: array
+              items:
+                type: object
             meta:
               type: object
               additionalProperties: false
