@@ -8,7 +8,7 @@ info:
   license:
     name: BSD 3-Clause License
     url: http://www.opensource.org/licenses/BSD-3-Clause
-  version: 1.3.0
+  version: 1.4.0
 servers:
   - url: https://tess.elixir-europe.org/
   - url: https://dev.tess.elixir-europe.org/
@@ -150,7 +150,7 @@ paths:
               type: string
         - name: venue[]
           in: query
-          description: Filter by venue
+          description: Filter by venue.
           style: form
           explode: true
           schema:
@@ -171,7 +171,7 @@ paths:
           description: Only show events with online access?
           schema:
             type: boolean
-        - name: sponsor[]
+        - name: sponsors[]
           in: query
           description: Filter by sponsor.
           style: form
@@ -190,6 +190,40 @@ paths:
           description: Include events that are disabled.
           schema:
             type: boolean
+        - name: eligibility[]
+          in: query
+          description: Filter by who is eligible to attend the event.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: language[]
+          in: query
+          description: Filter by events that will use the given language.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: collections[]
+          in: query
+          description: Filter events in a given collection (name).
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: start
+          in: query
+          description: Filter for events that occur in the given date range. Either a single YYYY-MM-DD date, or a range separated by a / e.g. 2002-05-03/2012-05-03.
+          style: form
+          explode: true
+          schema:
+            type: string
       responses:
         200:
           description: A collection of events, and facets available to filter them.
@@ -368,6 +402,28 @@ paths:
             type: array
             items:
               type: string
+        - name: collections[]
+          in: query
+          description: Filter materials in a given collection (name).
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: status
+          in: query
+          description: Filter by maturity status.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - Active
+                - Under development
+                - Archived
       responses:
         200:
           description: A collection of materials, and facets available to filter them.
