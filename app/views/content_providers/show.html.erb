@@ -64,7 +64,7 @@
                      locals: { total_count: upcoming_events.count,
                                past_count: past_events.count,
                                limit: resource_limit,
-                               resources: events,
+                               resources: events.sort_by(&:start),
                                activator: activator,
                                view_all_link: events_path(content_provider: @content_provider.title),
                                inc_expired_link: events_path(content_provider: @content_provider.title, include_expired: true) } %>
