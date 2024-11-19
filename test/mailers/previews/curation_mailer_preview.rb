@@ -14,4 +14,9 @@ class CurationMailerPreview < ActionMailer::Preview
     provider = ContentProvider.first
     CurationMailer.events_require_approval(provider, Time.zone.now - 1.week)
   end
+
+  def materials_need_approval
+    provider = ContentProvider.first
+    CurationMailer.materials_require_approval(provider, Time.zone.now - 1.week)
+  end
 end

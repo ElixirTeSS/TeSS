@@ -33,4 +33,16 @@ class CurationMailer < ApplicationMailer
       format.text
     end
   end
+
+  def materials_require_approval(provider, cut_off_time)
+    @provider = provider
+    return unless @provider.event_curation_email.present?
+
+    @materials = @provider.materials.filter { |e| e.created_at > cut_off_time }
+    subject = t('mailer.materials_require_approval.subject', site_name: TeSS::Config.site['title_short'])
+    mail(subject:, to: @provider.event_curation_email) do |format|
+      format.html
+      format.text
+    end
+  end
 end

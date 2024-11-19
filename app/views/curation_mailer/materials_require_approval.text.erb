@@ -1,0 +1,17 @@
+You are receiving this automated email because you are a curator of <%= @provider.title %> on <%= TeSS::Config.site['title_short'] %>.
+<% if @materials.count.positive? %>
+  If any of these materials are incorrect or should not be shown, please follow the link to change them.
+  If an material should not be shown, disable it on the edit page instead of deleting it to prevent rescraping.
+  If an material needs changes, lock the changed fields to prevent your changes from being overwritten by the scraper.
+
+  <% @materials.each do |material| %>
+    <%= material.title %> (<%= url_for(material) %>)
+    description: <%= material.description %>
+    show: <%= material.visible %>
+
+  <% end %>
+<% else %>
+  There were no new materials this week.
+<% end %>
+
+

@@ -783,6 +783,8 @@ en:
   mailer:
     events_require_approval:
       subject: "Last week's events on %{site_name}"
+    materials_require_approval:
+      subject: "Last week's materials on %{site_name}"
   sidebar:
     sort:
       heading: Sort

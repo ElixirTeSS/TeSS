@@ -155,6 +155,7 @@ namespace :tess do
     providers = ContentProvider.all.filter { |provider| provider.event_curation_email.present? }
     providers.each do |provider|
       CurationMailer.events_require_approval(provider, cut_off_time).deliver_later
+      CurationMailer.materials_require_approval(provider, cut_off_time).deliver_later
     end
     puts 'Curation mails sent'
   end
