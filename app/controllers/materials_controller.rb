@@ -4,6 +4,7 @@ class MaterialsController < ApplicationController
   before_action :set_material, only: %i[show edit update destroy update_collections clone
                                         add_term reject_term add_data reject_data]
   before_action :set_breadcrumbs
+  before_action :set_learning_path_navigation, only: :show
 
   include SearchableIndex
   include ActionView::Helpers::TextHelper
@@ -176,5 +177,12 @@ class MaterialsController < ApplicationController
                                      external_resources_attributes: %i[id url title _destroy],
                                      external_resources: %i[url title],
                                      event_ids: [], locked_fields: [])
+  end
+
+  def set_learning_path_navigation
+    return unless params[:lp]
+    topic_link_id, topic_item_id = params[:lp].split(':')
+    @learning_path_topic_link = LearningPathTopicLink.find_by_id(topic_link_id)
+    @learning_path_topic_item = LearningPathTopicItem.find_by_id(topic_item_id)
   end
 end

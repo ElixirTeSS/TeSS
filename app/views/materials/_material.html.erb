@@ -1,6 +1,14 @@
+<% learning_path_topic_item ||= nil %>
+<% collection_item ||= learning_path_topic_item %>
+<% link_params = (defined? topic_link) ? learning_path_breadcrumb_param(topic_link, collection_item) : {} %>
+<%
+  unless defined? show_order
+    show_order = true
+  end
+%>
 <li class="masonry-brick media-item long">
-  <%= link_to material, class: 'link-overlay' do %>
-    <%= item_order_badge(collection_item) if defined? collection_item %>
+  <%= link_to material_path(material, **link_params), class: 'link-overlay' do %>
+    <%= item_order_badge(collection_item) if show_order && collection_item %>
 
     <div class="masonry-brick-heading">
       <div class="masonry-icons">
@@ -31,6 +39,6 @@
       <%= keywords_and_topics(material) %>
     </div>
 
-    <%= item_comment(collection_item) if defined? collection_item %>
+    <%= item_comment(collection_item) if collection_item %>
   <% end %>
 </li>
