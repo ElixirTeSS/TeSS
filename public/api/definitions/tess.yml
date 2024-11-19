@@ -368,6 +368,11 @@ paths:
             type: array
             items:
               type: string
+        - name: include_disabled
+          in: query
+          description: Include materials that are disabled.
+          schema:
+            type: boolean
       responses:
         200:
           description: A collection of materials, and facets available to filter them.

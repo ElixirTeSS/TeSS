@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_10_22_113543) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_19_152528) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -345,6 +345,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_22_113543) do
     t.index ["event_id"], name: "index_llm_interactions_on_event_id"
   end
 
+  create_table "llm_objects", force: :cascade do |t|
+    t.bigint "event_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string "scrape_or_process"
+    t.string "model"
+    t.string "prompt"
+    t.string "input"
+    t.string "output"
+    t.boolean "needs_processing", default: false
+    t.index ["event_id"], name: "index_llm_objects_on_event_id"
+  end
+
   create_table "materials", force: :cascade do |t|
     t.text "title"
     t.string "url"
@@ -378,6 +391,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_22_113543) do
     t.text "contact"
     t.text "learning_objectives"
     t.string "fields", default: [], array: true
+    t.boolean "visible", default: true
     t.index ["content_provider_id"], name: "index_materials_on_content_provider_id"
     t.index ["slug"], name: "index_materials_on_slug", unique: true
     t.index ["user_id"], name: "index_materials_on_user_id"
@@ -449,6 +463,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_22_113543) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "title"
+  end
+
+  create_table "sessions", id: :serial, force: :cascade do |t|
+    t.string "session_id", null: false
+    t.text "data"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
+    t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
   create_table "sources", force: :cascade do |t|
