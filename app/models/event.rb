@@ -203,6 +203,8 @@ class Event < ApplicationRecord
     field_list.delete('fields') if TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research'
     field_list.delete('node') unless TeSS::Config.feature['nodes']
     field_list.delete('collections') unless TeSS::Config.feature['collections']
+    field_list.delete('organizer') unless TeSS::Config.feature['organizer']
+    field_list.delete('contact') unless TeSS::Config.feature['contact']
 
     field_list
   end

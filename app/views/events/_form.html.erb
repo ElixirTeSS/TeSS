@@ -74,10 +74,14 @@
                  title: t('events.hints.eligibility') %>
 
   <!-- Field: Organiser -->
-  <%= f.input :organizer, field_lock: true, label: 'Organiser', input_html: { title: t('events.hints.organizer') } %>
+  <% if !TeSS::Config.feature['disabled'].include? 'organizer' %>
+    <%= f.input :organizer, field_lock: true, label: 'Organiser', input_html: { title: t('events.hints.organizer') } %>
+  <% end %>
 
   <!-- Field: Contact -->
-  <%= f.input :contact, input_html: { rows: '5', title: t('events.hints.contact') }, field_lock: true %>
+  <% if !TeSS::Config.feature['disabled'].include? 'organizer' %>
+    <%= f.input :contact, input_html: { rows: '5', title: t('events.hints.contact') }, field_lock: true %>
+  <% end %>
 
   <!-- Field: Host Institutions -->
   <%= f.multi_input :host_institutions, errors: @event.errors[:host_institutions],

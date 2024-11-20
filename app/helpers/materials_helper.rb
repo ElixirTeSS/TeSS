@@ -5,11 +5,11 @@ module MaterialsHelper
   with description and other meta information (e.g. ontological categorization, keywords, etc.).\n\n
   Materials can be added manually or automatically harvested from a provider's website.\n\n\
   If your website contains training materials that you wish to include in #{TeSS::Config.site['title_short']},\
-  %{link}.".freeze
+  %<link>s.".freeze
 
   ELEARNING_MATERIALS_INFO = "e-Learning materials are curated materials focused on e-Learning.\n\n"\
   "If your website contains e-Learning materials that you wish to include in #{TeSS::Config.site['title_short']},\
-  %{link}.".freeze
+  %<link>s.".freeze
 
   TOPICS_INFO = "#{TeSS::Config.site['title_short']} generates a scientific topic suggestion for each resource registered. It does this by
   passing the description and title of the resource to the Bioportal Annotator Web service.
@@ -35,13 +35,13 @@ where each topic has one competency level for all its materials. \n\n\
 ".freeze
 
   def materials_info
-    MATERIALS_INFO % { link: link_to('see here for details on automatic registration',
-                                  registering_resources_path(anchor: 'automatic')) }
+    format(MATERIALS_INFO, link: link_to('see here for details on automatic registration',
+                                         registering_resources_path(anchor: 'automatic')))
   end
 
   def elearning_materials_info
-    ELEARNING_MATERIALS_INFO % { link: link_to('see here for details on automatic registration',
-                                  registering_resources_path(anchor: 'automatic')) }
+    format(ELEARNING_MATERIALS_INFO, link: link_to('see here for details on automatic registration',
+                                                   registering_resources_path(anchor: 'automatic')))
   end
 
   def learning_paths_info
@@ -87,19 +87,25 @@ where each topic has one competency level for all its materials. \n\n\
   end
 
   def display_difficulty_level(resource)
-    value = resource.send("difficulty_level")
+    value = resource.send('difficulty_level')
     if value == 'beginner'
-      "• " + value
+      '• ' + value
     elsif value == 'intermediate'
-      "•• " + value
+      '•• ' + value
     elsif value == 'advanced'
-      "••• " + value
+      '••• ' + value
     else
-      ""
+      ''
     end
   end
 
   def display_attribute(resource, attribute, show_label: true, title: nil, markdown: false, list: false)
+    return if [
+      TeSS::Config.feature['disabled'].include?(attribute.to_s),
+      (TeSS::Config.feature['materials_disabled'].include?(attribute.to_s) && resource.is_a?(Material)),
+      (TeSS::Config.feature['content_providers_disabled'].include?(attribute.to_s) && resource.is_a?(ContentProvider))
+    ].any?
+
     value = resource.send(attribute)
     value = render_markdown(value) if markdown
     value = yield(value) if block_given? && value.present? && !list
@@ -107,11 +113,11 @@ where each topic has one competency level for all its materials. \n\n\
     unless value.blank? || value.try(:strip) == 'License Not Specified'
       string << "<strong class='text-primary'> #{title || resource.class.human_attribute_name(attribute)}: </strong>" if show_label
       if list
-        string << "<ul>"
+        string << '<ul>'
         value.each do |v|
           string << "<li>#{block_given? ? yield(v) : v}</li>"
         end
-        string << "</ul>"
+        string << '</ul>'
       else
         string << value.to_s
       end
@@ -121,12 +127,13 @@ where each topic has one competency level for all its materials. \n\n\
   end
 
   def display_attribute_no_label(resource, attribute, markdown: false, &block) # resource e.g. <#Material> & symbol e.g. :target_audience
-    display_attribute(resource, attribute, markdown: markdown, show_label: false, &block)
+    display_attribute(resource, attribute, markdown:, show_label: false, &block)
   end
 
   def embed_youtube(material)
     renderer = Renderers::Youtube.new(material)
     return unless renderer.can_render?
+
     content_tag(:div, class: 'embedded-content') do
       renderer.render_content.html_safe
     end
@@ -135,7 +142,7 @@ where each topic has one competency level for all its materials. \n\n\
   def keywords_and_topics(resource, limit: nil)
     tags = []
 
-    [:scientific_topic_names, :operation_names, :keywords].each do |field|
+    %i[scientific_topic_names operation_names keywords].each do |field|
       tags |= resource.send(field) if resource.respond_to?(field)
     end
 
