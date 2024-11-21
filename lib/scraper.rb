@@ -225,32 +225,8 @@ class Scraper
         log t('scraper.messages.invalid', error_message: "#{error.full_message}: #{source.send(error.attribute)}"), 2
       end
     end
-    valid_url = validate_url(source.url, source.token)
 
-    valid && valid_url
-  end
-
-  def validate_url(input, token)
-    result = true
-    eventbrite_api = 'https://www.eventbriteapi.com/v3/'
-    begin
-      response = if input.starts_with?(eventbrite_api) and !token.nil?
-                   Net::HTTP.get_response(URI.parse(input + '/events/?token=' + token))
-                 else
-                   Net::HTTP.get_response(URI.parse(input))
-                 end
-
-      case response
-      when Net::HTTPSuccess then true
-      when Net::HTTPOK then true
-      else raise 'Invalid URL'
-      end
-    rescue StandardError
-      log t('scraper.messages.invalid', error_message: "#{t('scraper.messages.url_not_accessible')}: #{input}"), 2
-      result = false
-    end
-
-    result
+    valid
   end
 
   def log(message, level)

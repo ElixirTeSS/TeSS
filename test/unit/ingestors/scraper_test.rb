@@ -178,8 +178,6 @@ class ScraperTest < ActiveSupport::TestCase
     # check validation errors
     error_message = 'Provider not found: Dummy Provider'
     assert logfile_contains(logfile, error_message), 'Error message not found: ' + error_message
-    error_message = 'URL not accessible: https://dummy.com/events.csv'
-    assert logfile_contains(logfile, error_message), 'Error message not found: ' + error_message
     error_message = 'Method is invalid: xtc'
     assert logfile_contains(logfile, error_message), 'Error message not found: ' + error_message
   end
