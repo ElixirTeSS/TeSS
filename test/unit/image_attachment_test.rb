@@ -103,12 +103,14 @@ class ImageAttachmentTest < ActiveSupport::TestCase
   end
 
   test 'should not permit internal image URL address' do
-    provider = content_providers(:goblet)
-    provider.image_url = 'http://127.0.0.1/image.png'
+    with_net_connection do # Allow request through to be caught by private_address_check
+      provider = content_providers(:goblet)
+      provider.image_url = 'http://127.0.0.1/image.png'
 
-    refute provider.save
+      refute provider.save
 
-    assert_equal 1, provider.errors[:image_url].length
-    assert provider.errors[:image_url].first.include?('could not be accessed')
+      assert_equal 1, provider.errors[:image_url].length
+      assert provider.errors[:image_url].first.include?('could not be accessed')
+    end
   end
 end

@@ -84,8 +84,10 @@ class ProfileTest < ActiveSupport::TestCase
     refute profile.errors.added?(:website, 'is blocked')
 
     # private address
-    refute profile.update(website: 'http://127.0.0.1')
-    assert profile.errors.added?(:website, 'is not accessible')
+    with_net_connection do # Allow request through to be caught by private_address_check
+      refute profile.update(website: 'http://127.0.0.1')
+      assert profile.errors.added?(:website, 'is not accessible')
+    end
 
     # address that times out
     refute profile.update(website: 'http://slowhost.com')
