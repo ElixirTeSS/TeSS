@@ -12,6 +12,11 @@ default: &default
     - !ruby/regexp '/bad-domain\.example/'
   identifiers_url: "http://example.com/identifiers/"
   identifiers_prefix: banana
+  i18n:
+    available_locales:
+      - en
+      - fr
+    default_locale: en
   site:
     title: 'TeSS Test Instance'
     title_short: 'TTI'

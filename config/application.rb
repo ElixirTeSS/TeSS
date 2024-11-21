@@ -30,8 +30,14 @@ module TeSS
 
     # locales
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'overrides', '**', '*.{rb,yml}')] unless Rails.env.test?
-    config.i18n.available_locales = [:en]
-    config.i18n.default_locale = :en
+    config.i18n.available_locales =
+      config.tess
+        .dig(:i18n, :available_locales)
+        .map(&:to_sym)
+    config.i18n.default_locale =
+      config.tess
+        .dig(:i18n, :default_locale)
+        .to_sym
 
     config.active_record.yaml_column_permitted_classes = [
       Symbol, Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone,

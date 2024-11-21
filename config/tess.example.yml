@@ -19,6 +19,12 @@ default: &default
   # - gb
   sentry_dsn:
   csp_report_uri: 
+  i18n:
+    # Defines the locales available in the application.
+    available_locales:
+      - en
+    # Sets the default locale of the application.
+    default_locale: en
   site:
     title: 'TeSS (Training eSupport System)'
     title_short: TeSS
