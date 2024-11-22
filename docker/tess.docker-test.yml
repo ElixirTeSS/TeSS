@@ -16,6 +16,7 @@ default: &default
     available_locales:
       - en
     default_locale: en
+    fallback_strategy: manual
   site:
     title: 'TeSS (Training eSupport System)'
     title_short: TeSS

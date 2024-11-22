@@ -17,6 +17,7 @@ default: &default
       - en
       - fr
     default_locale: en
+    fallback_strategy: manual
   site:
     title: 'TeSS Test Instance'
     title_short: 'TTI'

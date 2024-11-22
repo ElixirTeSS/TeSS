@@ -25,6 +25,67 @@ default: &default
       - en
     # Sets the default locale of the application.
     default_locale: en
+
+    # Fallbacks configuration. Defaults match default Rails
+    # behaviour. Set `fallbacks_strategy` to a different value to
+    # `manual` when including a locale with multiple subtags in
+    # `available_locales`, and would like to keys to be resolved from
+    # translations catalogues from the parent locales. Example, with
+    # the following configuration:
+    #
+    #   - available_locales:  [ 'de-Latn-DE' ]
+    #   - default_locale: de-Latn-DE
+    #   - fallbacks_strategy: simple
+    #
+    # Translations will be searched in catalogues for `de-Latn-DE`,
+    # `de-Latn` and `de` in that order.
+    #
+    # Valid values:
+    #
+    # - manual
+    #
+    #     Just pass the value of `fallbacks` to Rails.
+    #
+    # - simple
+    #
+    #     Enable use of fallbacks and add the fallbacks of locales in
+    #     `tess.i18n.available_locales` to
+    #     `config.i18n.available_locales` to make sure that available
+    #     translations in any of them are used by Rails. This allows
+    #     to have region-specific locale but still use translations
+    #     available in the base language, e.g.: with locale en-CA
+    #     translations from en-CA and en will be used.
+    #
+    # - rfc4646
+    #
+    #     Like the simple strategy, but uses the RFC4646-compliant
+    #     parser from I18n. Only necessary if you are using locales
+    #     with private-use subtags.
+    #
+    # See:
+    #
+    # - I18n wiki, Fallbacks
+    #   https://github.com/ruby-i18n/i18n/wiki/Fallbacks
+    #
+    # - Configuring Rails applications, §3.6 Configuring i18n
+    #   https://guides.rubyonrails.org/v7.0/configuring.html#configuring-i18n
+    #
+    # - I18n::Locale::Tag:Rfc4646 source
+    #   https://github.com/ruby-i18n/i18n/blob/3b65f6548245411bc9802f5a547954d370b57821/lib/i18n/locale/tag/rfc4646.rb
+    #
+    # - RFC4646, Private Use Subtags
+    #   https://datatracker.ietf.org/doc/html/rfc4646#section-2.2.7
+    fallback_strategy: manual
+
+    # The value of this option is passed directly to
+    # `config.i18n.fallbacks` when `fallback_strategy` is set to
+    # `manual`.
+    #
+    # See:
+    #
+    # - Configuring Rails applications, §3.6 Configuring i18n
+    #   https://guides.rubyonrails.org/v7.0/configuring.html#configuring-i18n
+    #fallbacks: ...
   site:
     title: 'TeSS (Training eSupport System)'
     title_short: TeSS
