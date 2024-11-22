@@ -810,3 +810,19 @@ en:
     show:
       curate_materials: "Curate materials"
       curate_events: "Curate events"
+  menu:
+    user:
+      my_profile: 'My profile'
+      my_stars: 'My stars'
+      view_stars: 'View stars'
+      administration: 'Administration'
+      view_users: 'View users'
+      view_sources: 'View sources'
+      view_ingestion_sources: 'View ingestion sources'
+      assign_scientific_topics: "Assign scientific topics to %{title} resources"
+      curate_topics: 'Curate topics'
+      curate_users: 'Curate users'
+      view_admin_console: 'View the administrator console'
+      admin_console: 'Admin console'
+      log_out: 'Log out'
+      log_out_confirm: 'Are you sure you want to log out?'
