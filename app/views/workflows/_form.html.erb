@@ -44,11 +44,9 @@
         <%= f.multi_input :contributors, suggestions_url: people_autocomplete_suggestions_path %>
       <% end %>
 
-      <%= f.input :hide_child_nodes,
-                  hint: 'Ticking this box will hide child nodes from the diagram until their parent node is clicked.' %>
+      <%= f.input :hide_child_nodes, hint: t('workflows.hints.hide_child_nodes') %>
 
-      <%= f.input :public,
-                  hint: "Un-ticking this box will hide this workflow from anyone who isn't the creator or a collaborator." %>
+      <%= f.input :public, hint: t('workflows.hints.public') %>
     </div>
   </div>
   <div class="row">
