@@ -7,7 +7,7 @@ Variable that should be available
 - @facet_params  - The facet filters the user has applied
 %>
 <h3 class="nav-heading" id="sidebar-header">
-  Filters
+  <%= t('sidebar.filter.heading') %>
   <button href="#" class="btn btn-link pull-right" id="sidebar-close"><i class="icon-lg icon cross-icon"></i></button>
 </h3>
 
@@ -28,10 +28,10 @@ Variable that should be available
 <ul class="unstyled nav-simple">
   <li>
     <h4 class="nav-heading">
-      Filter
+      <%= t('sidebar.filter.heading') %>
       <% if @facet_params.present? %>
         <%= link_to clear_filters_path, class: 'btn btn-xs btn-secondary font-size-sm clear-filters-btn' do %>
-          Clear filters <i class="glyphicon glyphicon-remove"></i>
+          <%= t('sidebar.filter.values.clear_filters') %> <i class="glyphicon glyphicon-remove"></i>
         <% end %>
       <% end %>
     </h4>
@@ -53,20 +53,23 @@ Variable that should be available
   <% end %>
 
   <% if resource_type.name == 'Event' %>
-    <%= render partial: 'search/common/facet_sidebar_boolean_filter', locals: { facet_field: 'include_expired',
-                                                                                count: '-',
-                                                                                enable_text: 'Show past events',
-                                                                                disable_text: 'Hide past events' } %>
-    <%= render partial: 'search/common/facet_sidebar_boolean_filter', locals: { facet_field: 'include_disabled',
-                                                                                count: '-',
-                                                                                enable_text: 'Show disabled events',
-                                                                                disable_text: 'Hide disabled events' } %>
+    <%= render partial: 'search/common/facet_sidebar_boolean_filter',
+        locals: { facet_field: 'include_expired',
+        count: '-',
+        enable_text: t('sidebar.filter.values.show_past_events'),
+        disable_text: t('sidebar.filter.values.hide_past_events') } %>
+    <%= render partial: 'search/common/facet_sidebar_boolean_filter',
+        locals: { facet_field: 'include_disabled',
+        count: '-',
+        enable_text: t('sidebar.filter.values.show_disabled_events'),
+        disable_text: t('sidebar.filter.values.hide_disabled_events') } %>
   <% elsif resource_type.name == 'Material' || resource_type.name == 'LearningPath' %>
     <% resource_name = resource_type.model_name.human.downcase.pluralize %>
-    <%= render partial: 'search/common/facet_sidebar_boolean_filter', locals: { facet_field: 'include_archived',
-                                                                                count: '-',
-                                                                                enable_text: "Show archived #{resource_name}",
-                                                                                disable_text: "Hide archived #{resource_name}" } %>
+    <%= render partial: 'search/common/facet_sidebar_boolean_filter',
+        locals: { facet_field: 'include_archived',
+        count: '-',
+        enable_text: t('sidebar.filter.values.show_archived', resource: resource_name),
+        disable_text: t('sidebar.filter.values.hide_archived', resource: resource_name) } %>
   <% end %>
 
   <% if TeSS::Config.facets_max_age_list.include?(resource_type.name) %>
