@@ -708,6 +708,10 @@ en:
     password:
       title: Login
       description: ''
+      email_or_username: 'Email or username'
+      password: 'Password'
+      remember_me: 'Remember me'
+      log_in: 'Log in'
     omniauth:
       title: Institutional Login
       description: ''
@@ -715,6 +719,7 @@ en:
         elixir_aai: LS Login
         oidc: AAF (Australia)
         oidc2: Tuakiri (NZ)
+      log_in_with: 'Log in with %{provider}'
   ingestion:
     categories:
       events: 'Events'
