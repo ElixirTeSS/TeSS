@@ -13,13 +13,14 @@
     <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
       <div class="h4"><%= t('authentication.password.title') %></div>
       <p><%= t('authentication.password.description') %></p>
-      <%= f.input :login, label: 'Email or username', autofocus: true %>
-      <%= f.input :password, input_html: { autocomplete: 'off' } %>
+      <%= f.input :login, label: t('authentication.password.email_or_username'), autofocus: true %>
+      <%= f.input :password, label: t('authentication.password.password'),
+                             input_html: { autocomplete: 'off' } %>
       <% if devise_mapping.rememberable? -%>
-        <%= f.input :remember_me, as: :boolean %>
+        <%= f.input :remember_me, label: t('authentication.password.remember_me'), as: :boolean %>
       <% end -%>
       <div class="actions">
-        <%= f.submit "Log in", :class => 'btn btn-primary' %>
+        <%= f.submit t('authentication.password.log_in'), :class => 'btn btn-primary' %>
       </div>
     <% end %>
     <%= render "devise/shared/links" %>
