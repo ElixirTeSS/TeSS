@@ -1,21 +1,26 @@
 <ul class="shared-links">
   <%- if controller_name != 'sessions' %>
-      <li>Already on <%= TeSS::Config.site['title_short'] %>? <%= link_to 'Log in', new_session_path(resource_name) %></li>
+      <li><%= t('devise.links.already_on', title: TeSS::Config.site['title_short']) %>
+          <%= link_to t('devise.links.log_in'), new_session_path(resource_name) %></li>
   <% end -%>
 
   <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
-      <li>New to <%= TeSS::Config.site['title_short'] %>? <%= link_to 'Register', new_registration_path(resource_name) %></li>
+      <li><%= t('devise.links.new_to', title: TeSS::Config.site['title_short']) %>
+          <%= link_to t('devise.links.register'), new_registration_path(resource_name) %></li>
   <% end -%>
 
   <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-      <li>Forgot your password? <%= link_to 'Request a reset', new_password_path(resource_name) %></li>
+      <li><%= t('devise.links.forgot_your_password') %>
+          <%= link_to t('devise.links.request_a_reset'), new_password_path(resource_name) %></li>
   <% end -%>
 
   <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
-      <li>Didn’t receive confirmation instructions? <%= link_to 'Resend', new_confirmation_path(resource_name) %></li>
+      <li><%= t('devise.links.didnt_receive_confirmation_instructions') %>
+          <%= link_to t('devise.links.resend'), new_confirmation_path(resource_name) %></li>
   <% end -%>
 
   <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
-      <li>Didn't receive unlock instructions? <%= link_to 'Resend', new_unlock_path(resource_name) %></li>
+      <li><%= t('devise.links.didnt_receive_unlock_instructions') %>
+          <%= link_to t('devise.links.resend'), new_unlock_path(resource_name) %></li>
   <% end -%>
 </ul>
