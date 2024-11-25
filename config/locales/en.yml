@@ -770,6 +770,7 @@ en:
       organizer: Organiser
     titles:
       language: 'Language'
+      date_added: 'Date added'
   languages: # Only needed to override default names from I18nData
     el: 'Greek'
   errors:
@@ -799,6 +800,7 @@ en:
   mailer:
     events_require_approval:
       subject: "Last week's events on %{site_name}"
+  search_query: 'Search query:'
   sidebar:
     sort:
       heading: Sort
@@ -811,6 +813,29 @@ en:
         latest: Latest
         most_recent: Most recent
         last_finished: Last finished
+    curate:
+      heading: Curate
+      values:
+        last_checked: Last Checked
+        more_than: 'More than %{value} ago'
+        one_day: '1 day'
+        three_day: '3 days'
+        one_week: '1 week'
+        one_month: '1 month'
+    filter:
+      heading: 'Filter'
+      values:
+        clear_filters: 'Clear filters'
+        show_past_events: 'Show past events'
+        hide_past_events: 'Hide past events'
+        show_disabled_events: 'Show disabled events'
+        hide_disabled_events: 'Hide disabled events'
+        show_archived: 'Show archived %{resource}'
+        hide_archived: 'Hide archived %{resource}'
+    hidden:
+      values:
+        show_hidden: 'Show hidden items'
+        hide_hidden: 'Hide hidden items'
   collections:
     show:
       curate_materials: "Curate materials"
