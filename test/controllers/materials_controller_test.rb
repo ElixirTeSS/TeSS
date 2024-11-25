@@ -1541,4 +1541,21 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_select 'strong', text: 'Next topic:', count: 0
     assert_select 'span.empty', text: 'End of learning path'
   end
+
+  test 'should limit displayed keywords on index page' do
+    keywords = 10.times.map { |i| "keyword_#{i}" }
+    @material.keywords = keywords + ['extra_keyword']
+    @material.save!
+
+    with_settings(solr_enabled: true) do
+      Material.stub(:search_and_filter, MockSearch.new([@material])) do
+        get :index
+        assert_response :success
+        assert_includes assigns(:materials), @material
+        assert_select '.label', text: 'keyword_3'
+        assert_select '.label', text: 'keyword_9'
+        assert_select '.label', text: 'extra_keyword', count: 0
+      end
+    end
+  end
 end
