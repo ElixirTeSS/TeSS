@@ -25,7 +25,7 @@ require 'minitest/reporters'
 require 'vcr'
 require_relative './schema_helper'
 
-WebMock.disable_net_connect!(allow_localhost: true, allow: 'api.codacy.com')
+WebMock.disable_net_connect!(allow_localhost: true)
 unless ENV['RM_INFO']
   Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(
     fast_fail: true, color: true, detailed_skip: false, slow_count: 10
@@ -35,7 +35,7 @@ end
 VCR.configure do |config|
   config.cassette_library_dir = 'test/vcr_cassettes'
   config.hook_into :webmock
-  config.allow_http_connections_when_no_cassette = true
+  # config.allow_http_connections_when_no_cassette = true
 end
 
 class ActiveSupport::TestCase
@@ -72,6 +72,27 @@ class ActiveSupport::TestCase
     block.call
   ensure
     orig_config.each { |k, v| TeSS::Config[k] = v }
+  end
+
+  # Allow a net request to bypass VCR and webmock
+  def with_net_connection(&block)
+    @__webmock_allow_net_connect = WebMock::Config.instance.allow_net_connect
+    @__webmock_opts = {
+      allow_localhost: WebMock::Config.instance.allow_localhost,
+      allow: WebMock::Config.instance.allow,
+      net_http_connect_on_start: WebMock::Config.instance.net_http_connect_on_start
+    }
+    WebMock.allow_net_connect!
+    VCR.configure do |c|
+      @__vcr_allow_http = c.allow_http_connections_when_no_cassette?
+      c.allow_http_connections_when_no_cassette = true
+    end
+    block.call
+  ensure
+    WebMock.disable_net_connect!(@__webmock_opts) unless @__webmock_allow_net_connect
+    VCR.configure do |c|
+      c.allow_http_connections_when_no_cassette = @__vcr_allow_http
+    end
   end
 
   # reset dictionaries to their default values
@@ -210,6 +231,8 @@ class ActiveSupport::TestCase
 
   def mock_ingestions
     [{ url: 'https://app.com/events.csv', filename: 'events.csv' },
+     { url: 'https://somewhere.com/stuff', filename: 'events.csv' },
+     { url: 'https://website.org/', filename: 'events.csv' },
      { url: 'https://raw.githubusercontent.com/nci900/NCI_feed_to_DReSA/master/event_NCI.csv', filename: 'events_NCI.csv' },
      { url: 'https://app.com/materials.csv', filename: 'materials.csv' },
      { url: 'https://app.com/events/event3.html' },
@@ -219,6 +242,7 @@ class ActiveSupport::TestCase
      { url: 'https://zenodo.org/api/records/?communities=australianbiocommons-training', filename: 'zenodo_abt.json' },
      { url: 'https://tess.elixir-europe.org/events?include_expired=false&content_provider[]=Australian BioCommons', filename: 'response_1642570417380.json' },
      { url: 'https://app.com/events/sitemap.xml', filename: 'Test-Sitemap.xml' },
+     { url: 'https://new.source.loc/sitemap.xml', filename: 'Test-Sitemap.xml' },
      { url: 'https://pawsey.org.au/event/ask-me-anything-porous-media-visualisation-and-lbpm/?ical=true', filename: 'icalendar/ask-me-anything-porous-media-visualisation-and-lbpm.ics' },
      { url: 'https://pawsey.org.au/event/experience-with-porting-and-scaling-codes-on-amd-gpus/?ical=true', filename: 'icalendar/experience-with-porting-and-scaling-codes-on-amd-gpus.ics' },
      { url: 'https://pawsey.org.au/event/nvidia-cuquantum-session/?ical=true', filename: 'icalendar/nvidia-cuquantum-session.ics' },
@@ -250,7 +274,7 @@ class ActiveSupport::TestCase
      { url: 'https://www.eventbriteapi.com/v3/organizations/34338661734', status: 404 }].each do |opts|
       url = opts.delete(:url)
       method = opts.delete(:method) || :get
-      opts[:body] = File.open(Rails.root.join('test', 'fixtures', 'files', 'ingestion', opts.delete(:filename))) if opts.key?(:filename)
+      opts[:body] ||= File.open(Rails.root.join('test', 'fixtures', 'files', 'ingestion', opts.delete(:filename))) if opts.key?(:filename)
       opts[:status] ||= 200
       opts[:headers] ||= {}
 
