@@ -23,7 +23,7 @@
       <% resource_limit = 30 %>
       <% materials = @content_provider.materials.from_verified_users.limit(resource_limit) %>
       <% materials_count =  @content_provider.materials.from_verified_users.count %>
-      <% upcoming_events = @content_provider.events.from_verified_users.not_finished.not_disabled %>
+      <% upcoming_events = @content_provider.events.from_verified_users.not_finished.not_disabled.order(start: :asc) %>
       <% past_events = @content_provider.events.from_verified_users.finished.not_disabled %>
       <% events = upcoming_events.limit(resource_limit) %>
       <% e = @content_provider.events.from_verified_users.not_disabled %>
@@ -64,7 +64,7 @@
                      locals: { total_count: upcoming_events.count,
                                past_count: past_events.count,
                                limit: resource_limit,
-                               resources: events.sort_by(&:start),
+                               resources: events,
                                activator: activator,
                                view_all_link: events_path(content_provider: @content_provider.title),
                                inc_expired_link: events_path(content_provider: @content_provider.title, include_expired: true) } %>
