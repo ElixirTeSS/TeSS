@@ -745,4 +745,16 @@ class EventTest < ActiveSupport::TestCase
     empty_mix = Event.from_varied_providers([], 10)
     assert_empty empty_mix
   end
+
+  test 'validates keywords length' do
+    event = events(:one)
+    keywords = 20.times.map { |i| "keyword_#{i}" }
+    event.keywords = keywords
+    assert event.valid?
+
+    event.keywords = keywords + ['extra_keyword']
+
+    refute event.valid?
+    assert event.errors.added?(:keywords, :too_long, count: 20)
+  end
 end

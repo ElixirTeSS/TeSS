@@ -27,6 +27,7 @@ class Collection < ApplicationRecord
   after_commit :index_items, if: :title_previously_changed?
 
   validates :title, presence: true
+  validates :keywords, length: { maximum: 20 }
 
   clean_array_fields(:keywords)
   update_suggestions(:keywords)
