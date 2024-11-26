@@ -104,6 +104,7 @@ class Material < ApplicationRecord
   validates :title, :description, :url, presence: true
   validates :url, url: true
   validates :other_types, presence: true, if: proc { |m| m.resource_type.include?('other') }
+  validates :keywords, length: { maximum: 20 }
 
   clean_array_fields(:keywords, :fields, :contributors, :authors,
                      :target_audience, :resource_type, :subsets)

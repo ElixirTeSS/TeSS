@@ -139,10 +139,14 @@ where each topic has one competency level for all its materials. \n\n\
       tags |= resource.send(field) if resource.respond_to?(field)
     end
 
+    limit_exceeded = limit && (tags.length > limit)
     tags = tags.first(limit) if limit
 
-    tags.map do |tag|
+    elements = tags.map do |tag|
       content_tag(:span, tag, class: 'label label-info')
-    end.join(' ').html_safe
+    end
+    elements << '&hellip;' if limit_exceeded
+
+    elements.join(' ').html_safe
   end
 end

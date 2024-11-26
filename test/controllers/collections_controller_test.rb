@@ -12,6 +12,7 @@ class CollectionsControllerTest < ActionController::TestCase
       description: 'New description'
     }
   end
+
   #INDEX TESTS
   test 'should get index' do
     get :index
@@ -77,6 +78,14 @@ class CollectionsControllerTest < ActionController::TestCase
   #logged in but insufficient permissions = ERROR
   test 'should get edit for collection owner' do
     sign_in @collection.user
+    get :edit, params: { id: @collection }
+    assert_response :success
+  end
+
+  test 'should get edit for collection collaborator' do
+    collaborator = users(:another_regular_user)
+    @collection.collaborators << collaborator
+    sign_in collaborator
     get :edit, params: { id: @collection }
     assert_response :success
   end
@@ -507,9 +516,18 @@ class CollectionsControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
-  test 'should allow access to private collections if privileged' do
+  test 'should allow access to private collections if privileged as owner' do
     sign_in users(:regular_user)
     get :show, params: { id: collections(:secret_collection) }
+    assert_response :success
+  end
+
+  test 'should allow access to private collections if privileged as collaborator' do
+    collection = collections(:secret_collection)
+    collaborator = users(:another_regular_user)
+    collection.collaborators << collaborator
+    sign_in collaborator
+    get :show, params: { id: collection }
     assert_response :success
   end
 

@@ -36,7 +36,7 @@
 
       <div class="font-size-lg"><%= display_difficulty_level(material) %></div>
 
-      <%= keywords_and_topics(material) %>
+      <%= keywords_and_topics(material, limit: 10) %>
     </div>
 
     <%= item_comment(collection_item) if collection_item %>

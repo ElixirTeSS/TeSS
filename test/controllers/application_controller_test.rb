@@ -36,8 +36,10 @@ class ApplicationControllerTest < ActionController::TestCase
     get :test_url, params: { url: 'http://notrealhost.goldfish', format: :json }
     assert_equal 'Could not access the given URL', JSON.parse(response.body)['message']
 
-    get :test_url, params: { url: 'http://127.0.0.1', format: :json }
-    assert_equal 'Could not access the given URL', JSON.parse(response.body)['message']
+    with_net_connection do
+      get :test_url, params: { url: 'http://127.0.0.1', format: :json }
+      assert_equal 'Could not access the given URL', JSON.parse(response.body)['message']
+    end
   end
 
 end

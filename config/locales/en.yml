@@ -709,6 +709,10 @@ en:
     password:
       title: Login
       description: ''
+      email_or_username: 'Email or username'
+      password: 'Password'
+      remember_me: 'Remember me'
+      log_in: 'Log in'
     omniauth:
       title: Institutional Login
       description: ''
@@ -716,6 +720,7 @@ en:
         elixir_aai: LS Login
         oidc: AAF (Australia)
         oidc2: Tuakiri (NZ)
+      log_in_with: 'Log in with %{provider}'
   ingestion:
     categories:
       events: 'Events'
@@ -766,6 +771,7 @@ en:
       organizer: Organiser
     titles:
       language: 'Language'
+      date_added: 'Date added'
   languages: # Only needed to override default names from I18nData
     el: 'Greek'
   errors:
@@ -795,6 +801,7 @@ en:
   mailer:
     events_require_approval:
       subject: "Last week's events on %{site_name}"
+  search_query: 'Search query:'
   sidebar:
     sort:
       heading: Sort
@@ -807,7 +814,48 @@ en:
         latest: Latest
         most_recent: Most recent
         last_finished: Last finished
+    curate:
+      heading: Curate
+      values:
+        last_checked: Last Checked
+        more_than: 'More than %{value} ago'
+        one_day: '1 day'
+        three_day: '3 days'
+        one_week: '1 week'
+        one_month: '1 month'
+    filter:
+      heading: 'Filter'
+      values:
+        clear_filters: 'Clear filters'
+        show_past_events: 'Show past events'
+        hide_past_events: 'Hide past events'
+        show_disabled_events: 'Show disabled events'
+        hide_disabled_events: 'Hide disabled events'
+        show_disabled: 'Show disabled %{resource}'
+        hide_disabled: 'Hide disabled %{resource}'
+        show_archived: 'Show archived %{resource}'
+        hide_archived: 'Hide archived %{resource}'
+    hidden:
+      values:
+        show_hidden: 'Show hidden items'
+        hide_hidden: 'Hide hidden items'
   collections:
     show:
       curate_materials: "Curate materials"
       curate_events: "Curate events"
+  menu:
+    user:
+      my_profile: 'My profile'
+      my_stars: 'My stars'
+      view_stars: 'View stars'
+      administration: 'Administration'
+      view_users: 'View users'
+      view_sources: 'View sources'
+      view_ingestion_sources: 'View ingestion sources'
+      assign_scientific_topics: "Assign scientific topics to %{title} resources"
+      curate_topics: 'Curate topics'
+      curate_users: 'Curate users'
+      view_admin_console: 'View the administrator console'
+      admin_console: 'Admin console'
+      log_out: 'Log out'
+      log_out_confirm: 'Are you sure you want to log out?'
