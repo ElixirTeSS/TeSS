@@ -708,4 +708,53 @@ class EventTest < ActiveSupport::TestCase
       e.destroy!
     end
   end
+
+  test 'from_varied_providers' do
+    user = users(:regular_user)
+    provider_1 = content_providers(:goblet)
+    provider_2 = content_providers(:iann)
+    provider_3 = content_providers(:two)
+    e1a = provider_1.events.create!(title: 'Event1a', url: 'https://example.com/events/1a', user: user)
+    e1b = provider_1.events.create!(title: 'Event1b', url: 'https://example.com/events/1b', user: user)
+    e1c = provider_1.events.create!(title: 'Event1c', url: 'https://example.com/events/1c', user: user)
+    e2a = provider_2.events.create!(title: 'Event2a', url: 'https://example.com/events/2a', user: user)
+    e2b = provider_2.events.create!(title: 'Event2b', url: 'https://example.com/events/2b', user: user)
+    e2c = provider_2.events.create!(title: 'Event2c', url: 'https://example.com/events/2c', user: user)
+    e3a = provider_3.events.create!(title: 'Event3a', url: 'https://example.com/events/3a', user: user)
+    e3b = provider_3.events.create!(title: 'Event3b', url: 'https://example.com/events/3b', user: user)
+    e3c = provider_3.events.create!(title: 'Event3c', url: 'https://example.com/events/3c', user: user)
+
+    even_single_mix = Event.from_varied_providers([e1a, e1b, e1c, e2a, e2b, e2c, e3a, e3b, e3c], 3)
+    assert_equal 3, even_single_mix.length
+    assert_equal [e1a, e2a, e3a], even_single_mix, 'Should go through each provider and pick an event'
+
+    even_multi_mix = Event.from_varied_providers([e1a, e1b, e1c, e2a, e2b, e2c, e3a, e3b, e3c], 6)
+    assert_equal 6, even_multi_mix.length
+    assert_equal [e1a, e2a, e3a, e1b, e2b, e3b], even_multi_mix,
+                 'Should go through each provider and pick an event, several times until quota reached'
+
+    skewed_mix = Event.from_varied_providers([e1a, e1b, e1c, e2a], 3)
+    assert_equal 3, skewed_mix.length
+    assert_equal [e1a, e2a, e1b], skewed_mix, 'Should take multiple events from the same provider if needed'
+
+    best_effort_mix = Event.from_varied_providers([e1a, e1b, e1c], 10)
+    assert_equal 3, best_effort_mix.length
+    assert_equal [e1a, e1b, e1c], best_effort_mix,
+                 'Should take all the events from the one provider since that was all that was available'
+
+    empty_mix = Event.from_varied_providers([], 10)
+    assert_empty empty_mix
+  end
+
+  test 'validates keywords length' do
+    event = events(:one)
+    keywords = 20.times.map { |i| "keyword_#{i}" }
+    event.keywords = keywords
+    assert event.valid?
+
+    event.keywords = keywords + ['extra_keyword']
+
+    refute event.valid?
+    assert event.errors.added?(:keywords, :too_long, count: 20)
+  end
 end

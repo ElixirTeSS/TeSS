@@ -6,50 +6,51 @@
   <ul class="dropdown-menu dropdown-menu-right">
     <li class="dropdown-item">
       <%= link_to user_path(current_user),  title: current_user.username do %>
-        <i class="fa fa-user-circle"></i> My profile
+        <i class="fa fa-user-circle"></i><%= t('menu.user.my_profile')%>
       <% end %>
     </li>
 
     <li class="dropdown-item">
-      <%= link_to stars_path, title: 'View stars' do %>
-        <i class="fa fa-star"></i> My stars
+      <%= link_to stars_path, title: t('menu.user.view_stars') do %>
+        <i class="fa fa-star"></i><%= t('menu.user.my_stars') %>
       <% end %>
     </li>
 
     <% if current_user.is_curator? || current_user.is_admin? %>
       <li role="presentation" class="divider"></li>
 
-      <li class="dropdown-header">Administration</li>
+      <li class="dropdown-header"><%= t('menu.user.administration') %></li>
 
       <li class="dropdown-item">
-        <%= link_to users_path, title: 'View users' do %>
-          <i class="fa fa-users"></i> View users
+        <%= link_to users_path, title: t('menu.user.view_users') do %>
+          <i class="fa fa-users"></i><%= t('menu.user.view_users') %>
         <% end %>
       </li>
       <% if TeSS::Config.feature['sources'] %>
         <li class="dropdown-item">
-          <%= link_to sources_path, title: 'View ingestion sources' do %>
-            <i class="fa fa-cloud-download"></i> View sources
+          <%= link_to sources_path, title: t('menu.user.view_ingestion_sources') do %>
+            <i class="fa fa-cloud-download"></i><%= t('menu.user.view_sources') %>
           <% end %>
         </li>
       <% end %>
       <% unless TeSS::Config.feature['disabled'].include?('topics') %>
         <li class="dropdown-item">
           <%= link_to curate_topic_suggestions_path,
-                      title: "Assign scientific topics to #{TeSS::Config.site['title_short']} resources" do %>
-            <i class="fa fa-briefcase"></i> Curate topics
+                      title: t('menu.user.assign_scientific_topics',
+                               title: TeSS::Config.site['title_short']) do %>
+            <i class="fa fa-briefcase"></i><%= t('menu.user.curate_topics') %>
           <% end %>
         </li>
       <% end %>
       <li class="dropdown-item">
         <%= link_to curate_users_path(with_content: true) do %>
-          <i class="fa fa-user-times"></i> Curate users
+          <i class="fa fa-user-times"></i><%= t('menu.user.curate_users') %>
         <% end %>
       </li>
       <li class="dropdown-item">
         <% if current_user.is_admin? %>
-          <%= link_to rails_admin_path, title: 'View the administrator console' do %>
-            <i class="fa fa-cog"></i> Admin console
+          <%= link_to rails_admin_path, title: t('menu.user.view_admin_console') do %>
+            <i class="fa fa-cog"></i><%= t('menu.user.admin_console') %>
           <% end %>
         <% end %>
       </li>
@@ -58,7 +59,8 @@
     <li role="presentation" class="divider"></li>
 
     <li class="dropdown-item">
-      <%= link_to 'Log out', destroy_user_session_path, method: :delete, data: { confirm: 'Are you sure you want to log out?' } %>
+      <%= link_to t('menu.user.log_out'), destroy_user_session_path, method: :delete,
+                  data: { confirm: t('menu.user.log_out_confirm') } %>
     </li>
   </ul>
 </li>

@@ -138,6 +138,7 @@ class Event < ApplicationRecord
   validates :longitude, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180, allow_nil: true }
   # validates :duration, format: { with: /\A[0-9][0-9]:[0-5][0-9]\z/, message: "must be in format HH:MM" }, allow_blank: true
   validates :presence, inclusion: { in: presences.keys, allow_blank: true }
+  validates :keywords, length: { maximum: 20 }
   validate :allowed_url
   clean_array_fields(:keywords, :fields, :event_types, :target_audience,
                      :eligibility, :host_institutions, :sponsors)
@@ -462,6 +463,27 @@ class Event < ApplicationRecord
     value = :online if value.is_a?(TrueClass) || value == '1' || value == 1 || value == 'true'
     value = :onsite if value.is_a?(FalseClass) || value == '0' || value == 0 || value == 'false'
     self.presence = value
+  end
+
+  # Method to ensure a good spread of events by picking one from each content provider until the limit hit,
+  # or no more events in set.
+  def self.from_varied_providers(events, count)
+    provider_events = events.group_by(&:content_provider_id)
+
+    events = []
+    events_left = true
+    while events_left && (events.length < count) do
+      events_left = false
+      provider_events.each_value do |p_events|
+        if p_events.any?
+          events << p_events.shift
+          break if events.length == count
+          events_left ||= p_events.any?
+        end
+      end
+    end
+
+    events
   end
 
   private

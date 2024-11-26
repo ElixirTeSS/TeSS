@@ -5,7 +5,7 @@
   <ul class="unstyled nav-simple">
     <li>
       <h4 class="nav-heading mt-4">
-        Curate
+        <%= t('sidebar.curate.heading') %>
       </h4>
     </li>
 
@@ -15,12 +15,15 @@
           <li>
             <div class="nav-heading filter-heading">
               <span class="icon icon-lg events-icon"></span>
-              <span>Last Checked</span>
+              <span><%= t('sidebar.curate.values.last_checked') %></span>
               <div class="pull-right filter-expand"><i class="icon icon-md expand-icon"></i></div>
             </div>
           </li>
-          <% [[1, '1 day'], [3, '3 days'], [7, '1 week'], [30, '1 month']].each do |days, text| %>
-            <% text = "More than #{text} ago" %>
+          <% [[1, t('sidebar.curate.values.one_day')],
+              [3, t('sidebar.curate.values.three_days')],
+              [7, t('sidebar.curate.values.one_week')],
+              [30, t('sidebar.curate.values.one_month')]].each do |days, text| %>
+            <% text = t('sidebar.curate.values.more_than', value: text) %>
             <% if days == params[:days_since_scrape].to_i %>
             <li class="nav-item active" style="display: none;">
               <%= remove_filter_link(:days_since_scrape, days, title: text, replace: true, class: 'facet-option') %>
@@ -36,10 +39,11 @@
     <% end %>
 
     <% if show_hidden_filter %>
-      <%= render partial: 'search/common/facet_sidebar_boolean_filter', locals: { facet_field: 'include_hidden',
-                                                                                  count: '-',
-                                                                                  enable_text: 'Show hidden items',
-                                                                                  disable_text: 'Hide hidden items' } %>
+      <%= render partial: 'search/common/facet_sidebar_boolean_filter',
+          locals: { facet_field: 'include_hidden',
+          count: '-',
+          enable_text: t('sidebar.hidden.values.show_hidden'),
+          disable_text: t('sidebar.hidden.values.hide_hidden') } %>
     <% end %>
   </ul>
 <% end %>

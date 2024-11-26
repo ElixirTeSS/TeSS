@@ -5,7 +5,9 @@
       <% if config.options[:logo] %>
         <%= image_tag(config.options[:logo], class: "omniauth-logo omniauth-#{provider}") -%>
       <% else %>
-        <%= "Log in with #{t("authentication.omniauth.providers.#{provider}", default: provider.to_s.titleize)}" -%>
+        <%= t('authentication.omniauth.log_in_with',
+            provider: t("authentication.omniauth.providers.#{provider}",
+                      default: provider.to_s.titleize)) -%>
       <% end %>
     <% end -%>
   <% end -%>

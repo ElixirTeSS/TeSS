@@ -364,6 +364,7 @@ class MaterialsControllerTest < ActionController::TestCase
       assert_select 'fa-commenting-o', count: 0
       assert_select '.broken-link-notice', count: 0
       assert_select '.archived-notice', count: 0
+      assert_select '.learning-path-navigation', count: 0
     end
   end
 
@@ -1474,5 +1475,87 @@ class MaterialsControllerTest < ActionController::TestCase
 
     get :show, params: { id: material }
     assert_response :forbidden
+  end
+
+  test 'should show learning path nav and link to next item' do
+    learning_path = learning_paths(:one)
+    topic_link = learning_path.topic_links.first
+    topic_item = topic_link.topic.material_items.first
+    material = topic_item.resource
+
+    get :show, params: { id: material, lp: [topic_link, topic_item].map(&:id).join(':') }
+
+    assert_response :success
+    assert assigns(:learning_path_topic_link)
+    assert assigns(:learning_path_topic_item)
+
+    next_item = assigns(:learning_path_topic_item).next_item
+    assert next_item
+
+    assert_select '.learning-path-navigation'
+    assert_select 'strong', text: 'Next:'
+    assert_select 'strong', text: 'Next topic:', count: 0
+    assert_select '.learning-path-navigation a[href=?]',
+                  material_path(next_item.resource, lp: [topic_link, next_item].map(&:id).join(':'))
+  end
+
+  test 'learning path nav should link to next topic' do
+    learning_path = learning_paths(:one)
+    topic_link = learning_path.topic_links.first
+    topic_item = topic_link.topic.material_items.last
+    material = topic_item.resource
+
+    get :show, params: { id: material, lp: [topic_link, topic_item].map(&:id).join(':') }
+
+    assert_response :success
+    assert assigns(:learning_path_topic_link)
+    assert assigns(:learning_path_topic_item)
+
+    next_topic = assigns(:learning_path_topic_link).next_topic
+    assert next_topic
+    refute assigns(:learning_path_topic_item).next_item
+
+    assert_select '.learning-path-navigation'
+    assert_select 'strong', text: 'Next:', count: 0
+    assert_select 'strong', text: 'Next topic:'
+    assert_select '.learning-path-navigation a[href=?]',
+                  learning_path_path(learning_path, anchor: "topic-#{next_topic.id}")
+  end
+
+  test 'learning path nav should indicate if final item in learning path' do
+    learning_path = learning_paths(:one)
+    topic_link = learning_path.topic_links.last
+    topic_item = topic_link.topic.material_items.last
+    material = topic_item.resource
+
+    get :show, params: { id: material, lp: [topic_link, topic_item].map(&:id).join(':') }
+
+    assert_response :success
+    assert assigns(:learning_path_topic_link)
+    assert assigns(:learning_path_topic_item)
+    refute assigns(:learning_path_topic_link).next_topic
+    refute assigns(:learning_path_topic_item).next_item
+
+    assert_select '.learning-path-navigation'
+    assert_select 'strong', text: 'Next:', count: 0
+    assert_select 'strong', text: 'Next topic:', count: 0
+    assert_select 'span.empty', text: 'End of learning path'
+  end
+
+  test 'should limit displayed keywords on index page' do
+    keywords = 10.times.map { |i| "keyword_#{i}" }
+    @material.keywords = keywords + ['extra_keyword']
+    @material.save!
+
+    with_settings(solr_enabled: true) do
+      Material.stub(:search_and_filter, MockSearch.new([@material])) do
+        get :index
+        assert_response :success
+        assert_includes assigns(:materials), @material
+        assert_select '.label', text: 'keyword_3'
+        assert_select '.label', text: 'keyword_9'
+        assert_select '.label', text: 'extra_keyword', count: 0
+      end
+    end
   end
 end

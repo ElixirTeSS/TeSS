@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class SourceTest < ActiveSupport::TestCase
-
   setup do
     @user = users :scraper_user
     assert_not_nil @user
@@ -238,7 +237,7 @@ class SourceTest < ActiveSupport::TestCase
     User.current_user = source.user
 
     assert_difference('PublicActivity::Activity.count', 2) do
-      source.url = 'https://icalendars.golf/calendar123.ical'
+      source.url = 'https://pawsey.org.au/event/pawsey-intern-showcase-2022/?ical=true'
       source.method = 'ical'
       source.save!
     end

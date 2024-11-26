@@ -38,7 +38,7 @@ Globals
 <%# The search term %>
 <% unless params[:q].blank? %>
   <p>
-    <b>Search query</b>:
+    <b><%= t('search_query') %></b>
     <span class="active-filters"><%= remove_filter_link('q', params[:q], class: 'label label-default filter-button') %></span>
   </p>
 <% end %>

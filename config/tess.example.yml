@@ -91,6 +91,7 @@ default: &default
     content_providers_disabled: []
     bioschemas_testing: false
     learning_paths: false
+    collection_curation: true
   restrict_content_provider_selection: false
   user_ingestion_methods: ['bioschemas']
   placeholder:

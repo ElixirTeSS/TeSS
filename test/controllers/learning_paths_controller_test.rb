@@ -507,4 +507,15 @@ class LearningPathsControllerTest < ActionController::TestCase
     response_events = body.dig('data', 'relationships', 'events', 'data')
     assert_equal [events[1].id, events[0].id], response_events.map { |e| e['id'].to_i }
   end
+
+  test 'should include back-reference to learning path in item links' do
+    get :show, params: { id: @learning_path }
+
+    assert_response :success
+    topic_link = @learning_path.topic_links.first
+    topic_item = topic_link.topic.items.first
+
+    assert_select '.link-overlay[href=?]',
+                  material_path(topic_item.resource, lp: [topic_link, topic_item].map(&:id).join(':'))
+  end
 end
