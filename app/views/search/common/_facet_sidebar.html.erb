@@ -65,6 +65,13 @@ Variable that should be available
         disable_text: t('sidebar.filter.values.hide_disabled_events') } %>
   <% elsif resource_type.name == 'Material' || resource_type.name == 'LearningPath' %>
     <% resource_name = resource_type.model_name.human.downcase.pluralize %>
+    <% if resource_type.name == 'Material' %>
+      <%= render partial: 'search/common/facet_sidebar_boolean_filter',
+          locals: { facet_field: 'include_disabled',
+          count: '-',
+          enable_text: t('sidebar.filter.values.show_disabled', resource: resource_name),
+          disable_text: t('sidebar.filter.values.hide_disabled', resource: resource_name) } %>
+    <% end %>
     <%= render partial: 'search/common/facet_sidebar_boolean_filter',
         locals: { facet_field: 'include_archived',
         count: '-',

@@ -2,6 +2,9 @@
 
   <%= render partial: 'common/error_summary', locals: { resource: @material } %>
 
+  <!-- Field: Disabled -->
+  <%= f.input :visible, label: 'Show this material?', input_html: { title: t('materials.hints.visible') } %>
+
   <%# Necessary to allow removal of all field locks %>
   <%= hidden_field_tag 'material[locked_fields][]', '' %>
 

@@ -634,6 +634,7 @@ en:
       resource_type: 'Select the type of resource that best matches the training material. '
       url: 'Preferred URL to direct people to your training material landing page.'
       version: 'Indicate the current version of the training material.'
+      visible: 'Whether or not this material should be shown on the materials page'
   learning_paths:
     hints:
       authors: >
@@ -830,6 +831,8 @@ en:
         hide_past_events: 'Hide past events'
         show_disabled_events: 'Show disabled events'
         hide_disabled_events: 'Hide disabled events'
+        show_disabled: 'Show disabled %{resource}'
+        hide_disabled: 'Hide disabled %{resource}'
         show_archived: 'Show archived %{resource}'
         hide_archived: 'Hide archived %{resource}'
     hidden:

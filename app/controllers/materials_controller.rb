@@ -1,8 +1,8 @@
 # The controller for actions related to the Materials model
 class MaterialsController < ApplicationController
   before_action :feature_enabled?
-  before_action :set_material, only: [:show, :edit, :update, :destroy, :update_collections, :clone,
-                                      :add_term, :reject_term, :add_data, :reject_data]
+  before_action :set_material, only: %i[show edit update destroy update_collections clone
+                                        add_term reject_term add_data reject_data]
   before_action :set_breadcrumbs
   before_action :set_learning_path_navigation, only: :show
 
@@ -82,8 +82,8 @@ class MaterialsController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { render :nothing => true, :status => 200, :content_type => 'text/html' }
-        format.json { render json: {}, :status => 200, :content_type => 'application/json' }
+        format.html { render nothing: true, status: 200, content_type: 'text/html' }
+        format.json { render json: {}, status: 200, content_type: 'application/json' }
       end
     end
   end
@@ -168,14 +168,14 @@ class MaterialsController < ApplicationController
                                      :last_scraped, :scraper_record, :remote_created_date, :remote_updated_date,
                                      :content_provider_id, :difficulty_level, :version, :status,
                                      :date_created, :date_modified, :date_published, :other_types,
-                                     :prerequisites, :syllabus, :learning_objectives, { subsets: [] },
+                                     :prerequisites, :syllabus, :visible, :learning_objectives, { subsets: [] },
                                      { contributors: [] }, { authors: [] }, { target_audience: [] },
                                      { collection_ids: [] }, { keywords: [] }, { resource_type: [] },
                                      { scientific_topic_names: [] }, { scientific_topic_uris: [] },
                                      { operation_names: [] }, { operation_uris: [] },
                                      { node_ids: [] }, { node_names: [] }, { fields: [] },
-                                     external_resources_attributes: [:id, :url, :title, :_destroy],
-                                     external_resources: [:url, :title],
+                                     external_resources_attributes: %i[id url title _destroy],
+                                     external_resources: %i[url title],
                                      event_ids: [], locked_fields: [])
   end
 
