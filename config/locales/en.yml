@@ -820,7 +820,7 @@ en:
         last_checked: Last Checked
         more_than: 'More than %{value} ago'
         one_day: '1 day'
-        three_day: '3 days'
+        three_days: '3 days'
         one_week: '1 week'
         one_month: '1 month'
     filter:
