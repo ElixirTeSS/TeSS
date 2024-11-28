@@ -505,6 +505,30 @@ class EventsControllerTest < ActionController::TestCase
     assert_select 'a.btn[href=?]', event_path(@event), text: 'Delete', count: 1
   end
 
+  test 'should hide disabled fields' do
+    sign_in users(:regular_user)
+
+    get :show, params: { id: @event }
+    assert_response :success
+    assert_select '#home' do
+      assert_select '.text-primary', text: 'Organizer:', count: 1
+      assert_select '.text-primary', text: 'Keywords:', count: 1
+      assert_select '.text-primary', text: 'Contact:', count: 1
+      assert_select '.text-primary', text: 'Sponsors:', count: 1
+    end
+
+    with_settings(feature: { disabled: %w[organizer keywords contact sponsors] }) do
+      get :show, params: { id: @event }
+      assert_response :success
+      assert_select '#home' do
+        assert_select '.text-primary', text: 'Organizer:', count: 0
+        assert_select '.text-primary', text: 'Keywords:', count: 0
+        assert_select '.text-primary', text: 'Contact:', count: 0
+        assert_select '.text-primary', text: 'Sponsors:', count: 0
+      end
+    end
+  end
+
   # API Actions
   test 'should find existing event by title, content provider and date' do
     post :check_exists, params: { format: :json, event: { title: @event.title,
