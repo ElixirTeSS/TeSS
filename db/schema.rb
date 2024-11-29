@@ -378,7 +378,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_19_152528) do
     t.text "contact"
     t.text "learning_objectives"
     t.string "fields", default: [], array: true
-    t.boolean "visible", defaut: true
+    t.boolean "visible", default: true
     t.index ["content_provider_id"], name: "index_materials_on_content_provider_id"
     t.index ["slug"], name: "index_materials_on_slug", unique: true
     t.index ["user_id"], name: "index_materials_on_user_id"
