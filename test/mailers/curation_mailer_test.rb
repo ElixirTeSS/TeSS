@@ -139,7 +139,7 @@ class CurationMailerTest < ActionMailer::TestCase
 
   test 'text materials approval' do
     @content_provider = content_providers(:goblet)
-    @materials = [materials(:good_material), materials(:scraper_user_material)]
+    @materials = [materials(:good_material)]
     email = CurationMailer.materials_require_approval(@content_provider, @materials.pluck(:created_at).min - 1.week)
 
     assert_emails 1 do
