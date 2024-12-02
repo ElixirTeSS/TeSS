@@ -12,6 +12,11 @@ default: &default
   require_cookie_consent: true
   blocked_domains:
     - !ruby/regexp '/bad-domain\.example/'
+  i18n:
+    available_locales:
+      - en
+    default_locale: en
+    fallback_strategy: manual
   site:
     title: 'TeSS (Training eSupport System)'
     title_short: TeSS

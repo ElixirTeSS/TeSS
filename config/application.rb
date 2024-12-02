@@ -2,6 +2,8 @@ require_relative 'boot'
 
 require 'rails/all'
 
+require_relative '../lib/tess/i18n'
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -30,8 +32,31 @@ module TeSS
 
     # locales
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'overrides', '**', '*.{rb,yml}')] unless Rails.env.test?
-    config.i18n.available_locales = [:en]
-    config.i18n.default_locale = :en
+    i18n_config = (config.tess_defaults.i18n || {}).deep_merge(config.tess.i18n || {})
+    config.i18n.available_locales = i18n_config[:available_locales]&.map(&:to_sym)
+    config.i18n.default_locale = i18n_config[:default_locale]&.to_sym
+    case i18n_config[:fallback_strategy]
+    when 'manual'
+      config.i18n.fallbacks = i18n_config[:fallbacks] if i18n_config[:fallbacks].present?
+    when 'simple',  'rfc4646'
+      I18n.backend.class.include(I18n::Backend::Fallbacks)
+      # Detect if any locale specifies any detail beyond primary
+      # language subtag (e.g.: en-CA).
+      any_has_subtags = i18n_config[:available_locales]&.any?(&I18n::Locale::Tag.method(:has_subtags?))
+      if any_has_subtags
+        # This is necessary for RFC4646-based fallbacks to work, as
+        # I18n won't use resolve l10n keys from fallback locales that
+        # are not in the `available_locales`.
+        config.i18n.available_locales += i18n_config[:available_locales]
+                                           &.map {|locale| I18n.fallbacks[locale] - [locale.to_sym] }
+                                           &.flatten
+      end
+      if i18n_config[:fallback_strategy] == 'rfc4646'
+        I18n::Locale::Tag.implementation = I18n::Locale::Tag::Rfc4646
+      end
+    else
+      raise "Bad fallback strategy: #{i18n_config[:fallback_strategy]}"
+    end
 
     config.active_record.yaml_column_permitted_classes = [
       Symbol, Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone,
