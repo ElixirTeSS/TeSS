@@ -2,7 +2,7 @@ require_relative 'boot'
 
 require 'rails/all'
 
-require_relative '../lib/tess/i18n'
+require_relative '../lib/i18n'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
