@@ -8,6 +8,10 @@ services:
       target: production
     image: ${PREFIX}-app
     restart: always
+    healthcheck:
+      test: curl -f http://localhost:3000/up
+      interval: 5s
+      timeout: 300s
     env_file: .env
     depends_on:
       - db
