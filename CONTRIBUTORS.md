@@ -13,3 +13,4 @@ The following people have contributed to the TeSS codebase:
 * Xènia Pérez Sitjà <https://orcid.org/0000-0002-7166-0183>
 * Ivan Kuzmin <ivan.kuzmin@ut.ee>
 * Servilio Afre Puentes <afrepues@sharcnet.ca>
+* Mike Sanders <msanders@ignitioncomputing.com>
