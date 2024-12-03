@@ -13,5 +13,35 @@ var LearningPaths = {
                 $('.learning-path-topic-title', topic).click();
             }
         }
+
+        $("[data-role='user-lp-topics-select']").change(LearningPaths.selectTopic);
+    },
+
+    selectTopic: function () {
+        const element = $(this);
+        const option = $(this).find('option:selected');
+        const id = parseInt(option.val());
+        if (!id) {
+            return true;
+        }
+        const title = option.text();
+        const listElement = $("[data-role='collection-items-group']").find('.collection-items');
+        if (!$("[data-id='Topic-" + id + "']", listElement).length) {
+            const obj = { item: {
+                    id: null,
+                    title: title,
+                    url: option.data('url'),
+                    resource_id: id,
+                    resource_type: 'Topic'
+                },
+                prefix: 'learning_path[topic_links_attributes]'
+            };
+
+            listElement.append(HandlebarsTemplates['autocompleter/learning_path_topic'](obj));
+            const event = new CustomEvent('autocompleters:added', {  bubbles: true, detail: { object: obj } });
+            listElement[0].dispatchEvent(event);
+        }
+
+        element.val('').focus();
     }
 }

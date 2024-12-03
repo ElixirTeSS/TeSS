@@ -10,8 +10,7 @@
       <%= render partial: 'common/image_form', locals: { form: f } %>
     </div>
 
-  <%= f.input :public,
-              hint: "Un-ticking this box will hide this collection from anyone who isn't the creator or a collaborator." %>
+  <%= f.input :public, hint: t('collections.hints.public') %>
 
     <%= f.multi_input :keywords %>
 

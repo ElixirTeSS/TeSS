@@ -1009,3 +1009,8 @@ td.day .calendar-text {
   max-height: 20pc;
   overflow-y: scroll;
 }
+
+.draggable--over {
+  opacity: 0.7;
+  background: $state-success-bg;
+}

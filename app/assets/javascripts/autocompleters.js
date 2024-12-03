@@ -107,11 +107,12 @@ var Autocompleters = {
                     if (opts.singleton) {
                         inputElement.hide();
                     }
+
+                    const event = new CustomEvent('autocompleters:added', {  bubbles: true, detail: { object: obj } });
+                    listElement[0].dispatchEvent(event);
                 }
 
                 $(this).val('').focus();
-                const event = new CustomEvent('autocompleters:added', {  bubbles: true, detail: { object: obj } });
-                listElement[0].dispatchEvent(event);
             },
             onSearchStart: function (query) {
                 inputElement.addClass("loading");

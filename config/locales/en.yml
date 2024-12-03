@@ -671,9 +671,15 @@ en:
       resource_type: 'Select the type of resource that best matches the learning path. '
       url: 'Preferred URL to direct people to your learning path landing page.'
       version: 'Indicate the current version of the learning path.'
+      public: Un-ticking this box will hide this learning path from anyone who isn't the creator or a collaborator.
     next_topic: Next topic
     next_item: Next
     end_of: End of learning path
+    form:
+      my_topics: My topics
+      all_topics: All topics
+      select_topic: Select a topic...
+      search_for_topics: Search for topics...
   profile:
     user:
       disclaimer: >
@@ -845,6 +851,13 @@ en:
     show:
       curate_materials: "Curate materials"
       curate_events: "Curate events"
+    hints:
+      reorder: Re-order items by clicking and dragging the icon on the left-hand side.
+      public: Un-ticking this box will hide this collection from anyone who isn't the creator or a collaborator.
+  workflows:
+    hints:
+      hide_child_nodes: Ticking this box will hide child nodes from the diagram until their parent node is clicked.
+      public: Un-ticking this box will hide this workflow from anyone who isn't the creator or a collaborator.
   menu:
     user:
       my_profile: 'My profile'

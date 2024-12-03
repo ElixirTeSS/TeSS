@@ -33,6 +33,7 @@ var Collections = {
             $(this).on('autocompleters:added', function () {
                 // Re-compute orders after new item added.
                 Collections.recalculateOrder(this);
+                Collections.displayEmptyText(list);
             });
 
             $(this).on('click', '[data-role="delete-collection-item"]', function (e) {
@@ -46,6 +47,7 @@ var Collections = {
                     // Re-compute orders after item removed.
                     item.remove();
                     Collections.recalculateOrder(list);
+                    Collections.displayEmptyText(list);
                 } else {
                     if (checkbox.is(':checked')) {
                         checkbox.prop('checked', false);
@@ -63,6 +65,7 @@ var Collections = {
 
             // Calculate initial order - order from database may have gaps if items were deleted.
             Collections.recalculateOrder(list);
+            Collections.displayEmptyText(list);
         });
     },
 
@@ -73,5 +76,16 @@ var Collections = {
             li.querySelector('.item-order-label').innerText = order;
             order++;
         });
+    },
+
+    displayEmptyText: function (listEl) {
+        const list = $(listEl)
+        if (!list.children('li').length) {
+            if (!$('span.empty', list).length) {
+                list.append('<span class="empty">Empty</span>');
+            }
+        } else {
+            list.children('span').remove();
+        }
     }
 }
