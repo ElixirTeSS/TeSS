@@ -171,6 +171,8 @@ Rails.application.routes.draw do
   get 'bioschemas/test' => 'bioschemas#test'
   post 'bioschemas/test' => 'bioschemas#run_test'
 
+  get 'up' => 'health_check#show'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
