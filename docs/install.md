@@ -154,7 +154,7 @@ Next, create a collection for TeSS to use (assuming TeSS is checked out at `/hom
 If you ever need to re-index your TeSS data, for example if you have existing data in your TeSS database and are using 
 a new collection, you can run the following command:
 
-    bundle exec rake seek:reindex_all
+    bundle exec rake tess:reindex
 
 ## Redis/Sidekiq
 
