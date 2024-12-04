@@ -261,4 +261,25 @@ namespace :tess do
 
     puts 'Done'
   end
+
+  desc 'Rebuild search index, prioritizing more frequently searched resources (upcoming events, materials)'
+  task reindex: :environment do
+    puts "Rebuilding search index..."
+    Rails.application.eager_load!
+    Event.solr_remove_all_from_index
+    print "  Reindexing #{Event.not_finished.count} upcoming events... "
+    Event.not_finished.solr_index
+    puts "done"
+    prioritized = [Material, Collection, ContentProvider] | Sunspot.searchable.to_a
+    prioritized.each do |model|
+      next if model.name == 'Event'
+      print "  Reindexing #{model.count} #{model.model_name.human.pluralize}... "
+      model.solr_reindex
+      puts "done"
+    end
+    print "  Reindexing #{Event.finished.count} past events... "
+    Event.finished.solr_index
+    puts "done"
+    puts "Finished!"
+  end
 end

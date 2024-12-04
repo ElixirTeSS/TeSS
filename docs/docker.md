@@ -69,7 +69,7 @@ To run a specific test, you can override the command being passed:
 
 To force Solr to reindex all documents, you can run the following command:
 
-    docker-compose exec app bundle exec rake sunspot:reindex
+    docker-compose exec app bundle exec rake tess:reindex
 
 ### Additional development commands
 
@@ -134,4 +134,4 @@ Precompile the assets, necessary if any CSS/JS/images are changed after building
 
 Reindex Solr:
 
-    docker-compose -f docker-compose-prod.yml exec app bundle exec rake sunspot:reindex
+    docker-compose -f docker-compose-prod.yml exec app bundle exec rake tess:reindex
