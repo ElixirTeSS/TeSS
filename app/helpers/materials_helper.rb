@@ -22,8 +22,8 @@ Accepting will add a topic to the resource and rejecting will remove the suggest
 to acquire the desired knowledge and skills on a subject by the end of the pathway. \n\n\
 1. Register training materials.\n\
 2. Create a learning path topic and add materials to it (repeat for each topic). \n\
-3. Register a learning path and add learning path topics to it. \n\
-".freeze
+3. Register a learning path and add learning path topics to it. \n\n\
+%{link}".freeze
 
   LEARNING_PATH_TOPICS_INFO = "A learning path topic is an ordered list of training materials. \
 A topic can be given a competency level (beginner, intermediate, advanced), description and set of keywords. \
@@ -31,8 +31,8 @@ A learning path contains an ordered list of one or more topics, \
 where each topic has one competency level for all its materials. \n\n\
 1. Register training materials.\n\
 2. Create a learning path topic and add materials to it (repeat for each topic). \n\
-3. Register a learning path and add learning path topics to it. \n\
-".freeze
+3. Register a learning path and add learning path topics to it. \n\n\
+%{link}".freeze
 
   def materials_info
     MATERIALS_INFO % { link: link_to('see here for details on automatic registration',
@@ -45,11 +45,13 @@ where each topic has one competency level for all its materials. \n\n\
   end
 
   def learning_paths_info
-    LEARNING_PATHS_INFO
+    LEARNING_PATHS_INFO % { link: link_to('See here for details on learning paths',
+                              registering_learning_paths_path(anchor: 'register_paths') )}
   end
 
   def learning_path_topics_info
-    LEARNING_PATH_TOPICS_INFO
+    LEARNING_PATH_TOPICS_INFO % { link: link_to('See here for details on learning path topics',
+                                     registering_learning_paths_path(anchor: 'topics') )}
   end
 
   # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags
