@@ -1,0 +1,18 @@
+<% parameters = activity.parameters %>
+<% return if parameters.empty? %>
+<% return if activity.trackable.is_a?(Event) &&
+  Event::SENSITIVE_FIELDS.include?(parameters[:attr].to_sym) &&
+  !policy(activity.trackable).edit_report? %>
+
+<div class="sub-activity">
+  <% if parameters[:association_name] -%>
+    <%= t('activity.actions.association_change_html',
+          parameter: parameters[:attr].humanize,
+          name: parameters[:association_name],
+          value: parameters[:new_val]) %>
+  <% else %>
+    <%= t('activity.actions.parameter_change_html',
+          parameter: parameters[:attr].humanize,
+          value: parameters[:new_val]) %>
+  <% end %>
+</div>

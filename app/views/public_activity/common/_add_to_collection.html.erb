@@ -1,0 +1,6 @@
+<% return unless activity.parameters.present? %>
+<i class="fa fa-pencil-square-o"></i>
+<%= activity_owner(activity) %>
+<%= t('activity.actions.add') %> <%= activity_resource(activity) %>
+<%= t('activity.target_html', resource: link_to(activity.parameters[:collection_title], collection_path(activity.parameters[:collection_id]))) %>
+<%= t('activity.timestamp', time: activity.created_at) -%>.

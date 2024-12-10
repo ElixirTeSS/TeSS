@@ -1,0 +1,6 @@
+<i class="fa fa-pencil-square-o"></i>
+<%= activity_owner(activity) %>
+<%= t('activity.actions.add') %> <%= Material.model_name.human.downcase %> <%= link_to activity.parameters[:material_title],
+                                                                                       material_path(activity.parameters[:material_id]) %>
+<%= t('activity.target_html', resource: activity_resource(activity)) %>
+<%= t('activity.timestamp', time: activity.created_at) -%>.
