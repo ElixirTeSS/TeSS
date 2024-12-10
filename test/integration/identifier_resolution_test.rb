@@ -7,7 +7,7 @@ class IdentifierResolutionTest < ActionDispatch::IntegrationTest
 
     get "/resolve/e#{event.id}"
 
-    assert_redirected_to event
+    assert_redirected_to event_path(event.id)
 
     follow_redirect!
 
@@ -19,7 +19,7 @@ class IdentifierResolutionTest < ActionDispatch::IntegrationTest
 
     get "/resolve/m#{material.id}"
 
-    assert_redirected_to material
+    assert_redirected_to material_path(material.id)
   end
 
   test 'resolve content provider' do
@@ -27,7 +27,7 @@ class IdentifierResolutionTest < ActionDispatch::IntegrationTest
 
     get "/resolve/p#{content_provider.id}"
 
-    assert_redirected_to content_provider
+    assert_redirected_to content_provider_path(content_provider.id)
   end
 
   test 'resolve workflow' do
@@ -35,7 +35,7 @@ class IdentifierResolutionTest < ActionDispatch::IntegrationTest
 
     get "/resolve/w#{workflow.id}"
 
-    assert_redirected_to workflow
+    assert_redirected_to workflow_path(workflow.id)
   end
 
   test 'ignores prefix when resolving' do
@@ -43,11 +43,11 @@ class IdentifierResolutionTest < ActionDispatch::IntegrationTest
 
     get "/resolve/tess:m#{material.id}"
 
-    assert_redirected_to material
+    assert_redirected_to material_path(material.id)
 
     get "/resolve/batman:m#{material.id}"
 
-    assert_redirected_to material
+    assert_redirected_to material_path(material.id)
   end
 
   test 'does not resolve bad identifier' do
