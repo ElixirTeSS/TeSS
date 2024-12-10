@@ -359,8 +359,8 @@ en:
         A topic can be assigned a competency level (beginner, intermediate, advanced), 
         description and set of keywords. A learning path contains an ordered list of one or more topics. </p>
         <p>To create a learning path topic:</p>
-        <ol><li>On the 'Learning paths' tab, click the 'Topics' button at the top-right.</li>
-        <li>Click the 'Create topic' button at the top-right.</li>
+        <ol><li>On the 'Learning paths' tab, click the 'Manage topics' button at the top-right.</li>
+        <li>On the 'Learning path topics' page, click the 'Create topic' button at the top-right.</li>
         <li>Give the topic a title, description and keywords.</li>
         <li>Select the competency level of this topic, from 'Beginner', 'Intermediate' and 'Advanced'.</li>
         <li>To add a training material to the topic, click in the 'Add a new material' box and begin to type its name. 
@@ -412,7 +412,7 @@ en:
         <p>Learning paths can be browsed and searched in TeSS. They are organised by topic.</p>
         <ol><li>To view the learning paths, click 'Learning paths' in the main menu. 
         (Tip: To view a learning path you do not need to be logged in to TeSS.)</li> 
-        <li>To browse all topics, click the 'Topics' button on the top-right.</li>
+        <li>To browse all topics, click the 'Manage topics' button on the top-right.</li>
         <li>Alternatively, you can click in the search box, type your query and press Enter.</li>
         <li>Click to view a learning path. Read the summary box. The details of the included training materials 
         appear below; click each item to open it. Information about the content provider appears on the left.</li> 
