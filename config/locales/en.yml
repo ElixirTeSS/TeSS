@@ -874,3 +874,31 @@ en:
       admin_console: 'Admin console'
       log_out: 'Log out'
       log_out_confirm: 'Are you sure you want to log out?'
+  activity:
+    empty: No activities recorded.
+    deleted_owner: Someone
+    deleted_trackable: A resource
+    timestamp: at %{time}
+    target_html: to %{resource}
+    actions:
+      add: added
+      change: changed
+      create: created
+      update: updated
+      destroy: deleted
+      data_suggestion_add: added the data suggestion
+      data_suggestion_reject: rejected the data suggestion
+      term_suggestion_add: added the %{field} suggestion
+      term_suggestion_reject: rejected the %{field} suggestion
+      report: reported on
+      add_topic_html: added topic %{topic} to %{resource}
+      approval_status_change_html: changed %{source} approval status to %{status}
+      workflows:
+        modify_diagram: modified the workflow diagram
+        added_nodes: added
+        removed_nodes: removed
+        modified_nodes: modified
+        node: node
+      parameter_change_html: changed <em>%{parameter}</em> to <strong>%{value}</strong>
+      association_change_html: changed <em>%{parameter}</em> to <strong>%{name}</strong> (%{value})
+      change_role_html: changed %{user} role from <strong>%{old}</strong> to <strong>%{new}</strong>

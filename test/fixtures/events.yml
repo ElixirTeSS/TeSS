@@ -263,6 +263,7 @@ no_description_event:
 
 event_with_report:
   title: This event happened
+  slug: this-event-happened
   url: http://content-provider.org/event-with-report
   description: "An event with a report"
   user: regular_user
@@ -272,12 +273,12 @@ event_with_report:
   funding: Fidget spinner sales
   attendee_count: 1
   host_institutions: ["MyHost"]
-  timezone: Australia/Sydney
+  timezone: Sydney
   contact: MyContact
   eligibility: [ registration_of_interest ]
   venue: MyHall
   city: Sydney
-  country: AU
+  country: Australia
   postcode: 1000
   organizer: AnOrganizer
 

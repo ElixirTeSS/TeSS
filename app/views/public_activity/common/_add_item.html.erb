@@ -1,0 +1,8 @@
+<% type = activity.parameters[:resource_type].constantize %>
+<i class="fa fa-pencil-square-o"></i>
+<%= activity_owner(activity) %>
+<%= t('activity.actions.add') %> <%= type.model_name.human.downcase %> <%= link_to activity.parameters[:resource_title],
+                                                                                   polymorphic_path(type.model_name.singular.to_sym,
+                                                                                                    id: activity.parameters[:resource_id]) %>
+<%= t('activity.target_html', resource: activity_resource(activity)) %>
+<%= t('activity.timestamp', time: activity.created_at) -%>.

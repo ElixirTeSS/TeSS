@@ -1,16 +1,8 @@
-<%# Activity log partial that renders activity log for a resource.
-
-Variables that should be available
-- resource  - resource whose activity log is being displayed (a material, a content provider, etc...)
-%>
-<% unless resource.blank? %>
-    <div class="activity">
-      <% if resource.activities.blank? %>
-          <p class="empty">No activities recorded.</p>
-      <% else %>
-          <% resource.activities.order(created_at: :desc).each do |activity| %>
-              <%= render_activity(activity, layout: :activity) %>
-          <% end %>
-      <% end %>
-    </div>
+<%# Activity log partial that renders activity log for a resource.%>
+<% if activities.blank? %>
+  <p class="empty"><%= t('activity.empty') %></p>
+<% else %>
+  <% activities.each do |activity| %>
+      <%= render_activity(activity, layout: :activity, display: "common/#{activity.key.split('.').last}") %>
+  <% end %>
 <% end %>

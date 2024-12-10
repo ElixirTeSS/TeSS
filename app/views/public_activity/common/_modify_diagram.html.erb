@@ -1,0 +1,14 @@
+<i class="fa fa-pencil-square-o"></i>
+<%= activity_owner(activity) %>
+<%= t('activity.actions.workflows.modify_diagram') %>
+<%= t('activity.timestamp', time: activity.created_at) -%>.
+<ul>
+  <% [:added_nodes, :removed_nodes, :modified_nodes].each do |key| %>
+      <% if activity.parameters[key].any? %>
+          <li>
+            <%= t("activity.actions.workflows.#{key}") %> <%= pluralize(activity.parameters[key].count, t('activity.actions.workflows.node')) %>:
+            <%= activity.parameters[key].map { |n| "'#{n['data']['name']}'" }.join(', ') %>
+          </li>
+      <% end %>
+  <% end %>
+</ul>

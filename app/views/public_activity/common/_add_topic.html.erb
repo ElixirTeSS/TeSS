@@ -1,0 +1,6 @@
+<i class="fa fa-pencil-square-o"></i>
+<%= activity_owner(activity) %>
+<%= t('activity.actions.add_topic_html',
+      resource: activity_resource(activity),
+      topic: link_to(activity.parameters[:topic_title], learning_path_topic_path(activity.parameters[:topic_id]))) %>
+<%= t('activity.timestamp', time: activity.created_at) -%>.

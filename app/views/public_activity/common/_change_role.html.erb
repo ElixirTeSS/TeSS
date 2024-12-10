@@ -1,0 +1,7 @@
+<i class="fa fa-pencil-square-o"></i>
+<%= activity_owner(activity) %>
+<%= t('activity.actions.change_role_html',
+      user: activity_resource(activity),
+      old: Role.find_by_id(activity.parameters[:old])&.title || activity.parameters[:old],
+      new: Role.find_by_id(activity.parameters[:new])&.title || activity.parameters[:new]) %>
+<%= t('activity.timestamp', time: activity.created_at) -%>.

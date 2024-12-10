@@ -8,12 +8,12 @@ class ActivitiesController < ApplicationController
 
   def index
     if request.xhr?
-      @activities = PublicActivity::Activity.order('created_at desc')
+      @activities = @resource.activities.order('created_at desc')
       respond_to do |format|
-        format.html { render partial: 'activities/activity_log', locals: { resource: @resource } }
+        format.html { render partial: 'activities/activity_log', locals: { activities: @activities } }
       end
     else
-      @activities = PublicActivity::Activity.order('created_at desc').paginate(page: params[:page], per_page: 50)
+      @activities = @resource.activities.order('created_at desc').paginate(page: params[:page], per_page: 50)
       respond_to do |format|
         format.html
       end
