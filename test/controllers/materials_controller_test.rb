@@ -985,7 +985,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
     get :index, params: { material_id: @material }, xhr: true
 
-    assert_select '.activity', count: 6 # +1 because they are wrapped in a .activity div for some reason...
+    assert_select '.activity', count: 5
 
     @controller = old_controller
   end
@@ -1013,7 +1013,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
     get :index, params: { material_id: @material }, xhr: true
 
-    assert_select '.activity', count: 3 # +1 because they are wrapped in a .activity div for some reason...
+    assert_select '.activity', count: 2
 
     @controller = old_controller
   end
