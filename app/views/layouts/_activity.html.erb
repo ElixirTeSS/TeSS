@@ -1,5 +1,5 @@
 <% content = yield %>
-<% unless content.strip.blank? %>
+<% unless content&.strip.blank? %>
     <div class="activity">
       <%= content %>
     </div>
