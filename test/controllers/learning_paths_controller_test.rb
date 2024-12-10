@@ -432,7 +432,7 @@ class LearningPathsControllerTest < ActionController::TestCase
 
     get :index, params: { learning_path_id: @learning_path }, xhr: true
 
-    assert_select '.activity', count: 5 # +1 because they are wrapped in a .activity div for some reason...
+    assert_select '.activity', count: 4
 
     @controller = old_controller
   end
