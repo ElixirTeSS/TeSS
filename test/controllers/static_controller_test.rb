@@ -252,15 +252,15 @@ class StaticControllerTest < ActionController::TestCase
   end
 
   test 'should show event counts in counter blocks' do
-    params = events(:one).attributes.symbolize_keys
-    params.delete(:id)
-    params = params.merge({ start: Time.zone.now + 1.week, end: Time.zone.now + 1.week + 8.hours })
-    111.times do |i|
-      Event.create(params.merge(url: "#{params[:url]}##{i}"))
+    Event.destroy_all
+    user = users(:regular_user)
+    11.times do |i|
+      Event.create(title: "Event #{i}", url: "https://events.com/event##{i}",
+                   start: Time.zone.now + 1.week, end: Time.zone.now + 1.week + 8.hours, user: user)
     end
     with_settings({ site: { home_page: { counters: true } } }) do
       get :home
-      assert_select 'div#resource_count', text: '112', count: 1
+      assert_select 'div#resource_count', text: '11', count: 1
     end
   end
 
