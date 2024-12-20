@@ -142,6 +142,14 @@ class Material < ApplicationRecord
     field_list
   end
 
+  def self.not_disabled
+    where(visible: true)
+  end
+
+  def self.disabled
+    where(visible: false)
+  end
+
   def self.check_exists(material_params)
     given_material = material_params.is_a?(Material) ? material_params : new(material_params)
     material = nil

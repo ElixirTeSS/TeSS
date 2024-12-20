@@ -1,7 +1,7 @@
 module Facets
   SPECIAL = {
     include_expired: ->(c) { c.name == 'Event' },
-    include_disabled: ->(c) { c.name == 'Event' },
+    include_disabled: ->(c) { c.name == 'Event' || c.name == 'Material' },
     include_archived: ->(c) { c.name == 'Material' || c.name == 'LearningPath' },
     days_since_scrape: ->(c) { c.method_defined?(:last_scraped) },
     elixir: ->(c) { %w[Event Material ContentProvider].include?(c.name) },
