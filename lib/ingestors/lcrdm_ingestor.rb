@@ -35,7 +35,6 @@ module Ingestors
         event.title = h2.text.strip
         event.url = h2.get_attribute('href').strip
         event.venue = event_data.css('ul.post-item__meta svg.icon--marker')[0]&.parent&.text&.strip
-
         time_str = event_data.css('ul.post-item__meta svg.icon--calendar')[0]&.parent&.text&.strip
         split_time_str = time_str.split(' — ')
         event.start = Time.zone.parse(split_time_str[0])
@@ -43,8 +42,12 @@ module Ingestors
           a = split_time_str[0].split(' ')
           b = split_time_str[1]
           event.end = Time.zone.parse([a[0], a[1], b].join(' '))
-        elsif split_time_str[1].split(' ').length == 3
+        elsif [2, 3].include?(split_time_str[1].split(' ').length)
           event.end = Time.zone.parse(split_time_str[1])
+        end
+        if event.start < Time.zone.now - 2.weeks
+          event.start = event.start.change(year: Time.now.year + 1)
+          event.end = event.end.change(year: Time.now.year + 1)
         end
 
         event_page2 = Nokogiri::HTML5.parse(open_url(event.url.to_s, raise: true)).css('main#main-content div.entry__inner')
