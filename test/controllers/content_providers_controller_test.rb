@@ -582,4 +582,18 @@ class ContentProvidersControllerTest < ActionController::TestCase
     get :show, params: { id: content_provider }
     assert_response :forbidden
   end
+
+  test 'should hide disabled materials on content provider page' do
+    new_material = Material.create!(title: 'my_material', description: 'visible material', url: 'http://new.url.com', content_provider: @content_provider, user: @content_provider.user)
+    get :show, params: { id: @content_provider }
+    assert_response :success
+    assert_select '.search-results-count.my-3', text: 'Showing 10 materials'
+    assert_select '.masonry-brick-heading h4', text: 'my_material'
+    new_material.visible = false
+    new_material.save!
+    get :show, params: { id: @content_provider }
+    assert_response :success
+    assert_select '.search-results-count.my-3', text: 'Showing 9 materials'
+    assert_select '.masonry-brick-heading h4', text: 'my_material', count: 0
+  end
 end

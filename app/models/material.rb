@@ -143,11 +143,11 @@ class Material < ApplicationRecord
   end
 
   def self.not_disabled
-    where('materials.visible is true')
+    where(visible: true)
   end
 
   def self.disabled
-    where('materials.visible is false')
+    where(visible: false)
   end
 
   def self.check_exists(material_params)
