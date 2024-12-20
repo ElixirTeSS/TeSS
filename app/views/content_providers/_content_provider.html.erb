@@ -10,7 +10,7 @@
       </div>
 
       <% if content_provider.materials.length > 0 %>
-        <div><strong><%= pluralize(content_provider.materials.length, 'training material') %></strong></div>
+        <div><strong><%= pluralize(content_provider.materials.not_disabled.length, 'training material') %></strong></div>
       <% end %>
 
       <% if content_provider.events.length > 0 %>
