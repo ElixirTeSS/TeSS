@@ -131,6 +131,12 @@ class CollectionsControllerTest < ActionController::TestCase
     assert :forbidden
   end
 
+  test 'should not get curate for unsupported type' do
+    sign_in @collection.user
+    assert_raises(ActionController::RoutingError) do
+      get :curate, params: { id: @collection, type: 'Banana' }
+    end
+  end
 
   #CREATE TEST
   test 'should create collection for user' do

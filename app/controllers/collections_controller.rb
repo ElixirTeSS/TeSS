@@ -141,7 +141,7 @@ class CollectionsController < ApplicationController
       return Material if TeSS::Config.feature['materials']
     end
 
-    raise ActiveRecord::AccessDenied
+    raise ActionController::RoutingError.new('Unrecognized type')
   end
 
   # Delete the reviewed but unselected items (if they exist)

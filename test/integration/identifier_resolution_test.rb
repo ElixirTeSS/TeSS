@@ -60,6 +60,12 @@ class IdentifierResolutionTest < ActionDispatch::IntegrationTest
     assert_select '#error-message', text: /Unrecognized type/
   end
 
+  test 'handles parse error' do
+    assert_raises(ActionController::RoutingError) do
+      get "/resolve/hell:::::o:::wor:::l:::d"
+    end
+  end
+
   test 'does not resolve missing resource' do
     event = events(:one)
 

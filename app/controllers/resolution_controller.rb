@@ -36,7 +36,7 @@ class ResolutionController < ApplicationController
     if matches
       @identifier = matches
     else
-      raise ActionController:RoutingError
+      raise ActionController::RoutingError.new('Unrecognized identifier')
     end
   end
 end
