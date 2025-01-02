@@ -52,8 +52,8 @@ module TopicCuration
     #puts "RESOURCE: #{resource.inspect}"
     authorize resource, :update?
 
-    log_params = {data_field: params[:data_field],
-                  data_value: params[:data_value]}
+    log_params = { data_field: params[:data_field],
+                   data_value: resource.edit_suggestion.data_fields[params[:data_field]] }
 
     resource.edit_suggestion.accept_data(params[:data_field])
     resource.create_activity :add_data,
@@ -68,8 +68,8 @@ module TopicCuration
     resource = instance_variable_get("@#{controller_name.singularize}")
     authorize resource, :update?
 
-    log_params = {data_field: params[:data_field],
-                  data_value: params[:data_value]}
+    log_params = { data_field: params[:data_field],
+                   data_value: resource.edit_suggestion.data_fields[params[:data_field]] }
 
     resource.edit_suggestion.reject_data(params[:data_field])
     resource.create_activity :reject_data,

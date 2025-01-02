@@ -1,5 +1,5 @@
 <i class="fa fa-trash-o"></i>
 <%= activity_owner(activity) %>
-<%= t('activity.actions.data_suggestion_reject') %> <b><%= activity.parameters[:name] %></b>
+<%= t('activity.actions.data_suggestion_reject') %> <em><%= activity.parameters[:data_field] %></em>: <strong><%= activity.parameters[:data_value] %></strong>
 <%= t('activity.target_html', resource: activity_resource(activity)) %>
 <%= t('activity.timestamp', time: activity.created_at) -%>.
