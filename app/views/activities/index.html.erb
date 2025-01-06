@@ -2,15 +2,6 @@
 
 <%= will_paginate @activities, param_name: 'page', renderer: BootstrapPagination::Rails %>
 
-<% @activities.each do |activity| %>
-    <div class="activity">
-        <% if activity.owner -%>
-            <%= link_to activity.owner[:username], activity.owner  %>
-        <% else -%>
-            Someone
-        <% end -%>
-        <%= render_activity activity %>
-    </div>
-<% end %>
+<%= render partial: 'activities/activity_log', locals: { activities: @activities } %>
 
 <%= will_paginate @activities, param_name: 'page', renderer: BootstrapPagination::Rails %>

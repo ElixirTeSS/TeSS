@@ -1,0 +1,6 @@
+<i class="fa fa-pencil-square-o"></i>
+<%= activity_owner(activity) %>
+<%= t('activity.actions.approval_status_change_html',
+      source: activity_resource(activity),
+      status: source_approval_badge(activity.parameters[:new])) %>
+<%= t('activity.timestamp', time: activity.created_at) -%>.

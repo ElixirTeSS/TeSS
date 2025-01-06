@@ -132,6 +132,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :activities, only: [:show]
+
   get 'stars' => 'stars#index'
   post 'stars' => 'stars#create'
   delete 'stars' => 'stars#destroy'

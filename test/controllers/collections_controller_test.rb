@@ -131,6 +131,12 @@ class CollectionsControllerTest < ActionController::TestCase
     assert :forbidden
   end
 
+  test 'should not get curate for unsupported type' do
+    sign_in @collection.user
+    assert_raises(ActionController::RoutingError) do
+      get :curate, params: { id: @collection, type: 'Banana' }
+    end
+  end
 
   #CREATE TEST
   test 'should create collection for user' do
@@ -576,7 +582,7 @@ class CollectionsControllerTest < ActionController::TestCase
 
     get :index, params: { collection_id: @collection }, xhr: true
 
-    assert_select '.activity', count: 4 # +1 because they are wrapped in a .activity div for some reason...
+    assert_select '.activity', count: 3
 
     @controller = old_controller
   end

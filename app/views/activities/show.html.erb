@@ -1,7 +1,3 @@
-<%#= render_activities(@activities, layout: :activity) %>
+<h1>Activity</h1>
 
-<% @resource.activities.each do |activity| %>
-  <div class="activity">
-    <%= render_activity(activity) %>
-  </div>
-<% end %>
+<%= render_activity(@activity, layout: :activity, display: "common/#{@activity.key.split('.').last}") %>

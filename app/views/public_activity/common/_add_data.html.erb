@@ -1,0 +1,5 @@
+<i class="fa fa-pencil-square-o"></i>
+<%= activity_owner(activity) %>
+<%= t('activity.actions.data_suggestion_add') %> <em><%= activity.parameters[:data_field] %></em>: <strong><%= activity.parameters[:data_value] %></strong>
+<%= t('activity.target_html', resource: activity_resource(activity)) %>
+<%= t('activity.timestamp', time: activity.created_at) -%>.

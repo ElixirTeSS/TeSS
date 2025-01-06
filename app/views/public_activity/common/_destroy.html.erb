@@ -1,0 +1,4 @@
+<i class="fa fa-trash-o"></i>
+<%= activity_owner(activity) %>
+<%= t('activity.actions.destroy') %> <%= activity_resource(activity) %>
+<%= t('activity.timestamp', time: activity.created_at) -%>.

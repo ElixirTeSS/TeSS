@@ -2,18 +2,23 @@
 class ActivitiesController < ApplicationController
 
   before_action :set_resource, only: [:index]
-  before_action :set_breadcrumbs
+  before_action :set_breadcrumbs, only: [:index]
 
   MODELS = %w[content_provider material collection event node workflow source learning_path learning_path_topic].freeze
 
+  def show
+    raise ActionController::RoutingError.new("") unless current_user&.is_admin?
+    @activity = PublicActivity::Activity.find(params[:id])
+  end
+
   def index
     if request.xhr?
-      @activities = PublicActivity::Activity.order('created_at desc')
+      @activities = @resource.activities.order('created_at desc')
       respond_to do |format|
-        format.html { render partial: 'activities/activity_log', locals: { resource: @resource } }
+        format.html { render partial: 'activities/activity_log', locals: { activities: @activities } }
       end
     else
-      @activities = PublicActivity::Activity.order('created_at desc').paginate(page: params[:page], per_page: 50)
+      @activities = @resource.activities.order('created_at desc').paginate(page: params[:page], per_page: 50)
       respond_to do |format|
         format.html
       end
