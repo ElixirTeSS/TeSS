@@ -30,7 +30,7 @@ module Ingestors
         unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/nwo.yml')
           sleep(1)
         end
-        event_page = Nokogiri::HTML5.parse(open_url("#{url}?page=#{i}", raise: true)).css(".overviewContent > .listing-cards > li.list-item > a")
+        event_page = Nokogiri::HTML5.parse(open_url("#{url}?page=#{i}", raise: true)).css(".overviewContent > .listing-cards > li.list-item")
         event_page.each do |event_data|
           event = OpenStruct.new
 
@@ -43,7 +43,7 @@ module Ingestors
           event.keywords = []
           event.description = convert_description event_data.css('.card__intro').inner_html
 
-          event.url = "https://www.nwo.nl#{event_data['href']}"
+          event.url = "https://www.nwo.nl#{event_data.css('h3.card__title > a').attribute('href').value}"
 
           event.source = 'NWO'
 
