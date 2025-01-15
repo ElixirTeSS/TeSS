@@ -61,9 +61,9 @@ class IdentifierResolutionTest < ActionDispatch::IntegrationTest
   end
 
   test 'handles parse error' do
-    assert_raises(ActionController::RoutingError) do
-      get "/resolve/hell:::::o:::wor:::l:::d"
-    end
+    get "/resolve/hell:::::o:::wor:::l:::d"
+
+    assert_response :not_found
   end
 
   test 'does not resolve missing resource' do
