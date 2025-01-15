@@ -108,7 +108,7 @@ class Event < ApplicationRecord
     # :nocov:
   end
 
-  enum presence: { onsite: 0, online: 1, hybrid: 2 }
+  enum :presence, { onsite: 0, online: 1, hybrid: 2 }
 
   belongs_to :user
   has_one :llm_interaction, inverse_of: :event, dependent: :destroy
