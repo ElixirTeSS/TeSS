@@ -68,14 +68,12 @@ class SourcesControllerTest < ActionController::TestCase
 
   test 'registered should show source' do
     sign_in users(:regular_user)
-    get :show, params: { id: @source } do
-      assert_response :success
-      assert assigns(:source)
-      assert_select "h4", count: 2
-      assert_select "h4", { count: 1, text: 'Source Details' }
-      assert_select "h4", { count: 1, text: 'Last Run' }
-      assert_select "strong", { count: 1, text: 'No results found' }
-    end
+    get :show, params: { id: @source }
+    assert_response :success
+    assert assigns(:source)
+    assert_select 'h4', { count: 1, text: 'Source Details' }
+    assert_select 'h4', { count: 1, text: 'Last Run' }
+    assert_select 'strong', { count: 1, text: 'No results found' }
   end
 
   # NEW Tests
