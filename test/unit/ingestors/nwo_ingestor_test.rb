@@ -22,12 +22,12 @@ class NwoIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::NwoIngestor.new
 
     # check event doesn't
-    new_title = 'NWO Biophysics'
-    new_url = 'https://www.nwo.nl/en/meetings/biophysics'
+    new_title = 'NL Polar day 2025'
+    new_url = 'https://www.nwo.nl/en/meetings/nl-polar-day-2025'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 24 do
+    assert_difference 'Event.count', 14 do
       freeze_time(2019) do
         VCR.use_cassette('ingestors/nwo') do
           ingestor.read(source.url)
@@ -36,9 +36,9 @@ class NwoIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 24, ingestor.events.count
+    assert_equal 14, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 24, ingestor.stats[:events][:added]
+    assert_equal 14, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -49,10 +49,10 @@ class NwoIngestorTest < ActiveSupport::TestCase
     assert_equal new_url, event.url
 
     # check other fields
-    assert_equal 'NWO Biophysics', event.title
+    assert_equal 'NL Polar day 2025', event.title
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'NWO', event.source
-    assert_equal Time.zone.parse('Mon, 09 Oct 2023 09:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Tue, 10 Oct 2023 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal Time.zone.parse('Mon, 8 Apr 2025 09:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Mon, 8 Apr 2025 17:00:00.000000000 UTC +00:00'), event.end
   end
 end
