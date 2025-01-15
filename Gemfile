@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '7.1.5.1'
+gem 'rails', '7.2.2.1'
 
 gem 'active_model_serializers'
 gem 'activerecord-session_store'
