@@ -194,7 +194,7 @@ Edit config/secrets.yml to configure the database name, user and password define
 
 Edit config/secrets.yml to configure the app's secret_key_base which you can generate with:
 
-    bundle exec rake secret
+    bundle exec rails secret
 
 Create the databases:
 
