@@ -395,9 +395,8 @@ class OmniauthTest < ActionDispatch::IntegrationTest
         }
       })
 
-    assert_raises(ActionController::RoutingError) do
-      post '/users/auth/not_a_real_provider'
-    end
+    post '/users/auth/not_a_real_provider'
+    assert_response :not_found
   end
 
 end

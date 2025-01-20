@@ -41,7 +41,7 @@ module Llm
     def do_request(url, mode, data = {})
       header = {
         'Content-Type': 'application/json',
-        'X-API-KEY': Rails.application.secrets&.willma_api_key
+        'X-API-KEY': Rails.application.config.secrets&.willma_api_key
       }
 
       parsed_url = URI.parse(url)

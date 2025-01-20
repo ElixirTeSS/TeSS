@@ -19,13 +19,6 @@ class MaterialsControllerTest < ActionController::TestCase
       url: 'http://new.url.com',
       content_provider_id: ContentProvider.first.id
     }
-    @material_with_suggestions = materials(:material_with_suggestions)
-    @updated_material_with_suggestions = {
-      title: 'New title for suggestion material',
-      description: 'New description',
-      url: 'http://new.url.com',
-      content_provider_id: ContentProvider.first.id
-    }
     @failing_material = materials(:failing_material)
     @failing_material.title = 'Fail!'
     @monitor = @failing_material.create_link_monitor(url: @failing_material.url, code: 404, fail_count: 5)
@@ -358,14 +351,13 @@ class MaterialsControllerTest < ActionController::TestCase
 
   #SHOW TEST
   test 'should show material' do
-    get :show, params: { id: @material } do
-      assert_response :success
-      assert assigns(:material)
-      assert_select 'fa-commenting-o', count: 0
-      assert_select '.broken-link-notice', count: 0
-      assert_select '.archived-notice', count: 0
-      assert_select '.learning-path-navigation', count: 0
-    end
+    get :show, params: { id: @material }
+    assert_response :success
+    assert assigns(:material)
+    assert_select 'fa-commenting-o', count: 0
+    assert_select '.broken-link-notice', count: 0
+    assert_select '.archived-notice', count: 0
+    assert_select '.learning-path-navigation', count: 0
   end
 
   test 'should show material as json' do
@@ -446,24 +438,29 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'should apply edit suggestions to material' do
+    material = materials(:material_with_suggestions)
     sign_in users(:admin)
-    assert_empty @material_with_suggestions.scientific_topics
-    assert_not_equal @material_with_suggestions.edit_suggestion, nil
-    get :show, params: { id: @material_with_suggestions } do
-      assert_response :success
-      assert_select 'Training Material Example', :count => 1
-      assert_select 'fa-commenting-o', :count => 1
+    assert_empty material.scientific_topics
+    refute_nil material.edit_suggestion
+
+    get :show, params: { id: material }
+    assert_response :success
+    assert_select 'h2', text: 'Material with suggestions', count: 1
+    assert_select 'i.fa-commenting-o', count: 1
+    assert_select 'ul[data-uri=?]', 'http://edamontology.org/topic_3168', count: 1
+    assert_select 'ul[data-uri=?]', 'http://edamontology.org/topic_0199', count: 1
+
+    assert_no_difference('EditSuggestion.count') do
+      post :add_term, params: { id: material.id, field: 'scientific_topics', uri: 'http://edamontology.org/topic_3168' }
     end
-    get :edit, params: { id: @material_with_suggestions } do
-      assert_response :success
-      assert_select 'fa-commenting-o', :count => 0
-      assert_select 'a#add-topic-topiconename', :count => 1
-      assert_select 'a#add-topic-topictwoname', :count => 1
+    assert_response :success
+
+    assert_difference('EditSuggestion.count', -1) do
+      post :add_term, params: { id: material.id, field: 'scientific_topics', uri: 'http://edamontology.org/topic_0199' }
     end
-    patch :update, params: { id: @material_with_suggestions, material: @updated_material_with_suggestions } do
-      assert_redirected_to material_path(assigns(:material))
-      assert_equal @material_with_suggestions.edit_suggestion, nil
-    end
+    assert_response :success
+
+    assert_nil material.reload.edit_suggestion
   end
 
   #DESTROY TEST

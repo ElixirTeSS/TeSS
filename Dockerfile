@@ -1,4 +1,4 @@
-ARG RUBY_VERSION=3.2.5
+ARG RUBY_VERSION=3.2.6
 
 #use ruby base image
 FROM ruby:$RUBY_VERSION-slim AS base
@@ -7,7 +7,7 @@ FROM ruby:$RUBY_VERSION-slim AS base
 WORKDIR /code
 
 # install dependencies
-RUN apt-get update && apt-get install build-essential curl file git gnupg2 imagemagick libpq-dev nodejs -y
+RUN apt-get update && apt-get install build-essential curl file git gnupg2 imagemagick libpq-dev libyaml-dev nodejs -y
 
 # install supercronic - a cron alternative
 ENV SUPERCRONIC_URL=https://github.com/aptible/supercronic/releases/download/v0.1.12/supercronic-linux-amd64 \

@@ -20,8 +20,8 @@ module Fairsharing
     end
 
     def get_token(username = nil, password = nil)
-      username ||= Rails.application.secrets.fairsharing&.dig(:username)
-      password ||= Rails.application.secrets.fairsharing&.dig(:password)
+      username ||= Rails.application.config.secrets.fairsharing&.dig(:username)
+      password ||= Rails.application.config.secrets.fairsharing&.dig(:password)
       body = {
         'user': {
           'login': username,

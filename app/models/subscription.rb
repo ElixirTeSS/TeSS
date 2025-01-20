@@ -29,9 +29,7 @@ class Subscription < ApplicationRecord
   end
 
   def valid_unsubscribe_code?(code)
-    unsubscribe_verifier.verify("#{Base64.encode64(Marshal.dump(self.id)).chomp}--#{code}") == self.id
-  rescue ActiveSupport::MessageVerifier::InvalidSignature
-    false
+    unsubscribe_code == code
   end
 
   def digest

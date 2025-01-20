@@ -8,7 +8,7 @@ one:
   suggestible: material_with_suggestions (Material)
 
 two:
-  suggestible: material_with_suggestions (Material)
+  suggestible: failing_material (Material)
   data_fields:
     fruit: banana
 

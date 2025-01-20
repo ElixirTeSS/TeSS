@@ -1,8 +1,6 @@
-require_relative 'boot'
+require_relative "boot"
 
-require 'rails/all'
-
-require_relative '../lib/i18n'
+require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -11,22 +9,25 @@ Bundler.require(*Rails.groups)
 module TeSS
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 7.2
 
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration can go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded after loading
-    # the framework and any gems in your application.
+    # Please, add to the `ignore` list any other `lib` subdirectories that do
+    # not contain `.rb` files, or that should not be reloaded or eager loaded.
+    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    config.autoload_lib(ignore: %w[assets tasks])
 
-    config.eager_load_paths << Rails.root.join('lib')
+    # Configuration for the application, engines, and railties goes here.
+    #
+    # These settings can be overridden in specific environments using the files
+    # in config/environments, which are processed later.
+    #
+    # config.time_zone = "Central Time (US & Canada)"
 
-    config.middleware.insert_before 0, Rack::Cors do
-      allow do
-        origins '*'
-        resource '*', headers: :any, methods: %i[get post options]
-      end
+    config.secrets = config_for('secrets')
+    if Rails.env.test?
+      test_secrets = YAML.safe_load(File.read(Rails.root.join('test', 'config', 'test_secrets.yml'))).deep_symbolize_keys!
+      config.secrets.merge!(test_secrets)
     end
-
     config.tess = config_for(Rails.env.test? ? Pathname.new(Rails.root).join('test', 'config', 'test_tess.yml') : 'tess')
     config.tess_defaults = config_for('tess.example')
 
@@ -112,11 +113,11 @@ module TeSS
     end
 
     def analytics_enabled
-      force_analytics_enabled || (Rails.application.secrets.google_analytics_code.present? && Rails.env.production?)
+      force_analytics_enabled || (Rails.application.config.secrets.google_analytics_code.present? && Rails.env.production?)
     end
 
     def map_enabled
-      !feature['disabled'].include?('events_map') && Rails.application.secrets.google_maps_api_key.present?
+      !feature['disabled'].include?('events_map') && Rails.application.config.secrets.google_maps_api_key.present?
     end
 
     def _sentry_dsn

@@ -61,9 +61,9 @@ class IdentifierResolutionTest < ActionDispatch::IntegrationTest
   end
 
   test 'handles parse error' do
-    assert_raises(ActionController::RoutingError) do
-      get "/resolve/hell:::::o:::wor:::l:::d"
-    end
+    get "/resolve/hell:::::o:::wor:::l:::d"
+
+    assert_response :not_found
   end
 
   test 'does not resolve missing resource' do
@@ -71,10 +71,10 @@ class IdentifierResolutionTest < ActionDispatch::IntegrationTest
 
     event.destroy!
 
-    assert_raises(ActiveRecord::RecordNotFound) do
-      get "/resolve/e#{event.id}"
+    get "/resolve/e#{event.id}"
 
-      follow_redirect!
-    end
+    follow_redirect!
+
+    assert_response :not_found
   end
 end

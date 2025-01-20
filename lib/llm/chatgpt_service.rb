@@ -6,7 +6,7 @@ module Llm
   class ChatgptService < Service
     require 'openai'
     def initialize
-      api_key = Rails.application.secrets&.gpt_api_key
+      api_key = Rails.application.config.secrets&.gpt_api_key
       @client = OpenAI::Client.new(access_token: api_key)
       @params = {
         # max_tokens: 50,
