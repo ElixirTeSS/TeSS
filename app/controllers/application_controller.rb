@@ -19,6 +19,7 @@ class ApplicationController < ActionController::Base
   # User auth should be required in the web interface as well; it's here rather than in routes so that it
   # doesn't override the token auth, above.
   before_action :authenticate_user!, except: [:index, :show, :embed, :calendar, :check_exists, :handle_error, :count, :redirect]
+  before_action :set_space
   before_action :set_current_user
 
   # Should prevent forgery errors for JSON posts.
@@ -105,6 +106,16 @@ class ApplicationController < ActionController::Base
     policy_name = exception.policy.class.to_s.underscore
     handle_error(:forbidden, t("#{policy_name}.#{exception.query}", scope: 'pundit', default: :default))
   end
+
+  def set_space
+    @current_space = Space.find(request.subdomain) if request.subdomain
+  end
+
+  def current_space
+    @current_space
+  end
+
+  helper_method :current_space
 
   def set_current_user
     User.current_user = current_user
