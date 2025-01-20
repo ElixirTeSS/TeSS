@@ -99,6 +99,13 @@ default: &default
     enabled: false
     stale_threshold: 0.3
     rejected_threshold: 0.3
+  spaces:
+    plants:
+      name: TeSS Plants Community
+    astro:
+      name: TeSS Space Community
+    other:
+      name: Other TeSS Community
 development:
   <<: *default
 
