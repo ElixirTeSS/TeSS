@@ -57,3 +57,7 @@ See [here](docs/customization.md) for an overview of how you can customize your 
 ## API
 
 See [here](docs/api.md) for details on programmatic access to TeSS via its API.
+
+## Multi-space TeSS
+
+See [here](docs/mtessx.md) for details on configuring multi-space TeSS.

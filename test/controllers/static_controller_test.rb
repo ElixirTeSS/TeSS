@@ -327,4 +327,16 @@ class StaticControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test 'sets current space based on subdomain' do
+    old_host = @request.host
+    get :home
+    assert_nil assigns(:current_space)
+
+    @request.host = 'plants.mytess.training'
+    get :home
+    assert 'plants', assigns(:current_space).id
+  ensure
+    @request.host = old_host
+  end
 end
