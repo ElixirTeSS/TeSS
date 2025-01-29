@@ -104,10 +104,6 @@ Rails.application.configure do
   # action mailer other options
   config.action_mailer.asset_host = TeSS::Config.base_url
 
-  # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
-  # the I18n.default_locale when a translation cannot be found).
-  config.i18n.fallbacks = true
-
   # Don't log any deprecations.
   config.active_support.report_deprecations = false
 
