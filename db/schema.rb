@@ -486,6 +486,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_25_151745) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "image_url"
     t.index ["host"], name: "index_spaces_on_host", unique: true
     t.index ["user_id"], name: "index_spaces_on_user_id"
   end
