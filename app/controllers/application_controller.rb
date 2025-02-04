@@ -108,11 +108,11 @@ class ApplicationController < ActionController::Base
   end
 
   def set_space
-    @current_space = Space.find(request.subdomain) if request.subdomain
+    Space.current_space = Space.find_by_host(request.host)
   end
 
   def current_space
-    @current_space
+    Space.current_space
   end
 
   helper_method :current_space

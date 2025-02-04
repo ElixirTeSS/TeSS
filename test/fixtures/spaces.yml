@@ -1,0 +1,9 @@
+plants:
+  title: TeSS Plants Community
+  host: plants.mytess.training
+astro:
+  title: TeSS Space Community
+  host: space.mytess.training
+other:
+  title: Other TeSS Community
+  host: other.mytess.training

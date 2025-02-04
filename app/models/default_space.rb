@@ -1,0 +1,23 @@
+class DefaultSpace
+  class Image
+    def url
+      TeSS::Config.site['logo']
+    end
+  end
+
+  def title
+    TeSS::Config.site['title_short']
+  end
+
+  def logo_alt
+    TeSS::Config.site['logo_alt']
+  end
+
+  def image?
+    true
+  end
+
+  def image
+    Image.new
+  end
+end
