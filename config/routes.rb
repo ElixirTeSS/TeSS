@@ -134,6 +134,8 @@ Rails.application.routes.draw do
 
   resources :activities, only: [:show]
 
+  resources :spaces, concerns: :activities
+
   get 'stars' => 'stars#index'
   post 'stars' => 'stars#create'
   delete 'stars' => 'stars#destroy'

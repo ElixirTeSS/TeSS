@@ -1,0 +1,21 @@
+<% cache(space, expires_in: 6.hours) do %>
+  <li class="masonry-brick media-item long">
+    <%= link_to space, class: 'link-overlay' do %>
+      <%= image_tag get_image_url_for(space), class: "media-image listing_image pull-right" %>
+      <h4 class="mb-2 mt-3">
+        <%= space.title %>
+      </h4>
+
+      <%# if space.materials.length > 0 %>
+<!--        <div><strong><%#= pluralize(space.materials.length, 'training material') %></strong></div>-->
+      <%# end %>
+
+      <%# if space.events.length > 0 %>
+<!--        <div>-->
+<!--          <strong><%#= pluralize(space.events.not_finished.length, 'event') %></strong>-->
+<!--          <em>(<%#= pluralize(space.events.finished.length, 'past event') %>)</em>-->
+<!--        </div>-->
+      <%# end %>
+    <% end %>
+  </li>
+<% end %>

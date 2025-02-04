@@ -1,4 +1,9 @@
 class Space < ApplicationRecord
+  include PublicActivity::Common
+  include LogParameterChanges
+
+  belongs_to :user
+
   has_image(placeholder: TeSS::Config.placeholder['content_provider'])
 
   def self.current_space=(space)
@@ -15,5 +20,9 @@ class Space < ApplicationRecord
 
   def logo_alt
     "#{title} logo"
+  end
+
+  def url
+    "https://#{host}"
   end
 end
