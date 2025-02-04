@@ -186,7 +186,8 @@ module ApplicationHelper
     'ContentProvider' => TeSS::Config.placeholder['content_provider'],
     'Collection' => TeSS::Config.placeholder['collection'],
     'Trainer' => TeSS::Config.placeholder['person'],
-    'Node' => 'elixir/elixir.svg'
+    'Node' => 'elixir/elixir.svg',
+    'Space'=> TeSS::Config.placeholder['content_provider'] # FIXME: Make a logo for spaces
   }.freeze
 
   def get_image_url_for(resource)

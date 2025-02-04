@@ -33,6 +33,9 @@ en:
     learning_path_topics:
       short: Topics
       long: Learning path topics
+    spaces:
+      short: Spaces
+      long: Spaces
   pundit:
     default: 'You are not authorised to perform this action.'
     material_policy:
@@ -881,6 +884,7 @@ en:
       admin_console: 'Admin console'
       log_out: 'Log out'
       log_out_confirm: 'Are you sure you want to log out?'
+      spaces_admin: 'Manage spaces'
   activity:
     empty: No activities recorded.
     deleted_owner: Someone

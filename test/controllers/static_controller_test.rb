@@ -339,4 +339,15 @@ class StaticControllerTest < ActionController::TestCase
   ensure
     @request.host = old_host
   end
+
+  test 'does not set space if spaces feature disabled' do
+    old_host = @request.host
+    with_settings({ feature: { spaces: false } }) do
+      @request.host = 'plants.mytess.training'
+      get :home
+      assert_equal 'TTI', Space.current_space.title
+    end
+  ensure
+    @request.host = old_host
+  end
 end
