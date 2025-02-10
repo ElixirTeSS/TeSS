@@ -3,6 +3,7 @@ class LearningPathTopic < ApplicationRecord
   include LogParameterChanges
   include Searchable
   include Collaboratable
+  include InSpace
 
   has_many :items, -> { order(:order) }, class_name: 'LearningPathTopicItem', inverse_of: :topic, foreign_key: :topic_id,
            dependent: :destroy

@@ -94,6 +94,7 @@ class MaterialsController < ApplicationController
     authorize Material
     @material = Material.new(material_params)
     @material.user = current_user
+    @material.space = current_space
 
     respond_to do |format|
       if @material.save
