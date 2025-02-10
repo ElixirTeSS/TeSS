@@ -76,7 +76,7 @@ class SpacesController < ApplicationController
   end
 
   def space_params
-    permitted = [:title, :description, :theme, :image_url]
+    permitted = [:title, :description, :theme, :image, :image_url]
     permitted += [:host] if current_user.is_admin?
     params.require(:space).permit(*permitted)
   end
