@@ -149,6 +149,7 @@ class EventsController < ApplicationController
     authorize Event
     @event = Event.new(event_params)
     @event.user = current_user
+    @event.space = current_space
 
     respond_to do |format|
       if @event.save

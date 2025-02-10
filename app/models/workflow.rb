@@ -11,6 +11,7 @@ class Workflow < ApplicationRecord
   include CurationQueue
   include HasDifficultyLevel
   include HasEdamTerms
+  include InSpace
 
   if TeSS::Config.solr_enabled
     # :nocov:
