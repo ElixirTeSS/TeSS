@@ -48,6 +48,7 @@ class LearningPathsController < ApplicationController
     authorize LearningPath
     @learning_path = LearningPath.new(learning_path_params)
     @learning_path.user = current_user
+    @learning_path.space = current_space
 
     respond_to do |format|
       if @learning_path.save

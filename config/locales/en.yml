@@ -853,6 +853,8 @@ en:
         hide_disabled: 'Hide disabled %{resource}'
         show_archived: 'Show archived %{resource}'
         hide_archived: 'Hide archived %{resource}'
+        show_cross_space: 'Show %{resource} from all spaces'
+        hide_cross_space: 'Hide %{resource} from all spaces'
     hidden:
       values:
         show_hidden: 'Show hidden items'

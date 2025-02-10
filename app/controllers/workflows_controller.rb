@@ -51,6 +51,7 @@ class WorkflowsController < ApplicationController
     authorize Workflow
     @workflow = Workflow.new(workflow_params)
     @workflow.user = current_user
+    @workflow.space = current_space
 
     respond_to do |format|
       if @workflow.save

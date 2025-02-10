@@ -3,6 +3,12 @@ class Space < ApplicationRecord
   include LogParameterChanges
 
   belongs_to :user
+  has_many :materials
+  has_many :events
+  has_many :workflows
+  has_many :collections
+  has_many :learning_paths
+  has_many :learning_path_topics
 
   has_image(placeholder: TeSS::Config.placeholder['content_provider'])
 
@@ -24,5 +30,9 @@ class Space < ApplicationRecord
 
   def url
     "https://#{host}"
+  end
+
+  def default?
+    false
   end
 end
