@@ -692,4 +692,8 @@ module ApplicationHelper
     content_tag('div', t('warnings.unverified', resource_type: resource.model_name.human.downcase),
                 class: 'alert alert-warning mb-4 unverified-notice')
   end
+
+  def current_theme
+    params[:theme_preview] || current_space&.theme
+  end
 end
