@@ -26,10 +26,12 @@
         <% end %>
       </div>
 
-      <%= display_attribute(@space, :host) %>
+      <div class="my-3">
+        <%= display_attribute(@space, :host) %>
 
-      <div class="description">
-        <%= render_markdown @space.description %>
+        <div class="description">
+          <%= render_markdown @space.description %>
+        </div>
       </div>
     </div>
 

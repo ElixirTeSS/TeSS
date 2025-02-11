@@ -1,13 +1,36 @@
 # https://github.com/rails/sprockets/blob/main/guides/extending_sprockets.md#supporting-all-versions-of-sprockets-in-processors
 class SvgRecolourer
-  # Mapping of source colour to destination colour
+  # Mapping of source colour to destination colour key
   MAPPING = {
-    '#047EAA' => -> { TeSS::Config.site['icon_primary_color'] }, # proc incase config is not loaded here...
-    '#F47D21' => -> { TeSS::Config.site['icon_secondary_color'] },
+    '#047eaa' => :primary,
+    '#f47d21' => :secondary
   }
 
-  # Paths in which SVGs should be recoloured
-  PATHS = ['images/modern/icons', 'images/modern/learning_paths']
+  # Configured themes. TODO: Read this from some config
+  THEMES = {
+    'default' => {
+      primary: TeSS::Config.site['icon_primary_color'],
+      secondary: TeSS::Config.site['icon_secondary_color']
+    },
+    'green' => {
+      primary: '#025207',
+      secondary: '#829d30'
+    },
+    'blue' => {
+      primary: '#024552',
+      secondary: '#00839d'
+    },
+    'space' => {
+      primary: '#260252',
+      secondary: '#5c29b1'
+    },
+    'dark' => {
+      primary: '#260252',
+      secondary: '#5c29b1'
+    }
+  }
+
+  REGEXP = Regexp.new('(' + MAPPING.keys.map { |k| Regexp.quote(k) }.join('|') + ')',  Regexp::IGNORECASE)
 
   def initialize(filename, &block)
     @filename = filename
@@ -19,24 +42,14 @@ class SvgRecolourer
   end
 
   def self.run(filename, source, context)
-    return source unless PATHS.any? { |p| filename.include?(p) }
-    source.gsub(regexp) do |match|
-      mapping[match.downcase] || match # Look for replacement, or do nothing
-    end
-  end
+    match_data = filename.match(/images\/themes\/([^\/]+)\//)
+    return source unless match_data
+    theme = THEMES[match_data[1]]
+    raise "Missing theme #{match_data[1]}" unless theme
 
-  def self.mapping
-    return @mapping if @mapping && Rails.env.production?
-    @mapping = {}
-    MAPPING.each do |key, value|
-      @mapping[key.downcase] = value.respond_to?(:call) ? value.call : value
+    source.gsub(REGEXP) do |match|
+      theme[MAPPING[match.downcase]] || match # Look for replacement, or do nothing
     end
-    @mapping
-  end
-
-  def self.regexp
-    return @regex if @regex && Rails.env.production?
-    @regex = Regexp.new('(' + mapping.keys.map { |k| Regexp.quote(k) }.join('|') + ')',  Regexp::IGNORECASE)
   end
 
   def self.call(input)

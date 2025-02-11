@@ -3,7 +3,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= site_title %></title>
   <%= favicon_link_tag(TeSS::Config.site['favicon'], type: 'image/png') if TeSS::Config.site['favicon'] %>
-  <%= stylesheet_link_tag 'application', integrity: true, media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= stylesheet_link_tag theme_path, integrity: true, media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'application', integrity: true, 'data-turbolinks-track': 'reload' %>
   <% if TeSS::Config.use_google_maps %>
     <%= javascript_include_tag("https://maps.googleapis.com/maps/api/js?key=#{Rails.application.config.secrets.google_maps_api_key}&libraries=places") %>

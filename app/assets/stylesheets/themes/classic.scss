@@ -21,6 +21,8 @@ $blue3: #064559; /* unused? */
 //////////////////////////////
 // TeSS variables
 //////////////////////////////
+$theme-base: 'themes/default';
+
 $layout-spacing-base: 20px;
 $item-padding-base: 20px;
 $sidebar-width: 280px;
@@ -55,3 +57,5 @@ $navbar-border-radius: 0;
 $navbar-default-toggle-hover-bg: $bgHighlight;
 $navbar-default-toggle-icon-bar-bg: $colHover2;
 $navbar-default-toggle-border-color: $bgHighlight;
+
+@import "../application";

@@ -17,6 +17,10 @@ class DefaultSpace
     TeSS::Config.site['logo_alt']
   end
 
+  def theme
+    nil
+  end
+
   def image?
     true
   end

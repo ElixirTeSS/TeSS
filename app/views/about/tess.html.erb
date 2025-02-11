@@ -17,7 +17,7 @@
         <div id="events" class="row <%= next_about_block(@feature_count += 1) %>">
           <h3 class="col-lg-12"><%= t('about.headings.events') %></h3>
           <div class="col-lg-2 col-lg-push-10 about-resource-icon">
-            <%= image_tag('modern/icons/events-icon.svg', height: '65px', alt: 'Events') %>
+            <%= image_tag("#{theme_path}/icons/events-icon.svg", height: '65px', alt: 'Events') %>
           </div>
           <div class="col-lg-10 col-lg-pull-2 about-resource">
             <p><%== t 'about.events' %></p>
@@ -39,7 +39,7 @@
           <h3 class="col-lg-12"><%= t('about.headings.materials') %></h3>
 
           <div class="col-lg-2 col-lg-push-10 about-resource-icon">
-            <%= image_tag('modern/icons/materials-icon.svg', height: '65px', alt: 'Materials') %>
+            <%= image_tag("#{theme_path}/icons/materials-icon.svg", height: '65px', alt: 'Materials') %>
           </div>
 
           <div class="col-lg-10 col-lg-pull-2 about-resource">
@@ -63,7 +63,7 @@
           <h3 class="col-lg-12"><%= t('about.headings.workflows') %></h3>
           <div class="col-lg-2 col-lg-push-10 about-resource-icon">
             <%= link_to workflows_path do %>
-              <%= image_tag('modern/icons/workflows-icon.svg', height: "65px", alt: "Workflows") %>
+              <%= image_tag("#{theme_path}/icons/workflows-icon.svg", height: "65px", alt: "Workflows") %>
               <!--                  <p>Discover Workflows</p>-->
             <% end %>
           </div>
