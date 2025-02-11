@@ -76,7 +76,7 @@ class StaticController < ApplicationController
 
   def set_count_strings
     count_strings = {}
-    return count_strings unless TeSS::Config.site.dig('home_page', 'counters')
+    return count_strings if Space.current_space.default? && !TeSS::Config.site.dig('home_page', 'counters')
 
     count_strings['events'] = Space.current_space.events.where.not(end: nil).where('events.end > ?', Time.zone.now).count
     count_strings['last_month_events'] = Space.current_space.events.where('events.created_at > ?', 1.month.ago).count

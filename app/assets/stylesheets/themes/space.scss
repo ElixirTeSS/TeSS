@@ -1,3 +1,4 @@
+@import "bootstrap/mixins";
 //////////////////////////////
 // Design-specific variables
 //////////////////////////////
@@ -5,11 +6,11 @@
   font-family: 'Lato';
   src: font-url('Lato-Regular.ttf') format('truetype');
 }
-$theme-base: 'themes/default';
+$theme-base: 'themes/space';
 
-$primary-color: #023452;
-$secondary-color: #047EAA;
-$accent-color: #F47D21;
+$primary-color: #260252;
+$secondary-color: #5c29b1;
+$accent-color: #4091cb;
 
 $dark-color: #242526;
 $dark-60-color: #7b7c7c; // rgba(36, 37, 38, 0.6);
@@ -61,7 +62,7 @@ $brand-secondary: $accent-color;
 $brand-danger: #d9534f;
 $brand-success: #129e37;
 $brand-warning: #f0be3e;
-$brand-info: #9fc7c5;
+$brand-info: #8fb464;
 
 $headings-color: $primary-color;
 
@@ -76,7 +77,7 @@ $state-success-bg: #d5f5dd;
 $state-success-border: $state-success-bg;
 
 $state-info-text: darken($brand-info, 35%);
-$state-info-bg: #d9f4f3;
+$state-info-bg: #e2ffbc;
 $state-info-border: $state-info-bg;
 
 $state-warning-text: darken($brand-warning, 30%);
@@ -104,10 +105,10 @@ $input-border-focus: $secondary-color;
 
 // Navbar
 $navbar-height: 60px;
-$navbar-default-color: $gray-darker;
-$navbar-default-bg: transparent;
+$navbar-default-color: #fff;
+$navbar-default-bg: #4a4a4a;
 $navbar-default-border: transparent;
-$navbar-default-link-color: $gray-darker;
+$navbar-default-link-color: #fff;
 $navbar-default-link-hover-color: $accent-color;
 $navbar-default-link-active-color: $accent-color;
 
@@ -223,5 +224,20 @@ $badge-bg: $accent-color;
   max-height: 80px !important;
 }
 
-@import "../application";
+.unified-header {
+  h3 {
+    margin: 0.25em;
+    background: white;
+    border-radius: 10px;
+    padding: 5px;
+  }
+  a {
+    text-decoration: none;
+  }
+}
 
+.share-box {
+  background: lighten($secondary-color, 50%) !important;
+}
+
+@import "../application";
