@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_12_02_092029) do
+ActiveRecord::Schema[7.0].define(version: 2025_03_03_210238) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -227,9 +227,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_02_092029) do
     t.string "cost_basis"
     t.string "cost_currency"
     t.string "fields", default: [], array: true
-    t.string "open_science", default: [], array: true
     t.boolean "visible", default: true
     t.string "language"
+    t.string "open_science", default: [], array: true
     t.index ["presence"], name: "index_events_on_presence"
     t.index ["slug"], name: "index_events_on_slug", unique: true
     t.index ["user_id"], name: "index_events_on_user_id"
@@ -469,6 +469,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_02_092029) do
     t.string "token"
     t.integer "approval_status"
     t.datetime "updated_at"
+    t.string "default_language"
     t.index ["content_provider_id"], name: "index_sources_on_content_provider_id"
     t.index ["user_id"], name: "index_sources_on_user_id"
   end
@@ -572,9 +573,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_12_02_092029) do
     t.string "resource_type"
     t.text "data"
     t.json "params"
-    t.text "referrer"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "referrer"
     t.index ["resource_type", "resource_id"], name: "index_widget_logs_on_resource_type_and_resource_id"
   end
 

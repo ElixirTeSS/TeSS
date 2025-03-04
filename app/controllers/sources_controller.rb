@@ -150,7 +150,7 @@ class SourcesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def source_params
-    permitted = [:url, :method, :token, :enabled]
+    permitted = [:url, :method, :token, :default_language, :enabled]
     permitted << :approval_status if policy(Source).approve?
     permitted << :content_provider_id if policy(Source).index?
 

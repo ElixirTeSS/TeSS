@@ -33,10 +33,10 @@ module Ingestors
       raise NotImplementedError
     end
 
-    def write(user, provider)
-      write_resources(Event, @events, user, provider)
+    def write(user, provider, source: nil)
+      write_resources(Event, @events, user, provider, source: source)
       @messages << stats_summary(:events)
-      write_resources(Material, @materials, user, provider)
+      write_resources(Material, @materials, user, provider, source: source)
       @messages << stats_summary(:materials)
     end
 
@@ -127,7 +127,7 @@ module Ingestors
       resource
     end
 
-    def write_resources(type, resources, user, provider)
+    def write_resources(type, resources, user, provider, source: nil)
       resources.each_with_index do |resource, i|
         key = type.model_name.collection.to_sym
         @stats[key][:processed] += 1
@@ -143,6 +143,10 @@ module Ingestors
                    else
                      type.new(resource.to_h)
                    end
+
+        if resource.has_attribute?(:language) && resource.new_record?
+          resource.language ||= source&.default_language
+        end
 
         resource = set_resource_defaults(resource)
         if resource.valid?
