@@ -64,6 +64,8 @@ en:
           onsite: Face-to-face
           hybrid: Hybrid
         language: 'Language of instruction'
+      source:
+        default_language: 'Default language'
   about:
     headings:
       events: Events
@@ -741,10 +743,13 @@ en:
       method: 'The method used to ingest the contents of the source URL.'
       token: Some ingestion methods require an authentication token, leave blank if you aren't sure.
       enabled: Sources that are not enabled will not be ingested.
+      default_language: 'Default language of ingested events/materials'
     approval_status:
       not_approved: Not approved
       requested: Approval requested
       approved: Approved
+    prompts:
+      default_language: 'Select a default language...'
   scraper:
     messages:
       status: 'Scraper.run: %{status}'
