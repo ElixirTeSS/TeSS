@@ -16,6 +16,8 @@ class IngestorTest < ActiveSupport::TestCase
   test 'sets event language from source default language' do
     user = users(:scraper_user)
     provider = content_providers(:portal_provider)
+
+    # Source has default language set
     @source = Source.create!(url: 'https://somewhere.com/stuff', method: 'bioschemas',
                              enabled: true, approval_status: 'approved',
                              default_language: 'fr',
@@ -39,6 +41,8 @@ class IngestorTest < ActiveSupport::TestCase
   test 'does not override event language from source default language when language set' do
     user = users(:scraper_user)
     provider = content_providers(:portal_provider)
+
+    # Source has default language set
     @source = Source.create!(url: 'https://somewhere.com/stuff', method: 'bioschemas',
                              enabled: true, approval_status: 'approved',
                              default_language: 'fr',
@@ -46,7 +50,7 @@ class IngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Ingestor.new
 
-    # Fake an event that was read ... no language set
+    # Fake an event that was read ... with language set
     ingestor.instance_variable_set(:@events,
                                    [OpenStruct.new(url: 'https://some-course.de',
                                                    title: 'Some german course',
@@ -63,13 +67,15 @@ class IngestorTest < ActiveSupport::TestCase
   test 'does not override event language when source default language missing' do
     user = users(:scraper_user)
     provider = content_providers(:portal_provider)
+
+    # Source has no default language set
     @source = Source.create!(url: 'https://somewhere.com/stuff', method: 'bioschemas',
                              enabled: true, approval_status: 'approved',
                              content_provider: provider, user: users(:admin))
 
     ingestor = Ingestors::Ingestor.new
 
-    # Fake an event that was read ... no language set
+    # Fake an event that was read ... with language set
     ingestor.instance_variable_set(:@events,
                                    [OpenStruct.new(url: 'https://some-course.org',
                                                    title: 'Some other course',
@@ -86,6 +92,8 @@ class IngestorTest < ActiveSupport::TestCase
   test 'does not set event language when languare and source default language missing' do
     user = users(:scraper_user)
     provider = content_providers(:portal_provider)
+
+    # Source has no default language set
     @source = Source.create!(url: 'https://somewhere.com/stuff', method: 'bioschemas',
                              enabled: true, approval_status: 'approved',
                              content_provider: provider, user: users(:admin))
