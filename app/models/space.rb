@@ -3,12 +3,12 @@ class Space < ApplicationRecord
   include LogParameterChanges
 
   belongs_to :user
-  has_many :materials
-  has_many :events
-  has_many :workflows
-  has_many :collections
-  has_many :learning_paths
-  has_many :learning_path_topics
+  has_many :materials, dependent: :nullify
+  has_many :events, dependent: :nullify
+  has_many :workflows, dependent: :nullify
+  has_many :collections, dependent: :nullify
+  has_many :learning_paths, dependent: :nullify
+  has_many :learning_path_topics, dependent: :nullify
 
   has_image(placeholder: TeSS::Config.placeholder['content_provider'])
 
