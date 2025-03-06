@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_10_093412) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_04_161944) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -483,6 +483,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_10_093412) do
     t.index ["user_id"], name: "index_sources_on_user_id"
   end
 
+  create_table "space_roles", force: :cascade do |t|
+    t.string "key"
+    t.bigint "user_id"
+    t.bigint "space_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["space_id"], name: "index_space_roles_on_space_id"
+    t.index ["user_id"], name: "index_space_roles_on_user_id"
+  end
+
   create_table "spaces", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -654,6 +664,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_10_093412) do
   add_foreign_key "nodes", "users"
   add_foreign_key "sources", "content_providers"
   add_foreign_key "sources", "users"
+  add_foreign_key "space_roles", "spaces"
+  add_foreign_key "space_roles", "users"
   add_foreign_key "spaces", "users"
   add_foreign_key "staff_members", "nodes"
   add_foreign_key "stars", "users"

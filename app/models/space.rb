@@ -9,6 +9,8 @@ class Space < ApplicationRecord
   has_many :collections, dependent: :nullify
   has_many :learning_paths, dependent: :nullify
   has_many :learning_path_topics, dependent: :nullify
+  has_many :space_roles, dependent: :destroy
+  has_many :space_role_users, through: :space_roles, source: :user, class_name: 'User'
 
   has_image(placeholder: TeSS::Config.placeholder['content_provider'])
 
@@ -34,5 +36,9 @@ class Space < ApplicationRecord
 
   def default?
     false
+  end
+
+  def with_space_role?(role)
+    space_role_users.joins(:space_roles).where(space_roles: { key: role })
   end
 end
