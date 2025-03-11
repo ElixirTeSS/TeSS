@@ -2,6 +2,7 @@ require 'icalendar'
 require 'open-uri'
 require 'csv'
 require 'nokogiri'
+require 'openssl'
 
 module Ingestors
   class OscmIngestor < Ingestor
@@ -29,22 +30,23 @@ module Ingestors
     def process_oscm(url)
       # Instead of using the sitemap we use the events page.
       # The sitemap shows also past events, but the ical link for those does not work, so we can't parse them with the below code.
-      Nokogiri::HTML5(open_url(url, raise: true)).css('.eventname > a').each do |link|
+      url = 'https://www.openscience-maastricht.nl/events/'
+      Nokogiri::HTML5.parse(URI.open(url.to_s, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE)).css('.eventname > a').each do |event_link|
         begin
-          event_url = link.attributes['href']
-          event_page = Nokogiri::HTML5.parse(open_url(event_url, raise: true))
+          event_url = event_link.attributes['href']
+          event_page = Nokogiri::HTML5.parse(URI.open(event_url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE))
 
           # create new event
           event = OpenStruct.new
 
           # extract event details from ical
-          ical_event = Icalendar::Event.parse(open_url("#{event_url}/ical/", raise: true).set_encoding('utf-8')).first
+          ical_event = Icalendar::Event.parse(URI.open("#{event_url}/ical/", ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE).set_encoding('utf-8')).first
           event.title = ical_event.summary
           event.description = convert_description ical_event.description
           event.url = ical_event.url
           # TeSS timezone handling is a bit special.
-          event.start = ical_event.dtstart
-          event.end = ical_event.dtend
+          event.start = Time.zone.parse(ical_event.dtstart.strftime('%a, %d %b %Y %H:%M:%S'))
+          event.end = Time.zone.parse(ical_event.dtend.strftime('%a, %d %b %Y %H:%M:%S'))
           event.set_default_times
           event.venue = ical_event.try(:venue)
           event.keywords = ical_event.categories # fair-coffee pre-registration-workshop fair-essentials-workshop fair-for-qualitative-data reproducibilitea
