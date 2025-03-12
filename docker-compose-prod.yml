@@ -74,6 +74,7 @@ services:
       dockerfile: Dockerfile
       target: production
     image: ${PREFIX}-app
+    restart: always
     depends_on:
       - app
       - db
