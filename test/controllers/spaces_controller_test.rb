@@ -24,7 +24,7 @@ class SpacesControllerTest < ActionController::TestCase
     assert_not_empty assigns(:spaces), 'spaces is empty'
   end
 
-  test 'admin should get index' do
+  test 'site admin should get index' do
     sign_in users(:admin)
     get :index
     assert_response :success
@@ -48,7 +48,16 @@ class SpacesControllerTest < ActionController::TestCase
     assert_select 'a.btn[href=?]', space_path(@space), text: 'Delete', count: 0
   end
 
-  test 'admin should show space' do
+  test 'space admin should show space' do
+    sign_in users(:space_admin)
+    get :show, params: { id: @space }
+    assert_response :success
+    assert assigns(:space)
+    assert_select 'a.btn[href=?]', edit_space_path(@space), count: 1
+    assert_select 'a.btn[href=?]', space_path(@space), text: 'Delete', count: 0
+  end
+
+  test 'site admin should show space' do
     sign_in users(:admin)
     get :show, params: { id: @space }
     assert_response :success
@@ -63,10 +72,16 @@ class SpacesControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
   end
 
-  test 'admin should get new' do
+  test 'site admin should get new' do
     sign_in users(:admin)
-    get :new, params: { content_provider_id: content_providers(:goblet) }
+    get :new
     assert_response :success
+  end
+
+  test 'space admin should not get new' do
+    sign_in users(:space_admin)
+    get :new
+    assert_response :forbidden
   end
 
   # EDIT Tests
@@ -87,7 +102,19 @@ class SpacesControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
-  test 'admin should get edit' do
+  test 'space admin should get edit' do
+    sign_in users(:space_admin)
+    get :edit, params: { id: @space }
+    assert_response :success
+  end
+
+  test 'space admin should not get edit for other space' do
+    sign_in users(:space_admin)
+    get :edit, params: { id: spaces(:other) }
+    assert_response :forbidden
+  end
+
+  test 'site admin should get edit' do
     sign_in users(:admin)
     get :edit, params: { id: @space }
     assert_response :success
@@ -110,7 +137,16 @@ class SpacesControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
-  test 'admin can create space' do
+  test 'space admin cannot create new space' do
+    sign_in users(:space_admin)
+    refute_permitted SpacePolicy, @space.user, :create?, Space
+    assert_no_difference 'Space.count' do
+      post :create, params: @space_params
+    end
+    assert_response :forbidden
+  end
+
+  test 'site admin can create space' do
     sign_in users(:admin)
     assert_difference 'Space.count', 1 do
       post :create, params: @space_params
@@ -138,7 +174,15 @@ class SpacesControllerTest < ActionController::TestCase
     assert_equal 'plants.mytess.training', assigns(:space).host, 'Non-admin user should not be able to modify host'
   end
 
-  test 'admin should update space' do
+  test 'space admin should update owned space' do
+    sign_in users(:space_admin)
+    patch :update, params: { id: @space, space: { title: 'New Title', host: 'newhost.mytess.golf' } }
+    assert_redirected_to space_path(assigns(:space))
+    assert_equal 'New Title', assigns(:space).title
+    assert_equal 'plants.mytess.training', assigns(:space).host, 'Non-admin user should not be able to modify host'
+  end
+
+  test 'site admin should update space' do
     sign_in users(:admin)
     assert_no_difference 'Space.count' do
       patch :update, params: { id: @space, space: { title: 'New Title', host: 'newhost.mytess.golf' } }
@@ -164,12 +208,34 @@ class SpacesControllerTest < ActionController::TestCase
     end
   end
 
-  test 'admin can destroy space' do
+  test 'space admin cannot destroy space' do
+    sign_in users(:space_admin)
+    assert_no_difference 'Space.count' do
+      delete :destroy, params: { id: @space }
+      assert_response :forbidden
+    end
+  end
+
+  test 'site admin can destroy space' do
     sign_in users(:admin)
     assert_difference 'Space.count', -1 do
       post :destroy, params: { id: @space }
       assert_redirected_to spaces_path
       assert_equal 'Space was successfully deleted.', flash[:notice]
     end
+  end
+
+  test 'space admin can assign new space admins' do
+    existing_admin = users(:space_admin)
+    sign_in existing_admin
+    new_admin = users(:regular_user)
+    assert_difference('SpaceRole.count', 1) do # space_admin is already an admin, so only increases by 1
+      patch :update, params: { id: @space, space: { title: 'New Title', administrator_ids: [existing_admin.id, new_admin.id] } }
+      assert_redirected_to space_path(assigns(:space))
+    end
+
+    admins = assigns(:space).administrators
+    assert_includes admins, existing_admin
+    assert_includes admins, new_admin
   end
 end
