@@ -17,17 +17,21 @@ class SpaceRoleTest < ActiveSupport::TestCase
   test 'can retrieve list of users with a given role in a space' do
     user = users(:regular_user)
     another_user = users(:another_regular_user)
+    existing_admin = users(:space_admin)
+    assert_equal [existing_admin], @space.users_with_role(:admin).to_a
+
     @space.space_roles.create!(user: user, key: :admin)
     @space.space_roles.create!(user: another_user, key: :admin)
 
-    admins = @space.with_space_role?(:admin)
-    assert_equal 2, admins.length
+    admins = @space.users_with_role(:admin)
+    assert_equal 3, admins.length
     assert_includes admins, user
     assert_includes admins, another_user
+    assert_includes admins, existing_admin
 
-    assert_equal 2, @space.with_space_role?('admin').length
+    assert_equal 3, @space.users_with_role('admin').length
 
-    assert_empty @space.with_space_role?(:badmin)
+    assert_empty @space.users_with_role(:badmin)
   end
 
   test 'can check if a user has a given role in a space' do

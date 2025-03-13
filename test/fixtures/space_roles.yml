@@ -1,0 +1,4 @@
+space_admin:
+  key: admin
+  space: plants
+  user: space_admin
