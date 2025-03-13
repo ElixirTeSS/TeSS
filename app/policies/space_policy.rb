@@ -5,7 +5,7 @@ class SpacePolicy < ApplicationPolicy
   end
 
   def edit?
-    @user && (@user.is_owner?(@record) || manage?)
+    @user && (@user.is_owner?(@record) || @user.has_space_role?(@record, :admin) || manage?)
   end
 
   def update?

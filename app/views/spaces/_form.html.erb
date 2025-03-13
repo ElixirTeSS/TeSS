@@ -9,6 +9,12 @@
     <%= render partial: 'common/image_form', locals: { form: f } %>
   </div>
 
+  <%= f.autocompleter :administrators, url: users_path, transform_function: 'users', template: 'autocompleter/user_id',
+                      form_field_name: 'space[administrator_ids]',
+                      label_field: :name,
+                      id_field: :id,
+                      existing_items_method: :administrators %>
+
   <div class="form-group">
     <%= f.submit ( f.object.new_record? ? "Register" : "Update") + " space", class: 'btn btn-primary' %>
     <%= link_to t('.cancel', default:  t("helpers.links.cancel")),
