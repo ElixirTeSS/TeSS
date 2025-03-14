@@ -22,21 +22,27 @@
 }
 </script>
 
-<%= render partial: 'communities/banner' if TeSS::Config.site.dig('home_page', 'communities') %>
+<% if current_space.default? %>
+  <%= render partial: 'communities/banner' if TeSS::Config.site.dig('home_page', 'communities') %>
 
-<%= render partial: 'static/home/welcome' %>
+  <%= render partial: 'static/home/welcome' %>
 
-<%= render partial: 'static/home/counters' if TeSS::Config.site.dig('home_page', 'counters') %>
+  <%= render partial: 'static/home/counters' if TeSS::Config.site.dig('home_page', 'counters') %>
 
-<%= render partial: 'static/home/catalogue_blocks' if TeSS::Config.site.dig('home_page', 'catalogue_blocks') %>
+  <%= render partial: 'static/home/catalogue_blocks' if TeSS::Config.site.dig('home_page', 'catalogue_blocks') %>
 
-<%= render partial: 'static/home/provider_carousel' if TeSS::Config.site.dig('home_page', 'provider_carousel') %>
+  <%= render partial: 'static/home/provider_carousel' if TeSS::Config.site.dig('home_page', 'provider_carousel') %>
 
-<%= render partial: 'static/home/provider_grid' if TeSS::Config.site.dig('home_page', 'provider_grid') %>
+  <%= render partial: 'static/home/provider_grid' if TeSS::Config.site.dig('home_page', 'provider_grid') %>
 
-<%= render partial: 'static/home/faq' if TeSS::Config.site.dig('home_page', 'faq')&.any? %>
+  <%= render partial: 'static/home/faq' if TeSS::Config.site.dig('home_page', 'faq')&.any? %>
 
-<%= render partial: 'static/home/promo_blocks' if TeSS::Config.site.dig('home_page', 'promo_blocks') %>
+  <%= render partial: 'static/home/promo_blocks' if TeSS::Config.site.dig('home_page', 'promo_blocks') %>
+<% else %>
+  <%= render partial: 'static/home/space_welcome' %>
+
+  <%= render partial: 'static/home/counters' %>
+<% end %>
 
 <%= render partial: 'static/home/upcoming_events' if @events.present? %>
 
