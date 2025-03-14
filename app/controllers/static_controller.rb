@@ -78,12 +78,13 @@ class StaticController < ApplicationController
     count_strings = {}
     return count_strings unless TeSS::Config.site.dig('home_page', 'counters')
 
-    count_strings['events'] = Event.where.not(end: nil).where('events.end > ?', Time.zone.now).count
-    count_strings['last_month_events'] = Event.where('events.created_at > ?', 1.month.ago).count
-    count_strings['materials'] = Material.all.count
-    count_strings['workflows'] = Workflow.all.count
-    count_strings['content_providers'] = ContentProvider.all.count
-    count_strings['trainers'] = Trainer.all.count
+    count_strings['events'] = Space.current_space.events.where.not(end: nil).where('events.end > ?', Time.zone.now).count
+    count_strings['last_month_events'] = Space.current_space.events.where('events.created_at > ?', 1.month.ago).count
+    count_strings['materials'] = Space.current_space.materials.count
+    count_strings['workflows'] = Space.current_space.workflows.count
+    count_strings['learning_paths'] = Space.current_space.learning_paths.count
+    count_strings['content_providers'] = ContentProvider.count
+    count_strings['trainers'] = Trainer.count
     count_strings
   end
 end
