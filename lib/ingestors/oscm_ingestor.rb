@@ -10,7 +10,8 @@ module Ingestors
       {
         key: 'oscm_event',
         title: 'OSCM Events API',
-        category: :events
+        category: :events,
+        ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE
       }
     end
 
@@ -31,16 +32,16 @@ module Ingestors
       # Instead of using the sitemap we use the events page.
       # The sitemap shows also past events, but the ical link for those does not work, so we can't parse them with the below code.
       url = 'https://www.openscience-maastricht.nl/events/'
-      Nokogiri::HTML5.parse(URI.open(url.to_s, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE)).css('.eventname > a').each do |event_link|
+      Nokogiri::HTML5.parse(open_url(url.to_s, raise: true)).css('.eventname > a').each do |event_link|
         begin
           event_url = event_link.attributes['href']
-          event_page = Nokogiri::HTML5.parse(URI.open(event_url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE))
+          event_page = Nokogiri::HTML5.parse(open_url(event_url, raise: true))
 
           # create new event
           event = OpenStruct.new
 
           # extract event details from ical
-          ical_event = Icalendar::Event.parse(URI.open("#{event_url}/ical/", ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE).set_encoding('utf-8')).first
+          ical_event = Icalendar::Event.parse(open_url("#{event_url}/ical/", raise: true).set_encoding('utf-8')).first
           event.title = ical_event.summary
           event.description = convert_description ical_event.description
           event.url = ical_event.url
