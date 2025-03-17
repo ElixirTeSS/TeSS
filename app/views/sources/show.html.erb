@@ -52,6 +52,13 @@
                 </p>
               <% end %>
 
+              <!-- Field: default_language -->
+              <% if current_user && (current_user.is_curator? || current_user.is_admin?) %>
+                <p><strong><%= Source.human_attribute_name(:default_language) %>:</strong>
+                  <%= render_language_name(@source.default_language) if @source.default_language %>
+                </p>
+              <% end %>
+
               <!-- Field: enabled -->
               <p>
                 <strong>Source is:</strong>
