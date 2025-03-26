@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class CurationMailerTest < ActionMailer::TestCase
@@ -196,7 +198,7 @@ class CurationMailerTest < ActionMailer::TestCase
     @user = User.with_role('admin').first
     @content_provider = content_providers(:goblet)
     @materials = [materials(:good_material)]
-    TeSS::Config.ingestion[:sources] = [{id:1, provider: @content_provider.title, enabled: true}]
+    TeSS::Config.ingestion[:sources] = [{ id: 1, provider: @content_provider.title, enabled: true }]
     email = CurationMailer.check_broken_scrapers(@user, @materials.pluck(:created_at).min - 1.week)
 
     assert_emails 1 do
@@ -216,7 +218,7 @@ class CurationMailerTest < ActionMailer::TestCase
     @user = User.with_role('admin').first
     @content_provider = content_providers(:goblet)
     @materials = [materials(:good_material)]
-    TeSS::Config.ingestion[:sources] = [{id:1, provider: @content_provider.title, enabled: true}]
+    TeSS::Config.ingestion[:sources] = [{ id: 1, provider: @content_provider.title, enabled: true }]
     email = CurationMailer.check_broken_scrapers(@user, Time.zone.now)
 
     assert_emails 1 do
@@ -236,7 +238,7 @@ class CurationMailerTest < ActionMailer::TestCase
     @user = User.with_role('admin').first
     @content_provider = content_providers(:goblet)
     @materials = [materials(:good_material)]
-    TeSS::Config.ingestion[:sources] = [{id:1, provider: @content_provider.title, enabled: true}]
+    TeSS::Config.ingestion[:sources] = [{ id: 1, provider: @content_provider.title, enabled: true }]
 
     [[false, 0], [true, 1]].each do |val, count|
       @user.check_broken_scrapers = val

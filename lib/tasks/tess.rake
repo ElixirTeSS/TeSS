@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'yaml'
 
 namespace :tess do
@@ -83,7 +85,7 @@ namespace :tess do
     begin
       [Collection, ContentProvider, StaffMember].each do |klass|
         downloadable = klass.all.select { |o| !o.image_url.blank? && !o.image? }
-        if downloadable.length > 0
+        if downloadable.length.positive?
           puts "Downloading #{downloadable.length} images for #{klass.name}s"
 
           downloadable.each do |resource|
@@ -160,7 +162,7 @@ namespace :tess do
     end
 
     # send emails for broken scraper checking
-    users = User.all.filter { |u| u.check_broken_scrapers }
+    users = User.all.filter(&:check_broken_scrapers)
     users.each do |user|
       CurationMailer.check_broken_scrapers(user, cut_off_time).deliver_later
     end
@@ -257,7 +259,7 @@ namespace :tess do
 
       puts "Updating #{field} suggestions..."
       count = AutocompleteSuggestion.refresh(field, *values)
-      puts "  Deleted #{count} redundant suggestions" if count > 0
+      puts "  Deleted #{count} redundant suggestions" if count.positive?
     end
 
     with_redundant_fields = AutocompleteSuggestion.where.not(field: suggestions.keys)
@@ -271,22 +273,23 @@ namespace :tess do
 
   desc 'Rebuild search index, prioritizing more frequently searched resources (upcoming events, materials)'
   task reindex: :environment do
-    puts "Rebuilding search index..."
+    puts 'Rebuilding search index...'
     Rails.application.eager_load!
     Event.solr_remove_all_from_index
     print "  Reindexing #{Event.not_finished.count} upcoming events... "
     Event.not_finished.solr_index
-    puts "done"
+    puts 'done'
     prioritized = [Material, Collection, ContentProvider] | Sunspot.searchable.to_a
     prioritized.each do |model|
       next if model.name == 'Event'
+
       print "  Reindexing #{model.count} #{model.model_name.human.pluralize}... "
       model.solr_reindex
-      puts "done"
+      puts 'done'
     end
     print "  Reindexing #{Event.finished.count} past events... "
     Event.finished.solr_index
-    puts "done"
-    puts "Finished!"
+    puts 'done'
+    puts 'Finished!'
   end
 end
