@@ -19,4 +19,9 @@ class CurationMailerPreview < ActionMailer::Preview
     provider = ContentProvider.first
     CurationMailer.materials_require_approval(provider, Time.zone.now - 1.week)
   end
+
+  def check_broken_scrapers
+    user = User.with_role('admin').first
+    CurationMailer.check_broken_scrapers(user, Time.zone.now - 1.week)
+  end
 end

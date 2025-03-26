@@ -152,10 +152,17 @@ namespace :tess do
   desc 'mail content providers for curation of scraped events'
   task event_curation_mails: :environment do
     cut_off_time = Time.zone.now - 1.week
+    # send curation emails for all providers
     providers = ContentProvider.all.filter { |provider| provider.content_curation_email.present? }
     providers.each do |provider|
       CurationMailer.events_require_approval(provider, cut_off_time).deliver_later
       CurationMailer.materials_require_approval(provider, cut_off_time).deliver_later
+    end
+
+    # send emails for broken scraper checking
+    users = User.all.filter { |u| u.check_broken_scrapers }
+    users.each do |user|
+      CurationMailer.check_broken_scrapers(user, cut_off_time).deliver_later
     end
     puts 'Curation mails sent'
   end

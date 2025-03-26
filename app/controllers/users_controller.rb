@@ -133,6 +133,7 @@ class UsersController < ApplicationController
                            { :fields => [] }, { :social_media => [] }
       ] }]
     allowed_parameters << :role_id if policy(@user).change_role?
+    allowed_parameters << :check_broken_scrapers if @user.is_admin?
     params.require(:user).permit(allowed_parameters)
   end
 

@@ -191,4 +191,60 @@ class CurationMailerTest < ActionMailer::TestCase
       end
     end
   end
+
+  test 'broken scraper check' do
+    @user = User.with_role('admin').first
+    @content_provider = content_providers(:goblet)
+    @materials = [materials(:good_material)]
+    TeSS::Config.ingestion[:sources] = [{id:1, provider: @content_provider.title, enabled: true}]
+    email = CurationMailer.check_broken_scrapers(@user, @materials.pluck(:created_at).min - 1.week)
+
+    assert_emails 1 do
+      email.deliver_now
+    end
+
+    assert_equal [TeSS::Config.sender_email], email.from
+    assert_equal [@user.email], email.to
+    assert_equal "Broken scraper check for #{TeSS::Config.site['title_short']}", email.subject
+
+    [email.text_part, email.html_part].each do |part|
+      assert part.body.to_s.include?('All scrapers have found at least one event or material this week.')
+    end
+  end
+
+  test 'broken scraper check no providers' do
+    @user = User.with_role('admin').first
+    @content_provider = content_providers(:goblet)
+    @materials = [materials(:good_material)]
+    TeSS::Config.ingestion[:sources] = [{id:1, provider: @content_provider.title, enabled: true}]
+    email = CurationMailer.check_broken_scrapers(@user, Time.zone.now)
+
+    assert_emails 1 do
+      email.deliver_now
+    end
+
+    assert_equal [TeSS::Config.sender_email], email.from
+    assert_equal [@user.email], email.to
+    assert_equal "Broken scraper check for #{TeSS::Config.site['title_short']}", email.subject
+
+    [email.text_part, email.html_part].each do |part|
+      assert part.body.to_s.include?(@content_provider.title)
+    end
+  end
+
+  test 'broken scraper check no mail if disabled' do
+    @user = User.with_role('admin').first
+    @content_provider = content_providers(:goblet)
+    @materials = [materials(:good_material)]
+    TeSS::Config.ingestion[:sources] = [{id:1, provider: @content_provider.title, enabled: true}]
+
+    [[false, 0], [true, 1]].each do |val, count|
+      @user.check_broken_scrapers = val
+      email = CurationMailer.check_broken_scrapers(@user, @materials.pluck(:created_at).min - 1.week)
+
+      assert_emails count do
+        email.deliver_now
+      end
+    end
+  end
 end
