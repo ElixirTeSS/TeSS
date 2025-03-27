@@ -27,8 +27,8 @@ class LcrdmIngestorTest < ActiveSupport::TestCase
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 6 do
-      freeze_time(2024) do
+    assert_difference 'Event.count', 2 do
+      freeze_time(2025) do
         VCR.use_cassette('ingestors/lcrdm') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
@@ -36,9 +36,9 @@ class LcrdmIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 6, ingestor.events.count
+    assert_equal 2, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 6, ingestor.stats[:events][:added]
+    assert_equal 2, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -51,8 +51,8 @@ class LcrdmIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'LCRDM', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal Time.zone.parse('Wed, 26 Jun 2024 09:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Wed, 26 Jun 2024 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal Time.zone.parse('Thu, 26 Jun 2025 09:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Thu, 26 Jun 2025 17:00:00.000000000 UTC +00:00'), event.end
     assert_equal 'Domstad Utrecht', event.venue
   end
 end
