@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Preview all emails at http://localhost:3000/rails/mailers/curation_mailer
 class CurationMailerPreview < ActionMailer::Preview
   def unverified_user_needs_approval
@@ -18,5 +20,10 @@ class CurationMailerPreview < ActionMailer::Preview
   def materials_need_approval
     provider = ContentProvider.first
     CurationMailer.materials_require_approval(provider, Time.zone.now - 1.week)
+  end
+
+  def check_broken_scrapers
+    user = User.with_role('admin').first
+    CurationMailer.check_broken_scrapers(user, Time.zone.now - 1.week)
   end
 end
