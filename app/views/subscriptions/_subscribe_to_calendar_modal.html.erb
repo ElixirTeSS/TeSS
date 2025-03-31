@@ -2,30 +2,31 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal"
+                aria-label="<%= t('subscriptions.modal.close') %>">
           <span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="subscribe-modal-title">Subscribe to Filter</h4>
+        <h4 class="modal-title" id="subscribe-modal-title">
+          <%= t('subscriptions.modal.subscribe_to_filter') %>
+        </h4>
       </div>
 
       <div class="modal-body">
-        <label for="calendar-link">URL</label>
+        <label for="calendar-link"><%= t('subscriptions.modal.url') %></label>
         <div class="input-group input-group-lg">
           <input id="calendar-link" type="text" class="form-control" value="<%= events_url({ format: :ics }.merge(search_and_facet_params)) -%>" readonly>
           <span class="input-group-btn">
-            <button class="btn btn-default clipboard-btn" type="button" data-clipboard-target="#calendar-link" title="Click to copy">
+            <button class="btn btn-default clipboard-btn" type="button"
+                    data-clipboard-target="#calendar-link"
+                    title="<%= t('subscriptions.modal.click_to_copy') %>">
               <i class="fa fa-clipboard" aria-hidden="true"></i>
             </button>
           </span>
         </div>
-        <h3>Importing into Google Calendar</h3>
-        <p>
-        In the left-hand column of the <a href="https://calendar.google.com/calendar" target="_blank" rel="noopener">Google Calendar</a> main view,
-        click the arrow to the right of "Other calendars" and click "Add by URL". In the form that appears, paste in the URL from the box above, and click the button to confirm.
-        </p>
+        <h3><%= t('subscriptions.calendar.instructions_header') %></h3>
+        <p><%= t('subscriptions.calendar.instructions_paragraph1_html') %></p>
         <%= image_tag 'about/calendar_howto.png', {:style=>"width:100%"} %>
-        <p>
-          Please note, it may take a while for newly created events in <%= TeSS::Config.site['title_short'] %> to synchronise with your Google Calendar.
-        </p>
+        <p><%= t('subscriptions.calendar.instructions_paragraph2_html',
+               title: TeSS::Config.site['title_short']) %></p>
       </div>
     </div>
   </div>

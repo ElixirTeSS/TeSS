@@ -1,9 +1,9 @@
 <div class="wrapper">
   <div id="content">
-    <h2>Subscriptions</h2>
+    <h2><%= t('subscriptions.title') %></h2>
     <%= render @subscriptions %>
     <% if @subscriptions.none? %>
-        <span class="muted">You have no subscriptions.</span>
+        <span class="muted"><%= t('subscriptions.none') %></span>
     <% end %>
   </div>
 </div>
