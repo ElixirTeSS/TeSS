@@ -814,6 +814,8 @@ en:
       subject: "Last week's events on %{site_name}"
     materials_require_approval:
       subject: "Last week's materials on %{site_name}"
+    check_broken_scrapers:
+      subject: "Broken scraper check for %{site_name}"
   search_query: 'Search query:'
   sidebar:
     sort:

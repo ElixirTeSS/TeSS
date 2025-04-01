@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_03_03_210238) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_25_151745) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -552,6 +552,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_03_210238) do
     t.string "image_content_type"
     t.bigint "image_file_size"
     t.datetime "image_updated_at"
+    t.boolean "check_broken_scrapers", default: false
     t.index ["authentication_token"], name: "index_users_on_authentication_token"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
