@@ -5,10 +5,33 @@
 
   <div id="content">
     <div class="about-block">
-      <h2><%== TeSS::Config.site['title'] %></h2>
-      <p><%== t 'about.registry' %></p>
+      <% if current_space.default? %>
+        <h2><%== TeSS::Config.site['title'] %></h2>
+        <p><%== t 'about.registry' %></p>
 
-      <p><%== t 'about.history' %></p>
+        <p><%== t 'about.history' %></p>
+      <% else %>
+        <h2><%= current_space.title %></h2>
+        <p><%= render_markdown(current_space.description) %></p>
+        <% if current_space.user %>
+          <div>
+            <%= t 'about.spaces.owner' %>
+            <ul>
+              <li><%= link_to current_space.user.name, current_space.user %></li>
+            </ul>
+          </div>
+        <% end %>
+        <% if current_space.administrators.any? %>
+          <div>
+            <%= t 'about.spaces.admins' %>
+            <ul>
+              <% current_space.administrators.each do |admin| %>
+                <li><%= link_to admin.name, admin %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      <% end %>
 
       <% @feature_count = 0 %>
 
@@ -22,7 +45,7 @@
           <div class="col-lg-10 col-lg-pull-2 about-resource">
             <p><%== t 'about.events' %></p>
 
-            <p><%== t('about.collect_events', site_name: TeSS::Config.site['title_short'], count: Event.distinct.count(:content_provider_id), nominatim: t('about.nominatim'))  %></p>
+            <p><%== t('about.collect_events', site_name: current_space.title, count: Event.distinct.count(:content_provider_id), nominatim: t('about.nominatim'))  %></p>
 
             <br/>
 
@@ -45,7 +68,7 @@
           <div class="col-lg-10 col-lg-pull-2 about-resource">
             <p><%== t 'about.materials' %></p>
 
-            <p><%== t('about.collect_materials', site_name: TeSS::Config.site['title_short'], count: Material.distinct.count(:content_provider_id)) %>
+            <p><%== t('about.collect_materials', site_name: current_space.title, count: Material.distinct.count(:content_provider_id)) %>
             </p>
 
             <br/>
