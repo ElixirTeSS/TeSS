@@ -1,4 +1,5 @@
-<% features = ['events', 'materials', 'workflows', 'learning_paths', 'trainers'].select { |f| TeSS::Config.feature[f] } %>
+<% features ||= ['events', 'materials', 'workflows', 'learning_paths', 'trainers'] %>
+<% features = features.select { |f| TeSS::Config.feature[f] } %>
 
 <section id="counters">
   <ul class="counter">
