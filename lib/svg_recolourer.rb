@@ -13,7 +13,7 @@ class SvgRecolourer
       secondary: TeSS::Config.site['icon_secondary_color']
     },
     'green' => {
-      primary: '#025207',
+      primary: '#529d00',
       secondary: '#829d30'
     },
     'blue' => {
