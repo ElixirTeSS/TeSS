@@ -158,6 +158,9 @@ en:
     discover_materials: Discover Materials
     discover_learning_paths: Discover Learning Paths
     discover_workflows: Discover Workflows
+    spaces:
+      owner: "The owner of this space is:"
+      admins: "The administrators of this space are:"
   developer:
     license: >
       TeSS is committed to the FAIR principles: making data findable, accessible, interoperable and re-usable.
