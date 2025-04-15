@@ -20,7 +20,7 @@
                       existing_items_method: :administrators %>
 
   <div class="form-group">
-    <%= f.submit ( f.object.new_record? ? "Register" : "Update") + " space", class: 'btn btn-primary' %>
+    <%= f.submit(class: 'btn btn-primary') %>
     <%= link_to t('.cancel', default:  t("helpers.links.cancel")),
                 @space.new_record? ? spaces_path : space_path(@space), class: 'btn btn-default' %>
   </div>

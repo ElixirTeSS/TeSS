@@ -24,7 +24,7 @@
                          group_by: 'group', transform_function: 'events' } %>
 
     <div class="form-group actions">
-      <%= f.submit ( f.object.new_record? ? "Create" : "Update") + " collection", :class => 'btn btn-primary' %>
+      <%= f.submit(class: 'btn btn-primary') %>
       <%= link_to 'Back', collections_path, class: 'btn btn-default' %>
       <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                   collections_path, :class => 'btn btn-default' %>
