@@ -54,6 +54,7 @@ en:
       trainer: Trainer
       content_provider: Content Provider
       node: Node
+      learning_path_topic: Topic
     attributes:
       content_provider:
         user: Owner
@@ -979,3 +980,20 @@ en:
         visible: Show this event?
       material:
         visible: Show this material?
+
+  helpers:
+    submit:
+      create: Register %{model}
+      update: Update %{model}
+      collection:
+        create: Create %{model}
+        update: Update %{model}
+      workflow:
+        create: Create %{model}
+        update: Update %{model}
+      learning_path:
+        create: Create %{model}
+        update: Update %{model}
+      learning_path_topic:
+        create: Create %{model}
+        update: Update %{model}
