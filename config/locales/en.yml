@@ -54,6 +54,7 @@ en:
       trainer: Trainer
       content_provider: Content Provider
       node: Node
+      learning_path_topic: Topic
     attributes:
       content_provider:
         user: Owner
@@ -911,3 +912,19 @@ en:
       parameter_change_html: changed <em>%{parameter}</em> to <strong>%{value}</strong>
       association_change_html: changed <em>%{parameter}</em> to <strong>%{name}</strong> (%{value})
       change_role_html: changed %{user} role from <strong>%{old}</strong> to <strong>%{new}</strong>
+  helpers:
+    submit:
+      create: Register %{model}
+      update: Update %{model}
+      collection:
+        create: Create %{model}
+        update: Update %{model}
+      workflow:
+        create: Create %{model}
+        update: Update %{model}
+      learning_path:
+        create: Create %{model}
+        update: Update %{model}
+      learning_path_topic:
+        create: Create %{model}
+        update: Update %{model}
