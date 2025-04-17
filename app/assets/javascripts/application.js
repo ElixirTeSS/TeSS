@@ -283,15 +283,11 @@ document.addEventListener("turbolinks:load", function(e) {
         var maxHeight = parseInt(div.dataset.origHeight) + 80;
         var limit = parseInt(div.dataset.heightLimit || "300");
 
-        if (div.clientHeight < maxHeight && this.innerHTML !== 'Show less') {
-            var newHeight = div.clientHeight + limit;
-            if (newHeight > maxHeight) {
-                div.classList.add('tess-expandable-open');
-                div.classList.remove('tess-expandable-closed');
-                newHeight = maxHeight;
-                this.innerHTML = 'Show less';
-            }
-            div.style.maxHeight = '' + newHeight + 'px';
+        if (div.classList.contains('tess-expandable-closed')) {
+            div.classList.add('tess-expandable-open');
+            div.classList.remove('tess-expandable-closed');
+            div.style.maxHeight = '' + maxHeight + 'px';
+            this.innerHTML = 'Show less';
         } else {
             div.classList.remove('tess-expandable-open');
             div.classList.add('tess-expandable-closed');
