@@ -101,7 +101,7 @@ where each topic has one competency level for all its materials. \n\n\
     end
   end
 
-  def display_attribute(resource, attribute, show_label: true, title: nil, markdown: false, list: false)
+  def display_attribute(resource, attribute, show_label: true, title: nil, markdown: false, list: false, expandable: false)
     return if [
       TeSS::Config.feature['disabled'].include?(attribute.to_s),
       (TeSS::Config.feature['materials_disabled'].include?(attribute.to_s) && resource.is_a?(Material)),
@@ -120,6 +120,9 @@ where each topic has one competency level for all its materials. \n\n\
           string << "<li>#{block_given? ? yield(v) : v}</li>"
         end
         string << '</ul>'
+      elsif expandable
+        height_limit = expandable.is_a?(Numeric) ? expandable : nil
+        string << "<div class=\"tess-expandable\"#{" data-height-limit=\"#{height_limit}\"" if height_limit}>" + value.to_s + '</div>'
       else
         string << value.to_s
       end
