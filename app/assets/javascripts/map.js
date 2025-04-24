@@ -1,5 +1,7 @@
 class GoogleMap {
-    constructor({center, dom_element}) {
+    constructor({ center, dom_element }) {
+        this.marker_bounds = new google.maps.LatLngBounds();
+        this.infowindow = new google.maps.InfoWindow({content: content});
         this.map = new google.maps.Map(dom_element, {
             center,
             scrollwheel: true,
@@ -8,22 +10,35 @@ class GoogleMap {
         });
     }
 
-    add_marker({location, title, icon}) {
-        return new google.maps.Marker({
+    add_marker({ location, title, icon, description }) {
+        var marker = new google.maps.Marker({
             map: this.map,
             position: location,
             title,
             icon
         });
+        if (description) {
+            google.maps.event.addListener(marker, 'click', function () {
+                infowindow.setContent(description);
+                infowindow.open(EventsMap.map, marker);
+            });
+        }
+        this.marker_bounds.extend(marker.position);
+        return marker;
+    }
+
+    fit_to_markers() {
+        this.map.fitBounds(this.marker_bounds);
     }
 }
 
 
 class OpenStreetMap {
-    constructor({center, dom_element}) {
+    constructor({ center, dom_element }) {
+        this.marker_points = [];
         this.map = new ol.Map({
             target: dom_element,
-            layers: [new ol.layer.Tile({source: new ol.source.OSM()})],
+            layers: [new ol.layer.Tile({ source: new ol.source.OSM() })],
             view: new ol.View({
                 center: ol.proj.fromLonLat([center.lng, center.lat]),
                 zoom: 13,
@@ -32,16 +47,46 @@ class OpenStreetMap {
         });
     }
 
-    add_marker({location, title, icon}) {
-        icon = icon || "https://pan-training.eu/events/marker.png";
-        var marker = $('<img width="50" height="50">');
+    add_marker({ location, title, icon, description, link }) {
+        icon = icon || 'https://pan-training.eu/events/marker.png';
+        var marker = $('<img width="50" height="50" style="cursor: pointer;">');
         marker.prop("src", icon);
         marker.prop("title", title);
+        var point = ol.proj.fromLonLat([location.lng, location.lat])
         this.map.addOverlay(new ol.Overlay({
-            position: ol.proj.fromLonLat([location.lng, location.lat]),
+            position: point,
             offset: [-25, -50],
             element: marker[0]
         }));
+        
+        if (description) {
+            var popup = $('<div class="ol-popup"><a class="ol-popup-closer" href="#"></a><div class="ol-popup-content"></div></div>').hide();
+            popup.children(".ol-popup-content").html(description);
+            
+            var infowindow = new ol.Overlay({element: popup[0], offset: [10, 10]});
+            this.map.addOverlay(infowindow);
+            infowindow.setPosition(point);
+            marker.on('click', () => {
+                popup.toggle();
+                if(popup.is(':visible')) infowindow.panIntoView();
+            });   
+            popup.on('click', () => {
+                popup.hide();
+                return false;
+            });
+        }
+        if (link) {
+            marker.on('dblclick', () => {window.open(link, '_self')})
+        }
+        this.marker_points.push(point);
+    }
+
+    fit_to_markers() {
+        var fit_todo = true;
+        this.map.on('loadend', () => {
+            if(fit_todo) this.map.getView().fit(new ol.geom.MultiPoint(this.marker_points), { padding: [50, 50, 50, 50] });
+            fit_todo = false;
+        });
     }
 }
 
@@ -128,6 +173,10 @@ var EventsMap = {
 
             addTabToFilters(getTab());
 
+            if(window.location.toString().endsWith('#map')){
+                // load map when entering site on events map page
+                EventsMap.initializeMap(element);
+            }
             $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                 /*Load map script only once when event tab is selected
                 *
@@ -156,7 +205,7 @@ var EventsMap = {
 
         var MapClass = element.data('provider') == 'google' ? GoogleMap : OpenStreetMap;
         EventsMap.map = new MapClass({
-            center: {lat: 0, lng: 0}, 
+            center: { lat: 0, lng: 0 },
             dom_element: document.getElementById('map-canvas')
         });
 
@@ -174,45 +223,35 @@ var EventsMap = {
     },
 
     plotEvents: function (events) {
-        //var infowindow = new google.maps.InfoWindow({content: content});
         var markers = {};
         var count = 0;
 
-        events.forEach(function(event) {
+        events.forEach(function (event) {
             if (event.attributes.latitude !== null && event.attributes.longitude !== null) {
                 count += 1;
-                var event_display = HandlebarsTemplates['events/event_on_map']({event: event.attributes});
+                var event_display = HandlebarsTemplates['events/event_on_map']({ event: event.attributes });
                 var key = Number(event.attributes.latitude) + ':' + Number(event.attributes.longitude);
-                if (markers[key] != null){
+                if (markers[key] != null) {
                     markers[key]['content'] = markers[key]['content'] + event_display
+                    markers[key]['link'] = null;
                 } else {
                     markers[key] = {
-                        position: {lat: Number(event.attributes.latitude), lng: Number(event.attributes.longitude)},
+                        position: { lat: Number(event.attributes.latitude), lng: Number(event.attributes.longitude) },
                         content: event_display,
+                        link: event.links.self,
                         title: '"' + event.attributes.title + '"' /* set to location? */
                     }
                 }
             }
         });
 
-        //var bounds = new google.maps.LatLngBounds();
-        $.each(markers, function(k, event){
+        $.each(markers, function (k, event) {
             EventsMap.map.add_marker({
                 location: event['position'],
                 title: event['title'],
-                description: event['content']
+                description: event['content'],
+                link: event.link
             })
-            /*
-            var marker = new google.maps.Marker({
-                position: event['position'],
-                map: EventsMap.map,
-                title: event['title']
-            });
-            google.maps.event.addListener(marker, 'click', function () {
-                infowindow.setContent(event['content']);
-                infowindow.open(EventsMap.map, marker);
-            });
-            bounds.extend(marker.position);*/
         });
 
         $('#map-loading-screen').fadeOut();
@@ -220,7 +259,7 @@ var EventsMap = {
             $('#map-canvas').fadeIn();
             $('#map-notice').show();
             $('#map-count').text('Displaying ' + count + ' events.');
-            //EventsMap.map.fitBounds(bounds);
+            EventsMap.map.fit_to_markers();
         } else {
             $('#map-canvas').hide();
             $('#map-notice').hide();

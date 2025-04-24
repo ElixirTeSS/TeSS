@@ -23,8 +23,33 @@
   clear: both;
 }
 
-#map-loading-screen {
+.events-loading-screen {
   width: 20%;
   margin-left: 40%;
   padding-top: 100px;
+}
+
+.ol-popup {
+  display: block;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  background: #FFFFFFAA;
+  padding: .01em .5em .5em .5em;
+  backdrop-filter: blur(2px);
+  overflow: auto;
+  max-height: 50vh;
+  max-width: 50vw;
+}
+
+.ol-popup-closer {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 150%;
+  padding: 0 4px;
+  color: gray;
+  text-decoration: none;
+}
+
+.ol-popup-closer:after {
+  content: "\2716";
 }

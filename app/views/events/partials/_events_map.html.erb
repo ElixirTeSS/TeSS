@@ -1,6 +1,6 @@
 <div style="width: 100%; height: 750px; margin-top: 10px; display: none" id="map-canvas" data-role="events-map"
      data-url="<%= events_path(search_and_facet_params.merge(format: :json_api, per_page: 5000)) -%>"
      data-provider="<%= TeSS::Config.map_provider -%>"></div>
-<div id='map-loading-screen'>
+<div id='map-loading-screen' class="events-loading-screen">
   <%= image_tag('ajax-loader2.gif') %>
 </div>
