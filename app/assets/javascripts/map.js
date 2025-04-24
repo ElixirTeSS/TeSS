@@ -1,7 +1,56 @@
+class GoogleMap {
+    constructor({center, dom_element}) {
+        this.map = new google.maps.Map(dom_element, {
+            center,
+            scrollwheel: true,
+            zoom: 13,
+            maxZoom: 17
+        });
+    }
+
+    add_marker({location, title, icon}) {
+        return new google.maps.Marker({
+            map: this.map,
+            position: location,
+            title,
+            icon
+        });
+    }
+}
+
+
+class OpenStreetMap {
+    constructor({center, dom_element}) {
+        this.map = new ol.Map({
+            target: dom_element,
+            layers: [new ol.layer.Tile({source: new ol.source.OSM()})],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([center.lng, center.lat]),
+                zoom: 13,
+                maxZoom: 17
+            })
+        });
+    }
+
+    add_marker({location, title, icon}) {
+        icon = icon || "https://pan-training.eu/events/marker.png";
+        var marker = $('<img width="50" height="50">');
+        marker.prop("src", icon);
+        marker.prop("title", title);
+        this.map.addOverlay(new ol.Overlay({
+            position: ol.proj.fromLonLat([location.lng, location.lat]),
+            offset: [-25, -50],
+            element: marker[0]
+        }));
+    }
+}
+
+
 var EventMap = {
     init: function () {
         // Map on event show page
         var element = $('div.google-map');
+        var loading_element = element.children("span");
 
         if (element.length && element.data('mapLatitude')) {
             var actualLocation = {
@@ -14,31 +63,29 @@ var EventMap = {
                 lng: parseFloat(element.data('mapSuggestedLongitude'))
             };
 
-            // Create a map object and specify the DOM element for display.
-            var map = new google.maps.Map(element[0], {
+            var MapClass = element.data("map-provider") == 'google' ? GoogleMap : OpenStreetMap;
+            var map = new MapClass({
                 center: suggestedLocation.lat ? suggestedLocation : actualLocation,
-                scrollwheel: true,
-                zoom: 13,
-                maxZoom: 15,
+                dom_element: element[0]
             });
 
             if (actualLocation.lat) {
-                new google.maps.Marker({
-                    map: map,
-                    position: actualLocation,
+                map.add_marker({
+                    location: actualLocation,
                     title: element.data('mapMarkerTitle')
                 });
             }
 
             if (suggestedLocation.lat) {
-                new google.maps.Marker({
-                    map: map,
-                    position: suggestedLocation,
+                map.add_marker({
+                    location: suggestedLocation,
                     title: 'Suggested Location',
                     icon: element.data('mapSuggestedMarkerImage')
                 });
             }
         }
+
+        loading_element.hide();
     }
 }
 
@@ -107,6 +154,12 @@ var EventsMap = {
         $('#map-notice').hide();
         $('#map-loading-screen').fadeIn();
 
+        var MapClass = element.data('provider') == 'google' ? GoogleMap : OpenStreetMap;
+        EventsMap.map = new MapClass({
+            center: {lat: 0, lng: 0}, 
+            dom_element: document.getElementById('map-canvas')
+        });
+
         $.ajax({
             type: 'GET',
             url: element.data('url'),
@@ -117,18 +170,11 @@ var EventsMap = {
             console.log("Error: " + error);
         });
 
-        var mapOptions = {
-            maxZoom: 15,
-            center: new google.maps.LatLng(0, 0)
-        };
-
-        EventsMap.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
         element.data('loadedMapScript', true);
     },
 
     plotEvents: function (events) {
-        var infowindow = new google.maps.InfoWindow({content: content});
+        //var infowindow = new google.maps.InfoWindow({content: content});
         var markers = {};
         var count = 0;
 
@@ -149,8 +195,14 @@ var EventsMap = {
             }
         });
 
-        var bounds = new google.maps.LatLngBounds();
+        //var bounds = new google.maps.LatLngBounds();
         $.each(markers, function(k, event){
+            EventsMap.map.add_marker({
+                location: event['position'],
+                title: event['title'],
+                description: event['content']
+            })
+            /*
             var marker = new google.maps.Marker({
                 position: event['position'],
                 map: EventsMap.map,
@@ -160,7 +212,7 @@ var EventsMap = {
                 infowindow.setContent(event['content']);
                 infowindow.open(EventsMap.map, marker);
             });
-            bounds.extend(marker.position);
+            bounds.extend(marker.position);*/
         });
 
         $('#map-loading-screen').fadeOut();
@@ -168,7 +220,7 @@ var EventsMap = {
             $('#map-canvas').fadeIn();
             $('#map-notice').show();
             $('#map-count').text('Displaying ' + count + ' events.');
-            EventsMap.map.fitBounds(bounds);
+            //EventsMap.map.fitBounds(bounds);
         } else {
             $('#map-canvas').hide();
             $('#map-notice').hide();

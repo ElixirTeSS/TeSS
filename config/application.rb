@@ -128,6 +128,10 @@ module TeSS
       map_enabled && Rails.application.config.secrets.google_maps_api_key.present?
     end
 
+    def map_provider
+      use_google_maps ? 'google' : 'open-street-map'
+    end
+
     def use_open_street_map
       map_enabled && !use_google_maps
     end
