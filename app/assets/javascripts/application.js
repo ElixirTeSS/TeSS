@@ -38,6 +38,8 @@
 //= require_tree .
 //= require_self
 //= require turbolinks
+//= require ol
+//= require ol-geocoder
 
 function redirect_to_sort_url(){
     url = new URL(window.location.href);
