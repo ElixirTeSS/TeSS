@@ -121,7 +121,7 @@ module TeSS
     end
 
     def address_finder_enabled
-      map_enabled && !TeSS::Config.feature['disabled'].include?('address_finder')
+      map_enabled && !feature['disabled'].include?('address_finder')
     end
 
     def use_google_maps
@@ -134,6 +134,19 @@ module TeSS
 
     def use_open_street_map
       map_enabled && !use_google_maps
+    end
+
+    def initial_map_config
+      {
+        center: {
+          latitude: dig(:maps, :center, :latitude) || dig(:gmaps, :center, :latitude),
+          longitude: dig(:maps, :center, :longitude) || dig(:gmaps, :center, :longitude)
+        },
+        zoom: {
+          focused: dig(:maps, :zoom, :focused) || dig(:gmaps, :zoom, :longitude),
+          wide: dig(:maps, :zoom, :wide) || dig(:gmaps, :zoom, :latitude)
+        }
+      }
     end
 
     def _sentry_dsn

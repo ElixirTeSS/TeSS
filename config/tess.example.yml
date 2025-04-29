@@ -126,13 +126,13 @@ default: &default
     delivery_method: sendmail
     location: /usr/sbin/sendmail
     arguments: '-i -t'
-  gmaps:
+  maps:
     center:
       latitude: 53.4674583
       longitude: -2.233948899999973
     zoom:
-      latitude: 3
-      longitude: 13
+      wide: 3
+      focused: 13
   header_notice: # HTML to display above the header
   feature:
     elearning_materials: false

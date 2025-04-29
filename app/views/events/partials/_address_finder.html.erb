@@ -4,9 +4,9 @@
     <input id="map-search" class="map-control form-control" type="text" placeholder="Start typing an address..."
            title="<%== t 'events.hints.address' %>">
     <%= content_tag(:div, id: 'google-map-form', data: {
-        'map-latitude': f.object.latitude || TeSS::Config.gmaps['center']['latitude'],
-        'map-longitude': f.object.longitude || TeSS::Config.gmaps['center']['longitude'],
-        'map-zoom': f.object.latitude.blank? || f.object.longitude.blank? ? TeSS::Config.gmaps['zoom']['latitude'] : TeSS::Config.gmaps['zoom']['longitude'],
+        'map-latitude': f.object.latitude || TeSS::Config.initial_map_config[:center][:latitude],
+        'map-longitude': f.object.longitude || TeSS::Config.initial_map_config[:center][:longitude],
+        'map-zoom': f.object.latitude.blank? || f.object.longitude.blank? ? TeSS::Config.initial_map_config[:zoom][:wide] : TeSS::Config.initial_map_config[:zoom][:focused],
         'map-provider': TeSS::Config.map_provider,
         'map-show-marker': !(f.object.new_record? || f.object.online? || f.object.latitude.blank? || f.object.longitude.blank?)
     }) do %>
