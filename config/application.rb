@@ -132,10 +132,6 @@ module TeSS
       use_google_maps ? 'google' : 'open-street-map'
     end
 
-    def use_open_street_map
-      map_enabled && !use_google_maps
-    end
-
     def initial_map_config
       {
         center: {

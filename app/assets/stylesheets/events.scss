@@ -1,4 +1,4 @@
-#google-map-form {
+#event-map-form {
   position: relative;
   height: 300px;
   width: 100%;
@@ -6,7 +6,7 @@
   margin-top: 10px;
 }
 
-.google-map {
+.event-map {
   height: 250px;
   width: 400px;
   float: right;
@@ -58,4 +58,8 @@
 
 .ol-popup-closer:after {
   content: "\2716";
+}
+
+.ol-geocoder ul.gcd-gl-result > li {
+  line-height: unset !important;
 }

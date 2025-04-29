@@ -8,14 +8,6 @@
   <% if TeSS::Config.use_google_maps %>
     <%= javascript_include_tag("https://maps.googleapis.com/maps/api/js?key=#{Rails.application.config.secrets.google_maps_api_key}&libraries=places") %>
   <% end %>
-  <% if TeSS::Config.use_open_street_map %>
-    <%= stylesheet_link_tag 'https://cdn.jsdelivr.net/npm/ol@v10.5.0/ol.css' %>
-    <style>
-      .ol-geocoder ul.gcd-gl-result > li {
-        line-height: unset;
-      }
-    </style>
-  <% end %>
 
   <%# signup_js.html_safe -%>
   <%= csrf_meta_tags %>

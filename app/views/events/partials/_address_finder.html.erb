@@ -3,7 +3,7 @@
   <% if TeSS::Config.address_finder_enabled %>
     <input id="map-search" class="map-control form-control" type="text" placeholder="Start typing an address..."
            title="<%== t 'events.hints.address' %>">
-    <%= content_tag(:div, id: 'google-map-form', data: {
+    <%= content_tag(:div, id: 'event-map-form', data: {
         'map-latitude': f.object.latitude || TeSS::Config.initial_map_config[:center][:latitude],
         'map-longitude': f.object.longitude || TeSS::Config.initial_map_config[:center][:longitude],
         'map-zoom': f.object.latitude.blank? || f.object.longitude.blank? ? TeSS::Config.initial_map_config[:zoom][:wide] : TeSS::Config.initial_map_config[:zoom][:focused],

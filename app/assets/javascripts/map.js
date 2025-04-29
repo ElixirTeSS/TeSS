@@ -10,7 +10,7 @@ class GoogleMap {
         });
     }
 
-    add_marker({ location, title, icon, description }) {
+    add_marker({ location, title, icon, description, link }) {
         var marker = new google.maps.Marker({
             map: this.map,
             position: location,
@@ -22,6 +22,11 @@ class GoogleMap {
                 infowindow.setContent(description);
                 infowindow.open(EventsMap.map, marker);
             });
+        }
+        if (link) {
+            google.maps.event.addListener(
+                marker, "dblclick", () => {window.open(link, '_self')}
+            );
         }
         this.markers.push(marker);
     }
@@ -128,8 +133,19 @@ class OpenStreetMap {
     }
 
     add_marker({ location, title, icon, description, link }) {
-        icon = icon || 'https://pan-training.eu/events/marker.png';
-        var marker = $('<img width="35" height="35" style="cursor: pointer;">');
+        if (icon) {
+            var marker = $('<img width="35" height="35">');
+            marker.prop("src", icon);
+        }
+        else {
+            var marker = $(`
+                <svg width="35" height="35" viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20,0 C30,0 40,10 40,20 C40,35 20,60 20,60 C20,60 0,35 0,20 C0,10 10,0 20,0 Z" fill="#494a4b"/>
+                    <circle cx="20" cy="20" r="8" fill="#f7db34"/>
+                </svg>
+            `);
+        }
+
         marker.prop("src", icon);
         marker.prop("title", title);
         var point = ol.proj.fromLonLat([location.lng, location.lat])
@@ -148,6 +164,7 @@ class OpenStreetMap {
             this.info_windows.push(infowindow);
             this.map.addOverlay(infowindow);
             infowindow.setPosition(point);
+            marker.css("cursor", "pointer");
             marker.on('click', () => {
                 popup.toggle();
                 if(popup.is(':visible')) infowindow.panIntoView();
@@ -158,6 +175,7 @@ class OpenStreetMap {
             });
         }
         if (link) {
+            marker.css("cursor", "pointer");
             marker.on('dblclick', () => {window.open(link, '_self')})
         }
         this.markers.push(overlay)
@@ -233,7 +251,7 @@ function get_map_class(provider) {
 var EventMap = {
     init: function () {
         // Map on event show page
-        var element = $('div.google-map');
+        var element = $('div.event-map');
         var loading_element = element.children("span");
 
         if (element.length && element.data('mapLatitude')) {

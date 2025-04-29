@@ -3,11 +3,13 @@ var MapSearch = {
     marker: null,
     infowindow: null,
     init: function () {
-        var element = $('#google-map-form');
+        var element = $('#event-map-form');
         if (element.length) {
             var loading_element = element.children('span');
             var showMarker = element.data('mapShowMarker');
-            MapClass = get_map_class(element.data('mapProvider'));
+            var provider = element.data('mapProvider');
+            var marker_icon = provider === 'google' ? 'https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png' : undefined;
+            MapClass = get_map_class(provider);
             MapSearch.map = new MapClass({
                 center: {
                     lat: parseFloat(element.data('mapLatitude')),
@@ -35,18 +37,18 @@ var MapSearch = {
                     if(country != null) $('#event_country').val(country);
                     if(postcode != null) $('#event_postcode').val(postcode);
                     
-                    MapSearch.placeMarker();
+                    MapSearch.placeMarker(marker_icon);
                 }
             });
 
             if (showMarker) {
                 MapSearch.placeMarker();
             }
-            loading_element.hide();
+            loading_element.hide(marker_icon);
         }
     },
 
-    placeMarker: function () {
+    placeMarker: function (icon) {
         var venue = $('#event_venue').val();
         var city_country = [
             $('#event_city').val(), 
@@ -57,7 +59,7 @@ var MapSearch = {
                 lat: $('#event_latitude').val(),
                 lng: $('#event_longitude').val()
             },
-            icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png',
+            icon: icon,
             description: '<div><strong>' + venue + '</strong><br>' + city_country
         })
     },

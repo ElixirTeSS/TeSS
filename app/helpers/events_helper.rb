@@ -121,8 +121,8 @@ module EventsHelper
                              src:, allowfullscreen: true)
   end
 
-  def google_maps_javascript_api_tag(event)
-    content_tag(:div, content_tag(:span, 'Loading map...'), id: 'map', class: 'google-map', data: {
+  def map_javascript_api_tag(event)
+    content_tag(:div, content_tag(:span, 'Loading map...'), id: 'map', class: 'event-map', data: {
                   'map-latitude': event.latitude,
                   'map-longitude': event.longitude,
                   'map-suggested-latitude': event.suggested_latitude,
