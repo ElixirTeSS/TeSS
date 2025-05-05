@@ -1,6 +1,5 @@
 class GoogleMap {
     constructor({ center, dom_element, zoom }) {
-        console.log("constructor", center, dom_element, zoom);  // TODO remove
         this.markers = [];
         this.infowindow = new google.maps.InfoWindow({ content: "" });
         this.map = new google.maps.Map(dom_element, {
@@ -12,7 +11,6 @@ class GoogleMap {
     }
 
     add_marker({ location, title, icon, description, link }) {
-        console.log("marker", location, title, icon, description, link);  // TODO remove
         var marker = new google.maps.Marker({
             map: this.map,
             position: { lat: parseFloat(location.lat), lng: parseFloat(location.lng)},
@@ -34,21 +32,18 @@ class GoogleMap {
     }
 
     delete_markers() {
-        console.log("delete markers");  // TODO remove
         this.infowindow.close();
         this.markers.forEach((m) => m.setMap(null));
         this.markers = [];
     }
 
     fit_to_markers() {
-        console.log("fit markers");  // TODO remove
         var marker_bounds = new google.maps.LatLngBounds();
         this.markers.forEach((m) => marker_bounds.extend(m.position));
         this.map.fitBounds(marker_bounds);
     }
 
     make_address_finder({ address_input, callback }) {
-        console.log("make address finder", address_input, callback);  // TODO remove
         var autocomplete = new google.maps.places.Autocomplete(address_input);
         autocomplete.bindTo('bounds', this.map);
         autocomplete.addListener('place_changed', () => {
