@@ -1427,17 +1427,34 @@ class EventsControllerTest < ActionController::TestCase
     end
   end
 
-  test 'should hide map tab if no API key' do
+  test 'should use open street map if no API key' do
     Rails.application.config.secrets.stub(:google_maps_api_key, nil) do
       refute Rails.application.config.secrets.google_maps_api_key.present?
-      refute TeSS::Config.map_enabled
+      refute TeSS::Config.use_google_maps
+      assert_equal 'open-street-map', TeSS::Config.map_provider
 
       get :index
       assert_response :success
       assert_select '#content .nav' do
-        assert_select 'li a[href=?]', '#map', count: 0
+        assert_select 'li a[href=?]', '#map', count: 1
       end
+      assert_select 'div[data-provider="open-street-map"]', count: 1
+      assert_no_match(/maps\.googleapis\.com/, response.body)
     end
+  end
+
+  test 'should use google map if API key given' do
+    assert Rails.application.config.secrets.google_maps_api_key.present?
+    assert TeSS::Config.use_google_maps
+    assert_equal 'google', TeSS::Config.map_provider
+
+    get :index
+    assert_response :success
+    assert_select '#content .nav' do
+      assert_select 'li a[href=?]', '#map', count: 1
+    end
+    assert_select 'div[data-provider="google"]', count: 1
+    assert_match(/maps\.googleapis\.com/, response.body)
   end
 
   test 'should clone event' do
@@ -1472,9 +1489,26 @@ class EventsControllerTest < ActionController::TestCase
     with_settings(feature: { disabled: ['events_map'] }) do
       assert Rails.application.config.secrets.google_maps_api_key.present?
       refute TeSS::Config.map_enabled
+      refute TeSS::Config.use_google_maps
       get :show, params: { id: events(:one) }
       assert_response :success
       assert_select '#map', count: 0
+    end
+  end
+
+  test 'should not show address finder if disabled' do
+    sign_in users(:regular_user)
+    assert TeSS::Config.map_enabled
+    assert TeSS::Config.address_finder_enabled
+    get :new
+    assert_response :success
+    assert_select '#event-map-form', count: 1
+    with_settings(feature: { disabled: ['address_finder'] }) do
+      assert TeSS::Config.map_enabled
+      refute TeSS::Config.address_finder_enabled
+      get :new
+      assert_response :success
+      assert_select '#event-map-form', count: 0
     end
   end
 

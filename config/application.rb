@@ -133,6 +133,9 @@ module TeSS
     end
 
     def initial_map_config
+      # Support old setting location for backwards compatibility.
+      # The zoom setting for a single event was called "longitude"
+      # and the zoomed out setting "latitude".
       {
         center: {
           latitude: dig(:maps, :center, :latitude) || dig(:gmaps, :center, :latitude),
