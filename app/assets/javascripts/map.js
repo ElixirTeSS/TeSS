@@ -1,7 +1,8 @@
 class GoogleMap {
     constructor({ center, dom_element, zoom }) {
+        console.log("constructor", center, dom_element, zoom);  // TODO remove
         this.markers = [];
-        this.infowindow = new google.maps.InfoWindow({content: content});
+        this.infowindow = new google.maps.InfoWindow({ content: "" });
         this.map = new google.maps.Map(dom_element, {
             center: new google.maps.LatLng(center.lat, center.lng),
             scrollwheel: true,
@@ -11,39 +12,43 @@ class GoogleMap {
     }
 
     add_marker({ location, title, icon, description, link }) {
+        console.log("marker", location, title, icon, description, link);  // TODO remove
         var marker = new google.maps.Marker({
             map: this.map,
-            position: location,
+            position: { lat: parseFloat(location.lat), lng: parseFloat(location.lng)},
             title,
-            icon: {url: icon, scaledSize: new google.maps.Size(35, 35)}
+            icon: { url: icon, scaledSize: new google.maps.Size(35, 35) }
         });
         if (description) {
-            google.maps.event.addListener(marker, 'click', function () {
-                infowindow.setContent(description);
-                infowindow.open(EventsMap.map, marker);
+            google.maps.event.addListener(marker, 'click', () => {
+                this.infowindow.setContent(description);
+                this.infowindow.open(EventsMap.map, marker);
             });
         }
         if (link) {
             google.maps.event.addListener(
-                marker, "dblclick", () => {window.open(link, '_self')}
+                marker, "dblclick", () => { window.open(link, '_self') }
             );
         }
         this.markers.push(marker);
     }
 
     delete_markers() {
+        console.log("delete markers");  // TODO remove
         this.infowindow.close();
         this.markers.forEach((m) => m.setMap(null));
         this.markers = [];
     }
 
     fit_to_markers() {
+        console.log("fit markers");  // TODO remove
         var marker_bounds = new google.maps.LatLngBounds();
         this.markers.forEach((m) => marker_bounds.extend(m.position));
         this.map.fitBounds(marker_bounds);
     }
 
-    make_address_finder({address_input, callback}) {
+    make_address_finder({ address_input, callback }) {
+        console.log("make address finder", address_input, callback);  // TODO remove
         var autocomplete = new google.maps.places.Autocomplete(address_input);
         autocomplete.bindTo('bounds', this.map);
         autocomplete.addListener('place_changed', () => {
@@ -155,20 +160,20 @@ class OpenStreetMap {
             element: marker[0]
         });
         this.map.addOverlay(overlay);
-        
+
         if (description) {
             var popup = $('<div class="ol-popup"><a class="ol-popup-closer" href="#"></a><div class="ol-popup-content"></div></div>').hide();
             popup.children(".ol-popup-content").html(description);
-            
-            var infowindow = new ol.Overlay({element: popup[0], offset: [10, 10]});
+
+            var infowindow = new ol.Overlay({ element: popup[0], offset: [10, 10] });
             this.info_windows.push(infowindow);
             this.map.addOverlay(infowindow);
             infowindow.setPosition(point);
             marker.css("cursor", "pointer");
             marker.on('click', () => {
                 popup.toggle();
-                if(popup.is(':visible')) infowindow.panIntoView();
-            });   
+                if (popup.is(':visible')) infowindow.panIntoView();
+            });
             popup.on('click', () => {
                 popup.hide();
                 return false;
@@ -176,7 +181,7 @@ class OpenStreetMap {
         }
         if (link) {
             marker.css("cursor", "pointer");
-            marker.on('dblclick', () => {window.open(link, '_self')})
+            marker.on('dblclick', () => { window.open(link, '_self') })
         }
         this.markers.push(overlay)
     }
@@ -191,15 +196,15 @@ class OpenStreetMap {
     fit_to_markers() {
         var fit_todo = true;
         this.map.on('loadend', () => {
-            if(fit_todo) this.map.getView().fit(
-                new ol.geom.MultiPoint(this.markers.map(m => m.getPosition())), 
+            if (fit_todo) this.map.getView().fit(
+                new ol.geom.MultiPoint(this.markers.map(m => m.getPosition())),
                 { padding: [50, 50, 50, 50] }
             );
             fit_todo = false;
         });
     }
 
-    make_address_finder({address_input, callback}) {
+    make_address_finder({ address_input, callback }) {
         $(address_input).hide();
         var geocoder = new Geocoder('nominatim', {
             provider: 'osm',
@@ -330,7 +335,7 @@ var EventsMap = {
 
             addTabToFilters(getTab());
 
-            if(window.location.toString().endsWith('#map')){
+            if (window.location.toString().endsWith('#map')) {
                 // load map when entering site on events map page
                 EventsMap.initializeMap(element);
             }
