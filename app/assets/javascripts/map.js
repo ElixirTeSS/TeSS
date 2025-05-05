@@ -157,7 +157,8 @@ class OpenStreetMap {
         this.map.addOverlay(overlay);
 
         if (description) {
-            var popup = $('<div class="ol-popup"><a class="ol-popup-closer" href="#"></a><div class="ol-popup-content"></div></div>').hide();
+            var popup = $(`<div class="ol-popup"><a class="ol-popup-closer" href="#"></a><div class="ol-popup-content"></div></div>`);
+            popup.hide();
             popup.children(".ol-popup-content").html(description);
 
             var infowindow = new ol.Overlay({ element: popup[0], offset: [10, 10] });
