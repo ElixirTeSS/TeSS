@@ -176,4 +176,64 @@ class ActivitiesControllerTest < ActionController::TestCase
       assert_response :success, "Error rendering #{key} activity"
     end
   end
+
+  test 'should show source details on create activities to administrators' do
+    source = sources(:first_source)
+    event = events(:one)
+    activity = event.create_activity(:create, owner: users(:scraper_user), parameters: {
+      source:
+        {
+          id: source.id,
+          url: source.url,
+          method: source.method
+        }
+    })
+
+    sign_in(users(:admin))
+
+    get :index, params: { event_id: event.id }
+
+    assert_select '.activity .sub-activity a[href=?]', source_path(source), text: 'Source'
+    assert_select '.activity .sub-activity', text: /event_csv/
+    assert_select '.activity .sub-activity', text: /https:\/\/app.com\/events.csv/
+  end
+
+  test 'should show YAML configured source details on create activities to curators' do
+    source = sources(:first_source)
+    event = events(:one)
+    activity = event.create_activity(:create, owner: users(:scraper_user), parameters: {
+      source:
+        {
+          url: source.url,
+          method: source.method
+        }
+    })
+
+    sign_in(users(:curator))
+
+    get :index, params: { event_id: event.id }
+
+    assert_select '.activity .sub-activity', text: /\[sources.yml source\]/
+    assert_select '.activity .sub-activity', text: /event_csv/
+    assert_select '.activity .sub-activity', text: /https:\/\/app.com\/events.csv/
+  end
+
+  test 'should not show source details on create activities to non-administrators' do
+    source = sources(:first_source)
+    event = events(:one)
+    activity = event.create_activity(:create, owner: users(:scraper_user), parameters: {
+      source:
+        {
+          id: source.id,
+          url: source.url,
+          method: source.method
+        }
+    })
+
+    sign_in(users(:regular_user))
+
+    get :index, params: { event_id: event.id }
+
+    assert_select '.activity .sub-activity', count: 0
+  end
 end
