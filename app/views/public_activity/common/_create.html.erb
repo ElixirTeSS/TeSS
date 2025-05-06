@@ -2,3 +2,11 @@
 <%= activity_owner(activity) %>
 <%= t('activity.actions.create') %> <%= activity_resource(activity) %>
 <%= t('activity.timestamp', time: activity.created_at) -%>.
+<% source = activity.parameters[:source] %>
+<% if source && (current_user.is_admin? || current_user.is_curator?) %>
+  <div class="sub-activity">
+    <%= source[:id] ? link_to('Source', source_path(source[:id])) : '[sources.yml source]' %> -
+    <%= source[:method] %> @
+    <%= link_to(source[:url], source[:url], target: :_blank) %>
+  </div>
+<% end %>

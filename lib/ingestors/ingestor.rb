@@ -151,6 +151,15 @@ module Ingestors
         resource = set_resource_defaults(resource)
         if resource.valid?
           resource.save!
+          activity_params = {}
+          if source
+            activity_params[:source] = {
+              id: source.id,
+              url: source.url,
+              method: source.method
+            }
+          end
+          resource.create_activity(:create, owner: user, parameters: activity_params)
           @stats[key][update ? :updated : :added] += 1
         else
           @stats[key][:rejected] += 1

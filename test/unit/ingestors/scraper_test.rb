@@ -273,7 +273,9 @@ class ScraperTest < ActiveSupport::TestCase
 
     refute provider.events.where(url: 'https://uppsala.instructure.com/courses/75565').exists?
     assert_difference('provider.events.count', 23) do
-      scraper.scrape(source)
+      assert_difference('PublicActivity::Activity.count', 23) do
+        scraper.scrape(source)
+      end
     end
     assert provider.events.where(url: 'https://uppsala.instructure.com/courses/75565').exists?
     source.reload
@@ -285,6 +287,14 @@ class ScraperTest < ActiveSupport::TestCase
     assert source.finished_at > 1.day.ago
     assert_includes source.log, 'Bioschemas summary'
     assert_includes source.log, '- CourseInstances: 23'
+
+    activity = PublicActivity::Activity.last
+    assert_equal 'event.create', activity.key
+    assert_equal 'scraper', activity.owner.username
+    parameters = activity.parameters[:source]
+    assert_equal source.id, parameters[:id]
+    assert_equal 'bioschemas', parameters[:method]
+    assert_equal 'https://somewhere.com/stuff', parameters[:url]
   end
 
   def set_up_event_check
