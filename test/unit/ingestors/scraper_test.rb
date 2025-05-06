@@ -277,7 +277,6 @@ class ScraperTest < ActiveSupport::TestCase
 
     refute provider.events.where(url: 'https://uppsala.instructure.com/courses/75565').exists?
     assert provider.events.where(url: 'https://uppsala.instructure.com/courses/73110').exists?
-    acts = PublicActivity::Activity.all.to_a
     assert_difference('provider.events.count', 22) do
       assert_difference('PublicActivity::Activity.where(key: "event.create").count', 22) do
         assert_difference('PublicActivity::Activity.where(key: "event.update").count', 1) do
