@@ -12,9 +12,6 @@ module FieldLockEnforcement
     resource = instance_variable_get("@#{resource_type}")
 
     params[resource_type].delete(:locked_fields)
-
-    resource.locked_fields.each do |field|
-      params[resource_type].delete(field)
-    end
+    FieldLock.strip_locked_fields(params[resource_type], resource.locked_fields)
   end
 end

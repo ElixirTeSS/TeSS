@@ -29,4 +29,15 @@ class FieldLockTest < ActiveSupport::TestCase
     end
   end
 
+  test 'strips aliased fields' do
+    event = events(:one)
+
+    event.locked_fields = [:title, :node_ids]
+
+    params = { event: { title: 'Something', description: 'Something else', node_names: ['One', 'Two'] } }.with_indifferent_access
+    FieldLock.strip_locked_fields(params[:event], event.locked_fields)
+    assert_equal({ description: 'Something else' }.with_indifferent_access, params[:event])
+
+  end
+
 end
