@@ -52,11 +52,12 @@ class CurationMailer < ApplicationMailer
     return unless user.check_broken_scrapers
 
     source_names = TeSS::Config.ingestion[:sources].filter { |s| s[:enabled] }.map { |s| s[:provider] }.uniq
-    @providers = ContentProvider.all.filter do |p|
-      source_names.include?(p.title) && p.events.filter { |e| e.updated_at > cut_off_time }.count.zero? && p.materials.filter do |m|
-        m.updated_at > cut_off_time
-      end.count.zero?
-    end
+    @providers = ContentProvider
+                  .includes(:events, :materials)
+                  .where(title: source_names)
+                  .where('events.updated_at < ?', cut_off_time)
+                  .where('materials.updated_at < ?', cut_off_time)
+                  .distinct
     subject = t('mailer.check_broken_scrapers.subject', site_name: TeSS::Config.site['title_short'])
     mail(subject:, to: user.email) do |format|
       format.html

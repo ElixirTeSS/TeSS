@@ -162,7 +162,7 @@ namespace :tess do
     end
 
     # send emails for broken scraper checking
-    users = User.all.filter(&:check_broken_scrapers)
+    users = User.where(check_broken_scrapers: true)
     users.each do |user|
       CurationMailer.check_broken_scrapers(user, cut_off_time).deliver_later
     end

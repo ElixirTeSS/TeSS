@@ -27,7 +27,9 @@ class UsersController < ApplicationController
   def invitees
     if current_user.is_admin? || current_user.is_curator?
       @users = User.invited
-      respond_to(&:html)
+      respond_to do |format|
+        format.html
+      end
     else
       redirect_to users_path
     end
