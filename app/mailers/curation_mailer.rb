@@ -53,7 +53,7 @@ class CurationMailer < ApplicationMailer
 
     source_names = TeSS::Config.ingestion[:sources].filter { |s| s[:enabled] }.map { |s| s[:provider] }.uniq
     @providers = ContentProvider
-                  .includes(:events, :materials)
+                  .left_joins(%i[events materials])
                   .where(title: source_names)
                   .where('events.updated_at < ?', cut_off_time)
                   .where('materials.updated_at < ?', cut_off_time)
