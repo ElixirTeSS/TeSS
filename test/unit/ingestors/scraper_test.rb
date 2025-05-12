@@ -267,24 +267,53 @@ class ScraperTest < ActiveSupport::TestCase
     source = Source.create!(url: 'https://somewhere.com/stuff', method: 'bioschemas',
                             enabled: true, approval_status: 'approved',
                             content_provider: provider, user: users(:admin))
+
+    existing_event = provider.events.create!(url: 'https://uppsala.instructure.com/courses/73110', title: 'Existing', user: users(:regular_user))
+    existing_activities = existing_event.activities.to_a
+
     file = Rails.root.join('test', 'fixtures', 'files', 'ingestion', 'nbis-course-instances.json')
     WebMock.stub_request(:get, source.url).to_return(status: 200, headers: {}, body: file.read)
     scraper = Scraper.new
 
     refute provider.events.where(url: 'https://uppsala.instructure.com/courses/75565').exists?
-    assert_difference('provider.events.count', 23) do
-      scraper.scrape(source)
+    assert provider.events.where(url: 'https://uppsala.instructure.com/courses/73110').exists?
+    assert_difference('provider.events.count', 22) do
+      assert_difference('PublicActivity::Activity.where(key: "event.create").count', 22) do
+        assert_difference('PublicActivity::Activity.where(key: "event.update").count', 1) do
+          scraper.scrape(source)
+        end
+      end
     end
     assert provider.events.where(url: 'https://uppsala.instructure.com/courses/75565').exists?
     source.reload
     assert_equal 23, source.records_read
     assert_equal 23, source.records_written
-    assert_equal 23, source.resources_added
-    assert_equal 0, source.resources_updated
+    assert_equal 22, source.resources_added
+    assert_equal 1, source.resources_updated
     assert_equal 0, source.resources_rejected
     assert source.finished_at > 1.day.ago
     assert_includes source.log, 'Bioschemas summary'
     assert_includes source.log, '- CourseInstances: 23'
+
+    create_activity = PublicActivity::Activity.last
+    assert_equal 'event.create', create_activity.key
+    assert_equal 'scraper', create_activity.owner.username
+    parameters = create_activity.parameters[:source]
+    assert_equal source.id, parameters[:id]
+    assert_equal 'bioschemas', parameters[:method]
+    assert_equal 'https://somewhere.com/stuff', parameters[:url]
+
+    new_activities = existing_event.reload.activities.to_a - existing_activities
+    update_activities = new_activities.select { |a| a.key == 'event.update' }
+    assert_equal 1, update_activities.count
+    update_activity = update_activities.first
+    assert_equal 'scraper', update_activity.owner.username
+    parameters = update_activity.parameters[:source]
+    assert_equal source.id, parameters[:id]
+    assert_equal 'bioschemas', parameters[:method]
+    assert_equal 'https://somewhere.com/stuff', parameters[:url]
+    parameter_update_activities = new_activities.select { |a| a.key == 'event.update_parameter' }
+    assert_equal 7, parameter_update_activities.count
   end
 
   def set_up_event_check
