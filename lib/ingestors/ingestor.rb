@@ -181,10 +181,10 @@ module Ingestors
 
     def update_resource(existing_resource, fields)
       # overwrite unlocked attributes
-      locked_fields = existing_resource.locked_fields
+      FieldLock.strip_locked_fields(fields, existing_resource.locked_fields)
 
       fields.except(:content_provider_id, :user_id).each do |attr, value|
-        existing_resource.send("#{attr}=", value) unless locked_fields.include?(attr)
+        existing_resource.send("#{attr}=", value)
       end
 
       existing_resource
