@@ -3,40 +3,45 @@ module Ingestors
     def self.ingestors
       [
         Ingestors::BioschemasIngestor,
-        Ingestors::DansIngestor,
-        Ingestors::DtlsIngestor,
         Ingestors::EventbriteIngestor,
         Ingestors::EventCsvIngestor,
         Ingestors::IcalIngestor,
-        Ingestors::LeidenIngestor,
         Ingestors::LibcalIngestor,
-        Ingestors::MaastrichtIngestor,
         Ingestors::MaterialCsvIngestor,
-        Ingestors::NwoIngestor,
-        Ingestors::OscmIngestor,
-        Ingestors::SurfIngestor,
         Ingestors::TessEventIngestor,
-        Ingestors::UtwenteIngestor,
-        Ingestors::UuIngestor,
-        Ingestors::UvaIngestor,
-        Ingestors::WurIngestor,
         Ingestors::ZenodoIngestor,
-        Ingestors::RugIngestor,
-        Ingestors::LcrdmIngestor,
-        Ingestors::TdccIngestor,
-        Ingestors::UhasseltIngestor,
-        Ingestors::OdisseiIngestor,
-        Ingestors::RstIngestor,
-        Ingestors::OsciIngestor,
-        Ingestors::DccIngestor,
-        Ingestors::SenseIngestor,
-        Ingestors::VuMaterialIngestor,
-      ] + llm_ingestors
+      ] + taxila_ingestors + llm_ingestors
+    end
+
+    def self.taxila_ingestors
+      [
+        Ingestors::Taxila::DansIngestor,
+        Ingestors::Taxila::DtlsIngestor,
+        Ingestors::Taxila::LeidenIngestor,
+        Ingestors::Taxila::MaastrichtIngestor,
+        Ingestors::Taxila::NwoIngestor,
+        Ingestors::Taxila::OscmIngestor,
+        Ingestors::Taxila::SurfIngestor,
+        Ingestors::Taxila::UtwenteIngestor,
+        Ingestors::Taxila::UuIngestor,
+        Ingestors::Taxila::UvaIngestor,
+        Ingestors::Taxila::WurIngestor,
+        Ingestors::Taxila::RugIngestor,
+        Ingestors::Taxila::LcrdmIngestor,
+        Ingestors::Taxila::TdccIngestor,
+        Ingestors::Taxila::UhasseltIngestor,
+        Ingestors::Taxila::OdisseiIngestor,
+        Ingestors::Taxila::RstIngestor,
+        Ingestors::Taxila::OsciIngestor,
+        Ingestors::Taxila::DccIngestor,
+        Ingestors::Taxila::SenseIngestor,
+        Ingestors::Taxila::VuMaterialIngestor,
+      ]
     end
 
     def self.llm_ingestors
       [
-        Ingestors::FourtuLlmIngestor
+        Ingestors::Taxila::FourtuLlmIngestor
       ]
     end
 

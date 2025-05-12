@@ -2,20 +2,24 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-9">
-        <p><strong>Category:</strong> <%= subscription.subscribable_type.humanize.pluralize %></p>
-        <p><strong>Frequency:</strong> <%= subscription.frequency.to_s.capitalize %></p>
-        <p><strong>Last email sent:</strong> <%= subscription.last_sent_at || 'Never' %></p>
-        <p><strong>Created:</strong> <%= subscription.created_at %></p>
+        <p><strong><%= t('subscriptions.show.category') %></strong>
+           <%= subscription.subscribable_type.humanize.pluralize %></p>
+        <p><strong><%= t('subscriptions.show.frequency') %></strong>
+           <%= subscription.frequency.to_s.capitalize %></p>
+        <p><strong><%= t('subscriptions.show.last_email_sent') %></strong>
+           <%= subscription.last_sent_at || t('subscriptions.show.email_never_sent') %></p>
+        <p><strong><%= t('subscriptions.show.created_at') %></strong>
+           <%= subscription.created_at %></p>
 
         <% if subscription.query.present? %>
             <p>
-              <strong>Search term:</strong>
+              <strong><%= t('subscriptions.show.query') %></strong>
               <em><%= subscription.query %></em>
             </p>
         <% end %>
 
         <% if subscription.facets.present? %>
-            <strong>Filters:</strong>
+            <strong><%= t('subscriptions.show.filters') %></strong>
             <ul>
               <% subscription.facets.each do |facet, values| %>
                   <li>
@@ -29,11 +33,13 @@
         <% end %>
       </div>
       <div class="col-sm-3 text-right">
-        <%= link_to 'Results', subscription_results_path(subscription), class: 'btn btn-primary' %>
-        <%= link_to 'Cancel',
+        <%= link_to t('subscriptions.show.results'),
+                    subscription_results_path(subscription),
+                    class: 'btn btn-primary' %>
+        <%= link_to t('subscriptions.show.cancel'),
                     subscription,
                     method: 'delete',
-                    data: { confirm: t('.confirm', default: t("helpers.links.confirm", default: 'Are you sure?')) },
+                    data: { confirm: t('.confirm', default: t("helpers.links.confirm")) },
                     class: 'btn btn-danger' %>
       </div>
     </div>

@@ -7,20 +7,20 @@
 <% if show_calendar_sub || show_email_sub || show_rss_sub %>
   <div class="btn-group">
     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Subscribe <span class="caret"></span>
+      <%= t('subscriptions.button.title') %> <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
       <% if show_email_sub %>
         <li>
           <a href="#" data-toggle="modal" data-target="#subscribe-email-modal">
-            <i class="fa fa-envelope-o"></i> Subscribe via email
+            <i class="fa fa-envelope-o"></i> <%= t('subscriptions.button.via_email') %>
           </a>
         </li>
       <% end %>
       <% if show_calendar_sub %>
         <li>
           <a href="#" data-toggle="modal" data-target="#subscribe-calendar-modal">
-            <i class="fa fa-calendar-o"></i> Add to calendar
+            <i class="fa fa-calendar-o"></i> <%= t('subscriptions.button.add_to_calendar') %>
           </a>
         </li>
       <% end %>
@@ -28,11 +28,12 @@
         <% rss_url = url_for(search_and_facet_params.merge(format: :rss, only_path: false)) %>
         <li>
           <a href="#" data-toggle="modal" data-target="#subscribe-rss-modal">
-            <i class="fa fa-rss"></i> Subscribe to RSS feed
+            <i class="fa fa-rss"></i> <%= t('subscriptions.button.to_rss') %>
           </a>
         </li>
         <% content_for :extra_head do %>
-          <link rel="alternate" type="application/rss+xml" title="Events RSS feed" href="<%= rss_url %>" />
+          <link rel="alternate" type="application/rss+xml"
+                title="<%= t('subscriptions.button.events_rss_feed') %>" href="<%= rss_url %>" />
         <% end %>
       <% end %>
     </ul>
@@ -45,17 +46,19 @@
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="subscribe-email-modal-title">Email Subscription</h4>
+              <h4 class="modal-title" id="subscribe-email-modal-title">
+                <%= t('subscriptions.button.email_title') %></h4>
             </div>
 
             <div class="modal-body">
               <%= form_tag(subscriptions_path(search_and_facet_params)) do %>
                   <%= hidden_field_tag('subscription[subscribable_type]', type) %>
                   <div class="form-group">
-                    <label for="frequency">Frequency</label>
-                    <%= select_tag('subscription[frequency]', frequency_options_for_select, class: 'form-control', autocomplete: 'off') %>
+                    <label for="frequency"><%= t('subscriptions.button.frequency') %></label>
+                    <%= select_tag('subscription[frequency]', frequency_options_for_select,
+                                   class: 'form-control', autocomplete: 'off') %>
                   </div>
-                  <%= submit_tag('Subscribe', class: 'btn btn-primary') %>
+                  <%= submit_tag(t('subscriptions.button.submit_button'), class: 'btn btn-primary') %>
               <% end %>
             </div>
           </div>

@@ -14,7 +14,7 @@ class SubscriptionsController < ApplicationController
     @subscription = current_user.subscriptions.build(subscription_params)
 
     if @subscription.save
-      flash[:notice] = 'Subscription successfully created.'
+      flash[:notice] = t('subscriptions.created')
       respond_to do |format|
         format.html { redirect_to subscriptions_path }
       end
@@ -29,13 +29,14 @@ class SubscriptionsController < ApplicationController
   def destroy
     authorize @subscription.user, :manage?
     if @subscription.destroy
-      flash[:notice] = 'Subscription cancelled.'
+      flash[:notice] = t('subscriptions.cancelled')
       respond_to do |format|
         format.html { redirect_to subscriptions_path }
       end
     else
       respond_to do |format|
-        format.html { render plain: 'There was a problem unsubscribing.', status: :unprocessable_entity }
+        format.html { render plain: t('subscriptions.problem_unsubscribing'),
+                             status: :unprocessable_entity }
       end
     end
   end
@@ -47,7 +48,8 @@ class SubscriptionsController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { render plain: 'Invalid code', status: :unprocessable_entity }
+        format.html { render plain: t('subscriptions.invalid_code'),
+                             status: :unprocessable_entity }
       end
     end
   end
@@ -78,6 +80,7 @@ class SubscriptionsController < ApplicationController
 
   def set_breadcrumbs
     add_base_breadcrumbs('users')
-    @breadcrumbs += [{ name: current_user.name, url: user_path(current_user) }, { name: 'Subscriptions' }]
+    @breadcrumbs += [{ name: current_user.name, url: user_path(current_user) },
+                     { name: t('subscriptions.breadcrumb') }]
   end
 end

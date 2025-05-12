@@ -22,6 +22,11 @@
 
   <%= f.input :token, hint: t('sources.hints.token'), label: 'Authentication Token' %>
 
+  <%= f.input :default_language,
+              collection: LanguageDictionary.instance.options_for_select,
+              prompt: t('sources.prompts.default_language'), include_blank: true,
+              hint: t('sources.hints.default_language') %>
+
   <%= f.input :enabled, hint: t('sources.hints.enabled') %>
 
   <% if policy(@source).approve? %>

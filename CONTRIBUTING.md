@@ -113,7 +113,7 @@ bundle exec rails test
 
 or if using docker:
 ```
-docker-compose run test
+docker compose run test
 ```
 
 You can also see the test coverage % after the tests finish - make sure it has not decreased from before adding your code.
@@ -153,7 +153,6 @@ TeSS has various levels of documentation that can also be contributed to:
 * User documentation - *Help wanted!* - Guidance for users of TeSS on best practices, how they can automatically register resources, etc. (Markdown?)
 
 Small changes can be made directly in GitHub. Simply open the relevant file, click the pencil icon to edit, make your change, and click the "Proprose changes" button - GitHub will automatically create a fork, a feature branch and a pull request for you.
-
 
 # Thank You
 

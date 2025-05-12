@@ -22,6 +22,8 @@ class Source < ApplicationRecord
   validates :approval_status, inclusion: { in: APPROVAL_STATUS.values }
   validates :method, inclusion: { in: -> (_) { TeSS::Config.user_ingestion_methods } },
             unless: -> { User.current_user&.is_admin? || User.current_user&.has_role?(:scraper_user) }
+  validates :default_language, controlled_vocabulary: { dictionary: 'LanguageDictionary',
+                                                        allow_blank: true }
   validate :check_method
 
   before_create :set_approval_status

@@ -229,9 +229,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_04_161944) do
     t.string "cost_basis"
     t.string "cost_currency"
     t.string "fields", default: [], array: true
-    t.string "open_science", default: [], array: true
     t.boolean "visible", default: true
     t.string "language"
+    t.string "open_science", default: [], array: true
     t.bigint "space_id"
     t.index ["presence"], name: "index_events_on_presence"
     t.index ["slug"], name: "index_events_on_slug", unique: true
@@ -479,6 +479,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_04_161944) do
     t.string "token"
     t.integer "approval_status"
     t.datetime "updated_at"
+    t.string "default_language"
     t.index ["content_provider_id"], name: "index_sources_on_content_provider_id"
     t.index ["user_id"], name: "index_sources_on_user_id"
   end
@@ -609,9 +610,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_04_161944) do
     t.string "resource_type"
     t.text "data"
     t.json "params"
-    t.text "referrer"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "referrer"
     t.index ["resource_type", "resource_id"], name: "index_widget_logs_on_resource_type_and_resource_id"
   end
 

@@ -133,7 +133,7 @@ class Scraper
       end
 
       # write resources
-      ingestor.write(user, source.content_provider)
+      ingestor.write(user, source.content_provider, source: source)
       unless ingestor.messages.blank?
         output.concat "\n## Writing\n\n"
         ingestor.messages.each { |m| output.concat "#{m}\n" }

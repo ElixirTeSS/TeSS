@@ -28,6 +28,8 @@ class LanguageDictionary < Dictionary
   end
 
   def render_language_name(code)
+    return "" if code.blank?
+
     i18ndata_code = code.to_s.upcase
     I18n.t("languages.#{code.to_s.downcase}",
            default: I18nData.languages(I18n.locale)[i18ndata_code]&.capitalize)

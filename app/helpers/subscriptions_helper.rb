@@ -2,7 +2,8 @@
 module SubscriptionsHelper
 
   def frequency_options_for_select
-    options_for_select(Subscription::FREQUENCY.map { |k| [k[:key].to_s.humanize, k[:key]] })
+    options_for_select(Subscription::FREQUENCY.map { |k| [t("subscriptions.frequency_options.#{k[:key]}"),
+                                                          k[:key]] })
   end
 
   def subscription_results_path(sub)
