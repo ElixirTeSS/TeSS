@@ -22,12 +22,12 @@ class TdccIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::Taxila::TdccIngestor.new
 
     # check event doesn't
-    new_title = "Open Science Festival Maastricht"
-    new_url = 'https://tdcc.nl/evenementen/open-science-festival-maastricht/'
+    new_title = "Project Idea Generator - An Unconference by the Thematic DCC Social Sciences and Humanities"
+    new_url = 'https://tdcc.nl/evenementen/project-idea-generator-an-unconference-by-the-thematic-dcc-social-sciences-humanities/'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 4 do
+    assert_difference 'Event.count', 8 do
       freeze_time(2023) do
         VCR.use_cassette("ingestors/tdcc") do
           ingestor.read(source.url)
@@ -36,9 +36,9 @@ class TdccIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 4, ingestor.events.count
+    assert_equal 8, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 4, ingestor.stats[:events][:added]
+    assert_equal 8, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -51,8 +51,8 @@ class TdccIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'TDCC', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal Time.zone.parse('Thu, 25 May 2023 09:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Thu, 25 May 2023 18:00:00.000000000 UTC +00:00'), event.end
-    assert_equal 'School of Business and Economics (SBE) in MaastrichtTongersestraat 536211 LM Maastricht', event.venue
+    assert_equal Time.zone.parse('Thu, 2 Apr 2023 13:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Thu, 2 Apr 2023 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal 'Het Trippenhuis, Amsterdam', event.venue
   end
 end

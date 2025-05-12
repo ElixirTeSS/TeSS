@@ -32,11 +32,11 @@ module Ingestors
         event_page.each do |event_data|
           event = OpenStruct.new
 
-          h2 = event_data.css('h2.post-item__title a')[0]
+          h2 = event_data.css('h2.card__title a')[0]
           event.title = h2.text.strip
           event.url = h2.get_attribute('href').strip
-          event.venue = event_data.css('ul.post-item__meta svg.icon--marker')[0]&.parent&.text&.strip
-          time_str = event_data.css('ul.post-item__meta svg.icon--calendar')[0]&.parent&.text&.strip
+          event.venue = event_data.css('dl.meta-list svg.icon--marker')[0]&.parent&.text&.strip
+          time_str = event_data.css('dl.meta-list svg.icon--calendar')[0]&.parent&.text&.strip
           split_time_str = time_str.split(' — ')
           event.start = Time.zone.parse(split_time_str[0])
           if split_time_str[1].split(' ').length == 1

@@ -909,3 +909,57 @@ en:
       parameter_change_html: changed <em>%{parameter}</em> to <strong>%{value}</strong>
       association_change_html: changed <em>%{parameter}</em> to <strong>%{name}</strong> (%{value})
       change_role_html: changed %{user} role from <strong>%{old}</strong> to <strong>%{new}</strong>
+  subscriptions:
+    title: 'Subscriptions'
+    none: 'You have no subscriptions.'
+    created: 'Subscription successfully created.'
+    cancelled: 'Subscription cancelled.'
+    problem_unsubscribing: 'There was a problem unsubscribing.'
+    invalid_code: 'Invalid code'
+    breadcrumb: 'Subscriptions'
+    modal:
+      subscribe_to_filter: 'Subscribe to Filter'
+      close: 'Close'
+      url: URL
+      click_to_copy: 'Click to copy'
+    button:
+      title: 'Subscribe'
+      via_email: 'Subscribe via email'
+      add_to_calendar: 'Add to calendar'
+      to_rss: 'Subscribe to RSS feed'
+      events_rss_feed: 'Events RSS feed'
+      email_title: 'Email Subscription'
+      submit_button: 'Subscribe'
+      frequency: 'Frequency'
+    show:
+      category: 'Category:'
+      frequency: 'Frequency:'
+      last_email_sent: 'Last email sent:'
+      email_never_sent: 'Never'
+      created_at: 'Created:'
+      query: 'Search term:'
+      filters: 'Filters:'
+      results: 'Results'
+      cancel: 'Cancel'
+    rss:
+      instructions_header: 'Importing into RSS reader'
+      instructions_body_html: >-
+        Import the <a href="%{url}">feed URL</a> into your RSS reader to keep up to
+        date with new events matching your filters. For more information about RSS, see
+        <a href="https://rss.com/blog/how-do-rss-feeds-work/"> this page</a>.
+    calendar:
+      instructions_header: 'Importing into Google Calendar'
+      instructions_paragraph1_html: >-
+        In the left-hand column of the
+        <a href="https://calendar.google.com/calendar" target="_blank" rel="noopener">Google Calendar</a>
+        main view, click the arrow to the right of "Other calendars" and click "Add by URL".
+        In the form that appears, paste in the URL from the box above, and click the button to confirm.
+      instructions_paragraph2_html: >-
+        Please note, it may take a while for newly created events in %{title} to synchronise with
+        your Google Calendar.
+    unsubscribe:
+      success: 'You have successfully unsubscribed.'
+    frequency_options:
+      daily: Daily
+      weekly: Weekly
+      monthly: Monthly

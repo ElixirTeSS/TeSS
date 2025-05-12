@@ -42,12 +42,12 @@ Create TeSS configuration files:
 
 ### Install gems and set up the database (migrations + seed data + create admin user)
 
-    docker-compose run app bundle install
-    docker-compose run app bundle exec rake db:setup
+    docker compose run app bundle install
+    docker compose run app bundle exec rake db:setup
 
 ### Start services
 
-    docker-compose up -d
+    docker compose up -d
 
 ### Access TeSS
 
@@ -59,35 +59,35 @@ TeSS is accessible at the following URL:
 
 The full test suite can be run using the following command:
 
-    docker-compose run test
+    docker compose run test
 
 To run a specific test, you can override the command being passed:
 
-    docker-compose run test rails test test/models/event_test.rb
+    docker compose run test rails test test/models/event_test.rb
 
 ### Solr
 
 To force Solr to reindex all documents, you can run the following command:
 
-    docker-compose exec app bundle exec rake tess:reindex
+    docker compose exec app bundle exec rake tess:reindex
 
 ### Additional development commands
 
 Install gems
 
-    docker-compose exec app bundle install
+    docker compose exec app bundle install
 
 Update all Gems
 
-    docker-compose exec app bundle update --all
+    docker compose exec app bundle update --all
 
 Update specific Gem
 
-    docker-compose exec app bundle update <gem>
+    docker compose exec app bundle update <gem>
 
 Rebuild the tess-app image when composing up.
 
-    docker-compose up -d --build
+    docker compose up -d --build
 
 ## Production
 
@@ -112,26 +112,26 @@ Setup the TeSS configuration files:
 
 `tess.yml` is used to configure features and branding of your TeSS instance. `secrets.yml` is used to hold API keys etc.
 
-The production deployment is configured in the `docker-compose-prod.yml` file.
+The production deployment is configured in the `docker compose-prod.yml` file.
 
 Start services:
 
-    docker-compose -f docker-compose-prod.yml up -d
+    docker compose -f docker compose-prod.yml up -d
 
 Run initial database setup:
 
-    docker-compose -f docker-compose-prod.yml exec app bundle exec rake db:setup DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+    docker compose -f docker compose-prod.yml exec app bundle exec rake db:setup DISABLE_DATABASE_ENVIRONMENT_CHECK=1
 
 ### Other production tasks
 
 Run database migrations:
 
-    docker-compose -f docker-compose-prod.yml exec app bundle exec rake db:migrate
+    docker compose -f docker compose-prod.yml exec app bundle exec rake db:migrate
 
 Precompile the assets, necessary if any CSS/JS/images are changed after building the image:
 
-    docker-compose -f docker-compose-prod.yml exec app bundle exec rake assets:clean && bundle exec rake assets:precompile
+    docker compose -f docker compose-prod.yml exec app bundle exec rake assets:clean && bundle exec rake assets:precompile
 
 Reindex Solr:
 
-    docker-compose -f docker-compose-prod.yml exec app bundle exec rake tess:reindex
+    docker compose -f docker compose-prod.yml exec app bundle exec rake tess:reindex
