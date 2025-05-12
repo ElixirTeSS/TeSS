@@ -493,3 +493,14 @@ hybrid_event:
   start: 2024-12-12 10:00:00
   end: 2024-12-12 12:00:00
   timezone: UTC
+
+plant_space_event:
+  title: Learn about plants
+  url: http://example.com/plants/event123
+  description: Plants are very interesting indeed
+  user: regular_user
+  content_provider: goblet
+  start: 2126-12-12 10:00:00
+  end: 2126-12-12 12:00:00
+  timezone: UTC
+  space: plants

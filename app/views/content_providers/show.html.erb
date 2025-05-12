@@ -21,12 +21,12 @@
 
     <div class="my-3">
       <% resource_limit = 30 %>
-      <% materials = @content_provider.materials.from_verified_users.not_disabled.limit(resource_limit) %>
-      <% materials_count =  @content_provider.materials.from_verified_users.not_disabled.count %>
-      <% upcoming_events = @content_provider.events.from_verified_users.not_finished.not_disabled.order(start: :asc) %>
-      <% past_events = @content_provider.events.from_verified_users.finished.not_disabled %>
+      <% materials = @content_provider.materials.in_current_space.from_verified_users.not_disabled.limit(resource_limit) %>
+      <% materials_count =  @content_provider.materials.in_current_space.from_verified_users.not_disabled.count %>
+      <% upcoming_events = @content_provider.events.in_current_space.from_verified_users.not_finished.not_disabled.order(start: :asc) %>
+      <% past_events = @content_provider.events.in_current_space.from_verified_users.finished.not_disabled %>
       <% events = upcoming_events.limit(resource_limit) %>
-      <% e = @content_provider.events.from_verified_users.not_disabled %>
+      <% e = @content_provider.events.in_current_space.from_verified_users.not_disabled %>
       <% events_count = e.count %>
       <% not_finished_events_count = e.not_finished.count %>
       <% sources = @content_provider.sources.order(enabled: :desc, finished_at: :desc) %>

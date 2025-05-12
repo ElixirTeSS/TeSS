@@ -377,10 +377,10 @@ ul.content-providers-grid {
 }
 
 .home-title-link {
-  color: $primary-color;
+  color: unset;
   text-decoration: none;
   &:hover{
-    color: $primary-color;
+    color: unset;
     text-decoration: none;
   }
 }

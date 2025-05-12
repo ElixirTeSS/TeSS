@@ -52,6 +52,7 @@ class User < ApplicationRecord
   has_and_belongs_to_many :editables, class_name: "ContentProvider"
 
   has_many :collaborations, dependent: :destroy
+  has_many :space_roles, dependent: :destroy
 
   before_create :set_default_role, :set_default_profile
   before_create :skip_email_confirmation_for_non_production
@@ -372,6 +373,10 @@ class User < ApplicationRecord
 
       destroy
     end
+  end
+
+  def has_space_role?(space, role)
+    space_roles.where(key: role, space: space).any?
   end
 
   protected

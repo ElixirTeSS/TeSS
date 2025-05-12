@@ -51,17 +51,17 @@
 }
 
 .learning-path-bg-1 {
-  border-image-source: image-url("modern/learning_paths/learning-path-bg-1.svg");
+  border-image-source: image-url("#{$theme-base}/learning_paths/learning-path-bg-1.svg");
 }
 
 .learning-path-bg-2 {
-  border-image-source: image-url("modern/learning_paths/learning-path-bg-2.svg");
+  border-image-source: image-url("#{$theme-base}/learning_paths/learning-path-bg-2.svg");
 }
 
 .learning-path-bg-3 {
-  border-image-source: image-url("modern/learning_paths/learning-path-bg-3.svg");
+  border-image-source: image-url("#{$theme-base}/learning_paths/learning-path-bg-3.svg");
 }
 
 .learning-path-bg-4 {
-  border-image-source: image-url("modern/learning_paths/learning-path-bg-4.svg");
+  border-image-source: image-url("#{$theme-base}/learning_paths/learning-path-bg-4.svg");
 }

@@ -41,25 +41,25 @@ a.btn {
 
   li.prev {
     span, a {
-      background-image: image-url("modern/icons/chevron-left-icon.svg");
+      background-image: image-url("#{$theme-base}/icons/chevron-left-icon.svg");
     }
   }
 
   li.next {
     span, a {
-      background-image: image-url("modern/icons/chevron-right-icon.svg");
+      background-image: image-url("#{$theme-base}/icons/chevron-right-icon.svg");
     }
   }
 
   li.first {
     span, a {
-      background-image: image-url("modern/icons/double-left-icon.svg");
+      background-image: image-url("#{$theme-base}/icons/double-left-icon.svg");
     }
   }
 
   li.last {
     span, a {
-      background-image: image-url("modern/icons/double-right-icon.svg");
+      background-image: image-url("#{$theme-base}/icons/double-right-icon.svg");
     }
   }
 

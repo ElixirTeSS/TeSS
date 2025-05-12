@@ -1,0 +1,16 @@
+<div class="wrapper">
+  <div id="content">
+    <h2><%=t("features.spaces.long")%></h2>
+
+    <div class="text-right my-3">
+      <% if policy(:space).create? %>
+        <%= link_to(t('register.buttons.space'), new_space_path, class: 'btn btn-primary') %>
+      <% end %>
+      <%= info_button(t('info.spaces.title'), hide_text: true) do %>
+        <%= render_markdown(t('info.spaces.description')) %>
+      <% end %>
+    </div>
+
+    <%= render partial: 'common/masonry_grid', locals: { objects: @spaces } %>
+  </div>
+</div>

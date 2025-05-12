@@ -157,3 +157,9 @@ learning_path_curator:
   encrypted_password: 'learning_paths_curator_encrypted_password'
   confirmed_at: <%= Time.zone.now %>
   role: learning_path_curator
+
+space_admin:
+  username: 'plant_boss'
+  email: 'plantboss@example.com'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'plantsrule') %>
+  confirmed_at: <%= Time.zone.now %>
