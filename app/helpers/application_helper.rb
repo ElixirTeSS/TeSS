@@ -694,6 +694,6 @@ module ApplicationHelper
   end
 
   def theme_path
-    "themes/#{params[:theme_preview] || current_space&.theme || 'default'}"
+    "themes/#{params[:theme_preview] || current_space&.theme || TeSS::Config.site['default_theme'] || 'default'}"
   end
 end
