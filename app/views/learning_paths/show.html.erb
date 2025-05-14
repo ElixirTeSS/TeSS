@@ -45,7 +45,9 @@
 
         <!-- Field: long description -->
         <div class="description">
-          <%= render_markdown @learning_path.description %>
+          <div class="tess-expandable">
+            <%= render_markdown @learning_path.description %>
+          </div>
         </div>
       </div>
 
