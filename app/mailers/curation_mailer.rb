@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CurationMailer < ApplicationMailer
   include ActionView::Helpers::TextHelper
 
@@ -41,6 +43,24 @@ class CurationMailer < ApplicationMailer
     @materials = @provider.materials.filter { |e| e.created_at > cut_off_time }
     subject = t('mailer.materials_require_approval.subject', site_name: TeSS::Config.site['title_short'])
     mail(subject:, to: @provider.content_curation_email) do |format|
+      format.html
+      format.text
+    end
+  end
+
+  def check_broken_scrapers(user, cut_off_time)
+    return unless user.check_broken_scrapers
+
+    source_names = TeSS::Config.ingestion[:sources].filter { |s| s[:enabled] }.map { |s| s[:provider] }.uniq
+    source_names += Source.includes(:content_provider).enabled.approved.map{ |s| s.content_provider.title}
+    @providers = ContentProvider
+                  .left_joins(%i[events materials])
+                  .where(title: source_names)
+                  .where('events.updated_at < ?', cut_off_time)
+                  .where('materials.updated_at < ?', cut_off_time)
+                  .distinct
+    subject = t('mailer.check_broken_scrapers.subject', site_name: TeSS::Config.site['title_short'])
+    mail(subject:, to: user.email) do |format|
       format.html
       format.text
     end

@@ -1,0 +1,19 @@
+<p>
+  You are receiving this automated email because you are an admin on <%= TeSS::Config.site['title_short'] %> and have chosen to receive these emails.
+</p>
+<% if @providers.count.positive? %>
+  <p>
+    The following providers have scrapers but did not get any updates during the last period.<br/>
+    Do note that this email contains only the scrapers with 0 events and materials, partially broken scrapers are not detected.<br/>
+  </p>
+
+  <% @providers.each do |provider| %>
+    <p>
+      <%= link_to provider.title, provider %><br/>
+    </p>
+  <% end %>
+<% else %>
+  <p>
+    All scrapers have found at least one event or material this week.
+  </p>
+<% end %>
