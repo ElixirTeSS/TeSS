@@ -78,6 +78,12 @@ window.loadCalendar = function(url) {
     return true;
 }
 
+// Fix select2 elements being duplicated when the back button is clicked.
+// Unfortunately causes the content of the field to be lost if it wasn't saved.
+document.addEventListener("turbolinks:before-cache", function() {
+    $('.js-select2').select2('destroy');
+});
+
 document.addEventListener("turbolinks:load", function(e) {
     // Show the tab associated with the window location hash (e.g. "#packages")
     if (window.location.hash) {
