@@ -1,6 +1,6 @@
-require_relative "boot"
+require_relative 'boot'
 
-require "rails/all"
+require 'rails/all'
 
 require_relative '../lib/i18n'
 
@@ -41,7 +41,7 @@ module TeSS
     case i18n_config[:fallback_strategy]
     when 'manual'
       config.i18n.fallbacks = i18n_config[:fallbacks] if i18n_config[:fallbacks].present?
-    when 'simple',  'rfc4646'
+    when 'simple', 'rfc4646'
       I18n.backend.class.include(I18n::Backend::Fallbacks)
       # Detect if any locale specifies any detail beyond primary
       # language subtag (e.g.: en-CA).
@@ -51,12 +51,10 @@ module TeSS
         # I18n won't use resolve l10n keys from fallback locales that
         # are not in the `available_locales`.
         config.i18n.available_locales += i18n_config[:available_locales]
-                                           &.map {|locale| I18n.fallbacks[locale] - [locale.to_sym] }
+                                           &.map { |locale| I18n.fallbacks[locale] - [locale.to_sym] }
                                            &.flatten
       end
-      if i18n_config[:fallback_strategy] == 'rfc4646'
-        I18n::Locale::Tag.implementation = I18n::Locale::Tag::Rfc4646
-      end
+      I18n::Locale::Tag.implementation = I18n::Locale::Tag::Rfc4646 if i18n_config[:fallback_strategy] == 'rfc4646'
     else
       raise "Bad fallback strategy: #{i18n_config[:fallback_strategy]}"
     end
@@ -119,7 +117,35 @@ module TeSS
     end
 
     def map_enabled
-      !feature['disabled'].include?('events_map') && Rails.application.config.secrets.google_maps_api_key.present?
+      !feature['disabled'].include?('events_map')
+    end
+
+    def address_finder_enabled
+      map_enabled && !feature['disabled'].include?('address_finder')
+    end
+
+    def use_google_maps
+      map_enabled && Rails.application.config.secrets.google_maps_api_key.present?
+    end
+
+    def map_provider
+      use_google_maps ? 'google' : 'open-street-map'
+    end
+
+    def initial_map_config
+      # Support old setting location for backwards compatibility.
+      # The zoom setting for a single event was called "longitude"
+      # and the zoomed out setting "latitude".
+      {
+        center: {
+          latitude: dig(:maps, :center, :latitude) || dig(:gmaps, :center, :latitude),
+          longitude: dig(:maps, :center, :longitude) || dig(:gmaps, :center, :longitude)
+        },
+        zoom: {
+          focused: dig(:maps, :zoom, :focused) || dig(:gmaps, :zoom, :longitude),
+          wide: dig(:maps, :zoom, :wide) || dig(:gmaps, :zoom, :latitude)
+        }
+      }
     end
 
     def _sentry_dsn

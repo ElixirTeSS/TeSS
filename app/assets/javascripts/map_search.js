@@ -3,124 +3,68 @@ var MapSearch = {
     marker: null,
     infowindow: null,
     init: function () {
-        var element = $('#google-map-form');
+        var element = $('#event-map-form');
         if (element.length) {
+            var loading_element = element.children('span');
             var showMarker = element.data('mapShowMarker');
-            MapSearch.map = new google.maps.Map(element[0], {
+            var provider = element.data('mapProvider');
+            var marker_icon = provider === 'google' ? 'https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png' : undefined;
+            MapClass = get_map_class(provider);
+            MapSearch.map = new MapClass({
                 center: {
                     lat: parseFloat(element.data('mapLatitude')),
                     lng: parseFloat(element.data('mapLongitude'))
                 }, // Center on existing event, or default location
+                dom_element: element[0],
                 zoom: parseInt(element.data('mapZoom'))
-            });
+            })
+
             var input = document.getElementById('map-search');
+            MapSearch.map.make_address_finder({
+                address_input: input,
+                add_marker: showMarker,
+                callback: ({venue, lat, lng, city, country, postcode}) => {
+                    MapSearch.hideMarker();
 
-            var autocomplete = new google.maps.places.Autocomplete(input);
-            autocomplete.bindTo('bounds', MapSearch.map);
+                    $('#event_venue').val(venue);
+                    $('#event_latitude').val(lat);
+                    $('#event_longitude').val(lng);
 
-            MapSearch.infowindow = new google.maps.InfoWindow();
-            MapSearch.marker = new google.maps.Marker({
-                map: MapSearch.map,
-                anchorPoint: new google.maps.Point(0, -29)
-            });
-
-            autocomplete.addListener('place_changed', function () {
-                MapSearch.hideMarker();
-
-                var place = autocomplete.getPlace();
-                if (!place.geometry) {
-                    window.alert("Couldn't find that location on the map");
-                    return;
+                    if(city != null) $('#event_city').val(city);
+                    $('#event_country').children("option").each((i, c) => {
+                        if($(c).text().indexOf(country) !== -1) country = $(c).val()
+                    });
+                    if(country != null) $('#event_country').val(country);
+                    if(postcode != null) $('#event_postcode').val(postcode);
+                    
+                    MapSearch.placeMarker(marker_icon);
                 }
-
-                // If the place has a geometry, then present it on a map.
-                if (place.geometry.viewport) {
-                    MapSearch.map.fitBounds(place.geometry.viewport);
-                } else {
-                    MapSearch.map.setCenter(place.geometry.location);
-                    MapSearch.map.setZoom(17);  // Why 17? Because it looks good.
-                }
-
-                // Populate address fields
-                var venue = place.name;
-                var street_number = '';
-                var street_name = '';
-                var street_short = '';
-                var city = '';
-
-                for (var i = 0; i < place.address_components.length; i++) {
-                    var addressType = place.address_components[i].types[0];
-                    switch (addressType) {
-                        case 'street_number':
-                            street_number = place.address_components[i].short_name;
-                            break;
-                        case 'route':
-                            street_name = place.address_components[i].long_name;
-                            street_short = place.address_components[i].short_name;
-                            break;
-                        case 'locality':
-                        case 'postal_town':
-                            city = place.address_components[i].long_name;
-                            break;
-                        case 'administrative_area_level_2':
-                            $('#event_county').val(place.address_components[i].long_name);
-                            break;
-                        case 'country':
-                            $('#event_country').val(place.address_components[i].short_name);
-                            break;
-                        case 'postal_code':
-                            $('#event_postcode').val(place.address_components[i].short_name);
-                            break;
-                    }
-                }
-
-                var street_address_short = street_number + ' ' + street_short;
-                var street_address_long = street_number + ' ' + street_name;
-                if (street_address_long.trim().length > 0 && venue !== street_address_long) {
-                    if (venue === street_address_short) {
-                        venue = street_address_long;
-                    } else {
-                        venue = place.name + ', ' + street_address_long;
-                    }
-                }
-
-                $('#event_venue').val(venue);
-                $('#event_city').val(city);
-                $('#event_latitude').val(place.geometry.location.lat());
-                $('#event_longitude').val(place.geometry.location.lng());
-
-                MapSearch.placeMarker();
             });
 
             if (showMarker) {
                 MapSearch.placeMarker();
             }
+            loading_element.hide(marker_icon);
         }
     },
 
-    placeMarker: function () {
+    placeMarker: function (icon) {
         var venue = $('#event_venue').val();
-        var city = $('#event_city').val();
-        var country = $('#event_country').val();
-        var lat = $('#event_latitude').val();
-        var lon = $('#event_longitude').val();
-
-        MapSearch.marker.setIcon(/** @type {google.maps.Icon} */({
-            url: 'https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png',
-            size: new google.maps.Size(71, 71),
-            origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(17, 34),
-            scaledSize: new google.maps.Size(35, 35)
-        }));
-        MapSearch.marker.setPosition(new google.maps.LatLng(lat, lon));
-        MapSearch.marker.setVisible(true);
-
-        MapSearch.infowindow.setContent('<div><strong>' + venue + '</strong><br>' + city + ', ' + country);
-        MapSearch.infowindow.open(MapSearch.map, MapSearch.marker);
+        var city_country = [
+            $('#event_city').val(), 
+            $('#event_country').val()
+        ].filter(Boolean).join(', ');
+        MapSearch.map.add_marker({
+            location: {
+                lat: $('#event_latitude').val(),
+                lng: $('#event_longitude').val()
+            },
+            icon: icon,
+            description: '<div><strong>' + venue + '</strong><br>' + city_country
+        })
     },
 
     hideMarker: function () {
-        MapSearch.infowindow.close();
-        MapSearch.marker.setVisible(false);
+        MapSearch.map.delete_markers();
     }
 };
