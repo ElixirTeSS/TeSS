@@ -22,12 +22,12 @@ class MaastrichtIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::Taxila::MaastrichtIngestor.new
 
     # check event doesn't
-    new_title = 'What journal to publish in'
-    new_url = 'https://library.maastrichtuniversity.nl/events/what-journal-to-publish-in/'
+    new_title = 'Qualitative FAIR Data'
+    new_url = 'https://library.maastrichtuniversity.nl/events/qualitative-fair-data-4/'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 23 do
+    assert_difference 'Event.count', 43 do
       freeze_time(2019) do
         VCR.use_cassette("ingestors/maastricht") do
           ingestor.read(source.url)
@@ -36,9 +36,9 @@ class MaastrichtIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 23, ingestor.events.count
+    assert_equal 43, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 23, ingestor.stats[:events][:added]
+    assert_equal 43, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -49,10 +49,9 @@ class MaastrichtIngestorTest < ActiveSupport::TestCase
     assert_equal new_url, event.url
 
     # check other fields
-    assert_equal 'What journal to publish in', event.title
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'Maastricht', event.city
-    assert_equal Time.zone.parse('Mon, 14 Feb 2023 11:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Fri, 14 Feb 2023 12:30:00.000000000 UTC +00:00'), event.end
+    assert_equal Time.zone.parse('Mon, 16 Jun 2025 10:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Mon, 16 Jun 2025 12:00:00.000000000 UTC +00:00'), event.end
   end
 end
