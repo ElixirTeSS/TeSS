@@ -1,0 +1,18 @@
+<% learning_path_topic_item ||= nil %>
+<% collection_item ||= learning_path_topic_item %>
+<%
+  unless defined? show_order
+    show_order = true
+  end
+%>
+<li class="masonry-brick media-item long">
+  <div class="deleted-item-overlay">
+    <%= item_order_badge(collection_item) if show_order && collection_item %>
+
+    <div class="masonry-brick-heading muted">
+      <h4><%= t('deleted_resource') %></h4>
+    </div>
+
+    <%= item_comment(collection_item) if collection_item %>
+  </div>
+</li>

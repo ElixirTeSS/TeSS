@@ -81,6 +81,23 @@
   opacity: 1;
 }
 
+.deleted-item-overlay {
+  text-decoration: none;
+  color: $gray-darker;
+  @include floating-card;
+  border-radius: 8px;
+  padding: $item-padding-base;
+  display: block;
+  transition: $transition-time;
+
+  h4 {
+    margin-top: 0;
+    margin-bottom: 0;
+    color: $text-muted;
+    font-style: italic;
+  }
+}
+
 .link-overlay {
   text-decoration: none;
   color: $gray-darker;
