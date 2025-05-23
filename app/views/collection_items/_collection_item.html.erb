@@ -1,2 +1,6 @@
 <% resource = collection_item.resource %>
-<%= render partial: resource, locals: { collection_item: collection_item } %>
+<% if resource %>
+  <%= render partial: resource, locals: { collection_item: collection_item } %>
+<% else %>
+  <%= render partial: 'common/deleted_resource', locals: { collection_item: collection_item } %>
+<% end %>

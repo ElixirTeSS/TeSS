@@ -734,4 +734,20 @@ class CollectionsControllerTest < ActionController::TestCase
     get :show, params: { id: collection }
     assert_response :forbidden
   end
+
+  test 'should show collection with deleted resource' do
+    m1 = materials(:biojs)
+    m2 = materials(:interpro)
+    ci1 = @collection.items.create!(resource: materials(:biojs), order: 2, comment: 'hello')
+    ci2 = @collection.items.create!(resource: materials(:interpro), order: 1, comment: 'hello!!')
+    assert_no_difference('CollectionItem.count') do
+      m1.destroy!
+    end
+
+    get :show, params: { id: @collection }
+    assert_response :success
+    assert_select '.deleted-item-overlay', count: 1 do
+      assert_select 'h4', text: 'Deleted resource'
+    end
+  end
 end

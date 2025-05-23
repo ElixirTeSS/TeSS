@@ -1,2 +1,6 @@
 <% resource = learning_path_topic_item.resource %>
-<%= render partial: resource, locals: local_assigns %>
+<% if resource %>
+  <%= render partial: resource, locals: local_assigns %>
+<% else %>
+  <%= render partial: 'common/deleted_resource', locals: local_assigns %>
+<% end %>

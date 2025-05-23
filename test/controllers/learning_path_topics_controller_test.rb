@@ -554,4 +554,16 @@ class LearningPathTopicsControllerTest < ActionController::TestCase
     response_events = body.dig('data', 'relationships', 'events', 'data')
     assert_equal [events[1].id, events[0].id], response_events.map { |e| e['id'].to_i }
   end
+
+  test 'should show learning_path_topic with deleted resource' do
+    topic_item = @learning_path_topic.items.first
+    assert_no_difference('LearningPathTopicItem.count') do
+      topic_item.resource.destroy!
+    end
+
+    get :show, params: { id: @learning_path_topic }
+    assert_select '.deleted-item-overlay', count: 1 do
+      assert_select 'h4', text: 'Deleted resource'
+    end
+  end
 end
