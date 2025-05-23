@@ -9,7 +9,11 @@
         <input type="hidden" name="{{ prefix }}[][id]" value="{{ item.id }}" />
         <input type="hidden" name="{{ prefix }}[][resource_id]" value="{{ item.resource_id }}" />
         <input type="hidden" name="{{ prefix }}[][resource_type]" value="{{ item.resource_type }}" />
+        {{#if item.url}}
         <a href="{{ item.url }}" target="_blank">{{ item.title }}</a>
+        {{ else }}
+        <span class="muted">{{ item.title }}</span>
+        {{/if}}
         <input type="text" class="form-control input-sm" name="{{ prefix }}[][comment]" placeholder="Enter a comment" value="{{ item.comment }}">
     </div>
 

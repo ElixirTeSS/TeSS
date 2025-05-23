@@ -750,4 +750,42 @@ class CollectionsControllerTest < ActionController::TestCase
       assert_select 'h4', text: 'Deleted resource'
     end
   end
+
+  test 'can edit collection with deleted resource' do
+    sign_in @collection.user
+
+    m1 = materials(:biojs)
+    m2 = materials(:interpro)
+    ci1 = @collection.items.create!(resource: materials(:biojs), order: 2, comment: 'hello')
+    ci2 = @collection.items.create!(resource: materials(:interpro), order: 1, comment: 'hello!!')
+    assert_no_difference('CollectionItem.count') do
+      m1.destroy!
+    end
+
+    get :edit, params: { id: @collection }
+    assert_response :success
+  end
+
+  test 'can update collection with deleted resource' do
+    sign_in @collection.user
+
+    m1 = materials(:biojs)
+    m2 = materials(:interpro)
+    ci1 = @collection.items.create!(resource: materials(:biojs), order: 2, comment: 'hello')
+    ci2 = @collection.items.create!(resource: materials(:interpro), order: 1, comment: 'hello!!')
+    assert_no_difference('CollectionItem.count') do
+      m1.destroy!
+    end
+
+    params = { id: ci1.id, resource_type: ci1.resource_type, resource_id: ci1.resource_id }
+
+    patch :update, params: { id: @collection.id,
+                             collection: {
+                               items_attributes: { '1': params.merge(comment: 'Some comment') }
+                             }
+    }
+
+    assert_redirected_to collection_path(assigns(:collection))
+    assert_equal 'Some comment', ci1.reload.comment
+  end
 end

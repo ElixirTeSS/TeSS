@@ -566,4 +566,36 @@ class LearningPathTopicsControllerTest < ActionController::TestCase
       assert_select 'h4', text: 'Deleted resource'
     end
   end
+
+  test 'can edit learning_path_topic with deleted resource' do
+    sign_in @learning_path_topic.user
+
+    topic_item = @learning_path_topic.items.first
+    assert_no_difference('LearningPathTopicItem.count') do
+      topic_item.resource.destroy!
+    end
+
+    get :edit, params: { id: @learning_path_topic }
+    assert_response :success
+  end
+
+  test 'can update learning_path_topic with deleted resource' do
+    sign_in @learning_path_topic.user
+
+    topic_item = @learning_path_topic.items.first
+    params = { id: topic_item.id, resource_type: topic_item.resource_type, resource_id: topic_item.resource_id }
+    assert_no_difference('LearningPathTopicItem.count') do
+      topic_item.resource.destroy!
+    end
+
+    get :edit, params: { id: @learning_path_topic }
+    patch :update, params: { id: @learning_path_topic.id,
+                             learning_path_topic: {
+                               items_attributes: { '1': params.merge(comment: 'Some comment') }
+                             }
+    }
+
+    assert_redirected_to learning_path_topic_path(assigns(:learning_path_topic))
+    assert_equal 'Some comment', topic_item.reload.comment
+  end
 end

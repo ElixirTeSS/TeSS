@@ -13,10 +13,12 @@ class LearningPathTopicItem < ApplicationRecord
     self.topic.create_activity(:add_item, owner: User.current_user,
                                parameters: { resource_id: self.resource_id,
                                              resource_type: self.resource_type,
-                                             resource_title: self.resource.title })
-    self.resource.create_activity(:add_to_topic, owner: User.current_user,
-                                  parameters: { topic_id: self.topic_id,
-                                                topic_title: self.topic.title })
+                                             resource_title: self.resource&.title })
+    if self.resource
+      self.resource.create_activity(:add_to_topic, owner: User.current_user,
+                                    parameters: { topic_id: self.topic_id,
+                                                  topic_title: self.topic.title })
+    end
   end
 
   def previous_item
