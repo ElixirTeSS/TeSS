@@ -173,7 +173,7 @@ class OpenStreetMap {
                 popup.toggle();
                 if (popup.is(':visible')) infowindow.panIntoView();
             });
-            popup.on('click', () => {
+            popup.children(".ol-popup-closer").on('click', () => {
                 popup.hide();
                 return false;
             });
