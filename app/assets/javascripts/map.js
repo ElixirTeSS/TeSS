@@ -171,6 +171,11 @@ class OpenStreetMap {
             marker.css("cursor", "pointer");
             marker.on('click', () => {
                 popup.toggle();
+                this.info_windows.forEach(w => {
+                    console.log(w.element)
+                    console.log(w.ol_uid, infowindow.ol_uid, w !== infowindow)
+                    if(w !== infowindow) $(w.element).children(".ol-popup").hide();
+                });
                 if (popup.is(':visible')) infowindow.panIntoView();
             });
             popup.children(".ol-popup-closer").on('click', () => {
