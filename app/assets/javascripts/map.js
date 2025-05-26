@@ -11,12 +11,15 @@ class GoogleMap {
     }
 
     add_marker({ location, title, icon, description, link }) {
-        var marker = new google.maps.Marker({
+        var options = {
             map: this.map,
             position: { lat: parseFloat(location.lat), lng: parseFloat(location.lng)},
-            title,
-            icon: { url: icon, scaledSize: new google.maps.Size(35, 35) }
-        });
+            title
+        };
+        if (icon) {
+            options.icon = { url: icon, scaledSize: new google.maps.Size(35, 35) }
+        }
+        var marker = new google.maps.Marker(options);
         if (description) {
             google.maps.event.addListener(marker, 'click', () => {
                 this.infowindow.setContent(description);
