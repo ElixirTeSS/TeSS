@@ -172,8 +172,6 @@ class OpenStreetMap {
             marker.on('click', () => {
                 popup.toggle();
                 this.info_windows.forEach(w => {
-                    console.log(w.element)
-                    console.log(w.ol_uid, infowindow.ol_uid, w !== infowindow)
                     if(w !== infowindow) $(w.element).children(".ol-popup").hide();
                 });
                 if (popup.is(':visible')) infowindow.panIntoView();
@@ -218,14 +216,12 @@ class OpenStreetMap {
         });
         this.map.addControl(geocoder);
         geocoder.on('addresschosen', (evt) => {
-            var address_info = {
-                venue: evt.address.details.name,
-                city: evt.address.details.city,
-                country: evt.address.details.country,
-                postcode: evt.address.details.postcode,
-                lat: evt.place.lat,
-                lng: evt.place.lon
-            };
+            var address_info = this.extract_map_info(
+                evt.address.original.details, 
+                evt.place.lat, 
+                evt.place.lon, 
+                evt.address.details.name
+            );
             callback(address_info);
         });
         this.map.on('click', (evt) => {
@@ -237,17 +233,46 @@ class OpenStreetMap {
                 limit: 1
             }
             $.get("https://nominatim.openstreetmap.org/reverse", request_data, response => {
-                var address_info = {
-                    venue: response.display_name,
-                    city: response.address.city || response.address.town || response.address.village,
-                    country: response.address.country_code.toUpperCase(),
-                    postcode: response.address.postcode,
-                    lat: request_data.lat,
-                    lng: request_data.lon
-                };
+                var address_info = this.extract_map_info(
+                    response.address, 
+                    request_data.lat, 
+                    request_data.lon, 
+                    response.display_name
+                );
                 callback(address_info);
             });
         })
+    }
+
+    extract_map_info(street_map_address, lat, lon, default_venue) {
+        if (!street_map_address) {
+            return {
+                venue: default_venue,
+                lat: lat,
+                lon: lon
+            }
+        }
+        
+        var addr = street_map_address;
+        var venue_info = [];
+        
+        var name = addr.name || addr.emergency || addr.amenity || addr.building || addr.man_made || addr.tourism;
+        if (name) venue_info.push(name);
+        
+        if (addr.road && addr.house_number)
+            venue_info.push(addr.house_number + ' ' + addr.road);
+        else if (addr.road)
+            venue_info.push(addr.road);
+
+        var short_venue = venue_info.join(", ")
+        return {
+            venue: short_venue ? short_venue : default_venue,
+            city: addr.city || addr.town || addr.village,
+            country: addr.country_code.toUpperCase(),
+            postcode: addr.postcode,
+            lat: lat,
+            lng: lon
+        };
     }
 }
 
