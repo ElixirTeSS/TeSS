@@ -41,6 +41,8 @@ module Ingestors
             event = OpenStruct.new
 
             ical_event = Icalendar::Event.parse(open_url("#{event_url}/ical/", raise: true).set_encoding('utf-8')).first
+            next unless ical_event&.x_taxilascrape&.first&.downcase == 'true'
+            
             event.title = ical_event.summary
             event.description = convert_description ical_event.description
             event.url = ical_event.url
