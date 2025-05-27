@@ -523,7 +523,7 @@ class LearningPathsControllerTest < ActionController::TestCase
     learning_path = learning_paths(:learning_path_with_deleted_item)
 
     get :show, params: { id: learning_path }
-    assert_response :success
+
     assert_response :success
     assert_select '.deleted-item-overlay', count: 1 do
       assert_select 'h4', text: 'Deleted resource'
