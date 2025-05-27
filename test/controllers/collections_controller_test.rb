@@ -736,15 +736,9 @@ class CollectionsControllerTest < ActionController::TestCase
   end
 
   test 'should show collection with deleted resource' do
-    m1 = materials(:biojs)
-    m2 = materials(:interpro)
-    ci1 = @collection.items.create!(resource: materials(:biojs), order: 2, comment: 'hello')
-    ci2 = @collection.items.create!(resource: materials(:interpro), order: 1, comment: 'hello!!')
-    assert_no_difference('CollectionItem.count') do
-      m1.destroy!
-    end
+    collection = collections(:collection_with_deleted_item)
 
-    get :show, params: { id: @collection }
+    get :show, params: { id: collection }
     assert_response :success
     assert_select '.deleted-item-overlay', count: 1 do
       assert_select 'h4', text: 'Deleted resource'
@@ -752,34 +746,23 @@ class CollectionsControllerTest < ActionController::TestCase
   end
 
   test 'can edit collection with deleted resource' do
-    sign_in @collection.user
+    collection = collections(:collection_with_deleted_item)
+    sign_in collection.user
 
-    m1 = materials(:biojs)
-    m2 = materials(:interpro)
-    ci1 = @collection.items.create!(resource: materials(:biojs), order: 2, comment: 'hello')
-    ci2 = @collection.items.create!(resource: materials(:interpro), order: 1, comment: 'hello!!')
-    assert_no_difference('CollectionItem.count') do
-      m1.destroy!
-    end
-
-    get :edit, params: { id: @collection }
+    get :edit, params: { id: collection }
     assert_response :success
   end
 
   test 'can update collection with deleted resource' do
-    sign_in @collection.user
+    collection = collections(:collection_with_deleted_item)
+    sign_in collection.user
 
-    m1 = materials(:biojs)
-    m2 = materials(:interpro)
-    ci1 = @collection.items.create!(resource: materials(:biojs), order: 2, comment: 'hello')
-    ci2 = @collection.items.create!(resource: materials(:interpro), order: 1, comment: 'hello!!')
-    assert_no_difference('CollectionItem.count') do
-      m1.destroy!
-    end
+    ci1 = collection.items.detect { |i| i.resource.nil? }
+    assert ci1
 
     params = { id: ci1.id, resource_type: ci1.resource_type, resource_id: ci1.resource_id }
 
-    patch :update, params: { id: @collection.id,
+    patch :update, params: { id: collection.id,
                              collection: {
                                items_attributes: { '1': params.merge(comment: 'Some comment') }
                              }

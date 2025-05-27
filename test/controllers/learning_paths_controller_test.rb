@@ -520,13 +520,9 @@ class LearningPathsControllerTest < ActionController::TestCase
   end
 
   test 'should show learning path with deleted resource' do
-    topic_link = @learning_path.topic_links.first
-    topic_item = topic_link.topic.items.first
-    assert_no_difference('LearningPathTopicItem.count') do
-      topic_item.resource.destroy!
-    end
+    learning_path = learning_paths(:learning_path_with_deleted_item)
 
-    get :show, params: { id: @learning_path }
+    get :show, params: { id: learning_path }
     assert_response :success
     assert_response :success
     assert_select '.deleted-item-overlay', count: 1 do

@@ -36,3 +36,10 @@ archived_learning_path:
   public: false
   user: curator
   status: development
+
+learning_path_with_deleted_item:
+  title: Learning Path with deleted item
+  description: MyText
+  public: true
+  user: curator
+  status: development

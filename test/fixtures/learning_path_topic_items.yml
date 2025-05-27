@@ -25,3 +25,14 @@ item2c:
   order: 3
   topic: goblet_things
   resource: prints (Material)
+
+item3a:
+  order: 1
+  topic: topic_with_deleted_item
+  resource: interpro (Material)
+
+item3b:
+  order: 2
+  topic: topic_with_deleted_item
+  resource_type: Material
+  resource_id: 9999999 # Lets hope this doesn't exist
