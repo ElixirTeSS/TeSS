@@ -14,3 +14,4 @@ The following people have contributed to the TeSS codebase:
 * Ivan Kuzmin <ivan.kuzmin@ut.ee>
 * Servilio Afre Puentes <afrepues@sharcnet.ca>
 * Mike Sanders <msanders@ignitioncomputing.com>
+* Martin Voigt <m.voigt@hzdr.de>
