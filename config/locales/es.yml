@@ -1,0 +1,41 @@
+features:
+  about:
+    short: Acerca
+    long: Acerca
+  elearning_materials:
+    short: Aprendizaje-e
+    long: Aprendizaje-e
+  collections:
+    short: Colecciones
+    long: Colecciones
+  content_providers:
+    long: Proveedores de Contenido
+    short: Proveedores
+  nodes:
+    long: Nodos
+    short: Nodos
+  trainers:
+    long: Entrenadores
+    short: Entrenadores
+  learning_paths:
+    short: Caminos de aprendizaje
+    long: Caminos de aprendizaje
+  workflows:
+    long: Flujos de Trabajo
+    short: Flujos de Trabajo
+  materials:
+    long: Materiales de entrenamiento
+    short: Materiales
+  events:
+    long: Eventos
+    short: Eventos
+  learning_path_topics:
+    short: Temas
+activerecord:
+  models:
+    elearning_material: Material de Aprendizaje-e
+    material: Material
+    workflow: Flujo de Trabajo
+    collection: Colección
+pundit:
+  default: No está autorizado a ejecutar esta acción
