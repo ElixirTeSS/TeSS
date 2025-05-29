@@ -15,7 +15,7 @@
   json = items.map do |item|
     { item: { id: item.id, order: item.order, comment: item.comment,
               resource_id: item.resource_id, resource_type: item.resource_type,
-              title: item.resource.title, url: polymorphic_path(item.resource) },
+              title: item.resource&.title || t('deleted_resource'), url: item.resource ? polymorphic_path(item.resource) : nil },
       prefix: form_field_name }
   end.to_json
 

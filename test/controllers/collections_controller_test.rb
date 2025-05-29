@@ -734,4 +734,41 @@ class CollectionsControllerTest < ActionController::TestCase
     get :show, params: { id: collection }
     assert_response :forbidden
   end
+
+  test 'should show collection with deleted resource' do
+    collection = collections(:collection_with_deleted_item)
+
+    get :show, params: { id: collection }
+    assert_response :success
+    assert_select '.deleted-item-overlay', count: 1 do
+      assert_select 'h4', text: 'Deleted resource'
+    end
+  end
+
+  test 'can edit collection with deleted resource' do
+    collection = collections(:collection_with_deleted_item)
+    sign_in collection.user
+
+    get :edit, params: { id: collection }
+    assert_response :success
+  end
+
+  test 'can update collection with deleted resource' do
+    collection = collections(:collection_with_deleted_item)
+    sign_in collection.user
+
+    ci1 = collection.items.detect { |i| i.resource.nil? }
+    assert ci1
+
+    params = { id: ci1.id, resource_type: ci1.resource_type, resource_id: ci1.resource_id }
+
+    patch :update, params: { id: collection.id,
+                             collection: {
+                               items_attributes: { '1': params.merge(comment: 'Some comment') }
+                             }
+    }
+
+    assert_redirected_to collection_path(assigns(:collection))
+    assert_equal 'Some comment', ci1.reload.comment
+  end
 end

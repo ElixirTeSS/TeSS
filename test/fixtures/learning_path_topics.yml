@@ -16,3 +16,8 @@ empty_topic:
   title: Empty topic
   description: Under development
   user: curator
+
+topic_with_deleted_item:
+  title: Topic with deleted item
+  description: One item was deleted
+  user: curator

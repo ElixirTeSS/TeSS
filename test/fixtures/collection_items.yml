@@ -1,0 +1,14 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+collection_item_a:
+  collection: collection_with_deleted_item
+  order: 1
+  comment: This resource exists
+  resource: biojs (Material)
+
+collection_item_b:
+  collection: collection_with_deleted_item
+  order: 2
+  comment: This resource does not exist
+  resource_type: Material
+  resource_id: 9999999 # Lets hope this doesn't exist

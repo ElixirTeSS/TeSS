@@ -26,3 +26,9 @@ secret_collection:
   description: MyText
   public: false
   user: regular_user
+
+collection_with_deleted_item:
+  title: This collection contains an item that was deleted
+  description: MyText
+  public: true
+  user: regular_user
