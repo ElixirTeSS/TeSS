@@ -554,4 +554,40 @@ class LearningPathTopicsControllerTest < ActionController::TestCase
     response_events = body.dig('data', 'relationships', 'events', 'data')
     assert_equal [events[1].id, events[0].id], response_events.map { |e| e['id'].to_i }
   end
+
+  test 'should show learning_path_topic with deleted resource' do
+    learning_path_topic = learning_path_topics(:topic_with_deleted_item)
+
+    get :show, params: { id: learning_path_topic }
+    assert_select '.deleted-item-overlay', count: 1 do
+      assert_select 'h4', text: 'Deleted resource'
+    end
+  end
+
+  test 'can edit learning_path_topic with deleted resource' do
+    learning_path_topic = learning_path_topics(:topic_with_deleted_item)
+    sign_in learning_path_topic.user
+
+    get :edit, params: { id: learning_path_topic }
+    assert_response :success
+  end
+
+  test 'can update learning_path_topic with deleted resource' do
+    learning_path_topic = learning_path_topics(:topic_with_deleted_item)
+    sign_in learning_path_topic.user
+
+    topic_item = learning_path_topic.items.detect { |i| i.resource.nil? }
+    assert topic_item
+    params = { id: topic_item.id, resource_type: topic_item.resource_type, resource_id: topic_item.resource_id }
+
+    get :edit, params: { id: learning_path_topic }
+    patch :update, params: { id: learning_path_topic.id,
+                             learning_path_topic: {
+                               items_attributes: { '1': params.merge(comment: 'Some comment') }
+                             }
+    }
+
+    assert_redirected_to learning_path_topic_path(assigns(:learning_path_topic))
+    assert_equal 'Some comment', topic_item.reload.comment
+  end
 end

@@ -14,3 +14,8 @@ link2a:
   learning_path: two
   order: 1
   topic: good_and_bad
+
+linka3a:
+  learning_path: learning_path_with_deleted_item
+  order: 1
+  topic: topic_with_deleted_item

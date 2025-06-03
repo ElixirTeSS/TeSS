@@ -518,4 +518,15 @@ class LearningPathsControllerTest < ActionController::TestCase
     assert_select '.link-overlay[href=?]',
                   material_path(topic_item.resource, lp: [topic_link, topic_item].map(&:id).join(':'))
   end
+
+  test 'should show learning path with deleted resource' do
+    learning_path = learning_paths(:learning_path_with_deleted_item)
+
+    get :show, params: { id: learning_path }
+
+    assert_response :success
+    assert_select '.deleted-item-overlay', count: 1 do
+      assert_select 'h4', text: 'Deleted resource'
+    end
+  end
 end
