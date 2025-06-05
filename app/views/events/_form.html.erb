@@ -3,7 +3,9 @@
   <%= render partial: 'common/error_summary', locals: { resource: @event } %>
 
   <!-- Field: Disabled -->
-  <%= f.input :visible, label: 'Show this event?', input_html: { title: t('events.hints.visible') } %>
+  <% unless TeSS::Config.feature['disabled'].include?('visibility') %>
+    <%= f.input :visible, hint: t('events.hints.visible') %>
+  <% end %>
 
   <!-- Field: presence -->
   <div class="form-group">

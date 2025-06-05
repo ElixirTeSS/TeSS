@@ -571,7 +571,7 @@ en:
       cost_value: 'Input the cost of the training event.'
       cost_currency: 'Select the currency associated with the cost.'
       description: 'Provide a textual description of the training event, for additional context.'
-      visible: 'Whether or not this event should be shown on the events page'
+      visible: 'Whether this event should be shown or hidden from the events page.'
       duration: 'In hours and minutes (HH:MM), how long will your training event run?'
       eligibility: 'Who can attend the training event?'
       end: 'When does the event end?'
@@ -636,7 +636,7 @@ en:
       resource_type: 'Select the type of resource that best matches the training material. '
       url: 'Preferred URL to direct people to your training material landing page.'
       version: 'Indicate the current version of the training material.'
-      visible: 'Whether or not this material should be shown on the materials page'
+      visible: 'Whether this material should be shown or hidden from the materials page.'
   learning_paths:
     hints:
       authors: >
@@ -964,3 +964,9 @@ en:
       weekly: Weekly
       monthly: Monthly
   deleted_resource: Deleted resource
+  simple_form:
+    labels:
+      event:
+        visible: Show this event?
+      material:
+        visible: Show this material?
