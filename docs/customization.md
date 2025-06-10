@@ -18,23 +18,30 @@ Secure settings such as database credentials, API keys, email settings etc. can 
 TeSS' UI is built on [Bootstrap 3](https://getbootstrap.com/docs/3.4/). To customize the appearance of TeSS, go into
 the themes folder (`app/assets/stylesheets/themes`) and make a copy of the default theme file (`default.scss`).
 In your copy, you can tweak any of the existing variables, add overrides for any Bootstrap variables
-([reference](https://github.com/twbs/bootstrap-sass/blob/master/assets/stylesheets/bootstrap/_variables.scss)) and add
-new CSS/Sass styles.
+([reference](https://github.com/twbs/bootstrap-sass/blob/master/assets/stylesheets/bootstrap/_variables.scss)) and add new CSS/Sass styles (look at the other themes in that directory, and the `mixins/_modern_base.scss` mixin for reference).
 
-To enable your theme, edit `app/assets/stylesheets/mixins/variables.scss` and change the line:
-```scss
-@import "../themes/default";
+To use your theme as the site default, edit your `config/tess.yml` config file and change 
+(or add if not present) the `default_theme` variable under the `site` section to reference your new theme file (sans the `.scss` extension):
+
+```yml
+default: &default
+  # ...
+  site:
+    # ...
+    default_theme: my_theme
 ```
-to point to your new theme file...
-```scss
-@import "../themes/new_theme";
-```
+
+Additionally, you will need to create a symlink for the theme's images:
+
+    ln -s app/assets/images/modern app/assets/images/themes/my_theme
 
 Be sure to recompile assets (`bundle exec rake assets:recompile`), or rebuild your docker image, 
 and restart the application to apply the new styles.
 
 You can visit <http://localhost:3000/theme_showcase> on your local instance to see various Bootstrap elements with the
-current theme applied.
+current theme applied. 
+
+You can also add a query parameter `theme_preview` to the URL of any page to preview different themes, e.g. <http://localhost:3000/theme_showcase?theme_preview=blue>
 
 ## Text changes
 

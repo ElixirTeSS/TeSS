@@ -35,6 +35,7 @@ class LearningPathTopicsController < ApplicationController
     authorize LearningPathTopic
     @learning_path_topic = LearningPathTopic.new(topic_params)
     @learning_path_topic.user = current_user
+    @learning_path_topic.space = current_space
 
     respond_to do |format|
       if @learning_path_topic.save

@@ -587,13 +587,25 @@ class ContentProvidersControllerTest < ActionController::TestCase
     new_material = Material.create!(title: 'my_material', description: 'visible material', url: 'http://new.url.com', content_provider: @content_provider, user: @content_provider.user)
     get :show, params: { id: @content_provider }
     assert_response :success
-    assert_select '.search-results-count.my-3', text: 'Showing 10 materials'
+    not_disabled_material_count = @content_provider.materials.not_disabled.length
+    assert not_disabled_material_count > 1
+    assert_select '.search-results-count.my-3', text: "Showing #{not_disabled_material_count} materials"
     assert_select '.masonry-brick-heading h4', text: 'my_material'
     new_material.visible = false
     new_material.save!
     get :show, params: { id: @content_provider }
     assert_response :success
-    assert_select '.search-results-count.my-3', text: 'Showing 9 materials'
+    assert_select '.search-results-count.my-3', text: "Showing #{not_disabled_material_count - 1} materials"
     assert_select '.masonry-brick-heading h4', text: 'my_material', count: 0
+  end
+
+  test 'should only show content for current space on show page' do
+    with_host('plants.mytess.training') do
+      get :show, params: { id: @content_provider }
+      assert_select '.search-results-count.my-3', text: 'Showing 1 material'
+      assert_select '.masonry-brick-heading h4', text: 'Plant material'
+      assert_select '.search-results-count.my-3', text: 'Showing 1 event'
+      assert_select '.masonry-brick-heading h4', text: 'Learn about plants'
+    end
   end
 end

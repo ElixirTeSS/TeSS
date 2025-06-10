@@ -8,7 +8,8 @@ module Facets
     max_age: ->(c) { %w[Event Material].include?(c.name) },
     start: ->(c) { c.name == 'Event' },
     running_during: ->(c) { c.name == 'Event' },
-    include_hidden: ->(c) { c.method_defined?(:user_requires_approval?) }
+    include_hidden: ->(c) { c.method_defined?(:user_requires_approval?) },
+    across_all_spaces: ->(c) { TeSS::Config.feature['spaces'] && c.method_defined?(:space_id) }
   }.with_indifferent_access.freeze
 
   CONVERSIONS = {
@@ -128,6 +129,13 @@ module Facets
         else
           without(:node, Node.pluck(:title))
         end
+      end
+    end
+
+    def across_all_spaces(scope, value, user)
+      sunspot_scoped(scope) do
+        all_spaces = (user&.is_admin? && value)
+        with(:space_id, Space.current_space.id) unless all_spaces
       end
     end
 
