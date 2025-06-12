@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: solr-deployment
+  labels:
+    app: solr
+    type: search
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: solr
+      type: search
+  template:
+    metadata:
+      name: solr-pod
+      labels:
+        app: solr
+        type: search
+    spec:
+      containers:
+        - name: tess-solr
+          image: solr:8
+          resources:
+            requests:
+              cpu: 200m
+              memory: 768Mi
+            limits:
+              cpu: 400m
+              memory: 1Gi
+          ports:
+            - containerPort: 8983
+          args:
+            - solr-precreate
+            - tess
+            - /opt/solr/server/solr/configsets/production
+          volumeMounts:
+            - name: solr-data
+              mountPath: /var/solr
+            - name: solr-configset
+              mountPath: /opt/solr/server/solr/configsets/production
+              readOnly: true
+            - name: dshm
+              mountPath: /dev/shm
+      restartPolicy: Always
+      volumes:
+        - name: solr-data
+          persistentVolumeClaim:
+            claimName: solr-pvc
+        - name: solr-configset
+          configMap:
+            name: solr-cm
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: "1Gi"

@@ -39,3 +39,5 @@ vendor/bundle
 config/ontologies/*.cache
 
 tess.crontab
+
+app-secrets*

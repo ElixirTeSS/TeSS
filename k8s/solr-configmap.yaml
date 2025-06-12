@@ -1,0 +1,581 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: solr-cm
+data:
+  schema.xml: |
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!--
+     Licensed to the Apache Software Foundation (ASF) under one or more
+     contributor license agreements.  See the NOTICE file distributed with
+     this work for additional information regarding copyright ownership.
+     The ASF licenses this file to You under the Apache License, Version 2.0
+     (the "License"); you may not use this file except in compliance with
+     the License.  You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+    -->
+    <!--
+     This is the Solr schema file. This file should be named "schema.xml" and
+     should be in the conf directory under the solr home
+     (i.e. ./solr/conf/schema.xml by default)
+     or located where the classloader for the Solr webapp can find it.
+
+     This example schema is the recommended starting point for users.
+     It should be kept correct and concise, usable out-of-the-box.
+
+     For more information, on how to customize this file, please see
+     http://wiki.apache.org/solr/SchemaXml
+
+     PERFORMANCE NOTE: this schema includes many optional features and should not
+     be used for benchmarking.  To improve performance one could
+      - set stored="false" for all fields possible (esp large fields) when you
+        only need to search on the field but don't need to return the original
+        value.
+      - set indexed="false" if you don't need to search on the field, but only
+        return the field as a result of searching on other indexed fields.
+      - remove all unneeded copyField statements
+      - for best index size and searching performance, set "index" to false
+        for all general text fields, use copyField to copy them to the
+        catchall "text" field, and use that for searching.
+      - For maximum indexing performance, use the StreamingUpdateSolrServer
+        java client.
+      - Remember to run the JVM in server mode, and use a higher logging level
+        that avoids logging every request
+    -->
+    <schema name="sunspot" version="1.0">
+      <types>
+        <!-- field type definitions. The "name" attribute is
+           just a label to be used by field definitions.  The "class"
+           attribute and any other attributes determine the real
+           behavior of the fieldType.
+             Class names starting with "solr" refer to java classes in the
+           org.apache.solr.analysis package.
+        -->
+        <!-- *** This fieldType is used by Sunspot! *** -->
+        <fieldType name="string" class="solr.StrField" omitNorms="true"/>
+        <!-- *** This fieldType is used by Sunspot! *** -->
+        <fieldType name="tdouble" class="solr.TrieDoubleField" omitNorms="true"/>
+        <!-- *** This fieldType is used by Sunspot! *** -->
+        <fieldType name="rand" class="solr.RandomSortField" omitNorms="true"/>
+        <!-- *** This fieldType is used by Sunspot! *** -->
+        <fieldType name="text" class="solr.TextField" omitNorms="false">
+          <analyzer type="index">
+            <tokenizer class="solr.StandardTokenizerFactory"/>
+            <filter class="solr.LowerCaseFilterFactory"/>
+            <filter class="solr.PorterStemFilterFactory"/>
+            <filter class="solr.EdgeNGramFilterFactory" minGramSize="1" maxGramSize="25"/>
+          </analyzer>
+          <analyzer type="query">
+            <tokenizer class="solr.StandardTokenizerFactory"/>
+            <filter class="solr.LowerCaseFilterFactory"/>
+            <filter class="solr.PorterStemFilterFactory"/>
+          </analyzer>
+        </fieldType>
+        <!-- *** This fieldType is used by Sunspot! *** -->
+        <fieldType name="boolean" class="solr.BoolField" omitNorms="true"/>
+        <!-- *** This fieldType is used by Sunspot! *** -->
+        <fieldType name="tint" class="solr.TrieIntField" omitNorms="true"/>
+        <!-- *** This fieldType is used by Sunspot! *** -->
+        <fieldType name="tlong" class="solr.TrieLongField" omitNorms="true"/>
+        <!-- *** This fieldType is used by Sunspot! *** -->
+        <fieldType name="tfloat" class="solr.TrieFloatField" omitNorms="true"/>
+        <!-- *** This fieldType is used by Sunspot! *** -->
+        <fieldType name="tdate" class="solr.TrieDateField"
+                   omitNorms="true"/>
+
+        <fieldType name="daterange" class="solr.DateRangeField" omitNorms="true" />
+
+        <!-- Special field type for spell correction. Be careful about
+             adding filters here, as they apply *before* your values go in
+             the spellcheck. For example, the lowercase filter here means
+             all spelling suggestions will be lower case (without it,
+             though, you'd have duplicate suggestions for lower and proper
+             cased words). -->
+        <fieldType name="textSpell" class="solr.TextField" positionIncrementGap="100" omitNorms="true">
+          <analyzer>
+            <tokenizer class="solr.StandardTokenizerFactory"/>
+            <filter class="solr.LowerCaseFilterFactory"/>
+          </analyzer>
+        </fieldType>
+        <!-- A specialized field for geospatial search. If indexed, this fieldType must not be multivalued. -->
+        <fieldType name="location" class="solr.LatLonType" subFieldSuffix="_coordinate"/>
+      </types>
+      <fields>
+        <!-- Valid attributes for fields:
+         name: mandatory - the name for the field
+         type: mandatory - the name of a previously defined type from the
+           <types> section
+         indexed: true if this field should be indexed (searchable or sortable)
+         stored: true if this field should be retrievable
+         compressed: [false] if this field should be stored using gzip compression
+           (this will only apply if the field type is compressable; among
+           the standard field types, only TextField and StrField are)
+         multiValued: true if this field may contain multiple values per document
+         omitNorms: (expert) set to true to omit the norms associated with
+           this field (this disables length normalization and index-time
+           boosting for the field, and saves some memory).  Only full-text
+           fields or fields that need an index-time boost need norms.
+         termVectors: [false] set to true to store the term vector for a
+           given field.
+           When using MoreLikeThis, fields used for similarity should be
+           stored for best performance.
+         termPositions: Store position information with the term vector.
+           This will increase storage costs.
+         termOffsets: Store offset information with the term vector. This
+           will increase storage costs.
+         default: a value that should be used if no value is specified
+           when adding a document.
+       -->
+        <!-- *** This field is used by Sunspot! *** -->
+        <field name="id" stored="true" type="string" multiValued="false" indexed="true"/>
+        <!-- *** This field is used by Sunspot! *** -->
+        <field name="type" stored="false" type="string" multiValued="true" indexed="true"/>
+        <!-- *** This field is used by Sunspot! *** -->
+        <field name="class_name" stored="false" type="string" multiValued="false" indexed="true"/>
+        <!-- *** This field is used by Sunspot! *** -->
+        <field name="text" stored="false" type="string" multiValued="true" indexed="true"/>
+        <!-- *** This field is used by Sunspot! *** -->
+        <field name="lat" stored="true" type="tdouble" multiValued="false" indexed="true"/>
+        <!-- *** This field is used by Sunspot! *** -->
+        <field name="lng" stored="true" type="tdouble" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="random_*" stored="false" type="rand" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="_local*" stored="false" type="tdouble" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_text" stored="false" type="text" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_texts" stored="true" type="text" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_b" stored="false" type="boolean" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_bm" stored="false" type="boolean" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_bs" stored="true" type="boolean" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_bms" stored="true" type="boolean" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_d" stored="false" type="tdate" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_dm" stored="false" type="tdate" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_ds" stored="true" type="tdate" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_dms" stored="true" type="tdate" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_e" stored="false" type="tdouble" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_em" stored="false" type="tdouble" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_es" stored="true" type="tdouble" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_ems" stored="true" type="tdouble" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_f" stored="false" type="tfloat" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_fm" stored="false" type="tfloat" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_fs" stored="true" type="tfloat" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_fms" stored="true" type="tfloat" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_i" stored="false" type="tint" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_im" stored="false" type="tint" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_is" stored="true" type="tint" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_ims" stored="true" type="tint" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_l" stored="false" type="tlong" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_lm" stored="false" type="tlong" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_ls" stored="true" type="tlong" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_lms" stored="true" type="tlong" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_s" stored="false" type="string" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_sm" stored="false" type="string" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_ss" stored="true" type="string" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_sms" stored="true" type="string" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_it" stored="false" type="tint" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_itm" stored="false" type="tint" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_its" stored="true" type="tint" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_itms" stored="true" type="tint" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_ft" stored="false" type="tfloat" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_ftm" stored="false" type="tfloat" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_fts" stored="true" type="tfloat" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_ftms" stored="true" type="tfloat" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_dt" stored="false" type="tdate" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_dtm" stored="false" type="tdate" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_dts" stored="true" type="tdate" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_dtms" stored="true" type="tdate" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_textv" stored="false" termVectors="true" type="text" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_textsv" stored="true" termVectors="true" type="text" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_et" stored="false" termVectors="true" type="tdouble" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_etm" stored="false" termVectors="true" type="tdouble" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_ets" stored="true" termVectors="true" type="tdouble" multiValued="false" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_etms" stored="true" termVectors="true" type="tdouble" multiValued="true" indexed="true"/>
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_dr" stored="false" type="daterange" multiValued="false" indexed="true" />
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_drm" stored="false" type="daterange" multiValued="true" indexed="true" />
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_drs" stored="true" type="daterange" multiValued="false" indexed="true" />
+        <!-- *** This dynamicField is used by Sunspot! *** -->
+        <dynamicField name="*_drms" stored="true" type="daterange" multiValued="true" indexed="true" />
+
+        <!-- Type used to index the lat and lon components for the "location" FieldType -->
+        <dynamicField name="*_coordinate"  type="tdouble" indexed="true"  stored="false" multiValued="false"/>
+        <dynamicField name="*_p" type="location" indexed="true" stored="true" multiValued="false"/>
+
+        <dynamicField name="*_ll" stored="false" type="location" multiValued="false" indexed="true"/>
+        <dynamicField name="*_llm" stored="false" type="location" multiValued="true" indexed="true"/>
+        <dynamicField name="*_lls" stored="true" type="location" multiValued="false" indexed="true"/>
+        <dynamicField name="*_llms" stored="true" type="location" multiValued="true" indexed="true"/>
+        <field name="textSpell" stored="false" type="textSpell" multiValued="true" indexed="true"/>
+
+        <!-- required by Solr 5 -->
+        <field name="_version_" type="tlong" indexed="true" stored="true" multiValued="false" />
+      </fields>
+
+      <!-- Field to use to determine and enforce document uniqueness.
+          Unless this field is marked with required="false", it will be a required field
+       -->
+      <uniqueKey>id</uniqueKey>
+      <!-- copyField commands copy one field to another at the time a document
+            is added to the index.  It's used either to index the same field differently,
+            or to add multiple fields to the same field for easier/faster
+            searching.  -->
+
+      <!-- Use copyField to copy the fields you want to run spell checking
+           on into one field. For example: -->
+      <copyField source="*_text"  dest="textSpell" />
+      <copyField source="*_s"  dest="textSpell" />
+    </schema>
+  solrconfig.xml: "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<!--\n Licensed to
+    the Apache Software Foundation (ASF) under one or more\n contributor license agreements.
+    \ See the NOTICE file distributed with\n this work for additional information
+    regarding copyright ownership.\n The ASF licenses this file to You under the Apache
+    License, Version 2.0\n (the \"License\"); you may not use this file except in
+    compliance with\n the License.  You may obtain a copy of the License at\n\n     http://www.apache.org/licenses/LICENSE-2.0\n\n
+    Unless required by applicable law or agreed to in writing, software\n distributed
+    under the License is distributed on an \"AS IS\" BASIS,\n WITHOUT WARRANTIES OR
+    CONDITIONS OF ANY KIND, either express or implied.\n See the License for the specific
+    language governing permissions and\n limitations under the License.\n-->\n\n<!--
+    \n     For more details about configurations options that may appear in\n     this
+    file, see http://wiki.apache.org/solr/SolrConfigXml. \n-->\n<config>\n  <!-- In
+    all configuration below, a prefix of \"solr.\" for class names\n       is an alias
+    that causes solr to search appropriate packages,\n       including org.apache.solr.(search|update|request|core|analysis)\n\n
+    \      You may also specify a fully qualified Java classname if you\n       have
+    your own custom plugins.\n    -->\n\n  <!-- Controls what version of Lucene various
+    components of Solr\n       adhere to.  Generally, you want to use the latest version
+    to\n       get all bug fixes and improvements. It is highly recommended\n       that
+    you fully re-index after changing this setting as it can\n       affect both how
+    text is indexed and queried.\n  -->\n  <luceneMatchVersion>7.1.0</luceneMatchVersion>\n\n
+    \ <!-- Data Directory\n\n       Used to specify an alternate directory to hold
+    all index data\n       other than the default ./data under the Solr home.  If\n
+    \      replication is in use, this should match the replication\n       configuration.\n
+    \   -->\n  <dataDir>${solr.data.dir:}</dataDir>\n\n\n  <!-- The DirectoryFactory
+    to use for indexes.\n       \n       solr.StandardDirectoryFactory is filesystem\n
+    \      based and tries to pick the best implementation for the current\n       JVM
+    and platform.  solr.NRTCachingDirectoryFactory, the default,\n       wraps solr.StandardDirectoryFactory
+    and caches small files in memory\n       for better NRT performance.\n\n       One
+    can force a particular implementation via solr.MMapDirectoryFactory,\n       solr.NIOFSDirectoryFactory,
+    or solr.SimpleFSDirectoryFactory.\n\n       solr.RAMDirectoryFactory is memory
+    based, not\n       persistent, and doesn't work with replication.\n    -->\n  <directoryFactory
+    name=\"DirectoryFactory\" \n                    class=\"${solr.directoryFactory:solr.NRTCachingDirectoryFactory}\">\n
+    \ </directoryFactory> \n\n  <!-- The CodecFactory for defining the format of the
+    inverted index.\n       The default implementation is SchemaCodecFactory, which
+    is the official Lucene\n       index format, but hooks into the schema to provide
+    per-field customization of\n       the postings lists and per-document values
+    in the fieldType element\n       (postingsFormat/docValuesFormat). Note that most
+    of the alternative implementations\n       are experimental, so if you choose
+    to customize the index format, it's a good\n       idea to convert back to the
+    official format e.g. via IndexWriter.addIndexes(IndexReader)\n       before upgrading
+    to a newer version to avoid unnecessary reindexing.\n  -->\n  <codecFactory class=\"solr.SchemaCodecFactory\"/>\n\n
+    \ <schemaFactory class=\"ClassicIndexSchemaFactory\"/>\n\n  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n
+    \      Index Config - These settings control low-level behavior of indexing\n
+    \      Most example settings here show the default value, but are commented\n
+    \      out, to more easily see where customizations have been made.\n       \n
+    \      Note: This replaces <indexDefaults> and <mainIndex> from older versions\n
+    \      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->\n
+    \ <indexConfig>\n\n    <!-- LockFactory \n\n         This option specifies which
+    Lucene LockFactory implementation\n         to use.\n      \n         single =
+    SingleInstanceLockFactory - suggested for a\n                  read-only index
+    or when there is no possibility of\n                  another process trying to
+    modify the index.\n         native = NativeFSLockFactory - uses OS native file
+    locking.\n                  Do not use when multiple solr webapps in the same\n
+    \                 JVM are attempting to share a single index.\n         simple
+    = SimpleFSLockFactory  - uses a plain file for locking\n\n         Defaults: 'native'
+    is default for Solr3.6 and later, otherwise\n                   'simple' is the
+    default\n\n         More details on the nuances of each LockFactory...\n         http://wiki.apache.org/lucene-java/AvailableLockFactories\n
+    \   -->\n    <lockType>${solr.lock.type:native}</lockType>\n\n    <!-- Lucene
+    Infostream\n       \n         To aid in advanced debugging, Lucene provides an
+    \"InfoStream\"\n         of detailed information when indexing.\n\n         Setting
+    the value to true will instruct the underlying Lucene\n         IndexWriter to
+    write its info stream to solr's log. By default,\n         this is enabled here,
+    and controlled through log4j.properties.\n      -->\n     <infoStream>true</infoStream>\n
+    \ </indexConfig>\n\n\n  <!-- JMX\n       \n       This example enables JMX if
+    and only if an existing MBeanServer\n       is found, use this if you want to
+    configure JMX through JVM\n       parameters. Remove this to disable exposing
+    Solr configuration\n       and statistics to JMX.\n\n       For more details see
+    http://wiki.apache.org/solr/SolrJmx\n    -->\n  <jmx />\n  <!-- If you want to
+    connect to a particular server, specify the\n       agentId \n    -->\n  <!--
+    <jmx agentId=\"myAgent\" /> -->\n  <!-- If you want to start a new MBeanServer,
+    specify the serviceUrl -->\n  <!-- <jmx serviceUrl=\"service:jmx:rmi:///jndi/rmi://localhost:9999/solr\"/>\n
+    \   -->\n\n  <!-- The default high-performance update handler -->\n  <updateHandler
+    class=\"solr.DirectUpdateHandler2\">\n\n    <!-- Enables a transaction log, used
+    for real-time get, durability, and\n         and solr cloud replica recovery.
+    \ The log can grow as big as\n         uncommitted changes to the index, so use
+    of a hard autoCommit\n         is recommended (see below).\n         \"dir\" -
+    the target directory for transaction logs, defaults to the\n                solr
+    data directory.  --> \n    <updateLog>\n      <str name=\"dir\">${solr.ulog.dir:}</str>\n
+    \   </updateLog>\n \n    <!-- AutoCommit\n\n         Perform a hard commit automatically
+    under certain conditions.\n         Instead of enabling autoCommit, consider using
+    \"commitWithin\"\n         when adding documents. \n\n         http://wiki.apache.org/solr/UpdateXmlMessages\n\n
+    \        maxDocs - Maximum number of documents to add since the last\n                   commit
+    before automatically triggering a new commit.\n\n         maxTime - Maximum amount
+    of time in ms that is allowed to pass\n                   since a document was
+    added before automatically\n                   triggering a new commit. \n         openSearcher
+    - if false, the commit causes recent index changes\n           to be flushed to
+    stable storage, but does not cause a new\n           searcher to be opened to
+    make those changes visible.\n\n         If the updateLog is enabled, then it's
+    highly recommended to\n         have some sort of hard autoCommit to limit the
+    log size.\n      -->\n     <autoCommit> \n       <maxTime>${solr.autoCommit.maxTime:60000}</maxTime>
+    \n       <openSearcher>false</openSearcher> \n     </autoCommit>\n\n    <!-- softAutoCommit
+    is like autoCommit except it causes a\n         'soft' commit which only ensures
+    that changes are visible\n         but does not ensure that data is synced to
+    disk.  This is\n         faster and more near-realtime friendly than a hard commit.\n
+    \     -->\n     <autoSoftCommit> \n       <maxTime>${solr.autoSoftCommit.maxTime:15000}</maxTime>
+    \n     </autoSoftCommit>\n\n  </updateHandler>\n  \n  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n
+    \      Query section - these settings control query time things like caches\n
+    \      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->\n
+    \ <query>\n    <!-- Max Boolean Clauses\n\n         Maximum number of clauses
+    in each BooleanQuery,  an exception\n         is thrown if exceeded.\n\n         **
+    WARNING **\n         \n         This option actually modifies a global Lucene
+    property that\n         will affect all SolrCores.  If multiple solrconfig.xml
+    files\n         disagree on this property, the value at any given moment will\n
+    \        be based on the last SolrCore to be initialized.\n         \n      -->\n
+    \   <maxBooleanClauses>1024</maxBooleanClauses>\n\n\n    <!-- Solr Internal Query
+    Caches\n\n         There are two implementations of cache available for Solr,\n
+    \        LRUCache, based on a synchronized LinkedHashMap, and\n         FastLRUCache,
+    based on a ConcurrentHashMap.  \n\n         FastLRUCache has faster gets and slower
+    puts in single\n         threaded operation and thus is generally faster than
+    LRUCache\n         when the hit ratio of the cache is high (> 75%), and may be\n
+    \        faster under other scenarios on multi-cpu systems.\n    -->\n\n    <!--
+    Filter Cache\n\n         Cache used by SolrIndexSearcher for filters (DocSets),\n
+    \        unordered sets of *all* documents that match a query.  When a\n         new
+    searcher is opened, its caches may be prepopulated or\n         \"autowarmed\"
+    using data from caches in the old searcher.\n         autowarmCount is the number
+    of items to prepopulate.  For\n         LRUCache, the autowarmed items will be
+    the most recently\n         accessed items.\n\n         Parameters:\n           class
+    - the SolrCache implementation LRUCache or\n               (LRUCache or FastLRUCache)\n
+    \          size - the maximum number of entries in the cache\n           initialSize
+    - the initial capacity (number of entries) of\n               the cache.  (see
+    java.util.HashMap)\n           autowarmCount - the number of entries to prepopulate
+    from\n               and old cache.  \n      -->\n    <filterCache class=\"solr.FastLRUCache\"\n
+    \                size=\"512\"\n                 initialSize=\"512\"\n                 autowarmCount=\"0\"/>\n\n
+    \   <!-- Query Result Cache\n         \n         Caches results of searches -
+    ordered lists of document ids\n         (DocList) based on a query, a sort, and
+    the range of documents requested.  \n      -->\n    <queryResultCache class=\"solr.LRUCache\"\n
+    \                    size=\"512\"\n                     initialSize=\"512\"\n
+    \                    autowarmCount=\"0\"/>\n   \n    <!-- Document Cache\n\n         Caches
+    Lucene Document objects (the stored fields for each\n         document).  Since
+    Lucene internal document ids are transient,\n         this cache will not be autowarmed.
+    \ \n      -->\n    <documentCache class=\"solr.LRUCache\"\n                   size=\"512\"\n
+    \                  initialSize=\"512\"\n                   autowarmCount=\"0\"/>\n
+    \   \n    <!-- custom cache currently used by block join --> \n    <cache name=\"perSegFilter\"\n
+    \     class=\"solr.search.LRUCache\"\n      size=\"10\"\n      initialSize=\"0\"\n
+    \     autowarmCount=\"10\"\n      regenerator=\"solr.NoOpRegenerator\" />\n\n
+    \   <!-- Lazy Field Loading\n\n         If true, stored fields that are not requested
+    will be loaded\n         lazily.  This can result in a significant speed improvement\n
+    \        if the usual case is to not load all stored fields,\n         especially
+    if the skipped fields are large compressed text\n         fields.\n    -->\n    <enableLazyFieldLoading>true</enableLazyFieldLoading>\n\n
+    \  <!-- Result Window Size\n\n        An optimization for use with the queryResultCache.
+    \ When a search\n        is requested, a superset of the requested number of document
+    ids\n        are collected.  For example, if a search for a particular query\n
+    \       requests matching documents 10 through 19, and queryWindowSize is 50,\n
+    \       then documents 0 through 49 will be collected and cached.  Any further\n
+    \       requests in that range can be satisfied via the cache.  \n     -->\n   <queryResultWindowSize>20</queryResultWindowSize>\n\n
+    \  <!-- Maximum number of documents to cache for any entry in the\n        queryResultCache.
+    \n     -->\n   <queryResultMaxDocsCached>200</queryResultMaxDocsCached>\n\n    <!--
+    Use Cold Searcher\n\n         If a search request comes in and there is no current\n
+    \        registered searcher, then immediately register the still\n         warming
+    searcher and use it.  If \"false\" then all requests\n         will block until
+    the first searcher is done warming.\n      -->\n    <useColdSearcher>false</useColdSearcher>\n\n
+    \   <!-- Max Warming Searchers\n         \n         Maximum number of searchers
+    that may be warming in the\n         background concurrently.  An error is returned
+    if this limit\n         is exceeded.\n\n         Recommend values of 1-2 for read-only
+    slaves, higher for\n         masters w/o cache warming.\n      -->\n    <maxWarmingSearchers>2</maxWarmingSearchers>\n\n
+    \ </query>\n\n\n  <!-- Request Dispatcher\n\n       This section contains instructions
+    for how the SolrDispatchFilter\n       should behave when processing requests
+    for this SolrCore.\n\n       handleSelect is a legacy option that affects the
+    behavior of requests\n       such as /select?qt=XXX\n\n       handleSelect=\"true\"
+    will cause the SolrDispatchFilter to process\n       the request and dispatch
+    the query to a handler specified by the \n       \"qt\" param, assuming \"/select\"
+    isn't already registered.\n\n       handleSelect=\"false\" will cause the SolrDispatchFilter
+    to\n       ignore \"/select\" requests, resulting in a 404 unless a handler\n
+    \      is explicitly registered with the name \"/select\"\n\n       handleSelect=\"true\"
+    is not recommended for new users, but is the default\n       for backwards compatibility\n
+    \   -->\n  <requestDispatcher handleSelect=\"false\" >\n    <!-- Request Parsing\n\n
+    \        These settings indicate how Solr Requests may be parsed, and\n         what
+    restrictions may be placed on the ContentStreams from\n         those requests\n\n
+    \        enableRemoteStreaming - enables use of the stream.file\n         and
+    stream.url parameters for specifying remote streams.\n\n         multipartUploadLimitInKB
+    - specifies the max size (in KiB) of\n         Multipart File Uploads that Solr
+    will allow in a Request.\n         \n         formdataUploadLimitInKB - specifies
+    the max size (in KiB) of\n         form data (application/x-www-form-urlencoded)
+    sent via\n         POST. You can use POST to pass request parameters not\n         fitting
+    into the URL.\n         \n         addHttpRequestToContext - if set to true, it
+    will instruct\n         the requestParsers to include the original HttpServletRequest\n
+    \        object in the context map of the SolrQueryRequest under the \n         key
+    \"httpRequest\". It will not be used by any of the existing\n         Solr components,
+    but may be useful when developing custom \n         plugins.\n         \n         ***
+    WARNING ***\n         The settings below authorize Solr to fetch remote files,
+    You\n         should make sure your system has some authentication before\n         using
+    enableRemoteStreaming=\"true\"\n\n      --> \n    <requestParsers enableRemoteStreaming=\"true\"
+    \n                    multipartUploadLimitInKB=\"2048000\"\n                    formdataUploadLimitInKB=\"2048\"\n
+    \                   addHttpRequestToContext=\"false\"/>\n\n    <!-- HTTP Caching\n\n
+    \        Set HTTP caching related parameters (for proxy caches and clients).\n\n
+    \        The options below instruct Solr not to output any HTTP Caching\n         related
+    headers\n      -->\n    <httpCaching never304=\"true\" />\n\n  </requestDispatcher>\n\n
+    \ <!-- Request Handlers \n\n       http://wiki.apache.org/solr/SolrRequestHandler\n\n
+    \      Incoming queries will be dispatched to a specific handler by name\n       based
+    on the path specified in the request.\n\n       Legacy behavior: If the request
+    path uses \"/select\" but no Request\n       Handler has that name, and if handleSelect=\"true\"
+    has been specified in\n       the requestDispatcher, then the Request Handler
+    is dispatched based on\n       the qt parameter.  Handlers without a leading '/'
+    are accessed this way\n       like so: http://host/app/[core/]select?qt=name  If
+    no qt is\n       given, then the requestHandler that declares default=\"true\"
+    will be\n       used or the one named \"standard\".\n\n       If a Request Handler
+    is declared with startup=\"lazy\", then it will\n       not be initialized until
+    the first request that uses it.\n\n    -->\n  <!-- SearchHandler\n\n       http://wiki.apache.org/solr/SearchHandler\n\n
+    \      For processing Search Queries, the primary Request Handler\n       provided
+    with Solr is \"SearchHandler\" It delegates to a sequent\n       of SearchComponents
+    (see below) and supports distributed\n       queries across multiple shards\n
+    \   -->\n  <requestHandler name=\"/select\" class=\"solr.SearchHandler\">\n    <lst
+    name=\"defaults\">\n      <str name=\"spellcheck.dictionary\">default</str>\n
+    \     <str name=\"spellcheck.extendedResults\">true</str>\n      <str name=\"spellcheck.collate\">true</str>\n
+    \     <str name=\"df\">text</str>\n      <str name=\"q.op\">AND</str>\n    </lst>\n
+    \   <arr name=\"last-components\">\n      <str>spellcheck</str>\n    </arr>\n
+    \ </requestHandler>\n\n  <!-- A request handler that returns indented JSON by
+    default -->\n  <requestHandler name=\"/query\" class=\"solr.SearchHandler\">\n
+    \    <lst name=\"defaults\">\n       <str name=\"echoParams\">explicit</str>\n
+    \      <str name=\"wt\">json</str>\n       <str name=\"indent\">true</str>\n       <str
+    name=\"df\">text</str>\n       <str name=\"q.op\">AND</str>\n     </lst>\n     <arr
+    name=\"last-components\">\n       <str>spellcheck</str>\n     </arr>\n  </requestHandler>\n\n
+    \ <!--\n    The export request handler is used to export full sorted result sets.\n
+    \   Do not change these defaults.\n  -->\n  <requestHandler name=\"/export\" class=\"solr.SearchHandler\">\n
+    \   <lst name=\"invariants\">\n      <str name=\"rq\">{!xport}</str>\n      <str
+    name=\"wt\">xsort</str>\n      <str name=\"distrib\">false</str>\n    </lst>\n\n
+    \   <arr name=\"components\">\n      <str>query</str>\n    </arr>\n  </requestHandler>\n\n\n
+    \ <initParams path=\"/update/**,/query,/select,/tvrh,/elevate,/spell\">\n    <lst
+    name=\"defaults\">\n      <str name=\"df\">text</str>\n    </lst>\n  </initParams>\n\n
+    \ <!-- Field Analysis Request Handler\n\n       RequestHandler that provides much
+    the same functionality as\n       analysis.jsp. Provides the ability to specify
+    multiple field\n       types and field names in the same request and outputs\n
+    \      index-time and query-time analysis for each of them.\n\n       Request
+    parameters are:\n       analysis.fieldname - field name whose analyzers are to
+    be used\n\n       analysis.fieldtype - field type whose analyzers are to be used\n
+    \      analysis.fieldvalue - text for index-time analysis\n       q (or analysis.q)
+    - text for query time analysis\n       analysis.showmatch (true|false) - When
+    set to true and when\n           query analysis is performed, the produced tokens
+    of the\n           field value analysis will be marked as \"matched\" for every\n
+    \          token that is produces by the query analysis\n   -->\n  <requestHandler
+    name=\"/analysis/field\" \n                  startup=\"lazy\"\n                  class=\"solr.FieldAnalysisRequestHandler\"
+    />\n\n\n  <!-- Document Analysis Handler\n\n       http://wiki.apache.org/solr/AnalysisRequestHandler\n\n
+    \      An analysis handler that provides a breakdown of the analysis\n       process
+    of provided documents. This handler expects a (single)\n       content stream
+    with the following format:\n\n       <docs>\n         <doc>\n           <field
+    name=\"id\">1</field>\n           <field name=\"name\">The Name</field>\n           <field
+    name=\"text\">The Text Value</field>\n         </doc>\n         <doc>...</doc>\n
+    \        <doc>...</doc>\n         ...\n       </docs>\n\n    Note: Each document
+    must contain a field which serves as the\n    unique key. This key is used in
+    the returned response to associate\n    an analysis breakdown to the analyzed
+    document.\n\n    Like the FieldAnalysisRequestHandler, this handler also supports\n
+    \   query analysis by sending either an \"analysis.query\" or \"q\"\n    request
+    parameter that holds the query text to be analyzed. It\n    also supports the
+    \"analysis.showmatch\" parameter which when set to\n    true, all field tokens
+    that match the query tokens will be marked\n    as a \"match\". \n  -->\n  <requestHandler
+    name=\"/analysis/document\" \n                  class=\"solr.DocumentAnalysisRequestHandler\"
+    \n                  startup=\"lazy\" />\n\n  <!-- Echo the request contents back
+    to the client -->\n  <requestHandler name=\"/debug/dump\" class=\"solr.DumpRequestHandler\"
+    >\n    <lst name=\"defaults\">\n     <str name=\"echoParams\">explicit</str> \n
+    \    <str name=\"echoHandler\">true</str>\n    </lst>\n  </requestHandler>\n  \n
+    \ <searchComponent name=\"spellcheck\" class=\"solr.SpellCheckComponent\">\n\n
+    \   <str name=\"queryAnalyzerFieldType\">textSpell</str>\n\n    <!-- Multiple
+    \"Spell Checkers\" can be declared and used by this\n         component\n      -->\n
+    \   <lst name=\"spellchecker\">\n      <str name=\"name\">default</str>\n      <!--
+    change field to textSpell and use copyField in schema.xml\n      to spellcheck
+    multiple fields -->\n      <str name=\"field\">textSpell</str>\n      <str name=\"buildOnCommit\">true</str>\n
+    \   </lst>\n\n    <lst name=\"spellchecker\">\n      <str name=\"name\">example</str>\n
+    \     <str name=\"field\">title_text</str>\n      <str name=\"buildOnCommit\">true</str>\n
+    \     <str name=\"classname\">solr.DirectSolrSpellChecker</str>\n      <!-- the
+    spellcheck distance measure used, the default is the internal levenshtein -->\n
+    \     <str name=\"distanceMeasure\">internal</str>\n      <!-- minimum accuracy
+    needed to be considered a valid spellcheck suggestion -->\n      <float name=\"accuracy\">0.5</float>\n
+    \     <!-- the maximum #edits we consider when enumerating terms: can be 1 or
+    2 -->\n      <int name=\"maxEdits\">2</int>\n      <!-- the minimum shared prefix
+    when enumerating terms -->\n      <int name=\"minPrefix\">1</int>\n      <!--
+    maximum number of inspections per result. -->\n      <int name=\"maxInspections\">5</int>\n
+    \     <!-- minimum length of a query term to be considered for correction -->\n
+    \     <int name=\"minQueryLength\">4</int>\n      <!-- maximum threshold of documents
+    a query term can appear to be considered for correction -->\n      <float name=\"maxQueryFrequency\">0.01</float>\n
+    \     <!-- uncomment this to require suggestions to occur in 1% of the documents\n
+    \          <float name=\"thresholdTokenFrequency\">.01</float>\n      -->\n    </lst>\n\n
+    \   <!-- a spellchecker that can break or combine words.  See \"/spell\" handler
+    below for usage -->\n    <lst name=\"spellchecker\">\n      <str name=\"name\">wordbreak</str>\n
+    \     <str name=\"classname\">solr.WordBreakSolrSpellChecker</str>\n      <str
+    name=\"field\">name</str>\n      <str name=\"combineWords\">true</str>\n      <str
+    name=\"breakWords\">true</str>\n      <int name=\"maxChanges\">10</int>\n    </lst>\n
+    \   -->\n  </searchComponent>\n\n  <!-- Search Components\n\n       Search components
+    are registered to SolrCore and used by \n       instances of SearchHandler (which
+    can access them by name)\n       \n       By default, the following components
+    are available:\n       \n       <searchComponent name=\"query\"     class=\"solr.QueryComponent\"
+    />\n       <searchComponent name=\"facet\"     class=\"solr.FacetComponent\" />\n
+    \      <searchComponent name=\"mlt\"       class=\"solr.MoreLikeThisComponent\"
+    />\n       <searchComponent name=\"highlight\" class=\"solr.HighlightComponent\"
+    />\n       <searchComponent name=\"stats\"     class=\"solr.StatsComponent\" />\n
+    \      <searchComponent name=\"debug\"     class=\"solr.DebugComponent\" />\n
+    \      \n     -->\n\n  <!-- Terms Component\n\n       http://wiki.apache.org/solr/TermsComponent\n\n
+    \      A component to return terms and document frequency of those\n       terms\n
+    \   -->\n  <searchComponent name=\"terms\" class=\"solr.TermsComponent\"/>\n\n
+    \ <!-- A request handler for demonstrating the terms component -->\n  <requestHandler
+    name=\"/terms\" class=\"solr.SearchHandler\" startup=\"lazy\">\n     <lst name=\"defaults\">\n
+    \     <bool name=\"terms\">true</bool>\n      <bool name=\"distrib\">false</bool>\n
+    \   </lst>     \n    <arr name=\"components\">\n      <str>terms</str>\n    </arr>\n
+    \ </requestHandler>\n\n  <requestHandler class=\"solr.MoreLikeThisHandler\" name=\"/mlt\">\n
+    \   <lst name=\"defaults\">\n      <str name=\"mlt.mintf\">1</str>\n      <str
+    name=\"mlt.mindf\">2</str>\n    </lst>\n  </requestHandler>\n\n  <!-- Legacy config
+    for the admin interface -->\n  <admin>\n    <defaultQuery>*:*</defaultQuery>\n
+    \ </admin>\n\n</config>"
