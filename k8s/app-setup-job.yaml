@@ -1,0 +1,59 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: app-setup-job
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      containers:
+        - name: setup
+          image: ghcr.io/YOUR_GITHUB_USERNAME/IMAGE_NAME:0.1.0
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "Waiting for DB..." &&
+              until bundle exec rails db:prepare; do
+                echo "DB not ready. Retrying...";
+                sleep 5;
+              done &&
+
+              echo "Running migrations..." &&
+              bundle exec rails db:migrate &&
+
+              echo "Precompiling assets..." &&
+              bundle exec rake assets:clean &&
+              bundle exec rake assets:precompile &&
+
+              echo "Reindexing Solr..." &&
+              bundle exec rake tess:reindex
+          envFrom:
+            - secretRef:
+                name: app-secrets-env
+          env:
+            - name: RAILS_ENV
+              value: production
+          volumeMounts:
+          - name: uploads
+            mountPath: /code/public/system
+          - name: app-config
+            subPath: tess.yml
+            mountPath: /code/config/tess.yml
+          - name: app-config
+            subPath: secrets.yml
+            mountPath: /code/config/secrets.yml
+      imagePullSecrets:
+      - name: app-secrets-ghcr
+      restartPolicy: Never
+      volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: sidekiq-uploads-pvc
+        - name: app-config
+          secret:
+            secretName: app-secrets-config
+            items:
+              - key: tess.yml
+                path: tess.yml
+              - key: secrets.yml
+                path: secrets.yml
