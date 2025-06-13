@@ -13,6 +13,8 @@ jobs:
           cp env.sample .env
           cp config/tess.example.yml config/tess.yml
           cp config/secrets.example.yml config/secrets.yml
+      - name: Check compose version
+        run: docker compose version
       - name: Build
         run: docker compose build test
       - name: Test
