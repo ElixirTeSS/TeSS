@@ -62,7 +62,7 @@ gem 'simple_token_authentication'
 gem 'sitemap_generator'
 gem 'sitemap-parser'
 gem 'slim'
-gem 'sunspot_rails', github: 'sunspot/sunspot', branch: 'master' # Contains Ruby 3 fixes that are not released
+gem 'sunspot_rails'
 gem 'terser'
 gem 'tess_rdf_extractors', git: 'https://github.com/ElixirTeSS/TeSS_RDF_Extractors', branch: 'master'
 gem 'turbolinks'

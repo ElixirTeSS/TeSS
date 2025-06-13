@@ -61,6 +61,10 @@ class LearningPathTopicsControllerTest < ActionController::TestCase
     get :new
     assert_response :success
 
+    sign_in users(:learning_path_curator)
+    get :new
+    assert_response :success
+
     sign_in users(:admin)
     get :new
     assert_response :success
@@ -97,6 +101,14 @@ class LearningPathTopicsControllerTest < ActionController::TestCase
   #CREATE TEST
   test 'should create learning_path_topic for curator' do
     sign_in users(:curator)
+    assert_difference('LearningPathTopic.count') do
+      post :create, params: { learning_path_topic: { title: @learning_path_topic.title, description: @learning_path_topic.description } }
+    end
+    assert_redirected_to learning_path_topic_path(assigns(:learning_path_topic))
+  end
+
+  test 'should create learning_path_topic for learning_path_curator' do
+    sign_in users(:learning_path_curator)
     assert_difference('LearningPathTopic.count') do
       post :create, params: { learning_path_topic: { title: @learning_path_topic.title, description: @learning_path_topic.description } }
     end
