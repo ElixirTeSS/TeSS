@@ -12,5 +12,4 @@ spec:
   to:
     kind: Service
     name: app-service
-    weight: null
 status: {}

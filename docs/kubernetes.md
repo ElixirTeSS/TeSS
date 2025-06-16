@@ -4,7 +4,7 @@ TeSS can be run using Kubernetes for [production](#production). All Kubernetes m
 
 [*HELM*] However, if you are looking for a more maintainable way for production (e.g., overcoming the multiple repetitions across the numerous k8s manifests), we recommend using the [TeSS Helm repo](https://github.com/ElixirTeSS/TeSS-Helm) especially made for this purpose. Both documentations were created during the same time (= you will find the same steps and informations + tailored to helm for the helm deployment) and should be updated accordingly.
 
-Any modification of this `k8s/` directory must be updated in the [TeSS Helm repo](https://github.com/ElixirTeSS/TeSS-Helm) aswell. Thank you 🙏
+Any modification of this `k8s/` directory must be updated in the [TeSS Helm repo](https://github.com/ElixirTeSS/TeSS-Helm) as well. Thank you 🙏
 
 ## Prerequisites
 
