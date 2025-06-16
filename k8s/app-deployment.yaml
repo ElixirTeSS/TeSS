@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  labels:
+    app: app
+    type: ror-app
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: app
+      type: ror-app
+  template:
+    metadata:
+      name: app-pod
+      labels:
+        app: app
+        type: ror-app
+    spec:
+      containers:
+        - name: tess-app
+          image: ghcr.io/YOUR_GITHUB_USERNAME/IMAGE_NAME:0.1.0
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 800m
+              memory: 768Mi
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          volumeMounts:
+            - name: uploads
+              mountPath: /code/public/system
+            - name: logs
+              mountPath: /code/log
+            - name: app-config
+              subPath: tess.yml
+              mountPath: /code/config/tess.yml
+            - name: app-config
+              subPath: secrets.yml
+              mountPath: /code/config/secrets.yml
+          envFrom:
+            - secretRef:
+                name: app-secrets-env
+          env:
+            - name: RAILS_ENV
+              value: production
+            - name: RAILS_LOG_TO_STDOUT
+              value: "true"
+            - name: RAILS_SERVE_STATIC_FILES
+              value: "true"
+          livenessProbe:
+            httpGet:
+              path: /up
+              port: 3000
+              scheme: HTTP
+            timeoutSeconds: 20
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+      imagePullSecrets:
+      - name: app-secrets-ghcr
+      restartPolicy: Always
+      volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: sidekiq-uploads-pvc
+        - name: logs
+          persistentVolumeClaim:
+            claimName: logs-pvc
+        - name: app-config
+          secret:
+            secretName: app-secrets-config
+            items:
+              - key: tess.yml
+                path: tess.yml
+              - key: secrets.yml
+                path: secrets.yml
