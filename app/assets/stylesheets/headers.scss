@@ -1,10 +1,25 @@
 .unified-header {
+  z-index: 100000;
+  position: sticky;
+  top: 0;
+  background-color: $navbar-default-bg;
+
+  padding-top: 20px;
+  // If header-notice, comment the 4 next lines
+  transition: padding-top 0.3s ease;
+  &.scrolled {
+    padding-top: 0;
+  }
+
   .navbar-brand {
     padding-top: 0;
     padding-bottom: 0;
     img {
-      padding: 10px 5px 5px 5px;
       max-height: $navbar-height;
+      transition: padding 0.3s ease;
+      &.scrolled {
+        padding: 10px 5px 5px 5px;
+      }
     }
   }
 

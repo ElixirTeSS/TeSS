@@ -272,6 +272,18 @@ ul.unstyled {
   @include unstyled-ul;
 }
 
+.navbar {
+  border-radius: 0;
+  font-size: larger;
+  margin-bottom: 20px;
+  transition: font-size 0.3s ease, margin-bottom 0.3s ease;
+
+  &.scrolled {
+    font-size: medium;
+    margin-bottom: 0;
+  }
+}
+
 .nav-simple {
   margin: 0;
   list-style: outside none none;
