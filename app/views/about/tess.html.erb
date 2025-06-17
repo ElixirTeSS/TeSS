@@ -116,7 +116,17 @@
         <%= link_to t('about.links.learn_more_api'),
             developers_path(anchor: 'api'), class: 'btn btn-default' %>
       </div>
+
+      <!-- LINK TESS -->
+      <div id="tess" class="<%= next_about_block(@feature_count += 1) %>">
+        <h3><%= t('about.headings.tess') %></h3>
+        <p><%== t 'about.tess' %></p>
+        <%= link_to t('about.links.learn_more_tess'),
+            'https://tess.elixir-europe.org/about', class: 'btn btn-default' %>
+      </div>
+
     </div>
+
 
     <hr/>
 
