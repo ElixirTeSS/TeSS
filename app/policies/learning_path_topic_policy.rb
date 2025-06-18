@@ -5,11 +5,11 @@ class LearningPathTopicPolicy < ResourcePolicy
   end
 
   def manage?
-    curators_and_admin
+    curators_and_admin || @user&.has_role?(:learning_path_curator)
   end
 
   def create?
-    curators_and_admin
+    manage?
   end
 
 end
