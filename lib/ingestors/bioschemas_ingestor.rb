@@ -19,12 +19,18 @@ module Ingestors
       sitemap_regex = nil
       @verbose = false
       sources = if source_url.downcase.match?(/sitemap(.*)?.xml\Z/)
-                  sitemap_message = "Parsing sitemap: #{source_url}\n"
+                  sitemap_message = "Parsing .xml sitemap: #{source_url}\n"
                   urls = SitemapParser.new(source_url, {
                     recurse: true,
                     url_regex: sitemap_regex,
                     headers: { 'User-Agent' => config[:user_agent] }
                   }).to_a.uniq.map(&:strip)
+                  sitemap_message << "\n - #{urls.count} URLs found"
+                  @messages << sitemap_message
+                  urls
+                elsif source_url.downcase.match?(/sitemap(.*)?.txt\Z/)
+                  sitemap_message = "Parsing .txt sitemap: #{source_url}\n"
+                  urls = open_url(source_url).to_a.uniq.map(&:strip)
                   sitemap_message << "\n - #{urls.count} URLs found"
                   @messages << sitemap_message
                   urls
@@ -35,6 +41,7 @@ module Ingestors
       provider_events = []
       provider_materials = []
       totals = Hash.new(0)
+      no_bioschema_urls = "Bioschemas not found in:\n"
       sources.each do |url|
         source = open_url(url)
         output = read_content(source, url: url)
@@ -44,6 +51,7 @@ module Ingestors
           output[:totals].each do |key, value|
             totals[key] += value
           end
+          no_bioschema_urls << "\n - #{url}" if !source.nil? && output[:totals].values.sum.zero?
         end
       end
 
@@ -54,6 +62,8 @@ module Ingestors
         end
         @messages << bioschemas_summary
       end
+
+      @messages << no_bioschema_urls
 
       deduplicate(provider_events).each do |event_params|
         add_event(event_params)
