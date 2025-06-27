@@ -30,5 +30,6 @@
     <%= link_to "View all #{name.pluralize(shown_count)} & filter", inc_expired_link, class: 'btn btn-xs btn-default' %>
   <% end %>
 
+  <%= render partial: 'events/event_timezone_control' %>
   <%= render partial: 'common/masonry_grid', locals: { objects: resources } %>
 </div>
