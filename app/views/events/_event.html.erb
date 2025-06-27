@@ -34,7 +34,7 @@
           <%= elixir_node_icon %>
         <% end -%>
 
-        <p><%= neatly_printed_date_range(event.start, event.end) %></p>
+        <%= render partial: 'events/event_time_div', locals: {event: event} %>
 
         <% if event.onsite? %>
           <% location = [event.city, event.country].reject { |field_value| field_value.blank? }.join(", ") %>

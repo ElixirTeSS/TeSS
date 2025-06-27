@@ -634,6 +634,11 @@ en:
     prompts:
       language: 'Select a language...'
     long: 'Long events'
+    date: 'Date'
+    labels:
+      start: 'Start (in specified time zone)'
+      end: 'End (in specified time zone)'
+    view_event: 'View event'
     pick_date: 'Pick a range of dates for a better collection of events.'
     show_past_events:
       one: Show %{count} past event
