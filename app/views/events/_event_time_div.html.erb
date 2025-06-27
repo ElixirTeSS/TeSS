@@ -1,0 +1,13 @@
+<% # Fake the timezone if passed as an argument
+   if local_assigns[:timezone]
+     saved_timezone = event.timezone
+     event.timezone = timezone
+   end %>
+<div id="event-time-<%= event.id %>" data-event-id="<%= event.id %>" class="time-with-zone">
+  <p class="date no-spacing">
+    <strong class="text-primary"><%= t('events.date') %>: </strong>
+    <%= neatly_printed_date_range(event.start_local, event.end_local) %>
+  </p>
+  <%= display_attribute(event, :timezone) %>
+</div>
+<% event.timezone = saved_timezone if local_assigns[:timezone] %>
