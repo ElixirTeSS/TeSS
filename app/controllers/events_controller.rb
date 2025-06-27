@@ -226,6 +226,35 @@ class EventsController < ApplicationController
     redirect_to @event.url, allow_other_host: true
   end
 
+  def event_time_data
+    # Serve JSON of some DOM ids that need updating, with rendered HTML content
+    respond_to do |format|
+      event_ids = params[:event_ids]
+      timezone = session[:tz]
+      browser_timezone = params[:browser_timezone]
+
+      # Render times for the following event ids
+      out = (event_ids || []).map do |event_id|
+        event = Event.find(event_id.to_i)
+        html = render_to_string partial: 'events/event_time_div',
+                                formats: [:html],
+                                locals: { event: event, timezone: timezone }
+        { id: "#event-time-#{event.id}",
+          html: html}
+      end
+      if browser_timezone
+        # Render timezone controls
+        control_html = render_to_string partial: 'events/event_timezone_control',
+                                        formats: [:html],
+                                        locals: { browser_timezone: browser_timezone,
+                                                  timezone: browser_timezone }
+        out << { id: '#timezone-controls',
+                 html: control_html }
+      end
+      format.json { render json: out}
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

@@ -1,0 +1,58 @@
+<%# If browser_timezone is not set, do not render user interface %>
+<div id="timezone-controls">
+  <div class="center-block well">
+
+    <p class='text-center'>
+      <span id="timezone-display">
+        <span class="timezone-display-value <%= 'unselected' if session[:tz].present? %>">
+          <%= t('events.timezone_controls.all_events_in_local_html') %>
+        </span>
+        <% if local_assigns[:browser_timezone] %>
+          <span class="timezone-display-value <%= 'unselected' if session[:tz].blank? %>">
+          <%= t('events.timezone_controls.all_events_in_timezone_html',
+              timezone: normalized_icu_timezone(browser_timezone)) %>
+          </span>
+        <% end %>
+      </span>
+
+      <% if local_assigns[:browser_timezone] %>
+        <a data-toggle="collapse" href="#timezone-select" class="show-timezone-controls"
+           role="button" aria-expanded="false" aria-controls="collapseExample">
+          <%= t('events.timezone_controls.controls_show') %>
+      </a>
+      <% end %>
+    </p>
+
+    <% if local_assigns[:browser_timezone] %>
+      <div class="collapse" id="timezone-select">
+        <hr>
+        <i class="fa fa-window-close close-timezone-controls"
+           aria-label="<%= t('events.timezone_controls.close') %>"></i>
+
+        <fieldset>
+          <legend><%= t('events.timezone_controls.controls_legend') %></legend>
+
+          <div>
+            <input type="radio" id="event-timezone-choice"
+                   name="timezone-choice" value="reset"
+                   <%= 'checked' if session[:tz].blank? %>  />&nbsp;
+            <label for="event-timezone-choice">
+              <%= t('events.timezone_controls.local_time_select') %>
+            </label>
+          </div>
+
+          <div>
+            <input type="radio" id="browser-timezone-choice"
+                   name="timezone-choice" value="<%= browser_timezone %>"
+                   <%= 'checked' if session[:tz].present? %>  />&nbsp;
+            <label for="browser-timezone-choice">
+              <%= t('events.timezone_controls.timezone_select_html',
+                    timezone: normalized_icu_timezone(browser_timezone)) %>
+            </label>
+          </div>
+        </fieldset>
+      </div>
+    <% end %>
+
+  </div>
+</div>
