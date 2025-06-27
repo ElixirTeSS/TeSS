@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   include PublicActivity::StoreController
 
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :timezone_from_params_or_session
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -159,4 +160,16 @@ class ApplicationController < ActionController::Base
   def allow_embedding
     response.headers.delete 'X-Frame-Options'
   end
+
+  def timezone_from_params_or_session
+    # TODO? have a list of acceptable time zones, maybe via config?
+    tz = params[:tz] || session['tz']
+
+    session['tz'] = if (tz.blank? || tz == 'reset')
+                      nil
+                    elsif ActiveSupport::TimeZone[tz].present?
+                      tz
+                    end
+  end
+
 end
