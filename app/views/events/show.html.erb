@@ -58,6 +58,8 @@
       </div>
 
       <div class="my-3">
+
+        <%= render partial: 'events/event_timezone_control' %>
         <%= render partial: 'event_time_div', locals: {event: @event} %>
 
         <%= display_attribute(@event, :duration) %>
