@@ -8,6 +8,6 @@
     <strong class="text-primary"><%= t('events.date') %>: </strong>
     <%= neatly_printed_date_range(event.start_local, event.end_local) %>
   </p>
-  <%= display_attribute(event, :timezone) %>
+  <%= display_attribute(event, :timezone) {|v| normalized_icu_timezone(v) } %>
 </div>
 <% event.timezone = saved_timezone if local_assigns[:timezone] %>

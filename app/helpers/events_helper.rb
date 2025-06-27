@@ -148,14 +148,19 @@ module EventsHelper
       end
 
       if finish.blank? || differing.empty?
-        out = start.strftime(DATE_STRF)
+        out = l(start, format: DATE_STRF)
         # Don't show time component if they are set to midnight since that is the default if no time specified.
         # Revisit this decision if any events start occurring at midnight (timezone issue?)!
 
         show_time = (start.hour != 0 || start.min != 0) || (finish.present? && (finish.hour != 0 || finish.min != 0))
         if show_time
-          out << " @ #{start.strftime(TIME_STRF)}"
-          out << " - #{finish.strftime(TIME_STRF)}" if finish && (finish.hour != start.hour || finish.min != start.min)
+          date_time_separator = if (I18n.locale.to_s == 'fr')
+                                  ', '
+                                else
+                                  ' @ '
+                                end
+          out << "#{date_time_separator}#{l(start, format: TIME_STRF)}"
+          out << " - #{l(finish, format: TIME_STRF)}" if finish && (finish.hour != start.hour || finish.min != start.min)
         end
         out
       elsif differing.any?
@@ -163,4 +168,16 @@ module EventsHelper
       end
     end
   end
+
+  def normalized_icu_timezone(name)
+    # Get more standardized name from TZinfo...
+    tz_name = ActiveSupport::TimeZone[name].tzinfo.name
+    # The ICU library we use want's underscores not spaces ...
+    tz_name = tz_name.gsub(' ', '_')
+    formatter = ICU::TimeFormatting.create(locale: I18n.locale.to_s,
+                                           zone: tz_name,
+                                           skeleton: '%zzzz')
+    formatter.format(Time.now)
+  end
+
 end
