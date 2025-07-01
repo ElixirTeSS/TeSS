@@ -118,9 +118,19 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "should update profile" do
-    sign_in users(:regular_user)
-    patch :update, params: { id: @user, user: { profile_attributes: { email: 'hot@mail.com' } } }
+    sign_in @user
+    profile_id = @user.profile.id
+    patch :update, params: { id: @user, user: { profile_attributes: { id: profile_id, email: 'hot@mail.com' } } }
     assert_redirected_to user_path(assigns(:user))
+    assert_equal profile_id, assigns(:user).profile.id
+  end
+
+  test "should not update profile ID" do
+    sign_in @user
+    another_profile_id = users(:another_regular_user).profile.id
+    patch :update, params: { id: @user, user: { profile_attributes: { id: another_profile_id, email: 'hot@mail.com' } } }
+    assert_response :forbidden
+    assert_not_equal another_profile_id, @user.reload.profile.id
   end
 
   test "should reset token" do
