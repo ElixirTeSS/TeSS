@@ -458,4 +458,16 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :success
     refute assigns(:users).include?(users(:basic_user))
   end
+
+  test 'should get edit for trainers feature enabled' do
+    user = users(:trainer_user)
+    sign_in(user)
+    get :edit, params: { id: user }
+    assert_response :success
+
+    user = users(:admin_trainer)
+    sign_in(user)
+    get :edit, params: { id: user }
+    assert_response :success
+  end
 end

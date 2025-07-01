@@ -37,7 +37,7 @@
         <% end %>
 
         <% if @user.is_admin?%>
-          <%= f.input :check_broken_scrapers, label: 'Receive emails with scrapers that have not found anything last period.' %>
+          <%= user_f.input :check_broken_scrapers %>
         <% end %>
 
         <% if TeSS::Config.feature['trainers'] %>
