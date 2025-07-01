@@ -94,7 +94,7 @@ class Profile < ApplicationRecord
   end
 
   def reindex
-    if Rails.env.production?
+    if TeSS::Config.solr_enabled
       Trainer.reindex
     end
   end
