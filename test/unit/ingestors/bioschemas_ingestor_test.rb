@@ -36,7 +36,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_equal 25, sample.capacity
   end
 
-  test 'ingest bioschemas from a sitemap' do
+  test 'ingest bioschemas from a sitemap_xml' do
     mock_bioschemas('https://training.galaxyproject.org/sitemap.xml', 'gtn/sitemap.xml')
     mock_bioschemas('https://training.galaxyproject.org/training-material/topics/introduction/slides/introduction.html', 'gtn/slides-introduction.html')
     mock_bioschemas('https://training.galaxyproject.org/training-material/topics/introduction/tutorials/galaxy-intro-101/tutorial.html', 'gtn/galaxy-intro-101.html')
@@ -94,6 +94,36 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_equal ['slides'], sample.resource_type
     assert_equal @content_provider, sample.content_provider
     assert_equal @user, sample.user
+  end
+
+  test 'ingest bioschemas from a sitemap_txt' do
+    mock_bioschemas('https://hsf-training.org/training-center/sitemap.txt', 'hsftraining/sitemap.txt')
+
+    mock_bioschemas('http://swcarpentry.github.io/python-novice-inflammation', 'hsftraining/python-novice-inflammation.html')
+    mock_bioschemas('http://carpentries-incubator.github.io/python-testing/', 'hsftraining/python-testing.html')
+    mock_bioschemas('https://hsf-training.github.io/hsf-training-scikit-hep-webpage/', 'hsftraining/hsf-training-scikit-hep-webpage.html')
+
+    @ingestor.read('https://hsf-training.org/training-center/sitemap.txt')
+    assert_equal 0, @ingestor.events.count
+    assert_equal 1, @ingestor.materials.count
+    messages = @ingestor.messages.join("\n")
+    assert_includes messages, "\n - 3 URLs found"
+    assert_includes messages, "\n - Events: 0"
+    assert_includes messages, "\n - LearningResources: 1"
+    assert_includes messages, "Bioschemas not found in:\n\n - http://carpentries-incubator.github.io/python-testing/\n - https://hsf-training.github.io/hsf-training-scikit-hep-webpage/"
+
+    assert_difference('Material.count', 1) do
+      @ingestor.write(@user, @content_provider)
+    end
+
+    assert_equal 1, @ingestor.stats[:materials][:added]
+    assert_equal 0, @ingestor.stats[:materials][:updated]
+    assert_equal 0, @ingestor.stats[:materials][:rejected]
+
+    sample = @ingestor.materials.detect { |e| e.title == 'Programming with Python' }
+    assert sample.persisted?
+    assert_equal 'https://swcarpentry.github.io/python-novice-inflammation/index.html', sample.url
+    assert_equal 'A Carpentries Lesson teaching foundational data and coding skills to researchers worldwide', sample.description
   end
 
   test 'do not overwrite other content providers event, even with same url' do

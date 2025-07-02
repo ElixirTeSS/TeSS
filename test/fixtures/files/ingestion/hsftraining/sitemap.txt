@@ -1,0 +1,3 @@
+http://carpentries-incubator.github.io/python-testing/
+http://swcarpentry.github.io/python-novice-inflammation
+https://hsf-training.github.io/hsf-training-scikit-hep-webpage/

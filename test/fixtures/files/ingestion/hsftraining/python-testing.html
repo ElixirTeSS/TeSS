@@ -1,0 +1,804 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="last-modified" content="2020-07-27 15:08:25 +0000">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- meta "search-domain" used for google site search function google_search() -->
+    <meta name="search-domain" value="http://carpentries-incubator.github.io/python-testing">
+    <link rel="stylesheet" type="text/css" href="./assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="./assets/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="./assets/css/lesson.css" />
+    <link rel="stylesheet" type="text/css" href="./assets/css/syntax.css" />
+     <link rel="stylesheet" type="text/css" href="./assets/css/fonts.css" />
+    <link rel="license" href="#license-info" />
+
+    
+
+
+
+    <!-- Favicons for everyone -->
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="./assets/favicons/swc/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="./assets/favicons/swc/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="./assets/favicons/swc/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="./assets/favicons/swc/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="./assets/favicons/swc/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="./assets/favicons/swc/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="./assets/favicons/swc/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="./assets/favicons/swc/apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="./assets/favicons/swc/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="./assets/favicons/swc/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="./assets/favicons/swc/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="./assets/favicons/swc/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="./assets/favicons/swc/favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="Software Carpentry - Python Testing and Continuous Integration"/>
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="./assets/favicons/swc/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="./assets/favicons/swc/mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="./assets/favicons/swc/mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="./assets/favicons/swc/mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="./assets/favicons/swc/mstile-310x310.png" />
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+  <title>
+  Python Testing and Continuous Integration
+  </title>
+
+  </head>
+  <body>
+    
+
+
+<div class="panel panel-default life-cycle">
+  <div id="life-cycle" class="panel-body alpha">
+    This lesson is in the early stages of development (Alpha version)
+  </div>
+</div>
+
+
+
+
+
+    <div class="container">
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      
+      
+      <a href="https://software-carpentry.org" class="pull-left">
+        <img class="navbar-logo" src="./assets/img/swc-icon-blue.svg" alt="Software Carpentry logo" />
+      </a>
+      
+
+      
+      <a class="navbar-brand" href="./">Home</a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+	
+        <li><a href="./CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+
+        
+	
+        <li><a href="./setup.html">Setup</a></li>
+
+        
+        <li class="dropdown">
+          <a href="./" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            
+            
+            <li><a href="./01-basics/index.html">Basics of Testing</a></li>
+            
+            
+            <li><a href="./02-assertions/index.html">Assertions</a></li>
+            
+            
+            <li><a href="./03-exceptions/index.html">Exceptions</a></li>
+            
+            
+            <li><a href="./03a-dbc/index.html">Design by Contract</a></li>
+            
+            
+            <li><a href="./04-units/index.html">Unit Tests</a></li>
+            
+            
+            <li><a href="./05-pytest/index.html">Running Tests with pytest</a></li>
+            
+            
+            <li><a href="./06-edges/index.html">Edge and Corner Cases</a></li>
+            
+            
+            <li><a href="./07-integration/index.html">Integration and Regression Tests</a></li>
+            
+            
+            <li><a href="./08-ci/index.html">Continuous Integration</a></li>
+            
+            
+            <li><a href="./09-tdd/index.html">Test Driven Development</a></li>
+            
+            
+            <li><a href="./10-fixtures/index.html">Fixtures</a></li>
+            
+            
+            <li><a href="./reference/index.html">Key Points and Glossary</a></li>
+            
+	    <li role="separator" class="divider"></li>
+            <li><a href="./aio/index.html">All in one page (Beta)</a></li>
+          </ul>
+        </li>
+	
+
+	
+	
+        <li class="dropdown">
+          <a href="./" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extras <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="./reference.html">Reference</a></li>
+            
+            
+            <li><a href="./about/">About</a></li>
+            
+            
+            <li><a href="./discuss/index.html">Discussion</a></li>
+            
+            
+            <li><a href="./figures/index.html">Figures</a></li>
+            
+            
+            <li><a href="./guide/">Instructor Notes</a></li>
+            
+          </ul>
+        </li>
+	
+
+	
+        <li><a href="./license/">License</a></li>
+	
+	<li><a href="https://github.com/carpentries-incubator/python-testing/edit/gh-pages/index.md" data-checker-ignore>Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	
+      </ul>
+      <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
+        <div class="form-group">
+          <input type="text" id="google-search" placeholder="Search..." aria-label="Google site search">
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+
+      
+
+
+
+
+
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 class="maintitle"><a href="./">Python Testing and Continuous Integration</a></h1>
+
+
+
+<article>
+  <p>In this lesson we use a Python library called pytest. 
+Basic understanding of Python variables and functions are a
+necessary prerequisite. Some previous experience with the shell
+is expected, <em>but isn’t mandatory</em>.</p>
+
+<blockquote class="prereq">
+  <h2 id="prerequisites">Prerequisites</h2>
+
+  <p>Nothing to do: you’re ready to go!</p>
+</blockquote>
+
+<p>Before relying on a new experimental device, an experimental scientist always
+establishes its accuracy. A new detector is calibrated when the scientist
+observes its responses to known input signals. The results of this
+calibration are compared against the <em>expected</em> response. <strong>An experimental
+scientist would never conduct an experiment with uncalibrated detectors - that
+would be unscientific. So too, simulations and analysis with untested
+software do not constitute science.</strong></p>
+
+<blockquote class="callout">
+  <h2 id="you-only-know-what-you-test">You only know what you test</h2>
+
+  <p><strong>You can only know by testing it.</strong> Software bugs are hiding in all
+nontrivial software. Testing is the process by which those bugs are
+systematically exterminated before they have a chance to cause a paper
+retraction. In software tests, just like in device calibration, expected
+results are compared with observed results in order to establish accuracy.</p>
+</blockquote>
+
+<p>The collection of all of the tests for a given code is known as the <em>test
+suite</em>. You can think of the test suite as a bunch of pre-canned experiments
+that anyone can run. If all of the test pass, then the code is at least
+partially trustworthy. If any of the tests fail then the code is known to be
+incorrect with respect to whichever case failed.  After this lesson, you will
+know to not trust software when its tests do not <em>cover</em> its claimed
+capabilities and when its tests do not pass.</p>
+
+<blockquote class="callout">
+  <h2 id="managing-expectations">Managing Expectations</h2>
+
+  <p>In the same way that your scientific domain has expectations concerning
+experimental accuracy, it likely also has expectations concerning allowable
+computational accuracy. These considerations should surely come into play
+when you evaluate the acceptability of your own or someone else’s software.</p>
+</blockquote>
+
+<p>In most other programming endeavors, if code is fundamentally wrong - even
+for years at a time - the impact of this error can be relatively small.
+Perhaps a website goes down, or a game crashes, or a days worth of writing is
+lost to a bug in your word processor. Scientific code, on the other hand,
+controls planes, weapons systems, satellites, agriculture, and most importantly
+scientific simulations and experiments. If the software that governs the
+computational or physical experiment is wrong, then disasters (such as false
+claims in a publication) will result.</p>
+
+<p>This is not to say that scientists have a monopoly on software testing, simply
+that software cannot be called <em>scientific</em> unless it has been validated.</p>
+
+<blockquote class="callout">
+  <h2 id="code-without-tests-is-legacy-code">Code without tests… is legacy code!</h2>
+
+  <p>In <em><a href="http://www.amazon.com/Working-Effectively-Legacy-Michael-Feathers/dp/0131177052/">Working Effectively with Legacy Code</a></em>,
+Michael Feathers defines legacy code as “any code without tests”. This definition
+draws on the fact that after its initial creation, tests provide
+a powerful guide to other developers (and to your forgetful self, a few months
+in the future) about how each function is meant to be used. Without runnable
+tests to provide examples of code use, even brand new programs are unsustainable.</p>
+</blockquote>
+
+<p>Testing is the calibration step of the computational simulation and analysis
+world: it lets the scientist trust their own work on a fundamental level and
+helps others to understand and trust their work as well.
+Furthermore, tests help you to never fix a bug a second time. Once a bug has
+been caught and a test has been written, that particular bug can never again
+re-enter the codebase unnoticed. So, whether motivated by principles or a
+desire to work more efficiently, all scientists can benefit from testing.</p>
+
+<blockquote class="callout">
+  <h2 id="where-these-lessons-are-from">Where these lessons are from</h2>
+
+  <p>Note that this testing lesson was adapted from the Testing chapter in
+<em><a href="http://physics.codes">Effective Computation In Physics</a></em>
+by Anthony Scopatz and Kathryn Huff.
+It is often quoted directly.</p>
+</blockquote>
+
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+<div class="syllabus">
+  <h2 id="schedule">Schedule</h2>
+
+  
+  
+  
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+  
+
+  <table class="table table-striped">
+  <tr>
+    
+    <td class="col-md-2"></td>
+    <td class="col-md-3"><a href="./setup.html">Setup</a></td>
+    <td class="col-md-7">Download files required for the lesson</td>
+  </tr>
+  
+    
+    
+    
+    
+    <tr>
+      
+      <td class="col-md-2">00:00</td>
+      <td class="col-md-3">
+        
+	1. <a href="./01-basics/index.html">Basics of Testing</a>
+      </td>
+      <td class="col-md-7">
+        
+          
+            
+              Why test?
+
+              
+            
+          
+        
+      </td>
+    </tr>
+    
+  
+    
+    
+    
+    
+    <tr>
+      
+      <td class="col-md-2">00:05</td>
+      <td class="col-md-3">
+        
+	2. <a href="./02-assertions/index.html">Assertions</a>
+      </td>
+      <td class="col-md-7">
+        
+          
+            
+              How can we compare observed and expected values?
+
+              
+            
+          
+        
+      </td>
+    </tr>
+    
+  
+    
+    
+    
+    
+    <tr>
+      
+      <td class="col-md-2">00:15</td>
+      <td class="col-md-3">
+        
+	3. <a href="./03-exceptions/index.html">Exceptions</a>
+      </td>
+      <td class="col-md-7">
+        
+          
+            
+              How do I handle unusual behavior while the code runs?
+
+              
+            
+          
+        
+      </td>
+    </tr>
+    
+  
+    
+    
+    
+    
+    <tr>
+      
+      <td class="col-md-2">00:25</td>
+      <td class="col-md-3">
+        
+	4. <a href="./03a-dbc/index.html">Design by Contract</a>
+      </td>
+      <td class="col-md-7">
+        
+          
+            
+              What is Design by Contract?
+
+              
+            
+          
+        
+      </td>
+    </tr>
+    
+  
+    
+    
+    
+    
+    <tr>
+      
+      <td class="col-md-2">00:40</td>
+      <td class="col-md-3">
+        
+	5. <a href="./04-units/index.html">Unit Tests</a>
+      </td>
+      <td class="col-md-7">
+        
+          
+            
+              What is a unit of code?
+
+              
+            
+          
+        
+      </td>
+    </tr>
+    
+  
+    
+    
+    
+    
+    <tr>
+      
+      <td class="col-md-2">00:50</td>
+      <td class="col-md-3">
+        
+	6. <a href="./05-pytest/index.html">Running Tests with pytest</a>
+      </td>
+      <td class="col-md-7">
+        
+          
+            
+              How do I automate my tests?
+
+              
+            
+          
+        
+      </td>
+    </tr>
+    
+  
+    
+    
+    
+    
+    <tr>
+      
+      <td class="col-md-2">01:00</td>
+      <td class="col-md-3">
+        
+	7. <a href="./06-edges/index.html">Edge and Corner Cases</a>
+      </td>
+      <td class="col-md-7">
+        
+          
+            
+              How do I catch all the possible errors?
+
+              
+            
+          
+        
+      </td>
+    </tr>
+    
+  
+    
+    
+    
+    
+    <tr>
+      
+      <td class="col-md-2">01:10</td>
+      <td class="col-md-3">
+        
+	8. <a href="./07-integration/index.html">Integration and Regression Tests</a>
+      </td>
+      <td class="col-md-7">
+        
+          
+            
+              How do we test more than a single unit of software?
+
+              
+            
+          
+        
+      </td>
+    </tr>
+    
+  
+    
+    
+    
+    
+    <tr>
+      
+      <td class="col-md-2">01:20</td>
+      <td class="col-md-3">
+        
+	9. <a href="./08-ci/index.html">Continuous Integration</a>
+      </td>
+      <td class="col-md-7">
+        
+          
+            
+              How can I automate running the tests on more platforms than my own?
+
+              
+            
+          
+        
+      </td>
+    </tr>
+    
+  
+    
+    
+    
+    
+    <tr>
+      
+      <td class="col-md-2">01:30</td>
+      <td class="col-md-3">
+        
+	10. <a href="./09-tdd/index.html">Test Driven Development</a>
+      </td>
+      <td class="col-md-7">
+        
+          
+            
+              How do you make testing part of the code writing process?
+
+              
+            
+          
+        
+      </td>
+    </tr>
+    
+  
+    
+    
+    
+    
+    <tr>
+      
+      <td class="col-md-2">01:40</td>
+      <td class="col-md-3">
+        
+	11. <a href="./10-fixtures/index.html">Fixtures</a>
+      </td>
+      <td class="col-md-7">
+        
+          
+            
+              How do I create and cleanup the data I need to test the code?
+
+              
+            
+          
+        
+      </td>
+    </tr>
+    
+  
+    
+    
+    
+    
+    <tr>
+      
+      <td class="col-md-2">01:50</td>
+      <td class="col-md-3">
+        
+	12. <a href="./reference/index.html">Key Points and Glossary</a>
+      </td>
+      <td class="col-md-7">
+        
+          
+        
+      </td>
+    </tr>
+    
+  
+  
+  
+  <tr>
+    
+    <td class="col-md-2">01:50</td>
+    <td class="col-md-3">Finish</td>
+    <td class="col-md-7"></td>
+  </tr>
+  </table>
+
+  <p>
+    The actual schedule may vary slightly depending on the topics and exercises chosen by the instructor.
+  </p>
+
+</div>
+
+
+
+      
+      
+
+
+
+
+
+
+<footer>
+  <hr/>
+  <div class="row">
+    <div class="col-md-6 license" id="license-info" align="left">
+	
+	Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2018–2020
+	by <a href="https://carpentries.org/">The Carpentries</a>
+        <br>
+        Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2016–2018
+	by <a href="https://software-carpentry.org">Software Carpentry Foundation</a>
+	
+    </div>
+    <div class="col-md-6 help-links" align="right">
+	
+	<a href="https://github.com/carpentries-incubator/python-testing/edit/gh-pages/index.md" data-checker-ignore>Edit on GitHub</a>
+	
+	/
+	<a href="https://github.com/carpentries-incubator/python-testing/blob/gh-pages/CONTRIBUTING.md" data-checker-ignore>Contributing</a>
+	/
+	<a href="https://github.com/carpentries-incubator/python-testing/">Source</a>
+	/
+	<a href="https://github.com/carpentries-incubator/python-testing/blob/gh-pages/CITATION" data-checker-ignore>Cite</a>
+	/
+	<a href="mailto:team@carpentries.org">Contact</a>
+    </div>
+  </div>
+  <p class="text-muted text-right">
+    <small><i>Using <a href="https://github.com/carpentries/carpentries-theme/">The Carpentries theme</a> &mdash; Site last built on: 2020-07-27 15:08:25 +0000.</i></small>
+  </p>
+</footer>
+
+      
+    </div>
+    
+<script src="./assets/js/jquery.min.js"></script>
+<script src="./assets/js/bootstrap.min.js"></script>
+<script src="./assets/js/lesson.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-37305346-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
