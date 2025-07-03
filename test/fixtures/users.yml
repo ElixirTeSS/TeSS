@@ -158,3 +158,11 @@ learning_path_curator:
   encrypted_password: 'learning_paths_curator_encrypted_password'
   confirmed_at: <%= Time.zone.now %>
   role: learning_path_curator
+
+admin_trainer:
+  username: 'Trainer Admin'
+  email: 'adam-trainer@notarealdomain.org'
+  encrypted_password: 'admin_encrypted_password'
+  confirmed_at: <%= Time.zone.now %>
+  role: admin
+  check_broken_scrapers: true

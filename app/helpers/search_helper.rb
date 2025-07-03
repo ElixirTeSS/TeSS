@@ -10,7 +10,8 @@ module SearchHelper
   end
 
   def facet_title(name, value, html_options = {})
-    return render_language_name(value) if name == 'language'
+    lang = render_language_name(value) if name.to_s == 'language'
+    return lang unless lang.blank?
 
     html_options.delete(:title) || truncate(value.to_s, length: 50)
   end

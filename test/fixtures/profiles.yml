@@ -83,3 +83,10 @@ trainer_two_profile:
   expertise_technical: ['java', 'python', 'ruby']
   public: false
   type: Profile
+
+admin_trainer_profile:
+  user: admin_trainer
+  firstname: Adminson
+  surname: Trainer
+  public: true
+  type: Trainer
