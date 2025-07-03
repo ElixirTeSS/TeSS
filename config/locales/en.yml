@@ -33,6 +33,9 @@ en:
     learning_path_topics:
       short: Topics
       long: Learning path topics
+    spaces:
+      short: Spaces
+      long: Spaces
   pundit:
     default: 'You are not authorised to perform this action.'
     material_policy:
@@ -51,6 +54,7 @@ en:
       trainer: Trainer
       content_provider: Content Provider
       node: Node
+      learning_path_topic: Topic
     attributes:
       content_provider:
         user: Owner
@@ -155,6 +159,9 @@ en:
     discover_materials: Discover Materials
     discover_learning_paths: Discover Learning Paths
     discover_workflows: Discover Workflows
+    spaces:
+      owner: "The owner of this space is:"
+      admins: "The administrators of this space are:"
   developer:
     license: >
       TeSS is committed to the FAIR principles: making data findable, accessible, interoperable and re-usable.
@@ -248,12 +255,13 @@ en:
 
   register:
     buttons:
-      content_providers: 'Register content provider'
-      events: 'Register event'
-      materials: 'Register training material'
-      workflows: 'Create workflow'
-      trainers: 'Register as trainer'
-      collections: 'Create collection'
+      content_providers: Register content provider
+      events: Register event
+      materials: Register training material
+      workflows: Create workflow
+      trainers: Register as trainer
+      collections: Create collection
+      space: Create space
     registering_resources_in: "Registering Resources in %{site_name}"
     resources: >
       <p>Training resources (events and materials) may be added to TeSS to reach bigger audiences, increase impact and
@@ -850,6 +858,8 @@ en:
         hide_disabled: 'Hide disabled %{resource}'
         show_archived: 'Show archived %{resource}'
         hide_archived: 'Hide archived %{resource}'
+        show_cross_space: 'Show %{resource} from all spaces'
+        hide_cross_space: 'Hide %{resource} from all spaces'
     hidden:
       values:
         show_hidden: 'Show hidden items'
@@ -881,6 +891,7 @@ en:
       admin_console: 'Admin console'
       log_out: 'Log out'
       log_out_confirm: 'Are you sure you want to log out?'
+      spaces_admin: 'Manage spaces'
   activity:
     empty: No activities recorded.
     deleted_owner: Someone
@@ -974,3 +985,24 @@ en:
         check_broken_scrapers: Receive emails with scrapers that have not found anything last period.
       profile:
         language: Languages Spoken
+
+  helpers:
+    submit:
+      create: Register %{model}
+      update: Update %{model}
+      collection:
+        create: Create %{model}
+        update: Update %{model}
+      workflow:
+        create: Create %{model}
+        update: Update %{model}
+      learning_path:
+        create: Create %{model}
+        update: Update %{model}
+      learning_path_topic:
+        create: Create %{model}
+        update: Update %{model}
+  info:
+    spaces:
+      title: What are spaces?
+      description: Spaces are customizable, community-managed sub-portals within TeSS, each with their own catalogue of training content.

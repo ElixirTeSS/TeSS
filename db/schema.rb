@@ -124,7 +124,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_25_151745) do
     t.string "image_content_type"
     t.bigint "image_file_size"
     t.datetime "image_updated_at"
+    t.bigint "space_id"
     t.index ["slug"], name: "index_collections_on_slug", unique: true
+    t.index ["space_id"], name: "index_collections_on_space_id"
     t.index ["user_id"], name: "index_collections_on_user_id"
   end
 
@@ -230,8 +232,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_25_151745) do
     t.boolean "visible", default: true
     t.string "language"
     t.string "open_science", default: [], array: true
+    t.bigint "space_id"
     t.index ["presence"], name: "index_events_on_presence"
     t.index ["slug"], name: "index_events_on_slug", unique: true
+    t.index ["space_id"], name: "index_events_on_space_id"
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 
@@ -294,6 +298,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_25_151745) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "difficulty_level", default: "notspecified"
+    t.bigint "space_id"
+    t.index ["space_id"], name: "index_learning_path_topics_on_space_id"
   end
 
   create_table "learning_paths", force: :cascade do |t|
@@ -316,8 +322,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_25_151745) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "public", default: true
+    t.bigint "space_id"
     t.index ["content_provider_id"], name: "index_learning_paths_on_content_provider_id"
     t.index ["slug"], name: "index_learning_paths_on_slug", unique: true
+    t.index ["space_id"], name: "index_learning_paths_on_space_id"
     t.index ["user_id"], name: "index_learning_paths_on_user_id"
   end
 
@@ -379,8 +387,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_25_151745) do
     t.text "learning_objectives"
     t.string "fields", default: [], array: true
     t.boolean "visible", default: true
+    t.bigint "space_id"
     t.index ["content_provider_id"], name: "index_materials_on_content_provider_id"
     t.index ["slug"], name: "index_materials_on_slug", unique: true
+    t.index ["space_id"], name: "index_materials_on_space_id"
     t.index ["user_id"], name: "index_materials_on_user_id"
   end
 
@@ -472,6 +482,33 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_25_151745) do
     t.string "default_language"
     t.index ["content_provider_id"], name: "index_sources_on_content_provider_id"
     t.index ["user_id"], name: "index_sources_on_user_id"
+  end
+
+  create_table "space_roles", force: :cascade do |t|
+    t.string "key"
+    t.bigint "user_id"
+    t.bigint "space_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["space_id"], name: "index_space_roles_on_space_id"
+    t.index ["user_id"], name: "index_space_roles_on_user_id"
+  end
+
+  create_table "spaces", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.string "host"
+    t.string "theme"
+    t.string "image_file_name"
+    t.string "image_content_type"
+    t.bigint "image_file_size"
+    t.datetime "image_updated_at"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "image_url"
+    t.index ["host"], name: "index_spaces_on_host", unique: true
+    t.index ["user_id"], name: "index_spaces_on_user_id"
   end
 
   create_table "staff_members", force: :cascade do |t|
@@ -599,32 +636,43 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_25_151745) do
     t.date "remote_updated_date"
     t.boolean "hide_child_nodes", default: false
     t.boolean "public", default: true
+    t.bigint "space_id"
     t.index ["slug"], name: "index_workflows_on_slug", unique: true
+    t.index ["space_id"], name: "index_workflows_on_space_id"
     t.index ["user_id"], name: "index_workflows_on_user_id"
   end
 
   add_foreign_key "bans", "users"
   add_foreign_key "bans", "users", column: "banner_id"
   add_foreign_key "collaborations", "users"
+  add_foreign_key "collections", "spaces"
   add_foreign_key "collections", "users"
   add_foreign_key "content_providers", "nodes"
   add_foreign_key "content_providers", "users"
   add_foreign_key "event_materials", "events"
   add_foreign_key "event_materials", "materials"
+  add_foreign_key "events", "spaces"
   add_foreign_key "events", "users"
   add_foreign_key "learning_path_topic_links", "learning_paths"
+  add_foreign_key "learning_path_topics", "spaces"
   add_foreign_key "learning_paths", "content_providers"
+  add_foreign_key "learning_paths", "spaces"
   add_foreign_key "learning_paths", "users"
   add_foreign_key "llm_interactions", "events"
   add_foreign_key "materials", "content_providers"
+  add_foreign_key "materials", "spaces"
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"
   add_foreign_key "nodes", "users"
   add_foreign_key "sources", "content_providers"
   add_foreign_key "sources", "users"
+  add_foreign_key "space_roles", "spaces"
+  add_foreign_key "space_roles", "users"
+  add_foreign_key "spaces", "users"
   add_foreign_key "staff_members", "nodes"
   add_foreign_key "stars", "users"
   add_foreign_key "subscriptions", "users"
   add_foreign_key "users", "roles"
+  add_foreign_key "workflows", "spaces"
   add_foreign_key "workflows", "users"
 end

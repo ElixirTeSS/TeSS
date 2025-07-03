@@ -5,6 +5,7 @@ class Collection < ApplicationRecord
   include HasFriendlyId
   include CurationQueue
   include Collaboratable
+  include InSpace
 
   has_many :items, -> { order(:order) }, class_name: 'CollectionItem', inverse_of: :collection, dependent: :destroy
   has_many :material_items, -> { where(resource_type: 'Material').order(:order) }, class_name: 'CollectionItem',

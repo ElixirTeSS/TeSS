@@ -480,4 +480,14 @@ class UsersControllerTest < ActionController::TestCase
     get :edit, params: { id: user }
     assert_response :success
   end
+
+  test 'should only show content for current space on show page' do
+    with_host('plants.mytess.training') do
+      get :show, params: { id: @user }
+      assert_select '.search-results-count.my-3', text: 'Showing 1 material'
+      assert_select '.masonry-brick-heading h4', text: 'Plant material'
+      assert_select '.search-results-count.my-3', text: 'Showing 1 event'
+      assert_select '.masonry-brick-heading h4', text: 'Learn about plants'
+    end
+  end
 end

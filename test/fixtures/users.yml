@@ -166,3 +166,9 @@ admin_trainer:
   confirmed_at: <%= Time.zone.now %>
   role: admin
   check_broken_scrapers: true
+
+space_admin:
+  username: 'plant_boss'
+  email: 'plantboss@example.com'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'plantsrule') %>
+  confirmed_at: <%= Time.zone.now %>

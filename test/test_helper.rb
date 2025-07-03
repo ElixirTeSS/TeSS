@@ -95,6 +95,14 @@ class ActiveSupport::TestCase
     end
   end
 
+  def with_host(host, &block)
+    original_host = @request.host
+    @request.host = host
+    block.call
+  ensure
+    @request.host = original_host
+  end
+
   # reset dictionaries to their default values
   def reset_dictionaries
     dictionaries = TeSS::Config.dictionaries

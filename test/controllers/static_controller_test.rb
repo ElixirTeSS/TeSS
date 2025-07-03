@@ -327,4 +327,23 @@ class StaticControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test 'sets current space based on subdomain' do
+    get :home
+    assert_equal 'TTI', Space.current_space.title
+
+    with_host('plants.mytess.training') do
+      get :home
+      assert_equal 'TeSS Plants Community', Space.current_space.title
+    end
+  end
+
+  test 'does not set space if spaces feature disabled' do
+    with_host('plants.mytess.training') do
+      with_settings({ feature: { spaces: false } }) do
+        get :home
+        assert_equal 'TTI', Space.current_space.title
+      end
+    end
+  end
 end
