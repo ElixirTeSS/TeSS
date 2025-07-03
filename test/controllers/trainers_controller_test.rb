@@ -8,7 +8,8 @@ class TrainersControllerTest < ActionController::TestCase
     assert_response :success
     trainers = assigns(:trainers)
     assert_not_nil trainers
-    assert_equal 1, trainers.size
+    assert_equal 2, trainers.size
+    assert_includes trainers, users(:trainer_user).profile
   end
 
 end

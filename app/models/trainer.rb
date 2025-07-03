@@ -2,10 +2,6 @@ require 'i18n_data'
 
 # define model for Trainer as subset of Profile
 class Trainer < Profile
-
-  after_update_commit :reindex
-  after_destroy_commit :reindex
-
   extend FriendlyId
   friendly_id :full_name, use: :slugged
 

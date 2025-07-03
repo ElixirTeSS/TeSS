@@ -970,3 +970,7 @@ en:
         visible: Show this event?
       material:
         visible: Show this material?
+      user:
+        check_broken_scrapers: Receive emails with scrapers that have not found anything last period.
+      profile:
+        language: Languages Spoken

@@ -220,6 +220,8 @@ class ActiveSupport::TestCase
     WebMock.stub_request(:get, 'https://bio.tools/api/tool?q=Material%20with%20suggestions')
            .with(headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Ruby' })
            .to_return(status: 200, body: '', headers: {})
+
+    WebMock.stub_request(:any, 'http://example.com/').to_return(status: 200)
   end
 
   def mock_orcids
