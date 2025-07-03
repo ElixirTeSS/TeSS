@@ -30,8 +30,7 @@ EXPOSE 3000
 
 FROM base AS development
 
-SHELL [ "/bin/bash", "-c" ]
-ENTRYPOINT bundle exec rails server -b 0.0.0.0
+CMD bundle exec rails server -b 0.0.0.0
 
 
 FROM base AS production
@@ -63,7 +62,6 @@ RUN if [ "$CR" = "True" ]; then \
 
 
 # run rails server, need bind for docker
-SHELL [ "/bin/bash", "-c" ]
-ENTRYPOINT bundle exec whenever > /code/tess.crontab \
+CMD bundle exec whenever > /code/tess.crontab \
     && (supercronic /code/tess.crontab &) \
     && bundle exec rails server -b 0.0.0.0
