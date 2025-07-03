@@ -72,7 +72,8 @@ class StaticControllerTest < ActionController::TestCase
       'provider_carousel': false,
       'featured_providers': nil,
       'faq': [],
-      'promo_blocks': false
+      'promo_blocks': false,
+      'search_box': false
     }
 
     with_settings({ site: site_settings }) do
@@ -81,6 +82,8 @@ class StaticControllerTest < ActionController::TestCase
       assert_select 'section#providers', count: 0
       assert_select 'section#faq', count: 0
       assert_select 'ul#promo-blocks', count: 0
+      assert_select 'ul#promo-blocks', count: 0
+      assert_select 'div.searchbox', count: 0
     end
 
     site_settings['home_page']['catalogue_blocks'] = true
@@ -90,6 +93,7 @@ class StaticControllerTest < ActionController::TestCase
       assert_select 'section#providers', count: 0
       assert_select 'section#faq', count: 0
       assert_select 'ul#promo-blocks', count: 0
+      assert_select 'div.searchbox', count: 0
     end
 
     site_settings['home_page']['provider_carousel'] = true
@@ -104,6 +108,7 @@ class StaticControllerTest < ActionController::TestCase
       assert_select 'section#providers .item a[href=?]', content_provider_path(provider2)
       assert_select 'section#faq', count: 0
       assert_select 'ul#promo-blocks', count: 0
+      assert_select 'div.searchbox', count: 0
     end
 
     site_settings['home_page']['faq'] = %w[who why]
@@ -114,6 +119,7 @@ class StaticControllerTest < ActionController::TestCase
       assert_select 'section#faq', count: 1
       assert_select 'section#faq .question', count: 2
       assert_select 'ul#promo-blocks', count: 0
+      assert_select 'div.searchbox', count: 0
     end
 
     site_settings['home_page']['promo_blocks'] = true
@@ -123,6 +129,17 @@ class StaticControllerTest < ActionController::TestCase
       assert_select 'section#providers', count: 1
       assert_select 'section#faq', count: 1
       assert_select 'ul#promo-blocks', count: 1
+      assert_select 'div.searchbox', count: 0
+    end
+
+    site_settings['home_page']['search_box'] = true
+    with_settings({ site: site_settings }) do
+      get :home
+      assert_select 'section#catalogue', count: 1
+      assert_select 'section#providers', count: 1
+      assert_select 'section#faq', count: 1
+      assert_select 'ul#promo-blocks', count: 1
+      assert_select 'div.searchbox', count: 1
     end
   end
 
