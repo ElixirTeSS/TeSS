@@ -327,4 +327,18 @@ class StaticControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test 'should not find header-notice when header_notice is disabled' do
+    with_settings({ header_notice: '' }) do
+      get :home
+      assert_select 'nav.header-notice', count: 0
+    end
+  end
+
+  test 'should find header-notice when header_notice is enabled' do
+    with_settings({ header_notice: 'Test' }) do
+      get :home
+      assert_select 'nav.header-notice', count: 1
+    end
+  end
 end
