@@ -469,7 +469,7 @@ class UsersControllerTest < ActionController::TestCase
     refute assigns(:users).include?(users(:basic_user))
   end
 
-  test 'should get edit for trainers feature enabled' do
+  test "should get edit for trainers feature enabled" do
     user = users(:trainer_user)
     sign_in(user)
     get :edit, params: { id: user }
