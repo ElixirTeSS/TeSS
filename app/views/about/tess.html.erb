@@ -116,7 +116,12 @@
         <%= link_to t('about.links.learn_more_api'),
             developers_path(anchor: 'api'), class: 'btn btn-default' %>
       </div>
+
+      <!-- LINK TESS -->
+      <%= render partial: 'about_tess_acknowledgements' if TeSS::Config.site.dig('about_tess_acknowledgments') %>
+
     </div>
+
 
     <hr/>
 

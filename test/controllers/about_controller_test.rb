@@ -43,4 +43,18 @@ class AboutControllerTest < ActionController::TestCase
       assert_response :success
     end
   end
+
+  test 'should not show about tess acknowledgments if disabled' do
+    with_settings({ site: { about_tess_acknowledgments: false } }) do
+      get :tess
+      assert_select 'div#link_tess', count: 0
+    end
+  end
+
+  test 'should show about tess acknowledgments if enabled' do
+    with_settings({ site: { about_tess_acknowledgments: true } }) do
+      get :tess
+      assert_select 'div#link_tess', count: 1
+    end
+  end
 end

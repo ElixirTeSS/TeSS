@@ -75,6 +75,7 @@ en:
       educational_resource: Educational Resource
       subscribe: Subscribe
       widgets_and_api: Widgets & API
+      tess: ELIXIR TeSS
     sidebar:
       what_is: 'What is %{title}?'
       what_we_catalogue: 'What we catalogue'
@@ -97,6 +98,7 @@ en:
     links:
       learn_more_widgets: Learn more about Widgets
       learn_more_api: Learn more about our API
+      learn_more_tess: Learn more about TeSS
     registry: >
       TeSS is a platform that was developed to provide a one-stop shop for trainers and trainees to discover
       online information and content, including training materials, events and interactive tutorials.
@@ -155,6 +157,9 @@ en:
     discover_materials: Discover Materials
     discover_learning_paths: Discover Learning Paths
     discover_workflows: Discover Workflows
+    tess: >
+      TeSS is based on the <a href='https://elixir-europe.org/' target='_blank'>ELIXIR</a> TeSS architecture and could not have been realized as it is without the foundation of their work.
+
   developer:
     license: >
       TeSS is committed to the FAIR principles: making data findable, accessible, interoperable and re-usable.
