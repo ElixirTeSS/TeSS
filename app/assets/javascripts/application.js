@@ -373,3 +373,26 @@ $(document).on('click', '[href="#activity_log"]', function () {
 
     return false;
 });
+
+// sticky-navbar feature
+document.addEventListener('turbolinks:load', function () {
+
+  if (!document.querySelector('.sticky-navbar-enabled')) return;
+
+  const header = document.querySelector('.unified-header');
+  const navbar = document.querySelector('.navbar');
+  const logoImg = document.querySelector('.navbar-brand img');
+
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > 0) {
+      header?.classList.add('scrolled');
+      navbar?.classList.add('scrolled');
+      logoImg?.classList.add('scrolled');
+
+    } else {
+      header?.classList.remove('scrolled');
+      navbar?.classList.remove('scrolled');
+      logoImg?.classList.remove('scrolled');
+    }
+  });
+});
