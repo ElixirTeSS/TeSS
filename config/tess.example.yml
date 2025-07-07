@@ -94,6 +94,7 @@ default: &default
     logo_alt: 'Training eSupport System'
     logo_open_graph: ''
     logo_email: ''
+    default_theme: default
     # Colours of the SVG icons used throughout TeSS, requires `rake assets:precompile` if changed
     icon_primary_color: '#047EAA' # Blue by default
     icon_secondary_color: '#F47D21' # Orange by default
@@ -112,6 +113,7 @@ default: &default
       latest_materials: # Number of materials on home page. Leave blank to turn off
       featured_trainer: false
       counters: false # Whether or not to show number of database objects in separate blocks
+      search_box: true # Whether or not to show the search box
     # The order in which the tabs appear (if feature enabled)
     tab_order: ['about', 'events', 'materials', 'elearning_materials', 'workflows', 'collections', 'trainers', 'content_providers', 'nodes']
     # The tabs that should be collapsed under the "Directory" tab. Can be left blank to hide it.
@@ -160,6 +162,7 @@ default: &default
     bioschemas_testing: false
     learning_paths: false
     collection_curation: true
+    spaces: false
   restrict_content_provider_selection: false
   user_ingestion_methods: ['bioschemas']
   placeholder:

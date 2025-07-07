@@ -5,16 +5,6 @@
     <p class="font-size-lg"><%== t 'home.subtitle' %></p>
   </div>
 
-  <%# Big search box %>
-  <div class="searchbox">
-    <%= form_tag search_path, method: :get, role: 'search' do %>
-      <div class="searchbox-wrapper">
-        <input type="text" class="searchbox-field" name="q"
-               placeholder= "<%= t('home.search_placeholder', site_name: TeSS::Config.site['title_short']) %>" autofocus="autofocus">
-        <button type="submit" class="searchbox-btn">
-          <i class="icon icon-h3 search-icon"></i>
-        </button>
-      </div>
-    <% end %>
-  </div>
+  <%= render partial: 'static/home/search_box' if TeSS::Config.site.dig('home_page', 'search_box') %>
+
 </section>

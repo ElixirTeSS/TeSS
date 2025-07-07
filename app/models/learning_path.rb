@@ -9,6 +9,7 @@ class LearningPath < ApplicationRecord
   include HasDifficultyLevel
   include HasSuggestions
   include Collaboratable
+  include InSpace
 
   if TeSS::Config.solr_enabled
     # :nocov:

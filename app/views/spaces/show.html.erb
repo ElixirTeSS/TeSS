@@ -1,0 +1,40 @@
+<div class="wrapper collapsing-wrapper">
+  <%# SIDEBAR %>
+  <div class="collapsing-sidebar" id="sidebar">
+    <%= render(partial: 'users/partials/user_info', locals: { user: @space.user }) if current_user.try(:is_admin?) %>
+  </div>
+
+  <div id="content">
+    <div id="home" class="my-2">
+      <div class="page-header">
+        <h2 class="mt-0">
+          <%= @space.title %>
+        </h2>
+      </div>
+
+      <div class="content-actions">
+        <div class="content-viewer-actions">
+          <%= link_to 'Visit space', @space.url, class: 'btn btn-primary' %>
+        </div>
+        <% if @space.persisted? %>
+          <div class="content-manager-actions">
+            <% if policy(@space).update? %>
+              <%= edit_button(@space) %>
+            <% end %>
+            <%= delete_button(@space) if policy(@space).destroy? %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="my-3">
+        <%= display_attribute(@space, :host) %>
+
+        <div class="description">
+          <%= render_markdown @space.description %>
+        </div>
+      </div>
+    </div>
+
+    <%= render partial: 'activities/activity_log_button', locals: { resource: @space } %>
+  </div>
+</div>

@@ -106,4 +106,27 @@ class ContentProviderTest < ActiveSupport::TestCase
     assert_nil LearningPath.find_by_id(learning_path.id)
     assert_nil Source.find_by_id(source.id)
   end
+
+  test 'in_current_space limits resources to current space if feature enabled' do
+    orig_space = Space.current_space
+    plant_space = spaces(:plants)
+    Space.current_space = plant_space
+    content_provider = content_providers(:goblet)
+    materials = content_provider.materials.in_current_space
+    assert_equal 1, materials.length
+    assert_includes materials, materials(:plant_space_material)
+  ensure
+    Space.current_space = orig_space
+  end
+
+  test 'in_current_space does not limit resources to current space if feature disabled' do
+    content_provider = content_providers(:goblet)
+    with_settings(feature: { spaces: false }) do
+      assert Space.current_space.default?
+      materials = content_provider.materials.in_current_space
+      assert_equal 10, materials.length
+      assert_includes materials, materials(:plant_space_material)
+      assert_includes materials, materials(:good_material)
+    end
+  end
 end

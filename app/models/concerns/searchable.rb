@@ -86,7 +86,12 @@ module Searchable
           end
         end
 
-        if attribute_method?(:public) && !user&.is_admin? # Find a better way of checking this
+        if name == 'Trainer' || name == 'Profile'
+          # `public` means "Show in trainer registry" for Trainers/Profiles
+          any_of do
+            with(:public, true)
+          end
+        elsif attribute_method?(:public) && !user&.is_admin? # Find a better way of checking this
           any_of do
             with(:public, true)
             with(:user_id, user.id) if user

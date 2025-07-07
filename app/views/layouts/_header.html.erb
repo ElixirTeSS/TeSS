@@ -20,11 +20,13 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <% if defined? TeSS::Config.site['logo'] and !TeSS::Config.site['logo'].blank? %>
-          <a class="navbar-brand" href="/">
-            <%= image_tag(TeSS::Config.site['logo'], alt: TeSS::Config.site['logo_alt']) %>
-          </a>
-        <% end %>
+        <a class="navbar-brand" href="/">
+          <% if current_space.image? %>
+            <%= image_tag(current_space.image.url, alt: current_space.logo_alt) %>
+          <% else %>
+            <%= current_space.title %>
+          <% end %>
+        </a>
       </div>
 
       <div class="collapse navbar-collapse" id="navbar-collapse">

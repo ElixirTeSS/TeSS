@@ -126,18 +126,18 @@
     <%= render(partial: 'users/partials/ban', locals: { ban: @user.ban }) if @user.banned? && current_user.try(:is_admin?) %>
 
     <div class="my-3">
-      <% materials = @user.materials.limit(resource_limit) %>
-      <% materials_count =  @user.materials.count %>
-      <% upcoming_events = @user.events.not_finished %>
-      <% past_events = @user.events.finished %>
+      <% materials = @user.materials.in_current_space.limit(resource_limit) %>
+      <% materials_count =  @user.materials.in_current_space.count %>
+      <% upcoming_events = @user.events.in_current_space.not_finished %>
+      <% past_events = @user.events.in_current_space.finished %>
       <% events = upcoming_events.limit(resource_limit) %>
-      <% e = @user.events.from_verified_users.not_disabled %>
+      <% e = @user.events.in_current_space.from_verified_users.not_disabled %>
       <% events_count = e.count %>
       <% not_finished_events_count = e.not_finished.count %>
-      <% workflows = @user.workflows.visible_by(current_user).limit(resource_limit) %>
-      <% workflows_count =  @user.workflows.visible_by(current_user).count %>
-      <% collections = @user.collections.visible_by(current_user).limit(resource_limit) %>
-      <% collections_count = @user.collections.visible_by(current_user).count %>
+      <% workflows = @user.workflows.in_current_space.visible_by(current_user).limit(resource_limit) %>
+      <% workflows_count =  @user.workflows.in_current_space.visible_by(current_user).count %>
+      <% collections = @user.collections.in_current_space.visible_by(current_user).limit(resource_limit) %>
+      <% collections_count = @user.collections.in_current_space.visible_by(current_user).count %>
       <% activator = tab_activator %>
 
       <ul class="nav nav-tabs">

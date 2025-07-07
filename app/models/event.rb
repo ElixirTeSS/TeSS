@@ -19,6 +19,7 @@ class Event < ApplicationRecord
   include WithTimezone
   include HasEdamTerms
   include HasLanguage
+  include InSpace
 
   before_validation :fix_keywords, on: :create, if: :scraper_record
   before_validation :presence_default

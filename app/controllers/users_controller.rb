@@ -6,6 +6,7 @@ class UsersController < ApplicationController
   prepend_before_action :set_user, only: %i[show edit update destroy change_token]
   prepend_before_action :init_user, only: [:create]
   before_action :set_breadcrumbs
+  before_action :check_profile_id, only: [:update]
 
   include ActionView::Helpers::TextHelper
 
@@ -127,7 +128,7 @@ class UsersController < ApplicationController
 
   def user_params
     allowed_parameters = [:email, :username, :password, :image, :image_url, {
-      profile_attributes: [:firstname, :surname, :email, :website, :public,
+      profile_attributes: [:id, :firstname, :surname, :email, :website, :public,
                            :description, :location, :orcid, :experience,
                            { expertise_academic: [] }, { expertise_technical: [] },
                            { interest: [] }, { activity: [] }, { language: [] },
@@ -140,5 +141,14 @@ class UsersController < ApplicationController
 
   def invitees_enabled?
     feature_enabled?('invitation')
+  end
+
+  # Prevent assigning other profiles
+  def check_profile_id
+    profile_id = @user.profile.id
+    incoming_id = user_params.dig(:profile_attributes, :id)
+    if profile_id && incoming_id && profile_id.to_i != incoming_id.to_i
+      handle_error(:forbidden, 'Invalid profile ID.')
+    end
   end
 end

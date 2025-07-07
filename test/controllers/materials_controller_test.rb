@@ -215,6 +215,7 @@ class MaterialsControllerTest < ActionController::TestCase
     end
     assert_redirected_to material_path(assigns(:material))
     @material.reload
+    assert_nil assigns(:material).space
   end
 
   test 'should create material with all optional attributes' do
@@ -1553,6 +1554,31 @@ class MaterialsControllerTest < ActionController::TestCase
         assert_select '.label', text: 'keyword_9'
         assert_select '.label', text: 'extra_keyword', count: 0
       end
+    end
+  end
+
+  test 'should create material in current space' do
+    plant_space = spaces(:plants)
+    with_host(plant_space.host) do
+      sign_in users(:regular_user)
+      assert_difference('Material.count') do
+        post :create, params: {
+          material: {
+            doi: @material.doi,
+            remote_created_date: @material.remote_created_date,
+            remote_updated_date: @material.remote_updated_date,
+            description: @material.description,
+            title: @material.title,
+            url: @material.url,
+            licence: @material.licence,
+            keywords: @material.keywords,
+            contact: @material.contact,
+            status: @material.status
+          }
+        }
+      end
+      assert_redirected_to material_path(assigns(:material))
+      assert_equal plant_space, assigns(:material).space
     end
   end
 end

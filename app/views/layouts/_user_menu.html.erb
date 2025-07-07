@@ -52,6 +52,11 @@
           <%= link_to rails_admin_path, title: t('menu.user.view_admin_console') do %>
             <i class="fa fa-cog"></i> <%= t('menu.user.admin_console') %>
           <% end %>
+          <% if TeSS::Config.feature['spaces'] %>
+            <%= link_to spaces_path, title: t('menu.user.spaces_admin') do %>
+              <i class="fa fa-globe"></i><%= t('menu.user.spaces_admin') %>
+            <% end %>
+          <% end %>
         <% end %>
       </li>
     <% end %>
