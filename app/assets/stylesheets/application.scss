@@ -1017,56 +1017,55 @@ td.day .calendar-text {
   background: $state-success-bg;
 }
 
-<% if TeSS::Config.feature['sticky_navbar'] %>
-.navbar {
-  border-radius: 0;
-  font-size: larger;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  margin-bottom: 0px;
-  transition: font-size 0.3s ease, padding-bottom 0.3s ease, padding-top 0.3s ease;
+.sticky-navbar-enabled {
+  .navbar {
+    border-radius: 0;
+    font-size: larger;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 0px;
+    transition: font-size 0.3s ease, padding-bottom 0.3s ease, padding-top 0.3s ease;
 
-  &.scrolled {
-    font-size: medium;
-    padding-bottom: 0;
-    padding-top: 0;
+    &.scrolled {
+      font-size: medium;
+      padding-bottom: 0;
+      padding-top: 0;
+    }
   }
-}
 
-.unified-header {
-  z-index: 100000;
-  position: sticky;
-  top: 0;
-  background-color: $navbar-default-bg;
+  .unified-header {
+    z-index: 100000;
+    position: sticky;
+    top: 0;
+    background-color: $navbar-default-bg;
 
-  .navbar-brand {
+    .navbar-brand {
 
-    img {
-      padding: 0px 0px 0px 0px;
-      transition: padding 0.3s ease;
+      img {
+        padding: 0px 0px 0px 0px;
+        transition: padding 0.3s ease;
 
-      &.scrolled {
-        padding: 10px 5px 5px 5px;
+        &.scrolled {
+          padding: 10px 5px 5px 5px;
+        }
       }
     }
   }
-}
 
-.header-notice + .navbar {
-  padding-bottom: 20px;
-  padding-top: 20px;
-  &.scrolled {
-    padding-top: 0px;
-    padding-bottom: 0px;
+  .header-notice + .navbar {
+    padding-bottom: 20px;
+    padding-top: 20px;
+    &.scrolled {
+      padding-top: 0px;
+      padding-bottom: 0px;
+    }
+  }
+
+  .header-notice-present {
+    .header-notice {
+      z-index: 100001;
+      position: sticky;
+      top: 0;
+    }
   }
 }
-¨
-<% if TeSS::Config.header_notice&.strip.present? %>
-.header-notice {
-  z-index: 100001;
-  position: sticky;
-  top: 0;
-}
-<% end %>
-
-<% end %>

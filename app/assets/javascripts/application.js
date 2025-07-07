@@ -374,18 +374,11 @@ $(document).on('click', '[href="#activity_log"]', function () {
     return false;
 });
 
-<% if TeSS::Config.feature['sticky_navbar'] %>
-/**
- * Created by Kenneth Rioja on 02.07.2025
- *
- * Sticky Navbar
- */
-
-/*
- * Allows navbar to shrink when scrolling
- */
-
+// sticky-navbar feature
 document.addEventListener('turbolinks:load', function () {
+
+  if (!document.querySelector('.sticky-navbar-enabled')) return;
+
   const header = document.querySelector('.unified-header');
   const navbar = document.querySelector('.navbar');
   const logoImg = document.querySelector('.navbar-brand img');
@@ -403,4 +396,3 @@ document.addEventListener('turbolinks:load', function () {
     }
   });
 });
-<% end %>

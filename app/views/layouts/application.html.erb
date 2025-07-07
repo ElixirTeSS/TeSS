@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-
 <%= render 'layouts/head' %>
 
-<body>
+<body class=<%= 'sticky-navbar-enabled' if TeSS::Config.feature['sticky_navbar'] %> <%= 'header-notice-present' if TeSS::Config.header_notice&.strip.present? %>>
 <%= render partial: 'layouts/header' %>
 
 <div id="main-container" class="<%= @container_class || 'container-fluid' %>">
@@ -19,5 +17,3 @@
 
 </body>
 </html>
-
-<%= javascript_include_tag "application", "data-turbo-track": "reload" %>

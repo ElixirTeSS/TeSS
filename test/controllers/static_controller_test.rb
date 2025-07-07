@@ -341,4 +341,18 @@ class StaticControllerTest < ActionController::TestCase
       assert_select 'nav.header-notice', count: 1
     end
   end
+
+  test 'should not find sticky-navbar-enabled when sticky_navbar is disable' do
+    with_settings({ feature: { sticky_navbar: false } }) do
+      get :home
+      assert_select 'body.sticky-navbar-enabled', count: 0
+    end
+  end
+
+  test 'should find sticky-navbar-enabled when sticky_navbar is enabled' do
+    with_settings({ feature: { sticky_navbar: true } }) do
+      get :home
+      assert_select 'body.sticky-navbar-enabled', count: 1
+    end
+  end
 end
