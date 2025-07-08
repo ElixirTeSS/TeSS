@@ -114,6 +114,16 @@ default: &default
       featured_trainer: false
       counters: false # Whether or not to show number of database objects in separate blocks
       search_box: true # Whether or not to show the search box
+      additional_links: # Add custom links in separate blocks
+#       - url: https://example.com/
+#         icon: placeholder-person.png  # Path relative to app/assets/images or absolute URL
+#         title: "My Example Link"
+#         id: example-link  # Optional id for custom styling in theme
+    footer: # Configuration for the footer
+      additional_links: # Add custom links to the footer
+#        - url: https://example.com/
+#          title: Example
+#          on_right: False # Display link in right column of footer, defaults to False 
     # The order in which the tabs appear (if feature enabled)
     tab_order: ['about', 'events', 'materials', 'elearning_materials', 'workflows', 'collections', 'trainers', 'content_providers', 'nodes']
     # The tabs that should be collapsed under the "Directory" tab. Can be left blank to hide it.
