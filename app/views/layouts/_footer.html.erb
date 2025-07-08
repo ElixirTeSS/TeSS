@@ -28,6 +28,14 @@
             <%= link_to t('footer.cookie_preferences'), cookies_consent_path %>
           </div>
         <% end %>
+        <% if TeSS::Config.site.dig('footer', 'additional_links') %>
+           <% TeSS::Config.site.dig('footer', 'additional_links').each do |link| %>
+            <div class="footer-item">
+              <%= link_to link[:title], link[:url] %>
+            </div>
+          <% end %>
+        <% end %>
+       
       </div>
 
       <div class="col-sm-4 col-xs-6 text-left">
