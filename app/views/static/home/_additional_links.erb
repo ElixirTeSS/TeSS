@@ -1,7 +1,7 @@
 <section id="additional_links">
   <ul class="catalogue">
     <% TeSS::Config.site.dig('home_page', 'additional_links').each do |link| %>
-      <li class="resource-type">
+      <li class="resource-type" <%if link[:id] %> id="<%= link[:id] %>" <% end %>>
         <%= link_to link[:url], class: 'link-overlay' do %>
           <div class="resource-type-title">
             <%= image_tag(link[:icon], alt: link[:title]) %>
