@@ -30,9 +30,11 @@
         <% end %>
         <% if TeSS::Config.site.dig('footer', 'additional_links') %>
            <% TeSS::Config.site.dig('footer', 'additional_links').each do |link| %>
-            <div class="footer-item">
-              <%= link_to link[:title], link[:url] %>
-            </div>
+            <% unless link[:on_right] %>
+              <div class="footer-item">
+                <%= link_to link[:title], link[:url] %>
+              </div>
+            <% end %>
           <% end %>
         <% end %>
        
@@ -55,6 +57,16 @@
           <div class="footer-item">
             <%= link_to t('footer.bioschemas_testing_tool'), bioschemas_test_path %>
           </div>
+        <% end %>
+
+        <% if TeSS::Config.site.dig('footer', 'additional_links') %>
+           <% TeSS::Config.site.dig('footer', 'additional_links').each do |link| %>
+            <% if link[:on_right] %>
+              <div class="footer-item">
+                <%= link_to link[:title], link[:url] %>
+              </div>
+            <% end %>
+          <% end %>
         <% end %>
       </div>
 
