@@ -223,6 +223,7 @@ default: &default
   funders:
 #    - url: https://example.com/your-funders-website
 #      logo: foo.png
+#      only: # "footer" or "about" - if pressent, show funder only in specified location
   priority_licences:
     - MIT
     - Apache-2.0
