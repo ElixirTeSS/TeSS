@@ -10,6 +10,9 @@ var UrlChecker = {
 
         $(this).addClass('loading');
 
+        if (!checkExistsUrl) {
+            return UrlChecker.validUrl(input, url, testValidUrl);
+        }
         $.ajax({
             method: 'POST',
             dataType: 'json',

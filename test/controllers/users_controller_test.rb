@@ -305,8 +305,8 @@ class UsersControllerTest < ActionController::TestCase
 
     # check errors
     profile = assigns(:user).profile
-    assert_equal 3, profile.errors.size, 'invalid number of errors'
-    assert_equal 2, profile.errors.full_messages_for(:website).size, 'invalid error count for: website'
+    assert_equal 2, profile.errors.size, 'invalid number of errors'
+    assert_equal 1, profile.errors.full_messages_for(:website).size, 'invalid error count for: website'
     assert_equal 1, profile.errors.full_messages_for(:orcid).size, 'invalid error count for: orcid'
     assert_equal "Website is not a valid URL", profile.errors.full_messages_for(:website).first
     assert_equal "ORCID isn't a valid ORCID identifier", profile.errors.full_messages_for(:orcid).first
