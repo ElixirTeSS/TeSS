@@ -7,7 +7,7 @@
 
   <%= f.input :description, as: :markdown_area, input_html: { rows: '10' } %>
 
-  <%= f.input :theme, collection: Space::THEMES, selected: @space.theme || 'default' %>
+  <%= f.input :theme, collection: TeSS::Config.themes.keys, selected: @space.theme || 'default' %>
 
   <div class="form-group">
     <%= render partial: 'common/image_form', locals: { form: f } %>

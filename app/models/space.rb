@@ -14,8 +14,7 @@ class Space < ApplicationRecord
   has_many :administrator_roles, -> { where(key: :admin) }, class_name: 'SpaceRole'
   has_many :administrators, through: :administrator_roles, source: :user, class_name: 'User'
 
-  THEMES = ['default', 'green', 'blue', 'space'].freeze
-  validates :theme, inclusion: { in: THEMES, allow_blank: true }
+  validates :theme, inclusion: { in: TeSS::Config.themes.keys, allow_blank: true }
 
   has_image(placeholder: TeSS::Config.placeholder['content_provider'])
 

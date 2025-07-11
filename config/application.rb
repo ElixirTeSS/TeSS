@@ -84,6 +84,21 @@ module TeSS
     tess_config['placeholder']['content_provider'] = tess_config['placeholder']['provider']
   end
 
+  # Apply legacy `icon_primary_color` and `icon_secondary_color` to default theme
+  if tess_config.dig('site', 'icon_primary_color')
+    warn "DEPRECATION WARNING: 'icon_primary_color' should now be 'primary_color' under 'themes', 'default' in: config/tess.yml"
+    tess_config['themes'] ||= {}
+    tess_config['themes']['default'] ||= {}
+    tess_config['themes']['default']['primary'] ||= tess_config.dig('site', 'icon_primary_color')
+  end
+
+  if tess_config.dig('site', 'icon_secondary_color')
+    warn "DEPRECATION WARNING: 'icon_secondary_color' should now be 'secondary_color' under 'themes', 'default' in: config/tess.yml"
+    tess_config['themes'] ||= {}
+    tess_config['themes']['default'] ||= {}
+    tess_config['themes']['default']['secondary'] ||= tess_config.dig('site', 'icon_secondary_color')
+  end
+
   def self.merge_config(default_config, config, current_path = '')
     default_config.each do |key, value|
       unless config.key?(key)
