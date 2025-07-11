@@ -6,7 +6,7 @@ class Profile < ApplicationRecord
 
   before_validation :normalize_orcid
   validates :firstname, :surname, :description, presence: true, if: :public?
-  validates :website, url: true, http_url: true, allow_blank: true
+  validates :website, url: true, http_url: { allow_inaccessible: true }, allow_blank: true
   validates :orcid, orcid: true, allow_blank: true
   after_validation :check_public
   after_commit :reindex_trainer
