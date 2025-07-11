@@ -9,6 +9,7 @@ class HttpUrlValidator < ActiveModel::EachValidator
     code = nil
     begin
       uri = URI.parse(value) rescue nil
+      return false if PrivateAddressCheck.resolves_to_private_address?(uri.hostname)
       if uri && (uri.scheme == 'http' || uri.scheme == 'https')
         PrivateAddressCheck.only_public_connections do
           res = HTTParty.get(value, { timeout: Rails.env.test? ? 1 : 5 })
