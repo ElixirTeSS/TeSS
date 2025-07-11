@@ -112,26 +112,26 @@ Setup the TeSS configuration files:
 
 `tess.yml` is used to configure features and branding of your TeSS instance. `secrets.yml` is used to hold API keys etc.
 
-The production deployment is configured in the `docker compose-prod.yml` file.
+The production deployment is configured in the `docker-compose-prod.yml` file.
 
 Start services:
 
-    docker compose -f docker compose-prod.yml up -d
+    docker compose -f docker-compose-prod.yml up -d
 
 Run initial database setup:
 
-    docker compose -f docker compose-prod.yml exec app bundle exec rake db:setup DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+    docker compose -f docker-compose-prod.yml exec app bundle exec rake db:setup DISABLE_DATABASE_ENVIRONMENT_CHECK=1
 
 ### Other production tasks
 
 Run database migrations:
 
-    docker compose -f docker compose-prod.yml exec app bundle exec rake db:migrate
+    docker compose -f docker-compose-prod.yml exec app bundle exec rake db:migrate
 
 Precompile the assets, necessary if any CSS/JS/images are changed after building the image:
 
-    docker compose -f docker compose-prod.yml exec app bundle exec rake assets:clean && bundle exec rake assets:precompile
+    docker compose -f docker-compose-prod.yml exec app bundle exec rake assets:clean && bundle exec rake assets:precompile
 
 Reindex Solr:
 
-    docker compose -f docker compose-prod.yml exec app bundle exec rake tess:reindex
+    docker compose -f docker-compose-prod.yml exec app bundle exec rake tess:reindex
