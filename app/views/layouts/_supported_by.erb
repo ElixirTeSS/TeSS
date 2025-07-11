@@ -2,8 +2,10 @@
   <hr/>
   <div class="supporters">
     <%- TeSS::Config&.funders&.reverse&.each do |funder| %>
-      <%= link_to funder[:url], class: 'footer-logo', target: '_blank', rel: 'noopener' do %>
-        <%= image_tag(funder[:logo]) %>
+      <% unless funder[:only] && funder[:only] != 'footer' %>
+        <%= link_to funder[:url], class: 'footer-logo', target: '_blank', rel: 'noopener' do %>
+          <%= image_tag(funder[:logo]) %>
+        <% end %>
       <% end %>
     <% end %>
 
