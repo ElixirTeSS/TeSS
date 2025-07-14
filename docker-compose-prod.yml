@@ -21,6 +21,7 @@ services:
     volumes:
       - uploads:/code/public/system
       - logs:/code/log
+      - tmp:/code/tmp
       - ./config/tess.yml:/code/config/tess.yml
       - ./config/secrets.yml:/code/config/secrets.yml
     environment:
@@ -80,6 +81,7 @@ services:
       - redis
     volumes:
       - uploads:/code/public/system
+      - tmp:/code/tmp
       - ./config/tess.yml:/code/config/tess.yml
       - ./config/secrets.yml:/code/config/secrets.yml
     env_file: .env
@@ -108,3 +110,4 @@ volumes:
   redis-data:
   uploads:
   logs:
+  tmp:
