@@ -345,6 +345,34 @@ class StaticControllerTest < ActionController::TestCase
     end
   end
 
+  test 'should not find header-notice when header_notice is disabled' do
+    with_settings({ header_notice: '' }) do
+      get :home
+      assert_select 'nav.header-notice', count: 0
+    end
+  end
+
+  test 'should find header-notice when header_notice is enabled' do
+    with_settings({ header_notice: 'Test' }) do
+      get :home
+      assert_select 'nav.header-notice', count: 1
+    end
+  end
+
+  test 'should not find sticky-navbar-enabled when sticky_navbar is disable' do
+    with_settings({ feature: { sticky_navbar: false } }) do
+      get :home
+      assert_select 'body.sticky-navbar-enabled', count: 0
+    end
+  end
+
+  test 'should find sticky-navbar-enabled when sticky_navbar is enabled' do
+    with_settings({ feature: { sticky_navbar: true } }) do
+      get :home
+      assert_select 'body.sticky-navbar-enabled', count: 1
+    end
+  end
+
   test 'sets current space based on subdomain' do
     get :home
     assert_equal 'TTI', Space.current_space.title
