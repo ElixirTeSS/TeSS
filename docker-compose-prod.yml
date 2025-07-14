@@ -110,3 +110,4 @@ volumes:
   redis-data:
   uploads:
   logs:
+  tmp:
