@@ -6,6 +6,7 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:oidc] = nil
     OmniAuth.config.mock_auth[:oidc2] = nil
+    OmniAuth.config.mock_auth[:oidc3] = nil
     OmniAuth.config.mock_auth[:elixir_aai] = nil
     # request.env["devise.mapping"] = Devise.mappings[:user]
     # request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:elixir_aai]
@@ -399,4 +400,154 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
+  test 'CERN SSO authentication redirects new users to edit profile page' do
+    OmniAuth.config.mock_auth[:oidc3] = OmniAuth::AuthHash.new(
+      {
+        provider: 'oidc3',
+        uid: 'on3tw0thre3',
+        info: {
+          email: 'cern@example.com',
+          nickname: 'cern_user',
+          first_name: 'CERN',
+          last_name: 'Usar'
+        }
+      })
+
+    post '/users/auth/oidc3'
+
+    follow_redirect! # OmniAuth redirect
+    follow_redirect! # CallbacksController edit profile redirect
+
+    assert_equal "/users/cern_user/edit", path
+    assert_select '#user-menu .dropdown-toggle', 'cern_user'
+    assert_select '#user_profile_attributes_firstname[value=?]', 'CERN'
+    assert_select '#user_profile_attributes_surname[value=?]', 'Usar'
+  end
+
+  test 'CERN SSO authentication redirects existing users to home page' do
+    user = users(:existing_cern_user)
+    OmniAuth.config.mock_auth[:oidc3] = OmniAuth::AuthHash.new(
+      {
+        provider: 'oidc3',
+        uid: user.uid,
+        info: {
+          email: user.email,
+          nickname: user.username,
+        }
+      })
+
+    post '/users/auth/oidc3'
+
+    follow_redirect! # OmniAuth redirect
+    follow_redirect! # CallbacksController sign_in_and_redirect
+
+    assert_equal '/', path
+    assert_select '#user-menu .dropdown-toggle', user.username
+  end
+
+  test 'Registering via CERN SSO does not duplicate existing usernames' do
+    existing_user = users(:regular_user)
+    OmniAuth.config.mock_auth[:oidc3] = OmniAuth::AuthHash.new(
+      {
+        provider: 'oidc3',
+        uid: 'on3tw0thre3',
+        info: {
+          email: 'cern@example.com',
+          nickname: existing_user.username,
+          first_name: 'CERN',
+          last_name: 'Usar'
+        }
+      })
+
+    post '/users/auth/oidc3'
+
+    follow_redirect!
+    follow_redirect!
+
+    expected_username = "#{existing_user.username}1" # Adds 1 to end of name!
+
+    assert_equal "/users/#{expected_username.downcase}/edit", path
+    assert_select '#user-menu .dropdown-toggle', expected_username
+  end
+
+  test 'CERN SSO authentication requires POST' do
+    OmniAuth.config.mock_auth[:oidc3] = OmniAuth::AuthHash.new(
+      {
+        provider: 'oidc3',
+        uid: 'on3tw0thre3',
+        info: {
+          email: 'cern@example.com',
+          nickname: 'cern_user',
+          first_name: 'CERN',
+          last_name: 'Usar'
+        }
+      })
+
+    get '/users/auth/oidc3'
+
+    assert_response :not_found
+  end
+
+  test 'Can log in through CERN SSO with multiple email addresses' do
+    user = users(:existing_cern_user)
+    OmniAuth.config.mock_auth[:oidc3] = OmniAuth::AuthHash.new(
+      {
+        provider: 'oidc3',
+        uid: user.uid,
+        info: {
+          email: user.email,
+          nickname: user.username,
+        }
+      })
+
+    post '/users/auth/oidc3'
+
+    follow_redirect! # OmniAuth redirect
+    follow_redirect! # CallbacksController sign_in_and_redirect
+
+    assert_equal '/', path
+    assert_select '#user-menu .dropdown-toggle', user.username
+
+    OmniAuth.config.mock_auth[:oidc3] = OmniAuth::AuthHash.new(
+      {
+        provider: 'oidc3',
+        uid: user.uid,
+        info: {
+          email: "yoo@mysuperdomain.jam",
+          nickname: "xX_swifties4ever_Xx",
+        }
+      })
+
+    post '/users/auth/oidc3'
+
+    follow_redirect! # OmniAuth redirect
+    follow_redirect! # CallbacksController sign_in_and_redirect
+
+    assert_equal '/', path
+    assert_select '#user-menu .dropdown-toggle', user.username
+  end
+
+  test 'Registering via CERN SSO with duplicate AAF email should fail' do
+    existing_user = users :trainer_user
+    new_uid = 'r3048974r4983'
+
+    OmniAuth.config.mock_auth[:oidc3] = OmniAuth::AuthHash.new(
+      {
+        provider: 'oidc3',
+        uid: new_uid,
+        info: {
+          email: existing_user.email,
+          nickname: existing_user.username,
+        }
+      })
+
+    post '/users/auth/oidc3'
+
+    follow_redirect!
+    follow_redirect!
+
+    # check redirect to sign in page
+    assert_equal "/users/sign_in", path
+    assert_equal 'Login failed: Email has already been taken', flash[:notice]
+  end
 end
