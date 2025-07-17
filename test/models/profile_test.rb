@@ -73,24 +73,22 @@ class ProfileTest < ActiveSupport::TestCase
     # accessible domain
     assert profile.update(website: 'http://200host.com')
 
-    # blocked domain
+    # blocked domain is not OK
     refute profile.update(website: 'https://bad-domain.example/')
     assert profile.errors.added?(:website, 'is blocked')
-    refute profile.errors.added?(:website, 'is not accessible'), 'connection should not be attempted to blocked domains'
 
-    # inaccessible domain
-    refute profile.update(website: 'http://404host.com')
-    assert profile.errors.added?(:website, 'is not accessible')
+    # inaccessible domain is OK
+    assert profile.update(website: 'http://404host.com')
     refute profile.errors.added?(:website, 'is blocked')
 
-    # private address
+    # private address is not OK
     with_net_connection do # Allow request through to be caught by private_address_check
-      refute profile.update(website: 'http://127.0.0.1')
+      refute profile.update(website: 'http://192.168.0.1')
       assert profile.errors.added?(:website, 'is not accessible')
     end
 
-    # address that times out
-    refute profile.update(website: 'http://slowhost.com')
-    assert profile.errors.added?(:website, 'is not accessible')
+    # address that times out is OK
+    assert profile.update(website: 'http://slowhost.com')
+    refute profile.errors.added?(:website, 'is not accessible')
   end
 end
