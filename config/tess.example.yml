@@ -95,9 +95,6 @@ default: &default
     logo_open_graph: ''
     logo_email: ''
     default_theme: default
-    # Colours of the SVG icons used throughout TeSS, requires `rake assets:precompile` if changed
-    icon_primary_color: '#047EAA' # Blue by default
-    icon_secondary_color: '#F47D21' # Orange by default
     repository: 'https://github.com/ElixirTeSS/TeSS'
     supported_by: 'elixir_supported_by'
     widget_example:
@@ -245,6 +242,22 @@ default: &default
 #      featured_providers:
 #        node:
 #          name: United Kingdom
+  # Themes enabled in TeSS:
+  # "primary" and "secondary" refer to the colours of the SVG icons used throughout TeSS,
+  #   requires `rake assets:precompile` if changed
+  themes:
+    default:
+      primary: '#047eaa' # Blue by default
+      secondary: '#f47d21' # Orange by default
+    green:
+      primary: '529d00'
+      secondary: '#829d30'
+    blue:
+      primary: '#024552'
+      secondary: '#00839d'
+    space:
+      primary: '#260252'
+      secondary: '#5c29b1'
 development:
   <<: *default
 

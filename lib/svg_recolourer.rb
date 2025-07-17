@@ -6,30 +6,6 @@ class SvgRecolourer
     '#f47d21' => :secondary
   }
 
-  # Configured themes. TODO: Read this from some config
-  THEMES = {
-    'default' => {
-      primary: TeSS::Config.site['icon_primary_color'],
-      secondary: TeSS::Config.site['icon_secondary_color']
-    },
-    'green' => {
-      primary: '#529d00',
-      secondary: '#829d30'
-    },
-    'blue' => {
-      primary: '#024552',
-      secondary: '#00839d'
-    },
-    'space' => {
-      primary: '#260252',
-      secondary: '#5c29b1'
-    },
-    'dark' => {
-      primary: '#260252',
-      secondary: '#5c29b1'
-    }
-  }
-
   REGEXP = Regexp.new('(' + MAPPING.keys.map { |k| Regexp.quote(k) }.join('|') + ')',  Regexp::IGNORECASE)
 
   def initialize(filename, &block)
@@ -44,7 +20,7 @@ class SvgRecolourer
   def self.run(filename, source, context)
     match_data = filename.match(/images\/themes\/([^\/]+)\//)
     return source unless match_data
-    theme = THEMES[match_data[1]]
+    theme = TeSS::Config.themes[match_data[1]]
     raise "Missing theme #{match_data[1]}" unless theme
 
     source.gsub(REGEXP) do |match|
