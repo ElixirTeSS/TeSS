@@ -207,6 +207,55 @@ class StaticControllerTest < ActionController::TestCase
     end
   end
 
+  test 'should allow configuration of custom links on home page' do
+    site_settings = TeSS::Config.site.dup
+    site_settings['home_page'] = {
+      'catalogue_blocks': false,
+      'provider_carousel': false,
+      'featured_providers': nil,
+      'faq': [],
+      'promo_blocks': false,
+      'search_box': false,
+      'additional_links': nil
+    }
+
+    with_settings({ site: site_settings }) do
+      get :home
+      assert_select 'section#additional_links', count: 0
+      assert_select 'a[href="https://example.org/"]', count: 0
+      assert_select '#example-link-2', count: 0
+    end
+
+    site_settings['home_page']['additional_links'] = [
+      {
+        'url': 'https://example.org/', 
+        'icon': 'placeholder-person.png', 
+        'title': 'My Example Link'
+      },
+      {
+        'url': 'https://example.org/2', 
+        'icon': 'https://example.org/image.png', 
+        'title': 'My Other Example Link',
+        'id': 'example-link-2',
+        'new_tab': true
+      }
+    ]
+    with_settings({ site: site_settings }) do
+      get :home
+      assert_select 'section#additional_links', count: 1
+      assert_select 'a[href=?]', 'https://example.org/' do
+        assert_select 'img[src]'
+        assert_select 'h3', 'My Example Link'
+      end
+      assert_select 'li#example-link-2' do
+        assert_select 'a[href=?][target="_blank"]', 'https://example.org/2' do
+          assert_select 'img[src=?]', 'https://example.org/image.png'
+          assert_select 'h3', 'My Other Example Link'
+        end
+      end
+    end
+  end
+
   test 'should hide unverified providers from carousel' do
     mock_images
     ContentProvider.destroy_all
@@ -360,6 +409,41 @@ class StaticControllerTest < ActionController::TestCase
       with_settings({ feature: { spaces: false } }) do
         get :home
         assert_equal 'TTI', Space.current_space.title
+      end
+    end
+  end
+
+  test 'should allow configuration of custom links in footer' do
+    site_settings = TeSS::Config.site.dup
+    site_settings['footer'] = nil
+
+    with_settings({ site: site_settings }) do
+      get :home
+      assert_select 'footer', count: 1
+      assert_select 'a[href="https://example.org/"]', count: 0
+      assert_select 'a[href="https://example.org/2"]', count: 0
+    end
+
+    site_settings['footer'] = {
+      'additional_links': [
+        {
+          'url': 'https://example.org/', 
+          'title': 'My Example Link'
+        },
+        {
+          'url': 'https://example.org/2', 
+          'title': 'My Other Example Link',
+          'on_right': true
+        }
+      ]
+    }
+    with_settings({ site: site_settings }) do
+      get :home
+      assert_select 'footer .row > div:nth-of-type(2)' do
+        assert_select 'a[href="https://example.org/"]', 'My Example Link'
+      end
+      assert_select 'footer .row > div:nth-of-type(3)' do
+        assert_select 'a[href="https://example.org/2"]', 'My Other Example Link'
       end
     end
   end
