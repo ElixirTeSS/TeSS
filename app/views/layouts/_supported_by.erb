@@ -7,7 +7,7 @@
       <% end %>
     <% end %>
 
-    <%- if I18n.exists?('footer.eu_funding_html') %>
+    <%- if I18n.exists?('footer.eu_funding_html') && I18n.t('footer.eu_funding_html').present? %>
       <div class="eu-notice">
         <%= image_tag('elixir/eu-flag.svg') %>
         <div>
