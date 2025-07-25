@@ -19,8 +19,8 @@
               <p>
                 <% TeSS::Config.funders.each do |funder| %>
                   <% unless funder[:only] && funder[:only] != 'about' %>
-                    <%= link_to(funder['url'], target: '_blank', rel: 'noopener') do -%>
-                      <%= image_tag(funder['logo'], class: 'funding-logo') -%>
+                    <%= link_to(funder[:url], target: '_blank', rel: 'noopener') do -%>
+                      <%= image_tag(funder[:logo], class: 'funding-logo') -%>
                     <% end %>
                   <% end %>
                 <% end %>
