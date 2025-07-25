@@ -1,14 +1,14 @@
 <section id="additional_links">
-  <ul class="catalogue">
+  <ul class="additional-links">
     <% TeSS::Config.site.dig('home_page', 'additional_links').each do |link| %>
       <% link_options = { class: 'link-overlay' } %>
       <% if link[:new_tab] %>
           <% link_options[:target] = '_blank' %>
           <% link_options[:rel] = 'noopener' %>
       <% end %>
-      <li class="resource-type" <%if link[:id] %> id="<%= link[:id] %>" <% end %>>
+      <li class="additional-link" <%if link[:id] %> id="<%= link[:id] %>" <% end %>>
         <%= link_to link[:url], link_options do %>
-          <div class="resource-type-title">
+          <div class="additional-link-title">
             <%= image_tag(link[:icon], alt: link[:title]) %>
             <h3><%= link[:title] %></h3>
           </div>

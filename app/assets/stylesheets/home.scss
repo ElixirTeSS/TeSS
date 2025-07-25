@@ -122,6 +122,43 @@ ul.catalogue {
   }
 }
 
+ul.additional-links {
+  padding: 10px 0;
+  margin: 0 -10px;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  flex-direction: row;
+  align-items: flex-start;
+
+  justify-content: center;
+
+  li.additional-link {
+    flex: 1;
+    flex-basis: max-content;
+    padding: 0 12px;
+    margin-bottom: 15px;
+    min-width: 300px;
+
+    .pseudolink {
+      color: $link-color;
+      text-decoration: underline;
+    }
+
+    .additional-link-title {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      img {
+        margin-top: 10px;
+        max-width: 50px;
+      }
+    }
+  }
+}
+
 ul.counter {
   padding: 10px 0;
   margin: 0 -10px;
