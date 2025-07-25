@@ -17,42 +17,42 @@ class AboutControllerTest < ActionController::TestCase
   test 'should show correct funder logos in about us and footer' do
     funder_setting = [
       {
-        'url': 'https://example.org/your-funders-website',
-        'logo': 'https://example.org/your-funders-website/logo.png'
+        url: 'https://example.org/your-funders-website',
+        logo: 'https://example.org/your-funders-website/logo.png'
       },
       {
-        'url': 'https://example.org/funder-footer',
-        'logo': 'https://example.org/funder-footer/logo.png',
-        'only': 'footer'
+        url: 'https://example.org/funder-footer',
+        logo: 'https://example.org/funder-footer/logo.png',
+        only: 'footer'
       },
       {
-        'url': 'https://example.org/funder-about',
-        'logo': 'https://example.org/funder-about/logo.png',
-        'only': 'about'
+        url: 'https://example.org/funder-about',
+        logo: 'https://example.org/funder-about/logo.png',
+        only: 'about'
       }
     ]
     
     with_settings(funders: funder_setting) do
       get :us
       assert_select '#funding' do
-        assert_select 'a[htref=?]', 'https://example.org/your-funders-website' do
+        assert_select 'a[href=?]', 'https://example.org/your-funders-website' do
           assert_select 'img[src=?]', 'https://example.org/your-funders-website/logo.png'
         end
-        assert_select 'a[htref=?]', 'https://example.org/funder-about' do
+        assert_select 'a[href=?]', 'https://example.org/funder-about' do
           assert_select 'img[src=?]', 'https://example.org/funder-about/logo.png'
         end
-        assert_select 'a[htref=?]', 'https://example.org/funder-footer', count: 0
+        assert_select 'a[href=?]', 'https://example.org/funder-footer', count: 0
         assert_select 'img[src=?]', 'https://example.org/funder-footer/logo.png', count: 0
       end
 
       assert_select 'footer' do
-        assert_select 'a[htref=?]', 'https://example.org/your-funders-website' do
+        assert_select 'a[href=?]', 'https://example.org/your-funders-website' do
           assert_select 'img[src=?]', 'https://example.org/your-funders-website/logo.png'
         end
-        assert_select 'a[htref=?]', 'https://example.org/funder-footer' do
+        assert_select 'a[href=?]', 'https://example.org/funder-footer' do
           assert_select 'img[src=?]', 'https://example.org/funder-footer/logo.png'
         end
-        assert_select 'a[htref=?]', 'https://example.org/funder-about', count: 0
+        assert_select 'a[href=?]', 'https://example.org/funder-about', count: 0
         assert_select 'img[src=?]', 'https://example.org/funder-about/logo.png', count: 0
       end
     end
