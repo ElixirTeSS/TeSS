@@ -221,7 +221,7 @@ default: &default
     - sl # Slovenian
     - sv # Swedish
   funders:
-#    - url: https://example.com/your-funders-website
+#    - url: https://example.org/your-funders-website
 #      logo: foo.png
 #      only: # "footer" or "about" - if pressent, show funder only in specified location
   priority_licences:
