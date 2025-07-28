@@ -3,7 +3,7 @@
 
 <%= render 'layouts/head' %>
 
-<body>
+<body class=<%= 'sticky-navbar-enabled' if TeSS::Config.feature['sticky_navbar'] %> <%= 'header-notice-present' if TeSS::Config.header_notice&.strip.present? %>>
 
 <%= render :partial=>"layouts/header" %>
 
