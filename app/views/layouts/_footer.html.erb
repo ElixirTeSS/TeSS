@@ -10,6 +10,16 @@
           <%= mail_to(TeSS::Config.contact_email) %><br/>
         </div>
 
+        <% if TeSS::Config.site.dig('footer', 'additional_links') %>
+           <% TeSS::Config.site.dig('footer', 'additional_links').each do |link| %>
+            <% if link[:location] == 'left' %>
+              <div class="footer-item">
+                <%= link_to link[:title], link[:url] %>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+
         <%= link_to t("home.providers.button_text"), registering_resources_path, class: 'btn btn-primary btn-sm', style: 'margin-top: 1em' %>
       </div>
 
@@ -30,7 +40,7 @@
         <% end %>
         <% if TeSS::Config.site.dig('footer', 'additional_links') %>
            <% TeSS::Config.site.dig('footer', 'additional_links').each do |link| %>
-            <% unless link[:on_right] %>
+            <% if link[:location] == 'center' || !link[:location] %>
               <div class="footer-item">
                 <%= link_to link[:title], link[:url] %>
               </div>
@@ -61,7 +71,7 @@
 
         <% if TeSS::Config.site.dig('footer', 'additional_links') %>
            <% TeSS::Config.site.dig('footer', 'additional_links').each do |link| %>
-            <% if link[:on_right] %>
+            <% if link[:location] == 'right' %>
               <div class="footer-item">
                 <%= link_to link[:title], link[:url] %>
               </div>

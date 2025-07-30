@@ -422,6 +422,8 @@ class StaticControllerTest < ActionController::TestCase
       assert_select 'footer', count: 1
       assert_select 'a[href="https://example.org/"]', count: 0
       assert_select 'a[href="https://example.org/2"]', count: 0
+      assert_select 'a[href="https://example.org/3"]', count: 0
+      assert_select 'a[href="https://example.org/4"]', count: 0
     end
 
     site_settings['footer'] = {
@@ -431,19 +433,35 @@ class StaticControllerTest < ActionController::TestCase
           'title': 'My Example Link'
         },
         {
-          'url': 'https://example.org/2', 
-          'title': 'My Other Example Link',
-          'on_right': true
+          'url': 'https://example.org/l', 
+          'title': 'Left Example Link',
+          'location': 'left'
+        },
+        {
+          'url': 'https://example.org/c', 
+          'title': 'Center Example Link',
+          'location': 'center'
+        },
+        {
+          'url': 'https://example.org/r', 
+          'title': 'Right Example Link',
+          'location': 'right'
         }
       ]
     }
     with_settings({ site: site_settings }) do
       get :home
+      assert_select 'footer .row > div:nth-of-type(1)' do
+        assert_select 'a[href="https://example.org/l"]', 'Left Example Link'
+      end
       assert_select 'footer .row > div:nth-of-type(2)' do
         assert_select 'a[href="https://example.org/"]', 'My Example Link'
       end
+      assert_select 'footer .row > div:nth-of-type(2)' do
+        assert_select 'a[href="https://example.org/c"]', 'Center Example Link'
+      end
       assert_select 'footer .row > div:nth-of-type(3)' do
-        assert_select 'a[href="https://example.org/2"]', 'My Other Example Link'
+        assert_select 'a[href="https://example.org/r"]', 'Right Example Link'
       end
     end
   end
