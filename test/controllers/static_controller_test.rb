@@ -421,9 +421,9 @@ class StaticControllerTest < ActionController::TestCase
       get :home
       assert_select 'footer', count: 1
       assert_select 'a[href="https://example.org/"]', count: 0
-      assert_select 'a[href="https://example.org/2"]', count: 0
-      assert_select 'a[href="https://example.org/3"]', count: 0
-      assert_select 'a[href="https://example.org/4"]', count: 0
+      assert_select 'a[href="https://example.org/l"]', count: 0
+      assert_select 'a[href="https://example.org/c"]', count: 0
+      assert_select 'a[href="https://example.org/r"]', count: 0
     end
 
     site_settings['footer'] = {
