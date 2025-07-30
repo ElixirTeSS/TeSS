@@ -3,15 +3,11 @@
 require 'rss'
 
 module EventsHelper
-  EVENTS_INFO = "An event in #{TeSS::Config.site['title_short']} is a link to a single training event sourced by a\
-  provider along with description and other meta information (e.g. date, location, audience, ontological\
-  categorization, keywords, etc.).\n\n\
-  Training events can be added manually or automatically harvested from a provider's website.\n\n\
-  If your website contains training events that you wish to include in #{TeSS::Config.site['title_short']},\
-  %<link>s.".freeze
+  EVENTS_INFO = I18n.t('info.events.description').freeze
 
   def events_info
-    format(EVENTS_INFO, link: link_to('see here for details on automatic registration',
+    format(EVENTS_INFO, site_name: TeSS::Config.site['title_short'],
+                        link: link_to(I18n.t('info.events.link'),
                                       registering_resources_path(anchor: 'automatic')))
   end
 

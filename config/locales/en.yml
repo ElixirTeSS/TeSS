@@ -102,9 +102,9 @@ en:
       learn_more_widgets: Learn more about Widgets
       learn_more_api: Learn more about our API
     registry: >
-      TeSS is a platform that was developed to provide a one-stop shop for trainers and trainees to discover
+      %{site_name} is a platform that was developed to provide a one-stop shop for trainers and trainees to discover
       online information and content, including training materials, events and interactive tutorials.
-      For training providers, TeSS provides opportunities to promote training events and news, and to contribute
+      For training providers, %{site_name} provides opportunities to promote training events and news, and to contribute
       to a growing catalogue of materials; for trainers, the portal offers an environment for sharing materials
       and event information; for trainees, it offers a convenient gateway via which to identify relevant training
       events and resources, and to perform specific, guided analysis tasks via customised training workflows.
@@ -564,10 +564,6 @@ en:
     code: "TeSS adheres to the <a href='https://wiki.refeds.org/display/CODE/Code+of+Conduct+for+Service+Providers'> GÉANT Data Protection Code of Conduct for Service Providers in EU/EEA </a>"
     controller: "The data controller for TeSS is The University of Manchester."
     post: "<strong>The TeSS Team</strong><br/>Room 1.17 c/o School of Computer Science,<br/>Kilburn Building,<br/>Oxford Road,<br/>Manchester,<br/>M13 9PL"
-  providers:
-    info: >
-      Content providers are entities (such as academic institutions, non-profit organisations, portals etc.) that
-      provide training materials of relevance to life sciences and ELIXIR.
   events:
     hints:
       address: 'Where is this event being held?'
@@ -1003,6 +999,69 @@ en:
         create: Create %{model}
         update: Update %{model}
   info:
+    events:
+      description: |
+        An event in %{site_name} is a link to a single training event sourced by a provider along with description and other meta information (e.g. date, location, audience, ontological categorization, keywords, etc.).<br>
+        Training events can be added manually or automatically harvested from a provider's website.<br>
+        If your website contains training events that you wish to include in %{site_name}, %{link}.
+      link : see here for details on automatic registration
+    materials:
+      description: |
+        In the context of %{site_name}, a training material is a link to a single online training material sourced by a content provider (such as a text on a Web page, presentation, video, etc.).<br>
+        Materials can be added manually or automatically harvested from a provider's website.<br>
+        If your website contains training materials that you wish to include in %{site_name}, %{link}.
+      link : see here for details on automatic registration
+    elearning_materials:
+      description: |
+        e-Learning materials are curated materials focused on e-Learning.
+        If your website contains e-Learning materials that you wish to include in %{site_name}, %{link}.
+      link : see here for details on automatic registration
+    topics:
+      description: |
+        %{site_name} generates a scientific topic suggestion for each resource registered. It does this by passing the description and title of the resource to the Bioportal Annotator Web service.
+        The Annotator Web service finds EDAM terms that match terms in the text. You can then accept or reject these terms in %{site_name}.
+        Accepting will add a topic to the resource and rejecting will remove the suggestion permanently.
+    learning_paths:
+      description: |
+        A learning path is a pathway that guides learners through a set of learning modules
+        (courses/materials) to be undertaken progressively (from lower- to higher-order thinking skills
+        to acquire the desired knowledge and skills on a subject by the end of the pathway.<br>
+        1. Register training materials.
+        2. Create a learning path topic and add materials to it (repeat for each topic).
+        3. Register a learning path and add learning path topics to it.<br>
+        %{link}.
+      link : See here for details on learning paths
+    learning_path_topics:
+      description: |
+        A learning path topic is an ordered list of training materials.
+        A topic can be given a competency level (beginner, intermediate, advanced), description and set of keywords.
+        A learning path contains an ordered list of one or more topics, where each topic has one competency level for all its materials. <br>
+        1. Register training materials.
+        2. Create a learning path topic and add materials to it (repeat for each topic).
+        3. Register a learning path and add learning path topics to it.<br>
+        %{link}
+      link : See here for details on learning path topics
+    trainers:
+      description: |
+        %{site_name} provides a facility that allows registered users to provide information about their training experience and make this publicly available via the Trainers Register.
+    workflows:
+      description: |
+        Training workflows in %{site_name} are visual, step-by-step protocols that allow users to navigate materials in %{site_name} in topic- or task-related ways.<br>
+        For example, they may encapsulate typical stages of particular kinds of data analysis (protein sequence analysis, structure analysis, etc.), where each stage/node in the workflow represents a given analysis step and links to the corresponding training resources.
+    providers:
+      description: |
+        Content providers are entities (such as academic institutions, non-profit organisations, portals etc.) that provide training materials of relevance to life sciences and ELIXIR.
+    sources:
+      description: |
+        %{site_name} provides a facility to automatically ingest events and materials from a variety of sources.
+    collections:
+      description: |
+        Collections can be thought of as folders in which users may collect particular training materials or events, from the full catalogue available within %{site_name} to address their specific training needs.
+    nodes:
+      description: |
+         ELIXIR is a pan-European research infrastructure consisting of the Hub and a number of, primarily,national nodes that provide services to their local communities.
+          Select a node to find out more about its training events, training provision, staff and member institutions.
     spaces:
       title: What are spaces?
-      description: Spaces are customizable, community-managed sub-portals within TeSS, each with their own catalogue of training content.
+      description: |
+        Spaces are customizable, community-managed sub-portals within %{site_name}, each with their own catalogue of training content.

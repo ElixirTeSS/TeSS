@@ -1,10 +1,10 @@
 # The helper for Collections classes
 module CollectionsHelper
+  COLLECTIONS_INFO = I18n.t('info.collections.description').freeze
 
-  COLLECTIONS_INFO = "Collections can be thought of as folders in which users may collect particular training materials or " +
-    "events, from the full catalogue available within #{TeSS::Config.site['title_short']}, " +
-    "to address their specific training needs."
-
+  def collections_info
+    format(COLLECTIONS_INFO, site_name: TeSS::Config.site['title_short'])
+  end
 
   def item_fields(item_class)
     case item_class.name
