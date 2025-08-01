@@ -13,7 +13,7 @@
         <%= t('register.buttons.workflows')%>
       <% end %>
       <%= info_button("What are workflows in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
-        <%= render_markdown(WorkflowsHelper::WORKFLOWS_INFO) %>
+        <%= render_markdown(workflows_info) %>
       <% end %>
     <% end %>
 
