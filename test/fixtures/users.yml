@@ -138,6 +138,15 @@ existing_tuakiri_user:
   authentication_token: <%= Devise.friendly_token %>
   provider: oidc2
 
+existing_cern_user:
+  username: 'TimBornersLee'
+  email: 'tbl@worldwide.web'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'private') %>
+  confirmed_at: <%= Time.zone.now %>
+  role: user
+  authentication_token: <%= Devise.friendly_token %>
+  provider: oidc3
+
 existing_aai_user:
   username: 'existing_aai_user'
   email: 'elslu@example.com'
