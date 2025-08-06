@@ -17,7 +17,7 @@ GEM
       rails-assets-moment (>= 2.10.5)
     rails-assets-jquery (3.7.0)
     rails-assets-markdown-it (7.0.1)
-    rails-assets-moment (2.15.2)
+    rails-assets-moment (2.30.1)
     rails-assets-select2 (4.0.8)
 
 GEM
@@ -861,7 +861,7 @@ DEPENDENCIES
   rails-assets-devbridge-autocomplete (~> 1.4.9)!
   rails-assets-eonasdan-bootstrap-datetimepicker (~> 4.17.42)!
   rails-assets-markdown-it (~> 7.0.1)!
-  rails-assets-moment (~> 2.15.0)!
+  rails-assets-moment (~> 2.30.1)!
   rails-assets-select2 (~> 4.0.8)!
   rails-controller-testing
   rails-i18n
