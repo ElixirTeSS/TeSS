@@ -8,7 +8,7 @@
   <div id="content">
     <div class="pull-right">
       <%= info_button("How to curate topics in #{TeSS::Config.site['title_short']}") do %>
-        <%= render_markdown(MaterialsHelper::TOPICS_INFO) %>
+        <%= render_markdown(topics_info) %>
       <% end %>
     </div>
     <h3>Displaying all <%= pluralize @suggestions.count, 'topic suggestion' %></h3>

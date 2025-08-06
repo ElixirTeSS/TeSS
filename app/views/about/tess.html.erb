@@ -7,7 +7,7 @@
     <div class="about-block">
       <% if current_space.default? %>
         <h2><%== TeSS::Config.site['title'] %></h2>
-        <p><%== t 'about.registry' %></p>
+        <p><%== t('about.registry', site_name: TeSS::Config.site['title_short']) %></p>
 
         <p><%== t 'about.history' %></p>
       <% else %>

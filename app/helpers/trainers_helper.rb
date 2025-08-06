@@ -1,8 +1,10 @@
-# The helper for Materials classes
+# The helper for Trainer classes
 module TrainersHelper
-  TRAINERS_INFO = "#{TeSS::Config.site['title_short']} provides a facility that allows registered users to " +
-    "provide information about their training experience " +
-    "and make this publicly available via the Trainers Register.".freeze
+  TRAINERS_INFO = I18n.t('info.trainers.description').freeze
+
+  def trainers_info
+    format(TRAINERS_INFO, site_name: TeSS::Config.site['title_short'])
+  end
 
   # Returns an array of two-element arrays of licences ready to be used in options_for_select()
   # for generating option/select tags

@@ -1,57 +1,39 @@
 # The helper for Materials classes
 module MaterialsHelper
-  MATERIALS_INFO = "In the context of #{TeSS::Config.site['title_short']}, a training material is a link to a single\
-  online training material sourced by a content provider (such as a text on a Web page, presentation, video, etc.) along\
-  with description and other meta information (e.g. ontological categorization, keywords, etc.).\n\n
-  Materials can be added manually or automatically harvested from a provider's website.\n\n\
-  If your website contains training materials that you wish to include in #{TeSS::Config.site['title_short']},\
-  %<link>s.".freeze
+  MATERIALS_INFO = I18n.t('info.materials.description').freeze
 
-  ELEARNING_MATERIALS_INFO = "e-Learning materials are curated materials focused on e-Learning.\n\n"\
-  "If your website contains e-Learning materials that you wish to include in #{TeSS::Config.site['title_short']},\
-  %<link>s.".freeze
+  ELEARNING_MATERIALS_INFO = I18n.t('info.elearning_materials.description').freeze
 
-  TOPICS_INFO = "#{TeSS::Config.site['title_short']} generates a scientific topic suggestion for each resource registered. It does this by
-  passing the description and title of the resource to the Bioportal Annotator Web service.
-  The Annotator Web service finds EDAM terms that match terms in the text. You can then accept or reject these terms in #{TeSS::Config.site['title_short']}.
+  TOPICS_INFO = I18n.t('info.topics.description').freeze
 
-Accepting will add a topic to the resource and rejecting will remove the suggestion permanently"
+  LEARNING_PATHS_INFO = I18n.t('info.learning_paths.description').freeze
 
-  LEARNING_PATHS_INFO = "A learning path is a pathway that guides learners through a set of learning modules \
-(courses/materials) to be undertaken progressively (from lower- to higher-order thinking skills) \
-to acquire the desired knowledge and skills on a subject by the end of the pathway. \n\n\
-1. Register training materials.\n\
-2. Create a learning path topic and add materials to it (repeat for each topic). \n\
-3. Register a learning path and add learning path topics to it. \n\n\
-%{link}".freeze
-
-  LEARNING_PATH_TOPICS_INFO = "A learning path topic is an ordered list of training materials. \
-A topic can be given a competency level (beginner, intermediate, advanced), description and set of keywords. \
-A learning path contains an ordered list of one or more topics, \
-where each topic has one competency level for all its materials. \n\n\
-1. Register training materials.\n\
-2. Create a learning path topic and add materials to it (repeat for each topic). \n\
-3. Register a learning path and add learning path topics to it. \n\n\
-%{link}".freeze
+  LEARNING_PATH_TOPICS_INFO = I18n.t('info.learning_path_topics.description').freeze
 
   def materials_info
-    format(MATERIALS_INFO, link: link_to('see here for details on automatic registration',
+    format(MATERIALS_INFO, site_name: TeSS::Config.site['title_short'],
+                           link: link_to(I18n.t('info.materials.link'),
                                          registering_resources_path(anchor: 'automatic')))
   end
 
   def elearning_materials_info
-    format(ELEARNING_MATERIALS_INFO, link: link_to('see here for details on automatic registration',
+    format(ELEARNING_MATERIALS_INFO, site_name: TeSS::Config.site['title_short'],
+                                     link: link_to(I18n.t('info.elearning_materials.link'),
                                                    registering_resources_path(anchor: 'automatic')))
   end
 
+  def topics_info
+    format(TOPICS_INFO, site_name: TeSS::Config.site['title_short'])
+  end
+
   def learning_paths_info
-    LEARNING_PATHS_INFO % { link: link_to('See here for details on learning paths',
-                              registering_learning_paths_path(anchor: 'register_paths') )}
+    format(LEARNING_PATHS_INFO, link: link_to(I18n.t('info.elearning_paths.link'),
+                                              registering_learning_paths_path(anchor: 'register_paths')))
   end
 
   def learning_path_topics_info
-    LEARNING_PATH_TOPICS_INFO % { link: link_to('See here for details on learning path topics',
-                                     registering_learning_paths_path(anchor: 'topics') )}
+    format(LEARNING_PATH_TOPICS_INFO, link: link_to(I18n.t('info.elearning_path_topics.link'),
+                                                    registering_learning_paths_path(anchor: 'topics')))
   end
 
   # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags
