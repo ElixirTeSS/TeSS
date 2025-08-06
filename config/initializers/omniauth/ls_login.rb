@@ -4,7 +4,7 @@ unless Rails.application.config.secrets.dig(:elixir_aai, :client_id).blank?
     logo: 'ls-login.png',
     name: :elixir_aai,
     scope: [:openid, :email, :profile],
-    response_type: 'code',
+    response_type: :code,
     issuer: 'https://login.aai.lifescience-ri.eu/oidc/',
     discovery: true,
     client_options: {

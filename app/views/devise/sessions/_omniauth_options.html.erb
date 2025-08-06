@@ -2,12 +2,11 @@
   <% Devise.omniauth_configs.each do |provider, config| -%>
     <%= link_to(omniauth_authorize_path(resource_name, provider), method: :post,
                 class: config.options[:logo] ? '' : 'btn btn-default') do %>
-      <% if config.options[:logo] %>
+      <% if config.options[:logo].present? %>
         <%= image_tag(config.options[:logo], class: "omniauth-logo omniauth-#{provider}") -%>
       <% else %>
         <%= t('authentication.omniauth.log_in_with',
-            provider: t("authentication.omniauth.providers.#{provider}",
-                      default: provider.to_s.titleize)) -%>
+            provider: config.options[:label] || t("authentication.omniauth.providers.#{provider}", default: provider.to_s.titleize)) -%>
       <% end %>
     <% end -%>
   <% end -%>

@@ -5,7 +5,8 @@
   <ul class="dropdown-menu dropdown-menu-right">
     <% Devise.omniauth_configs.each do |provider, config| -%>
       <li class="dropdown-item">
-        <%= link_to "Log in with #{t("authentication.omniauth.providers.#{provider}", default: provider.to_s.titleize)}",
+        <%= link_to t('authentication.omniauth.log_in_with',
+              provider: config.options[:label] || t("authentication.omniauth.providers.#{provider}", default: provider.to_s.titleize)),
                     omniauth_authorize_path('user', provider), method: :post %>
       </li>
     <% end %>
