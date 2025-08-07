@@ -187,7 +187,7 @@ class EventsController < ApplicationController
     @event.create_activity :destroy, owner: current_user
     @event.destroy
     respond_to do |format|
-      format.html { redirect_to events_url, notice: 'Event was successfully destroyed.' }
+      format.html { redirect_to events_path, notice: 'Event was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
