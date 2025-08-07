@@ -164,6 +164,7 @@ module Ingestors
         # check for matched events
         resource.user_id ||= user.id
         resource.content_provider_id ||= provider.id
+        resource.space_id ||= source&.space_id
         existing_resource = find_existing(type, resource)
 
         update = existing_resource
