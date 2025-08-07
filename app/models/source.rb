@@ -2,6 +2,7 @@ class Source < ApplicationRecord
   include LogParameterChanges
   include HasTestJob
   include HasAssociatedNodes
+  include InSpace
 
   APPROVAL_STATUS = {
     0 => :not_approved,

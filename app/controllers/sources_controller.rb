@@ -39,6 +39,7 @@ class SourcesController < ApplicationController
     authorize Source
     @source = @content_provider.sources.build(source_params)
     @source.user = current_user
+    @source.space = current_space
 
     respond_to do |format|
       if @source.save
