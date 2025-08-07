@@ -3,7 +3,7 @@
 <% show_cross_space_filter = current_user&.is_admin? %>
 <% resource_name = resource_type.model_name.human.downcase.pluralize %>
 
-<% if show_last_scraped_filter || show_hidden_filter %>
+<% if show_last_scraped_filter || show_hidden_filter || show_cross_space_filter %>
   <ul class="unstyled nav-simple">
     <li>
       <h4 class="nav-heading mt-4">
