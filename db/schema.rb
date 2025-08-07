@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_25_151745) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_07_085314) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -480,7 +480,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_25_151745) do
     t.integer "approval_status"
     t.datetime "updated_at"
     t.string "default_language"
+    t.bigint "space_id"
     t.index ["content_provider_id"], name: "index_sources_on_content_provider_id"
+    t.index ["space_id"], name: "index_sources_on_space_id"
     t.index ["user_id"], name: "index_sources_on_user_id"
   end
 
@@ -665,6 +667,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_25_151745) do
   add_foreign_key "node_links", "nodes"
   add_foreign_key "nodes", "users"
   add_foreign_key "sources", "content_providers"
+  add_foreign_key "sources", "spaces"
   add_foreign_key "sources", "users"
   add_foreign_key "space_roles", "spaces"
   add_foreign_key "space_roles", "users"
