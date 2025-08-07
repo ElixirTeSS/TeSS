@@ -65,7 +65,7 @@ class SpacesController < ApplicationController
     @space.create_activity :destroy, owner: current_user
     @space.destroy
     respond_to do |format|
-      format.html { redirect_to spaces_url, notice: 'Space was successfully deleted.' }
+      format.html { redirect_to spaces_path, notice: 'Space was successfully deleted.' }
     end
   end
 
