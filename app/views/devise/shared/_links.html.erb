@@ -4,7 +4,8 @@
           <%= link_to t('devise.links.log_in'), new_session_path(resource_name) %></li>
   <% end -%>
 
-  <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
+  <%- if devise_mapping.registerable? && controller_name != 'registrations' &&
+    TeSS::Config.feature['registration'] && !from_blocked_country? %>
       <li><%= t('devise.links.new_to', title: TeSS::Config.site['title_short']) %>
           <%= link_to t('devise.links.register'), new_registration_path(resource_name) %></li>
   <% end -%>
