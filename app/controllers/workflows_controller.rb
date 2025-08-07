@@ -87,7 +87,7 @@ class WorkflowsController < ApplicationController
     @workflow.create_activity :destroy, owner: current_user
     @workflow.destroy
     respond_to do |format|
-      format.html { redirect_to workflows_url, notice: 'Workflow was successfully destroyed.' }
+      format.html { redirect_to workflows_path, notice: 'Workflow was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

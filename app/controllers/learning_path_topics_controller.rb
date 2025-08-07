@@ -68,7 +68,7 @@ class LearningPathTopicsController < ApplicationController
     @learning_path_topic.create_activity :destroy, owner: current_user
     @learning_path_topic.destroy
     respond_to do |format|
-      format.html { redirect_to learning_path_topics_url, notice: 'Topic was successfully destroyed.' }
+      format.html { redirect_to learning_path_topics_path, notice: 'Topic was successfully destroyed.' }
       # format.json { head :no_content }
     end
   end
