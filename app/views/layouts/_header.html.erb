@@ -93,11 +93,9 @@
     </div>
   <% end %>
 
-  <% if !defined? @skip_flash_messages_in_header or !@skip_flash_messages_in_header %>
-    <div id="flash-container" class="container-fluid">
-      <%= flash_messages %>
-    </div>
-  <% end %>
+  <div id="flash-container" class="container-fluid">
+    <%= flash_messages %>
+  </div>
 </header>
 
 <%= render(partial: 'layouts/cookie_banner') if cookie_consent.show_banner? %>
