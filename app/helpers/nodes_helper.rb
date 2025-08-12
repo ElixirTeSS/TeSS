@@ -1,9 +1,7 @@
 # The helper for Nodes classes
 module NodesHelper
-  NODES_INFO = I18n.t('info.nodes.description').freeze
-
   def nodes_info
-    format(NODES_INFO, site_name: TeSS::Config.site['title_short'])
+    I18n.t('info.nodes.description')
   end
 
   def add_node_staff_button(form, target)

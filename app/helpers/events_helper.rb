@@ -3,12 +3,10 @@
 require 'rss'
 
 module EventsHelper
-  EVENTS_INFO = I18n.t('info.events.description').freeze
-
   def events_info
-    format(EVENTS_INFO, site_name: TeSS::Config.site['title_short'],
-                        link: link_to(I18n.t('info.events.link'),
-                                      registering_resources_path(anchor: 'automatic')))
+    I18n.t('info.events.description',
+           link: link_to(I18n.t('info.events.link'),
+                         registering_resources_path(anchor: 'automatic')))
   end
 
   def google_calendar_export_url(event)

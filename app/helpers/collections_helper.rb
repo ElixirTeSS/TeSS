@@ -1,9 +1,7 @@
 # The helper for Collections classes
 module CollectionsHelper
-  COLLECTIONS_INFO = I18n.t('info.collections.description').freeze
-
   def collections_info
-    format(COLLECTIONS_INFO, site_name: TeSS::Config.site['title_short'])
+    I18n.t('info.collections.description')
   end
 
   def item_fields(item_class)

@@ -1,9 +1,7 @@
 # The helper for Trainer classes
 module TrainersHelper
-  TRAINERS_INFO = I18n.t('info.trainers.description').freeze
-
   def trainers_info
-    format(TRAINERS_INFO, site_name: TeSS::Config.site['title_short'])
+    I18n.t('info.trainers.description')
   end
 
   # Returns an array of two-element arrays of licences ready to be used in options_for_select()

@@ -1,39 +1,31 @@
 # The helper for Materials classes
 module MaterialsHelper
-  MATERIALS_INFO = I18n.t('info.materials.description').freeze
-
-  ELEARNING_MATERIALS_INFO = I18n.t('info.elearning_materials.description').freeze
-
-  TOPICS_INFO = I18n.t('info.topics.description').freeze
-
-  LEARNING_PATHS_INFO = I18n.t('info.learning_paths.description').freeze
-
-  LEARNING_PATH_TOPICS_INFO = I18n.t('info.learning_path_topics.description').freeze
-
   def materials_info
-    format(MATERIALS_INFO, site_name: TeSS::Config.site['title_short'],
-                           link: link_to(I18n.t('info.materials.link'),
-                                         registering_resources_path(anchor: 'automatic')))
+    I18n.t('info.materials.description',
+           link: link_to(I18n.t('info.materials.link'),
+                         registering_resources_path(anchor: 'automatic')))
   end
 
   def elearning_materials_info
-    format(ELEARNING_MATERIALS_INFO, site_name: TeSS::Config.site['title_short'],
-                                     link: link_to(I18n.t('info.elearning_materials.link'),
-                                                   registering_resources_path(anchor: 'automatic')))
+    I18n.t('info.elearning_materials.description',
+           link: link_to(I18n.t('info.elearning_materials.link'),
+                         registering_resources_path(anchor: 'automatic')))
   end
 
   def topics_info
-    format(TOPICS_INFO, site_name: TeSS::Config.site['title_short'])
+    I18n.t('info.topics.description')
   end
 
   def learning_paths_info
-    format(LEARNING_PATHS_INFO, link: link_to(I18n.t('info.elearning_paths.link'),
-                                              registering_learning_paths_path(anchor: 'register_paths')))
+    I18n.t('info.learning_paths.description',
+           link: link_to(I18n.t('info.learning_paths.link'),
+                         registering_resources_path(anchor: 'automatic')))
   end
 
   def learning_path_topics_info
-    format(LEARNING_PATH_TOPICS_INFO, link: link_to(I18n.t('info.elearning_path_topics.link'),
-                                                    registering_learning_paths_path(anchor: 'topics')))
+    I18n.t('info.learning_path_topics.description',
+           link: link_to(I18n.t('info.learning_path_topics.link'),
+                         registering_resources_path(anchor: 'automatic')))
   end
 
   # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags

@@ -1,8 +1,6 @@
 module SourcesHelper
-  SOURCES_INFO = I18n.t('info.sources.description').freeze
-
   def sources_info
-    format(SOURCES_INFO, site_name: TeSS::Config.site['title_short'])
+    I18n.t('info.sources.description')
   end
 
   def grouped_ingestor_options_for_select
