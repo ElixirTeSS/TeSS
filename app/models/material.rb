@@ -186,4 +186,16 @@ class Material < ApplicationRecord
   def archived?
     status == 'archived'
   end
+
+  def to_rdf
+    xml = ::Builder::XmlMarkup.new(:indent => 2)
+    xml.rdf(:RDF,
+            "xmlns:rdf" => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "xmlns:dc"  => "http://purl.org/dc/elements/1.1/") do
+      xml.rdf(:Description, "rdf:about" => "http://example.org/resource/123") do
+        xml.dc :title, "Example Resource"
+        xml.dc :creator, "Jane Doe"
+      end
+    end
+  end
 end
