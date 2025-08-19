@@ -192,22 +192,14 @@ class Material < ApplicationRecord
   end
 
   def to_rdf
-    jsonld_hash = {
-      "@context" => {
-        "dc" => "http://purl.org/dc/elements/1.1/"
-      },
-      "@id" => "http://example.org/resource/123",
-      "dc:title" => "Example Resource",
-      "dc:creator" => "Jane Doe"
-    }
-
-    jsonld_str = JSON.generate(jsonld_hash)
+    jsonld_str = to_bioschemas[0].to_json
     
     graph = RDF::Graph.new
     JSON::LD::Reader.new(jsonld_str) do |reader|
       reader.each_statement { |stmt| graph << stmt }
     end
-    rdfxml_str = graph.dump(:rdfxml)
+
+    rdfxml_str = graph.dump(:rdfxml, prefixes: {sdo: "http://schema.org/", dc: "http://purl.org/dc/terms/"})
     rdfxml_str.sub(/\A<\?xml.*?\?>\s*/, '') # remove XML declaration
   end
 end
