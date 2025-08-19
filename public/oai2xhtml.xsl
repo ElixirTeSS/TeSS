@@ -619,6 +619,27 @@ p.intro {
 <xsl:template match="dc:rights" xmlns:dc="http://purl.org/dc/elements/1.1/">
 <tr><td class="key">Rights Management</td><td class="value"><xsl:value-of select="."/></td></tr></xsl:template>
 
+
+<!-- RDF/XML record -->
+
+<xsl:template match="rdf:RDF" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <div class="rdfdata">
+    <h3>RDF Metadata</h3>
+
+    <!-- List prefixes defined on <rdf:RDF> hardcoded here because XSLT does not support showing xmlns attributes -->
+    <h4>Prefixes</h4>
+    <ul>
+      <li>sdo: <a href="http://schema.org/">http://schema.org/</a></li>
+      <li>dc: <a href="http://purl.org/dc/terms/">http://purl.org/dc/terms/</a></li>
+    </ul>
+
+    <h4>Raw RDF</h4>
+    <div class="xmlSource">
+      <xsl:apply-templates select="." mode='xmlMarkup' />
+    </div>
+  </div>
+</xsl:template>
+
 <!-- XML Pretty Maker -->
 
 <xsl:template match="node()" mode='xmlMarkup'>
