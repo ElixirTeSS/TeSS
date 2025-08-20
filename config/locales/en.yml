@@ -108,6 +108,17 @@ en:
       to a growing catalogue of materials; for trainers, the portal offers an environment for sharing materials
       and event information; for trainees, it offers a convenient gateway via which to identify relevant training
       events and resources, and to perform specific, guided analysis tasks via customised training workflows.
+    mtessx: >
+      As researchers increasingly rely on complex, data-driven methods, there is an urgent need for robust, 
+      interoperable infrastructure to support the organisation, discovery, and reuse of training resources, which 
+      also motivates use of research data management infrastructures. 
+      The <strong>mTeSS-X Project (Multi-space Training e-Support System with eXchange)</strong> 
+      overcomes the fragmentation of training resources across Research Infrastructures and the European Science 
+      Clusters. The project aims to enhance existing TeSS-based training registries or catalogues like 
+      ELIXIR TeSS (life sciences) and 
+      <a href='https://www.panosc.eu/training-catalogue/'>PaN-Training (photon and neutron)</a>
+      by building an aggregator (TeSSHub) for these and similar platforms. 
+      <a href='https://elixirtess.github.io/mTeSS-X' target='_blank'>Read more about the OSCARS mTeSS-X project.</a>
     history: >
       TeSS was originally developed as part of <a href='https://elixir-europe.org/' target='_blank'>ELIXIR</a>,
       Europe's distributed infrastructure for life-science data. One of the goals of ELIXIR is to train research
