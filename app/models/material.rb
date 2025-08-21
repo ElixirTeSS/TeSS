@@ -1,4 +1,8 @@
 require 'rails/html/sanitizer'
+require 'json/ld'
+require 'rdf'
+require 'rdf/rdfxml'
+require 'builder'
 
 class Material < ApplicationRecord
   include PublicActivity::Common
@@ -185,5 +189,59 @@ class Material < ApplicationRecord
 
   def archived?
     status == 'archived'
+  end
+
+  def to_rdf
+    jsonld_str = to_bioschemas[0].to_json
+    
+    graph = RDF::Graph.new
+    JSON::LD::Reader.new(jsonld_str) do |reader|
+      reader.each_statement { |stmt| graph << stmt }
+    end
+
+    rdfxml_str = graph.dump(:rdfxml, prefixes: {sdo: "http://schema.org/", dc: "http://purl.org/dc/terms/"})
+    rdfxml_str.sub(/\A<\?xml.*?\?>\s*/, '') # remove XML declaration
+  end
+
+  # Dublin Core mappings for OAI-PMH
+  # contributor -> no mapping need
+  # coverage -> not mappable (spacial or temporal coverage unknown)
+  alias_attribute :creators, :authors
+  def dates
+    [date_published, date_created, date_modified].compact.map(&:iso8601)
+  end
+  # description -> no mapping needed
+  def format; 'text/html'; end
+  def identifier
+    if !doi.empty?
+      doi_iri = doi.start_with?('http://', 'https://') ? doi : "https://doi.org/#{doi}"
+    else
+      url
+    end
+  end
+  def language; 'en'; end
+  def publishers
+    if content_provider
+      [content_provider.title]
+    else
+      []
+    end
+  end
+  # relation -> url of tess resource, content provider url
+  #             External resources, Events
+  def relations
+    [
+      "#{TeSS::Config.base_url}#{Rails.application.routes.url_helpers.material_path(self)}"
+    ] + (content_provider ? [content_provider.url] : [])
+    # in the future maybe add external resources and releated events
+  end
+  alias_attribute :rights, :licence
+  # source -> not mappable (Sources for material unknown)
+  def subjects
+    keywords + scientific_topics.map(&:uri) + operations.map(&:uri)
+  end
+  # title -> no mapping need
+  def types 
+    ['http://purl.org/dc/dcmitype/Text', 'https://schema.org/LearningResource'] + resource_type
   end
 end
