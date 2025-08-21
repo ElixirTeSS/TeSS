@@ -19,7 +19,7 @@ end
 
 class TrainingProvider < OAI::Provider::Base
   repository_name TeSS::Config.site['title']
-  repository_url 'http://localhost:3000/oai-pmh'
+  repository_url "#{URI(TeSS::Config.base_url).host}/oai-pmh"
   record_prefix "oai:#{URI(TeSS::Config.base_url).host}"
   admin_email TeSS::Config.contact_email
   source_model OAI::Provider::ActiveRecordWrapper.new(Material)
