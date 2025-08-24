@@ -599,7 +599,7 @@ p.intro {
   <xsl:choose>
     <xsl:when test='starts-with(.,"http" )'>
       <xsl:choose>
-        <xsl:when test='string-length(.) &gt; 50'>
+        <xsl:when test='string-length(.) &gt; 200'>
           <a class="link" href="{.}">URL</a>
           <i> URL not shown as it is very long.</i>
         </xsl:when>
