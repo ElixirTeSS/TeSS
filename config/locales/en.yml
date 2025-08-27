@@ -940,6 +940,7 @@ en:
       log_out: 'Log out'
       log_out_confirm: 'Are you sure you want to log out?'
       spaces_admin: 'Manage spaces'
+      current_space_admin: 'Manage current space'
   activity:
     empty: No activities recorded.
     deleted_owner: Someone

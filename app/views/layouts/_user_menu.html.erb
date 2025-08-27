@@ -16,16 +16,22 @@
       <% end %>
     </li>
 
-    <% if current_user.is_curator? || current_user.is_admin? %>
+    <% is_admin = current_user.is_admin? %>
+    <% is_curator = current_user.is_curator? %>
+    <% is_current_space_admin = !Space.current_space.default? && current_user.has_space_role?(Space.current_space, :admin) %>
+    <% if is_admin || is_curator || is_current_space_admin %>
       <li role="presentation" class="divider"></li>
 
       <li class="dropdown-header"><%= t('menu.user.administration') %></li>
 
-      <li class="dropdown-item">
-        <%= link_to users_path, title: t('menu.user.view_users') do %>
-          <i class="fa fa-users"></i> <%= t('menu.user.view_users') %>
-        <% end %>
-      </li>
+      <% if is_admin || is_curator %>
+        <li class="dropdown-item">
+          <%= link_to users_path, title: t('menu.user.view_users') do %>
+            <i class="fa fa-users"></i> <%= t('menu.user.view_users') %>
+          <% end %>
+        </li>
+      <% end %>
+
       <% if TeSS::Config.feature['sources'] %>
         <li class="dropdown-item">
           <%= link_to sources_path, title: t('menu.user.view_ingestion_sources') do %>
@@ -33,7 +39,8 @@
           <% end %>
         </li>
       <% end %>
-      <% unless TeSS::Config.feature['disabled'].include?('topics') %>
+
+      <% if !TeSS::Config.feature['disabled'].include?('topics') && is_admin || is_curator %>
         <li class="dropdown-item">
           <%= link_to curate_topic_suggestions_path,
                       title: t('menu.user.assign_scientific_topics',
@@ -42,23 +49,38 @@
           <% end %>
         </li>
       <% end %>
-      <li class="dropdown-item">
-        <%= link_to curate_users_path(with_content: true) do %>
-          <i class="fa fa-user-times"></i> <%= t('menu.user.curate_users') %>
-        <% end %>
-      </li>
-      <li class="dropdown-item">
-        <% if current_user.is_admin? %>
+
+      <% if is_admin || is_curator %>
+        <li class="dropdown-item">
+          <%= link_to curate_users_path(with_content: true) do %>
+            <i class="fa fa-user-times"></i> <%= t('menu.user.curate_users') %>
+          <% end %>
+        </li>
+      <% end %>
+
+      <% if is_admin %>
+        <li class="dropdown-item">
           <%= link_to rails_admin_path, title: t('menu.user.view_admin_console') do %>
             <i class="fa fa-cog"></i> <%= t('menu.user.admin_console') %>
           <% end %>
-          <% if TeSS::Config.feature['spaces'] %>
+        </li>
+
+        <% if TeSS::Config.feature['spaces'] %>
+          <li class="dropdown-item">
             <%= link_to spaces_path, title: t('menu.user.spaces_admin') do %>
-              <i class="fa fa-globe"></i><%= t('menu.user.spaces_admin') %>
+              <i class="fa fa-globe"></i> <%= t('menu.user.spaces_admin') %>
             <% end %>
-          <% end %>
+          </li>
         <% end %>
-      </li>
+      <% end %>
+
+      <% if TeSS::Config.feature['spaces'] && (is_admin || is_current_space_admin) && !Space.current_space.default? %>
+        <li class="dropdown-item">
+          <%= link_to edit_space_path(Space.current_space.id), title: t('menu.user.current_space_admin') do %>
+            <i class="fa fa-globe"></i> <%= t('menu.user.current_space_admin') %>
+          <% end %>
+        </li>
+      <% end %>
     <% end %>
 
     <li role="presentation" class="divider"></li>
