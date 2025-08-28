@@ -61,6 +61,13 @@ class Node < ApplicationRecord
     Material.where(id: provider_material_ids | material_ids)
   end
 
+  def full_title
+    return title if title == 'EMBL-EBI'
+    t = title
+    t = 'UK' if title == 'United Kingdom'
+    I18n.t('nodes.full_title', title: t)
+  end
+
   def self.load_from_hash(hash, verbose: false)
     hash["nodes"].map do |node_data|
       node = Node.find_or_initialize_by(name: node_data["name"])

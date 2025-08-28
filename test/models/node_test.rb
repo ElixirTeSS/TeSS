@@ -121,6 +121,13 @@ class NodeTest < ActiveSupport::TestCase
     assert node.valid?
   end
 
+  test 'full title' do
+    assert_equal 'ELIXIR Sweden', Node.new(title: 'Sweden').full_title
+    assert_equal 'ELIXIR UK', Node.new(title: 'United Kingdom').full_title
+    assert_equal 'EMBL-EBI', Node.new(title: 'EMBL-EBI').full_title
+    assert_equal 'ELIXIR Westeros', nodes(:westeros).full_title
+  end
+
   private
 
   def node_data_hash
