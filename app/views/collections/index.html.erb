@@ -13,7 +13,7 @@
         <%= t('register.buttons.collections') %>
       <% end %>
       <%= info_button("What are collections in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
-        <%= render_markdown(CollectionsHelper::COLLECTIONS_INFO) %>
+        <%= render_markdown(collections_info) %>
       <% end %>
     <% end %>
 

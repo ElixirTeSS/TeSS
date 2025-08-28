@@ -29,7 +29,7 @@ class CurationMailer < ApplicationMailer
 
     # @events = @provider.events.where { |e| e.lmm_processed > cut_off_time }
     @events = @provider.events.filter { |e| e.created_at > cut_off_time }
-    subject = t('mailer.events_require_approval.subject', site_name: TeSS::Config.site['title_short'])
+    subject = t('mailer.events_require_approval.subject')
     mail(subject:, to: @provider.content_curation_email) do |format|
       format.html
       format.text
@@ -41,7 +41,7 @@ class CurationMailer < ApplicationMailer
     return unless @provider.content_curation_email.present?
 
     @materials = @provider.materials.filter { |e| e.created_at > cut_off_time }
-    subject = t('mailer.materials_require_approval.subject', site_name: TeSS::Config.site['title_short'])
+    subject = t('mailer.materials_require_approval.subject')
     mail(subject:, to: @provider.content_curation_email) do |format|
       format.html
       format.text
@@ -59,7 +59,7 @@ class CurationMailer < ApplicationMailer
                   .where('events.updated_at < ?', cut_off_time)
                   .where('materials.updated_at < ?', cut_off_time)
                   .distinct
-    subject = t('mailer.check_broken_scrapers.subject', site_name: TeSS::Config.site['title_short'])
+    subject = t('mailer.check_broken_scrapers.subject')
     mail(subject:, to: user.email) do |format|
       format.html
       format.text
