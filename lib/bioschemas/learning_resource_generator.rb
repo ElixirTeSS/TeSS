@@ -17,6 +17,7 @@ module Bioschemas
     property :keywords, :keywords
     property :author, -> (material) { material.authors.map { |p| person(p) } }
     property :contributor, -> (material) { material.contributors.map { |p| person(p) } }
+    property :provider, -> (material) { provider(material) }
     property :audience, -> (material) {
       material.target_audience.map { |audience| { '@type' => 'Audience', 'audienceType' => audience } }
     }
@@ -41,6 +42,5 @@ module Bioschemas
       markdown_to_array(material.learning_objectives)
     }
     property :mentions, -> (material) { external_resources(material) }
-    property :provider, -> (material) { provider(material) }
   end
 end

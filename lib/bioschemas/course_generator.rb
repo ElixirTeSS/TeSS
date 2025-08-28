@@ -14,6 +14,7 @@ module Bioschemas
     property :description, :description
     property :keywords, :keywords
     property :provider, -> (event) { event.host_institutions.map { |i| { '@type' => 'Organization', name: i } } }
+    property :inLanguage, :language
     property :audience, -> (event) {
       event.target_audience.map { |audience| { '@type' => 'Audience', 'audienceType' => audience } }
     }
@@ -23,5 +24,12 @@ module Bioschemas
     property :hasCourseInstance, -> (event) {
       [Bioschemas::CourseInstanceGenerator.new(event).generate.except('@id')]
     }
+    property :coursePrerequisites, -> (event) {
+      markdown_to_array(event.prerequisites)
+    }
+    property :teaches, -> (event) {
+      markdown_to_array(event.learning_objectives)
+    }
+    property :mentions, -> (material) { external_resources(material) }
   end
 end
