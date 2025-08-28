@@ -101,5 +101,58 @@ module Bioschemas
         'longitude' => event.longitude
       }.compact
     end
+
+    # Reverse the process used by TeSS_RDF_Extractors to turn a list of values into a markdown list.
+    # If the input doesn't look listy, falls back to just returning a list containing the input value as a single element.
+    # Note that this could lose some data in the case that the input markdown starts with a list and then has some
+    # non-list content afterwards.
+    def self.markdown_to_array(markdown)
+      return nil if markdown.blank?
+      a = []
+
+      if markdown.start_with?(' * ')
+        matches = markdown.scan(/ \* (.+)\n/)
+        if matches.any?
+          a += matches.flatten
+        else
+          a << markdown
+        end
+      else
+        a << markdown
+      end
+
+      a.any? ? a : nil
+    end
+
+    def self.external_resources(resource)
+      resource.external_resources.map do |ext_res|
+        {
+          '@type' => 'Thing',
+          'name' => ext_res.title,
+          'url' => ext_res.url
+        }
+      end
+    end
+
+    def self.provider(resource)
+      p = []
+      if resource.content_provider
+        p << {
+          '@type' => 'Organization',
+          'name' => resource.content_provider.title,
+          'url' => resource.content_provider.url
+        }
+      end
+
+      resource.nodes.each do |node|
+        p << {
+          '@type' => 'Organization',
+          'name' => node.full_title,
+          'url' => node.url
+        }
+      end
+
+      p.any? ? p : nil
+    end
   end
 end
