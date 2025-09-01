@@ -109,15 +109,25 @@ where each topic has one competency level for all its materials. \n\n\
     ].any?
 
     value = resource.send(attribute)
-    value = render_markdown(value) if markdown
-    value = yield(value) if block_given? && value.present? && !list
+    if markdown
+      value = render_markdown(value)
+    end
+    if value.present?
+      if list
+        value = value.map do |v|
+          html_escape(block_given? ? yield(v) : v)
+        end
+      else
+        value = html_escape(block_given? ? yield(value) : value)
+      end
+    end
     string = "<p class=\"#{attribute}#{show_label ? ' no-spacing' : ''}\">"
     unless value.blank? || value.try(:strip) == 'License Not Specified'
       string << "<strong class='text-primary'> #{title || resource.class.human_attribute_name(attribute)}: </strong>" if show_label
       if list
         string << '<ul>'
         value.each do |v|
-          string << "<li>#{block_given? ? yield(v) : v}</li>"
+          string << "<li>#{v}</li>"
         end
         string << '</ul>'
       elsif expandable
