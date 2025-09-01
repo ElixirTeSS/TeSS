@@ -22,12 +22,12 @@ class LcrdmIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::Taxila::LcrdmIngestor.new
 
     # check event doesn't
-    new_title = 'ONBOARDING RESEARCH MANAGEMENT SUPPORT'
-    new_url = 'https://lcrdm.nl/evenementen/onboarding-research-software-support/'
+    new_title = 'Open Science Festival 2025'
+    new_url = 'https://lcrdm.nl/evenementen/open-science-festival-2025/'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 2 do
+    assert_difference 'Event.count', 4 do
       freeze_time(2025) do
         VCR.use_cassette('ingestors/lcrdm') do
           ingestor.read(source.url)
@@ -36,9 +36,9 @@ class LcrdmIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 2, ingestor.events.count
+    assert_equal 4, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 2, ingestor.stats[:events][:added]
+    assert_equal 4, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -51,8 +51,8 @@ class LcrdmIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'LCRDM', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal Time.zone.parse('Thu, 26 Jun 2025 09:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Thu, 26 Jun 2025 17:00:00.000000000 UTC +00:00'), event.end
-    assert_equal 'Domstad Utrecht', event.venue
+    assert_equal Time.zone.parse('Thu, 24 Oct 2025 09:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Thu, 24 Oct 2025 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal 'Groningen University', event.venue
   end
 end
