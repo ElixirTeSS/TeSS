@@ -14,7 +14,7 @@ class UuIngestorTest < ActiveSupport::TestCase
 
   test 'can ingest events from uu' do
     source = @content_provider.sources.build(
-      url: 'https://www.uu.nl/events.rss?category-containers=4293,4295,4296,4301,2162490',
+      url: 'https://www.uu.nl/en/events.rss?category-containers=5457932,5457933,5457934',
       method: 'uu',
       enabled: true
     )
@@ -22,12 +22,12 @@ class UuIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::Taxila::UuIngestor.new
 
     # check event doesn't
-    new_title = 'Inloopspreekuur voor alle vragen over research data en software - week 13 2023'
-    new_url = 'https://www.uu.nl/agenda/inloopspreekuur-voor-alle-vragen-over-research-data-en-software-230327'
+    new_title = 'Re-Inventing Policies and Institutions for Inclusive Labour Markets in Europe and Beyond'
+    new_url = 'https://www.uu.nl/en/events/re-inventing-policies-and-institutions-for-inclusive-labour-markets-in-europe-and-beyond'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 57 do
+    assert_difference 'Event.count', 48 do
       freeze_time(2016) do
         VCR.use_cassette("ingestors/uu") do
           ingestor.read(source.url)
@@ -36,10 +36,10 @@ class UuIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 58, ingestor.events.count
+    assert_equal 54, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 57, ingestor.stats[:events][:added]
-    assert_equal 1, ingestor.stats[:events][:updated]
+    assert_equal 48, ingestor.stats[:events][:added]
+    assert_equal 6, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
     # check event does exist
@@ -51,7 +51,7 @@ class UuIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'UU', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal Time.zone.parse('Mon, 27 Mar 2023 13:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Mon, 27 Mar 2023 15:00:00.000000000 UTC +00:00'), event.end
+    assert_equal Time.zone.parse('Mon, 08 Sep 2025 07:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Tue, 09 Sep 2025 15:00:00.000000000 UTC +00:00'), event.end
   end
 end
