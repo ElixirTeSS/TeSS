@@ -119,8 +119,9 @@ module ApplicationHelper
 
   def render_markdown(markdown_text, options = {}, renderer_options = {})
     if markdown_text
-      options.reverse_merge!(filter_html: true, tables: true, autolink: true)
-      renderer_options.reverse_merge!(hard_wrap: true, link_attributes: { target: '_blank', rel: 'noopener' })
+      default_opts = { filter_html: true, tables: true, autolink: true }
+      options.reverse_merge!(default_opts)
+      renderer_options.reverse_merge!(**default_opts, hard_wrap: true, link_attributes: { target: '_blank', rel: 'noopener' })
       Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(renderer_options), options).render(markdown_text).html_safe
     else
       ''
