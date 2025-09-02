@@ -108,6 +108,7 @@ class EventsController < ApplicationController
   # GET /events/1/edit
   def edit
     authorize @event
+    shift_times_to_timezone_for_editing
   end
 
   # GET /events/1/report
@@ -155,6 +156,8 @@ class EventsController < ApplicationController
   def create
     authorize Event
     @event = Event.new(event_params)
+    # TODO: should time only shift for timezone if format is HTML?
+    shift_times_to_utc_for_saving
     @event.user = current_user
     @event.space = current_space
 
@@ -174,8 +177,11 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1.json
   def update
     authorize @event
+    @event.assign_attributes(event_params)
+    # TODO: should time only shift for timezone if format is HTML?
+    shift_times_to_utc_for_saving
     respond_to do |format|
-      if @event.update(event_params)
+      if @event.save
         @event.create_activity(:update, owner: current_user) if @event.log_update_activity?
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }
         format.json { render :show, status: :ok, location: @event }
@@ -260,6 +266,20 @@ class EventsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_event
     @event = Event.friendly.find(params[:id])
+  end
+
+  def shift_times_to_timezone_for_editing
+    if (@event&.timezone)
+      @event.start = @event.start&.in_time_zone(@event.timezone.to_s)
+      @event.end = @event.end&.in_time_zone(@event.timezone.to_s)
+    end
+  end
+
+  def shift_times_to_utc_for_saving
+    if (@event&.timezone)
+      @event.start = @event.start&.change(zone: @event.timezone.to_s)
+      @event.end = @event.end&.change(zone: @event.timezone.to_s)
+    end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

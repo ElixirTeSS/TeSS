@@ -383,6 +383,67 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
+  test 'should allow user to edit/create events in the specified timezone on the webpage' do
+    sign_in users(:admin)
+    event = events(:training_event) # Has non-trivial timezone
+
+    # Time zone is Melbourne
+    assert_equal event.timezone, "Melbourne"
+
+    # These are UTC
+    assert_equal event.start.to_s, "2021-09-20 23:15:00 UTC"
+    assert_equal event.end.to_s, "2021-09-21 01:00:00 UTC"
+
+    get :edit, params: { id: event }
+    assert_response :success
+
+    # Time zone in the form is Melbourne
+    timezone_select = css_select '#event_timezone'
+    value = timezone_select.search('option[@selected="selected"]').first.attr('value')
+    assert_equal value, 'Melbourne'
+
+    # These are Melbourne time
+    start_select = css_select '#event_start'
+    value = start_select.first.attr('value')
+    assert_equal value, '2021-09-21 09:15:00 +1000'
+
+    end_select = css_select '#event_end'
+    value = end_select.first.attr('value')
+    assert_equal value, '2021-09-21 11:00:00 +1000'
+
+    # Update this in Melbourne timezone
+    # Both start and end are 1 minute later than about Melbourne times
+    patch :update, params: {
+            id: event,
+            event: {
+              start: '2021-09-21 09:16:00',
+              end: '2021-09-21 11:01:00'
+            }
+          }
+    event.reload
+
+    # These are UTC
+    assert_equal event.start.to_s, "2021-09-20 23:16:00 UTC"
+    assert_equal event.end.to_s, "2021-09-21 01:01:00 UTC"
+
+    # Check create, set one extra minute later in Melbourne timezone
+    assert_difference('Event.count') do
+      post :create, params: { event: { description: "Create time/timezone test",
+                                       title: "Create time/timezone test",
+                                       url: 'https://www.example.com/time/timezone/test',
+                                       timezone: 'Melbourne',
+                                       # These are Melbourne time
+                                       start: '2021-09-21 09:17:00',
+                                       end: '2021-09-21 11:02:00' } }
+    end
+    event = Event.find_by(title: 'Create time/timezone test')
+    assert_not_nil event
+
+    # These are UTC
+    assert_equal event.start.to_s, "2021-09-20 23:17:00 UTC"
+    assert_equal event.end.to_s, "2021-09-21 01:02:00 UTC"
+  end
+
   # DESTROY TESTS
   test 'should destroy event owned by user' do
     sign_in @event.user
