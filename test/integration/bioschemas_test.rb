@@ -79,7 +79,9 @@ class BioschemasTest < ActionDispatch::IntegrationTest
   test 'Course/CourseInstance & Event bioschemas on show page for course event' do
     event = events(:course_event)
     event.external_resources.create!({ title: 'Cool website', url: 'https://external-resource.pizza' })
-    url = event_url(event.id)
+    event.node_names = ['Test Node']
+    event.save!
+    url = event_url(event.slug)
 
     get url
 
@@ -198,6 +200,19 @@ class BioschemasTest < ActionDispatch::IntegrationTest
     assert_equal 1, results.count
     assert_equal 'Cool website', results.first.name
     assert_equal 'https://external-resource.pizza', results.first.url
+
+    # Provider
+    q = RDF::Query.new do
+      pattern RDF::Query::Pattern.new(course_uri, RDF::Vocab::SCHEMA.provider, :provider_info)
+      pattern RDF::Query::Pattern.new(:provider_info, RDF::Vocab::SCHEMA.name, :name)
+      pattern RDF::Query::Pattern.new(:provider_info, RDF::Vocab::SCHEMA.url, :url, optional: true)
+    end
+    results = graph.query(q)
+    providers = results.map { |r| [r.name, r.respond_to?(:url) ? r.url : nil] }
+    assert_equal 3, providers.count
+    assert_includes providers, ['ELIXIR Test Node', 'http://example.com']
+    assert_includes providers, ['Goblet', 'http://mygoblet.org']
+    assert_includes providers, ['University of Manchester', nil]
   end
 
   test 'handles non-list markdown for prereqs on course event' do

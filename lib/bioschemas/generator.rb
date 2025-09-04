@@ -136,6 +136,16 @@ module Bioschemas
 
     def self.provider(resource)
       p = []
+
+      if resource.respond_to?(:host_institutions)
+        resource.host_institutions.each do |i|
+          p << {
+            '@type' => 'Organization',
+            'name' => i
+          }
+        end
+      end
+
       if resource.content_provider
         p << {
           '@type' => 'Organization',

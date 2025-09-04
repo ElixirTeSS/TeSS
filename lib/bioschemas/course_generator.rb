@@ -13,7 +13,7 @@ module Bioschemas
     property :url, :url
     property :description, :description
     property :keywords, :keywords
-    property :provider, -> (event) { event.host_institutions.map { |i| { '@type' => 'Organization', name: i } } }
+    property :provider, -> (event) { provider(event) }
     property :inLanguage, :language
     property :audience, -> (event) {
       event.target_audience.map { |audience| { '@type' => 'Audience', 'audienceType' => audience } }
