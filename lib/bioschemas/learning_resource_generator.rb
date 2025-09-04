@@ -12,7 +12,7 @@ module Bioschemas
     property :learningResourceType, :resource_type
     property :url, :url
     property :identifier, :doi
-    property :verison, :version
+    property :version, :version
     property :description, :description
     property :keywords, :keywords
     property :author, -> (material) { material.authors.map { |p| person(p) } }

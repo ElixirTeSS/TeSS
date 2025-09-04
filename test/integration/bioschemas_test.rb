@@ -78,6 +78,7 @@ class BioschemasTest < ActionDispatch::IntegrationTest
 
   test 'Course/CourseInstance & Event bioschemas on show page for course event' do
     event = events(:course_event)
+    event.external_resources.create!({ title: 'Cool website', url: 'https://external-resource.pizza' })
     url = event_url(event.id)
 
     get url
@@ -116,6 +117,9 @@ class BioschemasTest < ActionDispatch::IntegrationTest
     assert_equal ['Learn lots of stuff!'], course_props['description']
     assert_equal ['http://example.com/cool-course-summer'], course_props['url']
     assert_equal ['Ruby', 'Javascript'].sort, course_props['keywords'].sort
+    assert_equal ['Sleep', 'Eat', 'Breathe'].sort, course_props['coursePrerequisites'].sort, 'Should split the markdown into an array'
+    assert_equal ['Learn stuff', 'Get a job', 'Get paid'].sort, course_props['teaches'].sort, 'Should split the markdown into an array'
+    assert_equal ['de'].sort, course_props['inLanguage']
 
     assert_equal ['2015-08-23 10:16:33 UTC'], course_instance_props['startDate']
     assert_equal ['2015-08-24 18:07:46 UTC'], course_instance_props['endDate']
@@ -183,6 +187,59 @@ class BioschemasTest < ActionDispatch::IntegrationTest
     results = graph.query(q)
     assert_equal 1, results.count
     assert_equal 'CourseCo', results.first.organizer
+
+    # External resources
+    q = RDF::Query.new do
+      pattern RDF::Query::Pattern.new(course_uri, RDF::Vocab::SCHEMA.mentions, :mentions)
+      pattern RDF::Query::Pattern.new(:mentions, RDF::Vocab::SCHEMA.name, :name)
+      pattern RDF::Query::Pattern.new(:mentions, RDF::Vocab::SCHEMA.url, :url)
+    end
+    results = graph.query(q)
+    assert_equal 1, results.count
+    assert_equal 'Cool website', results.first.name
+    assert_equal 'https://external-resource.pizza', results.first.url
+  end
+
+  test 'handles non-list markdown for prereqs on course event' do
+    event = events(:course_event)
+    event.learning_objectives = "The meaning of life\n * item1 \n * item2\n"
+    event.prerequisites = "** Get out of bed **"
+    event.save!
+    url = event_url(event.slug)
+
+    get url
+
+    reader = RDF::Reader.for(:rdfa).new(response.body, base_uri: url, logger: false)
+    graph = RDF::Graph.new
+    graph.insert_statements(reader)
+
+    results = graph.query([:subject, RDF.type, RDF::Vocab::SCHEMA.Course])
+    course_uri = results.first.subject
+    assert_equal 1, results.count
+    assert_equal url, course_uri
+
+    results = graph.query([course_uri, RDF::Vocab::SCHEMA.hasCourseInstance, :course_instance])
+    assert_equal 1, results.count
+
+    results = graph.query([results.first.object, RDF.type, RDF::Vocab::SCHEMA.CourseInstance])
+    course_instance_uri = results.first.subject
+    assert_equal 1, results.count
+
+    course_props = {}
+    graph.query([course_uri, :p, :o]).each do |result|
+      key = result.predicate.to_s.split('/').last
+      course_props[key] ||= []
+      course_props[key] << result.object.to_s
+    end
+    course_instance_props = {}
+    graph.query([course_instance_uri, :p, :o]).each do |result|
+      key = result.predicate.to_s.split('/').last
+      course_instance_props[key] ||= []
+      course_instance_props[key] << result.object.to_s
+    end
+
+    assert_equal ['** Get out of bed **'], course_props['coursePrerequisites']
+    assert_equal ["The meaning of life\n * item1 \n * item2\n"], course_props['teaches']
   end
 
   test 'Bioschemas on event index page' do
@@ -207,7 +264,10 @@ class BioschemasTest < ActionDispatch::IntegrationTest
 
   test 'LearningResource bioschemas on show page for material' do
     material = materials(:material_with_optionals)
-    url = material_url(material.id)
+    material.external_resources.create!({ title: 'Cool website', url: 'https://external-resource.pizza' })
+    material.node_names = ['Westeros']
+    material.save!
+    url = material_url(material.slug)
 
     get url
 
@@ -233,6 +293,15 @@ class BioschemasTest < ActionDispatch::IntegrationTest
     assert_equal ['2021-07-12'], props['dateCreated']
     assert_equal ['2021-07-13'], props['dateModified']
     assert_equal ['intermediate'], props['educationalLevel']
+    assert_equal ['Quiz', 'Presentation'].sort, props['learningResourceType'].sort
+    assert_equal ['http://dx.doi.ac.uk/2q3093032'], props['identifier']
+    assert_equal ['1.0.3'], props['version']
+    assert_equal ['2021-07-12'], props['dateCreated']
+    assert_equal ['2021-07-13'], props['dateModified']
+    assert_equal ['2021-07-14'], props['datePublished']
+    assert_equal ['development'], props['creativeWorkStatus']
+    assert_equal ['None', 'Nothing at all'].sort, props['competencyRequired'].sort, 'Should split the markdown into an array'
+    assert_equal [' - Understand the new materials model'].sort, props['teaches'].sort, 'Should not split the markdown into an array'
 
     # Audience
     q = RDF::Query.new do
@@ -276,6 +345,29 @@ class BioschemasTest < ActionDispatch::IntegrationTest
     assert_equal 1, results.count
     authors = results.map(&:contributor)
     assert_includes authors, 'Dr Dre'
+
+    # Provider
+    q = RDF::Query.new do
+      pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.provider, :provider_info)
+      pattern RDF::Query::Pattern.new(:provider_info, RDF::Vocab::SCHEMA.name, :name)
+      pattern RDF::Query::Pattern.new(:provider_info, RDF::Vocab::SCHEMA.url, :url)
+    end
+    results = graph.query(q)
+    providers = results.map { |r| [r.name, r.url] }
+    assert_equal 2, providers.count
+    assert_includes providers, ['ELIXIR Westeros', 'http://example.com']
+    assert_includes providers, ['Goblet', 'http://mygoblet.org']
+
+    # External resources
+    q = RDF::Query.new do
+      pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.mentions, :mentions)
+      pattern RDF::Query::Pattern.new(:mentions, RDF::Vocab::SCHEMA.name, :name)
+      pattern RDF::Query::Pattern.new(:mentions, RDF::Vocab::SCHEMA.url, :url)
+    end
+    results = graph.query(q)
+    assert_equal 1, results.count
+    assert_equal 'Cool website', results.first.name
+    assert_equal 'https://external-resource.pizza', results.first.url
   end
 
   test 'Bioschemas on material index page' do
