@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ElixirTeSS/TeSS_RDF_Extractors
-  revision: 476b6c488198eabe845a2bfaff2e55d332d65aca
+  revision: f9eee4621738c8fcaa9e0729e76a307fcd55650f
   branch: master
   specs:
     tess_rdf_extractors (1.1.0)
@@ -243,7 +243,7 @@ GEM
     icalendar (2.9.0)
       ice_cube (~> 0.16)
     ice_cube (0.16.4)
-    io-console (0.8.0)
+    io-console (0.8.1)
     irb (1.15.2)
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
@@ -601,7 +601,7 @@ GEM
     redis-client (0.16.0)
       connection_pool
     regexp_parser (2.8.1)
-    reline (0.6.1)
+    reline (0.6.2)
       io-console (~> 0.5)
     responders (3.1.1)
       actionpack (>= 5.2)

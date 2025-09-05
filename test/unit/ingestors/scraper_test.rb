@@ -313,7 +313,7 @@ class ScraperTest < ActiveSupport::TestCase
     assert_equal 'bioschemas', parameters[:method]
     assert_equal 'https://somewhere.com/stuff', parameters[:url]
     parameter_update_activities = new_activities.select { |a| a.key == 'event.update_parameter' }
-    assert_equal 7, parameter_update_activities.count
+    assert_equal 8, parameter_update_activities.count
   end
 
   def set_up_event_check
