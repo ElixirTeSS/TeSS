@@ -138,9 +138,9 @@ material_with_optionals:
   subsets: [ 'https://training.com/material/023/part-one', 'https://training.com/material/023/part-two' ]
   authors: [ 'Nicolai Tesla', 'Thomas Edison' ]
   contributors: [ 'Dr Dre' ]
-  prerequisites: 'None'
+  prerequisites: " * None\n * Nothing at all\n"
   syllabus: '1. Overview\  2. The main part\  3. Summing up'
-  learning_objectives: 'Understand the new materials model'
+  learning_objectives: ' - Understand the new materials model'
   difficulty_level: intermediate
   remote_created_date: 2021-07-12
   remote_updated_date: 2021-07-13

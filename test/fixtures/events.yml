@@ -479,9 +479,11 @@ course_event:
   contact: MyContact
   eligibility: [ first_come_first_served ]
   timezone: UTC
-  learning_objectives: "There are none."
+  learning_objectives: " * Learn stuff\n * Get a job\n * Get paid"
+  prerequisites: " * Sleep\n * Eat\n * Breathe\n"
   recognition: "Yup. You attended the workshop."
   target_audience: ['Everyone!']
+  language: 'de'
 
 hybrid_event:
   presence: 2

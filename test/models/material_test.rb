@@ -60,9 +60,9 @@ class MaterialTest < ActiveSupport::TestCase
     assert_equal 1, m.contributors.size, 'old contributors size not matched.'
     assert_equal 'Dr Dre', m.contributors[0], 'old contributors[0] not matched.'
 
-    assert_equal 'None', m.prerequisites, 'old prerequisites not matched.'
+    assert_equal " * None\n * Nothing at all\n", m.prerequisites, 'old prerequisites not matched.'
     assert_equal '1. Overview\  2. The main part\  3. Summing up', m.syllabus, 'old syllabus not matched.'
-    assert_equal 'Understand the new materials model', m.learning_objectives, 'old learning objectives not matched.'
+    assert_equal ' - Understand the new materials model', m.learning_objectives, 'old learning objectives not matched.'
 
     # update optionals
     m.content_provider = content_providers(:iann)
