@@ -164,7 +164,7 @@ module EventsHelper
         end
         out
       elsif differing.any?
-        "#{start.strftime(differing.join(' '))} - #{finish.strftime(DATE_STRF)}"
+         "#{l(start, format: differing.join(' '))} - #{l(finish, format: DATE_STRF)}"
       end
     end
   end
