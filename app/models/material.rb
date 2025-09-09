@@ -193,13 +193,13 @@ class Material < ApplicationRecord
 
   def to_rdf
     jsonld_str = to_bioschemas[0].to_json
-    
+
     graph = RDF::Graph.new
     JSON::LD::Reader.new(jsonld_str) do |reader|
       reader.each_statement { |stmt| graph << stmt }
     end
 
-    rdfxml_str = graph.dump(:rdfxml, prefixes: {sdo: "http://schema.org/", dc: "http://purl.org/dc/terms/"})
+    rdfxml_str = graph.dump(:rdfxml, prefixes: { sdo: 'http://schema.org/', dc: 'http://purl.org/dc/terms/' })
     rdfxml_str.sub(/\A<\?xml.*?\?>\s*/, '') # remove XML declaration
   end
 
@@ -210,16 +210,20 @@ class Material < ApplicationRecord
   def dates
     [date_published, date_created, date_modified].compact.map(&:iso8601)
   end
+
   # description -> no mapping needed
-  def format; 'text/html'; end
+  def format = 'text/html'
+
   def identifier
-    if !doi.empty?
+    if !doi.nil? && !doi.empty?
       doi_iri = doi.start_with?('http://', 'https://') ? doi : "https://doi.org/#{doi}"
     else
       url
     end
   end
-  def language; 'en'; end
+
+  def language = 'en'
+
   def publishers
     if content_provider
       [content_provider.title]
@@ -227,6 +231,7 @@ class Material < ApplicationRecord
       []
     end
   end
+
   # relation -> url of tess resource, content provider url
   #             External resources, Events
   def relations
@@ -240,8 +245,9 @@ class Material < ApplicationRecord
   def subjects
     keywords + scientific_topics.map(&:uri) + operations.map(&:uri)
   end
+
   # title -> no mapping need
-  def types 
+  def types
     ['http://purl.org/dc/dcmitype/Text', 'https://schema.org/LearningResource'] + resource_type
   end
 end

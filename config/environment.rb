@@ -19,6 +19,11 @@ end
 
 class PublicMaterial < Material
   default_scope { where(visible: true) }
+
+  # Pretend to be a regular Material (for URLs in RDF serialization)
+  def self.model_name
+    Material.model_name
+  end
 end
 
 class TrainingProvider < OAI::Provider::Base
