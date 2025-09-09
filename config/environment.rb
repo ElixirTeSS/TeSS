@@ -1,5 +1,5 @@
 # Load the Rails application.
-require_relative "application"
+require_relative 'application'
 
 # Initialize the Rails application.
 Rails.application.initialize!
@@ -17,16 +17,17 @@ class OAIRDF < OAI::Provider::Metadata::Format
   end
 end
 
+class PublicMaterial < Material
+  default_scope { where(visible: true) }
+end
+
 class TrainingProvider < OAI::Provider::Base
   repository_name TeSS::Config.site['title']
   repository_url "#{TeSS::Config.base_url}/oai-pmh"
   record_prefix "oai:#{URI(TeSS::Config.base_url).host}"
   admin_email TeSS::Config.contact_email
-  source_model OAI::Provider::ActiveRecordWrapper.new(Material)
+  source_model OAI::Provider::ActiveRecordWrapper.new(PublicMaterial)
   sample_id '13900' # record prefix used, so becomes oai:training:13900
 
   register_format(OAIRDF.instance)
 end
-
-
-
