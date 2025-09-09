@@ -1,5 +1,6 @@
 require 'open-uri'
 require 'csv'
+require 'cgi'
 
 module Ingestors
   class MaterialCsvIngestor < Ingestor
@@ -8,13 +9,16 @@ module Ingestors
     def self.config
       {
         key: 'material_csv',
-        title: 'CSV File',
+        title: 'CSV File and Google Spreadsheet',
         category: :materials
       }
     end
 
     def read(url)
       begin
+        # Google spreadsheet convertor
+        url = gsheet_to_csv(url)
+
         # parse table
         web_contents = open_url(url).read
         table = CSV.parse(web_contents, headers: true)
@@ -34,6 +38,7 @@ module Ingestors
           # copy optional values
           material.doi = get_column row, 'DOI'
           material.version = get_column row, 'Version'
+          material.date_created = get_column row, 'Created'
           material.date_published = get_column row, 'Published'
           material.date_modified = get_column row, 'Modified'
           material.difficulty_level = process_competency row, 'Competency'
@@ -62,6 +67,17 @@ module Ingestors
 
     def process_competency(row, header)
       row[header].nil? ? 'notspecified' : row[header]
+    end
+
+    # if url is a raw google spreadsheet
+    # it returns the Google spreadsheet CSV export
+    # else it returns the url
+    def gsheet_to_csv(url)
+      return url unless url.include? 'docs.google.com/spreadsheets/d/'
+
+      spreadsheet_id = url.partition('d/').last.partition('/').first
+      gid = CGI.parse(URI.parse(url).query)['gid']&.first
+      "https://docs.google.com/spreadsheets/d/#{spreadsheet_id}/export?gid=#{gid}&exportFormat=csv"
     end
   end
 end
