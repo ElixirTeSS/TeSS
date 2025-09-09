@@ -9,7 +9,7 @@ class Profile < ApplicationRecord
   validates :website, url: true, http_url: { allow_inaccessible: true }, allow_blank: true
   validates :orcid, orcid: true, allow_blank: true
   after_validation :check_public
-  after_commit :reindex_trainer
+  after_commit :reindex_trainer, on: %i[create update]
   clean_array_fields(:expertise_academic, :expertise_technical, :fields,
                      :interest, :activity, :language, :social_media)
   update_suggestions(:expertise_technical, :interest)

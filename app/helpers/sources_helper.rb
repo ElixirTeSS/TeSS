@@ -1,6 +1,7 @@
 module SourcesHelper
-  SOURCES_INFO = "#{TeSS::Config.site['title_short']} provides a facility" +
-    " to automatically ingest events and materials from a variety of sources.".freeze
+  def sources_info
+    I18n.t('info.sources.description')
+  end
 
   def grouped_ingestor_options_for_select
     opts = []

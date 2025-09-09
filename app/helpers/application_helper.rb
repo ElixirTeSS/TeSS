@@ -119,8 +119,9 @@ module ApplicationHelper
 
   def render_markdown(markdown_text, options = {}, renderer_options = {})
     if markdown_text
-      options.reverse_merge!(filter_html: true, tables: true, autolink: true)
-      renderer_options.reverse_merge!(hard_wrap: true, link_attributes: { target: '_blank', rel: 'noopener' })
+      default_opts = { filter_html: true, tables: true, autolink: true }
+      options.reverse_merge!(default_opts)
+      renderer_options.reverse_merge!(**default_opts, hard_wrap: true, link_attributes: { target: '_blank', rel: 'noopener' })
       Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(renderer_options), options).render(markdown_text).html_safe
     else
       ''
@@ -245,7 +246,7 @@ module ApplicationHelper
 
   def twitter_link(username)
     link_to("http://twitter.com/#{username}", target: '_blank', rel: 'noopener') do
-      "<i class='fa fa-twitter'></i> @#{username}".html_safe
+      content_tag(:i, nil, class: 'fa fa-twitter') + "@#{username}"
     end
   end
 
@@ -256,7 +257,8 @@ module ApplicationHelper
     content_tag(:a, tabindex: 0, class: classes,
                     data: { toggle: 'popover', placement: 'bottom',
                             title:, html: true, content: capture(&block) }) do
-      "<i class='icon icon-md information-icon'></i> <span class='hidden-xs'>#{title_text}</span>".html_safe
+      content_tag(:i, nil, class: 'icon icon-md information-icon') +
+        content_tag(:span, title_text, class: 'hidden-xs')
     end
   end
 
@@ -301,7 +303,7 @@ module ApplicationHelper
       text << " (#{count})" if count
 
       link_to("##{href}", options) do
-        %(<i class="#{icon}" aria-hidden="true"></i> #{text}).html_safe
+        content_tag(:i, nil, class: icon, 'aria-hidden': 'true') + ' ' + text
       end
     end
   end
@@ -333,9 +335,9 @@ module ApplicationHelper
 
   def title_with_privacy(resource)
     html = resource.title
-    html += " #{icon_for(:private, nil, class: 'muted')}" unless resource.public
+    html = safe_join([html + ' ', icon_for(:private, nil, class: 'muted')]) unless resource.public
 
-    html.html_safe
+    html
   end
 
   ActionView::Helpers::FormBuilder.class_eval do
@@ -463,7 +465,7 @@ module ApplicationHelper
 
   def external_link_button(text, url, options = {})
     options.reverse_merge!({ class: 'btn btn-primary' })
-    text = (text + ' <i class="icon icon-md arrow-top-right-white-icon"></i>').html_safe
+    text = safe_join([text, '<i class="icon icon-md arrow-top-right-white-icon"></i>'.html_safe])
     external_link(text, url, options)
   end
 

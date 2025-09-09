@@ -35,16 +35,14 @@ module Ingestors
         # to further match those.
         categories = {
           # en
-          4301 => 'workshops, masterclasses',
-          4296 => 'lectures',
-          4295 => 'training',
-          4293 => 'congresses, symposia',
-          2162490 => 'workshops, masterclasses', # not really sure what this should be
-          # nl
-          4043 => 'workshops, masterclasses',
-          1_916_692 => 'lectures', # lezingen, debatten,
-          1_916_689 => 'training', # cursussen, trainingen
-          174_593 => 'congressen, symposia'
+          5457927 => 'training',
+          5457925 => 'congresses, symposia',
+          5457930 => 'workshops, masterclasses', # not really sure what this should be
+          # # nl
+          # 4043 => 'workshops, masterclasses',
+          # 1_916_692 => 'lectures', # lezingen, debatten,
+          # 1_916_689 => 'training', # cursussen, trainingen
+          # 174_593 => 'congressen, symposia'
         }
 
         url.split('=').last.split(',').each do |category_id|

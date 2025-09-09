@@ -1,57 +1,31 @@
 # The helper for Materials classes
 module MaterialsHelper
-  MATERIALS_INFO = "In the context of #{TeSS::Config.site['title_short']}, a training material is a link to a single\
-  online training material sourced by a content provider (such as a text on a Web page, presentation, video, etc.) along\
-  with description and other meta information (e.g. ontological categorization, keywords, etc.).\n\n
-  Materials can be added manually or automatically harvested from a provider's website.\n\n\
-  If your website contains training materials that you wish to include in #{TeSS::Config.site['title_short']},\
-  %<link>s.".freeze
-
-  ELEARNING_MATERIALS_INFO = "e-Learning materials are curated materials focused on e-Learning.\n\n"\
-  "If your website contains e-Learning materials that you wish to include in #{TeSS::Config.site['title_short']},\
-  %<link>s.".freeze
-
-  TOPICS_INFO = "#{TeSS::Config.site['title_short']} generates a scientific topic suggestion for each resource registered. It does this by
-  passing the description and title of the resource to the Bioportal Annotator Web service.
-  The Annotator Web service finds EDAM terms that match terms in the text. You can then accept or reject these terms in #{TeSS::Config.site['title_short']}.
-
-Accepting will add a topic to the resource and rejecting will remove the suggestion permanently"
-
-  LEARNING_PATHS_INFO = "A learning path is a pathway that guides learners through a set of learning modules \
-(courses/materials) to be undertaken progressively (from lower- to higher-order thinking skills) \
-to acquire the desired knowledge and skills on a subject by the end of the pathway. \n\n\
-1. Register training materials.\n\
-2. Create a learning path topic and add materials to it (repeat for each topic). \n\
-3. Register a learning path and add learning path topics to it. \n\n\
-%{link}".freeze
-
-  LEARNING_PATH_TOPICS_INFO = "A learning path topic is an ordered list of training materials. \
-A topic can be given a competency level (beginner, intermediate, advanced), description and set of keywords. \
-A learning path contains an ordered list of one or more topics, \
-where each topic has one competency level for all its materials. \n\n\
-1. Register training materials.\n\
-2. Create a learning path topic and add materials to it (repeat for each topic). \n\
-3. Register a learning path and add learning path topics to it. \n\n\
-%{link}".freeze
-
   def materials_info
-    format(MATERIALS_INFO, link: link_to('see here for details on automatic registration',
-                                         registering_resources_path(anchor: 'automatic')))
+    I18n.t('info.materials.description',
+           link: link_to(I18n.t('info.materials.link'),
+                         registering_resources_path(anchor: 'automatic')))
   end
 
   def elearning_materials_info
-    format(ELEARNING_MATERIALS_INFO, link: link_to('see here for details on automatic registration',
-                                                   registering_resources_path(anchor: 'automatic')))
+    I18n.t('info.elearning_materials.description',
+           link: link_to(I18n.t('info.elearning_materials.link'),
+                         registering_resources_path(anchor: 'automatic')))
+  end
+
+  def topics_info
+    I18n.t('info.topics.description')
   end
 
   def learning_paths_info
-    LEARNING_PATHS_INFO % { link: link_to('See here for details on learning paths',
-                              registering_learning_paths_path(anchor: 'register_paths') )}
+    I18n.t('info.learning_paths.description',
+           link: link_to(I18n.t('info.learning_paths.link'),
+                         registering_learning_paths_path(anchor: 'register_paths')))
   end
 
   def learning_path_topics_info
-    LEARNING_PATH_TOPICS_INFO % { link: link_to('See here for details on learning path topics',
-                                     registering_learning_paths_path(anchor: 'topics') )}
+    I18n.t('info.learning_path_topics.description',
+           link: link_to(I18n.t('info.learning_path_topics.link'),
+                         registering_learning_paths_path(anchor: 'topics')))
   end
 
   # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags
@@ -109,15 +83,25 @@ where each topic has one competency level for all its materials. \n\n\
     ].any?
 
     value = resource.send(attribute)
-    value = render_markdown(value) if markdown
-    value = yield(value) if block_given? && value.present? && !list
+    if markdown
+      value = render_markdown(value)
+    end
+    if value.present?
+      if list
+        value = value.map do |v|
+          html_escape(block_given? ? yield(v) : v)
+        end
+      else
+        value = html_escape(block_given? ? yield(value) : value)
+      end
+    end
     string = "<p class=\"#{attribute}#{show_label ? ' no-spacing' : ''}\">"
     unless value.blank? || value.try(:strip) == 'License Not Specified'
       string << "<strong class='text-primary'> #{title || resource.class.human_attribute_name(attribute)}: </strong>" if show_label
       if list
         string << '<ul>'
         value.each do |v|
-          string << "<li>#{block_given? ? yield(v) : v}</li>"
+          string << "<li>#{v}</li>"
         end
         string << '</ul>'
       elsif expandable

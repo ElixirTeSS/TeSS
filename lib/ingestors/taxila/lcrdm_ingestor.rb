@@ -37,7 +37,7 @@ module Ingestors
           event.url = h2.get_attribute('href').strip
           event.venue = event_data.css('dl.meta-list svg.icon--marker')[0]&.parent&.text&.strip
           time_str = event_data.css('dl.meta-list svg.icon--calendar')[0]&.parent&.text&.strip
-          split_time_str = time_str.split(' — ')
+          split_time_str = time_str.split(' - ')
           event.start = Time.zone.parse(split_time_str[0])
           if split_time_str[1].split(' ').length == 1
             a = split_time_str[0].split(' ')

@@ -1,12 +1,14 @@
 require 'test_helper'
 
 class ErrorHandlerTest < ActionDispatch::IntegrationTest
+  site_name = TeSS::Config.site['title_short']
+
   ERRORS = {
     404 => /could not be found/,
     406 => /format is not available/,
     422 => /change you wanted was rejected/,
-    500 => /TeSS encountered an error/,
-    503 => /TeSS is temporarily down/
+    500 => /#{Regexp.escape(site_name)} encountered an error/,
+    503 => /#{Regexp.escape(site_name)} is temporarily down/
   }
 
   ERRORS.each do |code, message_matcher|
