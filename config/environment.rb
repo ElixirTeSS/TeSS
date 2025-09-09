@@ -4,7 +4,8 @@ require_relative 'application'
 # Initialize the Rails application.
 Rails.application.initialize!
 
-# see comments in: https://github.com/code4lib/ruby-oai/blob/master/lib/oai/provider.rb
+# Configure OAI-PMH library
+# see comments in: https://github.com/code4lib/ruby-oai/blob/54ea6f7f5b1e2c1be5d0a7cc61cb696b5e653d8a/lib/oai/provider.rb#L98
 require 'oai'
 require 'uri'
 
@@ -32,7 +33,7 @@ class TrainingProvider < OAI::Provider::Base
   record_prefix "oai:#{URI(TeSS::Config.base_url).host}"
   admin_email TeSS::Config.contact_email
   source_model OAI::Provider::ActiveRecordWrapper.new(PublicMaterial)
-  sample_id '13900' # record prefix used, so becomes oai:training:13900
+  sample_id '13900' # record prefix used, so id becomes oai:domain:13900
 
   register_format(OAIRDF.instance)
 end
