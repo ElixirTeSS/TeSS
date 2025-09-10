@@ -32,8 +32,13 @@ class TrainingProvider < OAI::Provider::Base
   repository_url "#{TeSS::Config.base_url}/oai-pmh"
   record_prefix "oai:#{URI(TeSS::Config.base_url).host}"
   admin_email TeSS::Config.contact_email
-  source_model OAI::Provider::ActiveRecordWrapper.new(PublicMaterial)
   sample_id '142' # so that example id is oai:domain:142
 
   register_format(OAIRDF.instance)
+
+  begin
+    source_model OAI::Provider::ActiveRecordWrapper.new(PublicMaterial)
+  rescue ActiveRecord::NoDatabaseError
+    Rails.logger.debug 'There is no database yet, so the OAI-PMH endpoint is not configured.'
+  end
 end
