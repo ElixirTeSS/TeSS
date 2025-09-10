@@ -570,7 +570,7 @@ en:
       %{site_name} makes use of "strictly necessary cookies" for the site to function. These cookies are needed to establish your "session" with %{site_name}, which allows functionality such as user log-in, and secures against Cross Site Request Forgery (CSRF) attacks.
     analytics: "%{site_name} uses Google Analytics to track how users are discovering %{site_name} and interacting with the service. The information gathered includes which pages you visited, which search terms lead you to %{site_name} and information about your web browser. No personally identifiable information is sent to Google."
     retention: "Your information will be retained by %{site_name} until you choose to remove it, you delete your account, or the %{site_name} service ceases to exist."
-    code: "%{site_name} adheres to the <a href='https://wiki.refeds.org/display/CODE/Code+of+Conduct+for+Service+Providers'> GÉANT Data Protection Code of Conduct for Service Providers in EU/EEA </a>"
+    code: "%{site_name} adheres to the <a href='https://www.geant.net/uri/dataprotection-code-of-conduct/v1'> GÉANT Data Protection Code of Conduct for Service Providers in EU/EEA </a>"
     controller: "The data controller for %{site_name} is The University of Manchester."
     post: "<strong>The %{site_name} Team</strong><br/>Room 1.17 c/o School of Computer Science,<br/>Kilburn Building,<br/>Oxford Road,<br/>Manchester,<br/>M13 9PL"
   events:
