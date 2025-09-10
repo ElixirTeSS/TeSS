@@ -85,7 +85,6 @@ class StaticController < ApplicationController
     count_strings['learning_paths'] = Space.current_space.learning_paths.count
     count_strings['content_providers'] = ContentProvider.count
     count_strings['trainers'] = Trainer.count
-    count_strings['services'] = Space.current_space.materials.where("'service' ILIKE ANY(resource_type)").count
     count_strings
   end
 end

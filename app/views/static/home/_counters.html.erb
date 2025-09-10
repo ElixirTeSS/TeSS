@@ -15,16 +15,5 @@
         <% end %>
       </li>
     <% end %>
-    <li class="resource-counter">
-      <%= link_to 'https://tesshub.hzdr.de/collections/eosc-panosc-node-services', class: 'link-overlay' do %>
-        <div class="resource-counter-title">
-          <%= image_tag("#{theme_path}/icons/sustainable-icon.svg") %>
-        </div>
-
-        <div id='resource_count' class='resource-counter-number'> <%= @count_strings['services'] %> </div>
-        <div class='resource-counter-text'> PaN Services </div>
-
-      <% end %>
-    </li>
   </ul>
 </section>
