@@ -12,7 +12,7 @@ require 'uri'
 class OAIRDF < OAI::Provider::Metadata::Format
   def initialize
     @prefix = 'rdf'
-    @schema = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+    @schema = 'http://www.openarchives.org/OAI/2.0/rdf.xsd'
     @namespace = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
     @element_namespace = 'rdf'
   end
