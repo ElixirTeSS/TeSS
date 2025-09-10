@@ -8,6 +8,8 @@
 
   v1.1
 
+  Modified for use in TeSS (added basic RDF rendering support)
+
 -->
 
 <!--
