@@ -33,7 +33,7 @@ class TrainingProvider < OAI::Provider::Base
   record_prefix "oai:#{URI(TeSS::Config.base_url).host}"
   admin_email TeSS::Config.contact_email
   source_model OAI::Provider::ActiveRecordWrapper.new(PublicMaterial)
-  sample_id '13900' # record prefix used, so id becomes oai:domain:13900
+  sample_id '142' # so that example id is oai:domain:142
 
   register_format(OAIRDF.instance)
 end
