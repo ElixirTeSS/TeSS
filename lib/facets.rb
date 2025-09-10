@@ -9,7 +9,7 @@ module Facets
     start: ->(c) { c.name == 'Event' },
     running_during: ->(c) { c.name == 'Event' },
     include_hidden: ->(c) { c.method_defined?(:user_requires_approval?) },
-    across_all_spaces: ->(c) { TeSS::Config.feature['spaces'] && c.method_defined?(:space_id) }
+    across_all_spaces: ->(c) { TeSS::Config.feature['spaces'] && c.reflect_on_association(:space) }
   }.with_indifferent_access.freeze
 
   CONVERSIONS = {
