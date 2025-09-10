@@ -204,14 +204,14 @@ class Material < ApplicationRecord
   end
 
   # Dublin Core mappings for OAI-PMH
-  # contributor -> no mapping need
-  # coverage -> not mappable (spacial or temporal coverage unknown)
+  # no mapping needed for contributor, description and title
+  # coverage and source not mappable
   alias_attribute :creators, :authors
+
   def dates
     [date_published, date_created, date_modified].compact.map(&:iso8601)
   end
 
-  # description -> no mapping needed
   def format = 'text/html'
 
   def identifier
@@ -232,21 +232,19 @@ class Material < ApplicationRecord
     end
   end
 
-  # relation -> url of tess resource, content provider url
-  #             External resources, Events
+  # currently only url of tess resource, content provider url
   def relations
     [
       "#{TeSS::Config.base_url}#{Rails.application.routes.url_helpers.material_path(self)}"
     ] + (content_provider ? [content_provider.url] : [])
-    # in the future maybe add external resources and releated events
   end
+
   alias_attribute :rights, :licence
-  # source -> not mappable (Sources for material unknown)
+
   def subjects
     keywords + scientific_topics.map(&:uri) + operations.map(&:uri)
   end
 
-  # title -> no mapping need
   def types
     ['http://purl.org/dc/dcmitype/Text', 'https://schema.org/LearningResource'] + resource_type
   end
