@@ -96,4 +96,24 @@ class LinkMonitorTest < ActiveSupport::TestCase
     refute @link_monitor.failing?
     assert_equal 0, @link_monitor.fail_count
   end
+
+  test 'link monitor status changed' do
+    refute @link_monitor.status_changed?
+
+    @link_monitor.update_column(:fail_count, 3)
+    refute @link_monitor.failing?
+    refute @link_monitor.status_changed?
+
+    @link_monitor.fail!(404)
+    assert @link_monitor.failing?
+    assert @link_monitor.status_changed?
+
+    @link_monitor.fail!(404)
+    assert @link_monitor.failing?
+    refute @link_monitor.status_changed?
+
+    @link_monitor.success
+    refute @link_monitor.failing?
+    assert @link_monitor.status_changed?
+  end
 end
