@@ -851,7 +851,6 @@ DEPENDENCIES
   jquery-rails
   jquery-simplecolorpicker-rails
   jquery-turbolinks
-  json-ld
   kt-paperclip
   linkeddata
   listen
@@ -879,8 +878,6 @@ DEPENDENCIES
   rails-controller-testing
   rails-i18n
   rails_admin
-  rdf
-  rdf-rdfxml
   recaptcha
   redcarpet
   redis
