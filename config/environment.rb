@@ -18,15 +18,6 @@ class OAIRDF < OAI::Provider::Metadata::Format
   end
 end
 
-class PublicMaterial < Material
-  default_scope { where(visible: true) }
-
-  # Pretend to be a regular Material (for URLs in RDF serialization)
-  def self.model_name
-    Material.model_name
-  end
-end
-
 class TrainingProvider < OAI::Provider::Base
   repository_name TeSS::Config.site['title']
   repository_url "#{TeSS::Config.base_url}/oai-pmh"
@@ -37,7 +28,7 @@ class TrainingProvider < OAI::Provider::Base
   register_format(OAIRDF.instance)
 
   begin
-    source_model OAI::Provider::ActiveRecordWrapper.new(PublicMaterial)
+    source_model OAI::Provider::ActiveRecordWrapper.new(Material.where(visible: true))
   rescue ActiveRecord::NoDatabaseError
     Rails.logger.debug 'There is no database yet, so the OAI-PMH endpoint is not configured.'
   end
