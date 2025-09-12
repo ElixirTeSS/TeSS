@@ -41,8 +41,8 @@ class LinkMonitor < ApplicationRecord
 
   def status_changed?
     prev_count = fail_count_previously_was || 0
-    prev_count >= FAILURE_THRESHOLD && fail_count == 0 ||
-      prev_count < FAILURE_THRESHOLD && failing?
+    (prev_count >= FAILURE_THRESHOLD && fail_count == 0) ||
+      (prev_count < FAILURE_THRESHOLD && failing?)
   end
 
   private
