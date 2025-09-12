@@ -1,4 +1,7 @@
 class OaiController < ApplicationController
+  # This view only returns static public content and CSRF token authentication causes problems with OAI-PMH POST requests
+  skip_before_action :verify_authenticity_token
+
   # GET /oai-pmh
   def index
     provider = TrainingProvider.new
