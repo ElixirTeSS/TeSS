@@ -177,6 +177,8 @@ Rails.application.routes.draw do
 
   get 'up' => 'health_check#show'
 
+  match 'oai-pmh', to: "oai#index", via: [:get, :post]
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
