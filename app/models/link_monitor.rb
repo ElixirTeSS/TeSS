@@ -1,6 +1,7 @@
 class LinkMonitor < ApplicationRecord
   belongs_to :link_checkable, polymorphic: true, foreign_key: :lcheck_id, foreign_type: :lcheck_type
   before_create :set_initial_date
+  after_commit :reindex_resource, on: :update
 
   FAILURE_THRESHOLD = 4
 
@@ -36,5 +37,19 @@ class LinkMonitor < ApplicationRecord
 
   def failing?
     fail_count >= FAILURE_THRESHOLD
+  end
+
+  def status_changed?
+    prev_count = fail_count_previously_was || 0
+    (prev_count >= FAILURE_THRESHOLD && fail_count == 0) ||
+      (prev_count < FAILURE_THRESHOLD && failing?)
+  end
+
+  private
+
+  def reindex_resource
+    return unless TeSS::Config.solr_enabled
+    return unless status_changed?
+    link_checkable.solr_index
   end
 end
