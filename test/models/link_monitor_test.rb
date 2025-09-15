@@ -112,8 +112,12 @@ class LinkMonitorTest < ActiveSupport::TestCase
     assert @link_monitor.failing?
     refute @link_monitor.status_changed?
 
-    @link_monitor.success
+    @link_monitor.success!
     refute @link_monitor.failing?
     assert @link_monitor.status_changed?
+
+    @link_monitor.success!
+    refute @link_monitor.failing?
+    refute @link_monitor.status_changed?
   end
 end
