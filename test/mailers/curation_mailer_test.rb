@@ -249,4 +249,30 @@ class CurationMailerTest < ActionMailer::TestCase
       end
     end
   end
+
+  test 'source approval requests go to administrators' do
+    source = sources(:unapproved_source)
+    user = source.user
+    assert_nil source.space
+    email = CurationMailer.source_requires_approval(source, user)
+
+    admins = User.with_role('admin')
+    assert admins.any?
+    assert_equal admins.map(&:email).sort, email.to.sort
+  end
+
+  test 'source in space approval requests go to space administrators' do
+    source = sources(:unapproved_source)
+    space = spaces(:plants)
+    source.space = space
+    source.save!
+    user = source.user
+    assert source.space
+    email = CurationMailer.source_requires_approval(source, user)
+
+    space_admins = space.administrators
+    assert_equal 1, space_admins.length
+    assert_equal 1, email.to.length
+    assert_equal 'plantboss@example.com', email.to.first
+  end
 end
