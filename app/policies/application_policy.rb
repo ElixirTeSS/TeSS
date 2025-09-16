@@ -16,6 +16,8 @@ class ApplicationPolicy
     @user = context.user
     @request = context.request
     @record = record
+    @space = nil
+    @space = record.space if record.respond_to?(:space)
   end
 
   def index?
@@ -83,9 +85,11 @@ class ApplicationPolicy
   end
 
   # Check if the user has any of the given roles.
+  # If we're in a space, also check they have any of those roles in the context of the space.
   def user_has_role?(*roles)
     return false if @user.nil?
-    roles.any? { |r| @user.has_role?(r) }
+    roles.any? { |r| @user.has_role?(r) } ||
+      (@space && roles.any? { |r| @user.has_space_role?(@space, r) })
   end
 
 end

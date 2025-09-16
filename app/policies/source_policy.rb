@@ -13,11 +13,7 @@ class SourcePolicy < ScrapedResourcePolicy
   end
 
   def create?
-    if TeSS::Config.feature['user_source_creation']
-      super
-    else
-      administration?
-    end
+    administration?
   end
 
   def approve?
@@ -31,7 +27,7 @@ class SourcePolicy < ScrapedResourcePolicy
   private
 
   def administration? # Can edit sources for any content provider
-    curators_and_admin
+    curators_and_admin || user_has_role?(:admin)
   end
 
   def user_management?
