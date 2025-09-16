@@ -9,7 +9,7 @@ class LearningPathPolicy < ScrapedResourcePolicy
   end
 
   def manage?
-    curators_and_admin || @user&.has_role?(:learning_path_curator)
+    curators_and_admin || user_has_role?(:learning_path_curator)
   end
 
   def create?

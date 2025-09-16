@@ -24,14 +24,10 @@ class ApplicationPolicy
 
   def show?
     true
-    # scope.where(:id => record.id).exists?
   end
 
   def create?
-    # Only admin, scraper_user or curator roles can create
-    #@user.has_role?(:admin) or @user.has_role?(:scraper_user) or @user.has_role?(:curator)
-    # Any registered user user can create
-    @user && !@user.role.blank?
+    @user
   end
 
   def new?
@@ -52,19 +48,11 @@ class ApplicationPolicy
 
   # "manage" isn't actually an action, but the "destroy?" and "update?" policies delegate to this method.
   def manage?
-    @user && @user.is_admin?
-  end
-
-  def request_is_api?(request)
-    return false if request.nil?
-    return ((request.post? or request.put? or request.patch?) and request.format.json?)
+    @user&.is_admin?
   end
 
   def curators_and_admin
-    @user && (
-      @user.has_role?(:curator) ||
-        @user.has_role?(:admin) ||
-        @user.has_role?(:scraper_user))
+    user_has_role?(:curator, :admin, :scraper_user)
   end
 
   def scope
@@ -82,6 +70,22 @@ class ApplicationPolicy
     def resolve
       scope
     end
+  end
+
+  private
+
+  def request_is_api?
+    !!@request && ((@request.post? || @request.put? || @request.patch?) && @request.format.json?)
+  end
+
+  def scraper?
+    request_is_api? && @user&.has_role?(:scraper_user)
+  end
+
+  # Check if the user has any of the given roles.
+  def user_has_role?(*roles)
+    return false if @user.nil?
+    roles.any? { |r| @user.has_role?(r) }
   end
 
 end
