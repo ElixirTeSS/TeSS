@@ -17,7 +17,8 @@ class CurationMailer < ApplicationMailer
     @user = user
     @source = source
     subject = "#{TeSS::Config.site['title_short']} source \"#{@source.title}\" requires approval"
-    mail(subject:, to: User.with_role('admin').map(&:email)) do |format|
+    space = @source.space || Space.default
+    mail(subject:, to: space.administrators.map(&:email)) do |format|
       format.html
       format.text
     end
