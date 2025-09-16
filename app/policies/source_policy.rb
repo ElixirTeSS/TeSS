@@ -21,7 +21,7 @@ class SourcePolicy < ScrapedResourcePolicy
   end
 
   def approve?
-    @user && @user.has_role?(:admin)
+    user_has_role?(:admin)
   end
 
   def request_approval?
