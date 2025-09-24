@@ -11,4 +11,9 @@ class SubscriptionMailerPreview < ActionMailer::Preview
     SubscriptionMailer.digest(sub, sub.digest)
   end
 
+  def last_learning_path_digest
+    sub = Subscription.where(subscribable_type: 'LearningPath').last
+    SubscriptionMailer.digest(sub, sub.digest)
+  end
+
 end
