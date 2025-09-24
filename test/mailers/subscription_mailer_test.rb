@@ -106,4 +106,33 @@ class SubscriptionMailerTest < ActionMailer::TestCase
     assert html.include? collections(:one).title
     assert html.include? @routes.curate_materials_collection_url(collaborating_collection)
   end
+
+  test 'html learning path digest' do
+    collaborating_collection = Collection.create!(title: 'collab', user: users(:regular_user))
+    collaborating_collection.collaborators << users(:admin)
+    sub = subscriptions(:learning_path_subscription)
+    lp = [
+      learning_paths(:one),
+      learning_paths(:two)
+    ]
+    digest = MockSearchResults.new(lp)
+    email = SubscriptionMailer.digest(sub, digest)
+
+    assert_emails 1 do
+      email.deliver_now
+    end
+
+    assert_equal [TeSS::Config.sender_email], email.from
+    assert_equal [sub.user.email], email.to
+    assert_equal "#{TeSS::Config.site['title_short']} daily digest - #{lp.length} new learning paths matching your criteria", email.subject
+
+    html = email.html_part.body.to_s
+
+    lp.each do |l|
+      assert html.include?(@routes.learning_path_url(l)), "Learning Path URL was missing from email: #{@routes.learning_path_url(l)}"
+    end
+
+    assert html.include?(@routes.unsubscribe_subscription_url(sub, code: sub.unsubscribe_code)), 'Expected unsubscribe link'
+    refute html.include?('Collections') # Curate feature is not available for learning paths
+  end
 end

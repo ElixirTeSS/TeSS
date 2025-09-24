@@ -23,7 +23,7 @@ View all results on <%= TeSS::Config.site['title_short'] %>:
 <%= subscription_results_url(@subscription) %>
 
 
-<% if @collections&.any? %>
+<% if @collections&.any? && ['Event', 'Material'].include?(@subscription.subscribable_type) %>
 Collections you might like to update:
 <% @collections.each do |collection| %>
   <%= collection.title %>: <%= send("curate_#{@subscription.subscribable_type.downcase.pluralize}_collection_url", collection) %>

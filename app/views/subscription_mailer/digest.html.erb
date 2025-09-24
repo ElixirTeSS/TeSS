@@ -27,7 +27,12 @@ Dear <%= @user.profile.firstname || @user.username %>,<br/>
   <%= pluralize(@digest.total_count, "new #{@subscription.subscribable_type.downcase}") -%>
   registered in <%= TeSS::Config.site['title_short'] %>:
 </p>
-<%= render partial: @subscription.subscribable_type.downcase.pluralize, locals: { digest: @digest } %>
+
+<% if @subscription.subscribable_type == 'Event' %>
+  <%= render partial: 'events', locals: { digest: @digest } %>
+<% else %>
+  <%= render partial: 'resources', locals: { digest: @digest } %>
+<% end %>
 
 <p>
   <% if @digest.count < @digest.total_count %>
@@ -36,7 +41,7 @@ Dear <%= @user.profile.firstname || @user.username %>,<br/>
   <%= link_to("View all results on #{TeSS::Config.site['title_short']}", subscription_results_url(@subscription)) %>
 </p>
 
-<% if @collections&.any? %>
+<% if @collections&.any? && ['Event', 'Material'].include?(@subscription.subscribable_type) %>
 <p>
   Collections you might like to update:
 </p>
