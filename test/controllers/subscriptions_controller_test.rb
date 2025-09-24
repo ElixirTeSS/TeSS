@@ -9,7 +9,8 @@ class SubscriptionsControllerTest < ActionController::TestCase
 
     get :index
 
-    assert_select '.subscription', count: 3
+    assert users(:regular_user).subscriptions.any?
+    assert_select '.subscription', count: users(:regular_user).subscriptions.count
   end
 
   test "should not list other user's subscriptions" do
