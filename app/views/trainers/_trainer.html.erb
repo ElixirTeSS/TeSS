@@ -4,7 +4,7 @@
 
     <h4><%= trainer.full_name %></h4>
 
-    <div class="dont-break-out">
+    <div>
       <%= render_sanitized_markdown truncate(trainer.description, length: 300, separator: ' ') %>
     </div>
 

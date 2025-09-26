@@ -39,7 +39,7 @@
         <% if event.onsite? %>
           <% location = [event.city, event.country].reject { |field_value| field_value.blank? }.join(", ") %>
           <% if location.present? %>
-            <p class="dont-break-out"><i class="fa fa-map-marker"></i> <%= location %></p>
+            <p><i class="fa fa-map-marker"></i> <%= location %></p>
           <% end %>
         <% end %>
         <p class="visible-xs-block">
