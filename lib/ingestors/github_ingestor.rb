@@ -7,14 +7,20 @@ require 'nokogiri'
 module Ingestors
   # GithubIngestor fetches repository information from GitHub to populate the materials' metadata.
   # API requests counter:
-  # 1. Get the repo general metadata (json) from #{GITHUB_API_BASE}/#{full_name}
-  # 2. Get the doi using '#{GITHUB_API_BASE}/#{full_name}/contents/README.md'
-  # 3. Get the version using '#{GITHUB_API_BASE}/#{full_name}/releases'
-  # 4. Get the list of contributors using '#{GITHUB_API_BASE}/#{full_name}/contributors'
+  # 1. Get the repo's general metadata            #{GITHUB_API_BASE}/#{full_name}
+  # 2. Get the doi                                #{GITHUB_API_BASE}/#{full_name}/contents/README.md
+  # 3. Get the version/release                    #{GITHUB_API_BASE}/#{full_name}/releases
+  # 4. Get the list of contributors               #{GITHUB_API_BASE}/#{full_name}/contributors
+  # Searched keys:
+  # api -> name, full_name, owner.login, html_url, description, homepage, topics, license.{key, spdx}, archived, created_at, pushed_at, updated_at, contributors_url,
+  # doi -> content
+  # version -> tag_name (first)
+  # contributors -> login (from all entries)
   class GithubIngestor < Ingestor
     GITHUB_API_BASE = 'https://api.github.com/repos'.freeze
     GITHUB_COM_BASE = 'https://github.com'.freeze
     REDIS = Redis.new(url: TeSS::Config.redis_url)
+    TTL_SEC = 30 * 24 * 60 * 60 # time to live in second after the cache is deleted
 
     def self.config
       {
@@ -61,27 +67,30 @@ module Ingestors
         end
         next unless repo_data
 
-        # From the data, pass it to materials
-        to_material(repo_data)
+        # From the data, translate it to materials
+        material = to_material(repo_data)
+
+        # Add to material
+        add_material material
       rescue StandardError => e
         @messages << "#{self.class.name} failed for #{url}, #{e.message}"
       end
     end
 
-    # private
+    private
 
     # Fetch cached data or opens webpage/api and cache it
     # I chose to cache because GitHub limmits up to 60 requests per hour for unauthenticated user
     # https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#primary-rate-limit-for-unauthenticated-users
     # key: string key for the cache
     # ttl: time-to-live in seconds (default 30 days)
-    def cache_or_set(key, ttl: 30 * 24 * 60 * 60)
+    def cache_or_set(key, ttl: TTL_SEC)
       Rails.logger.info "[Github Cache] GET cache #{key}"
       cached = REDIS.get(key)
       return JSON.parse(cached) if cached
 
       data = yield
-      Rails.logger.info "[GithubCache] SET cache #{key}\nData: #{data.to_json}"
+      Rails.logger.info "[Github Cache] SET cache #{key}"
       REDIS.set(key, data.to_json, ex: ttl) if data
       data
     rescue StandardError => e
@@ -109,14 +118,15 @@ module Ingestors
 
     # Sets material hash keys and values and add them to material
     def to_material(repo_data)
-      homepage_url = get_redirected_url(repo_data['homepage'])
-      response = HTTParty.get(homepage_url, follow_redirects: true, headers: { 'User-Agent' => config[:user_agent] })
+      homepage_nil_or_empty = repo_data['homepage'].nil? || repo_data['homepage'].empty?
+      url = homepage_nil_or_empty ? repo_data['html_url'] : get_redirected_url(repo_data['homepage']) # if no page, put github.com repo
+      response = HTTParty.get(url, follow_redirects: true, headers: { 'User-Agent' => config[:user_agent] })
       doc = Nokogiri::HTML(response.body)
 
       material = OpenStruct.new
-      material.title = "GitHub #{repo_data['homepage'].to_s.strip.empty? ? 'repo' : 'page'}: #{repo_data['name'].titleize} (#{repo_data['owner']['login']})"
-      material.url = repo_data['homepage'].to_s.strip.empty? ? repo_data['html_url'] : homepage_url
-      material.description = repo_data['homepage'].to_s.strip.empty? ? repo_data['description'] : fetch_definition(doc, homepage_url)
+      material.title = repo_data['name'].titleize
+      material.url = url
+      material.description = homepage_nil_or_empty ? repo_data['description'] : fetch_definition(doc, url)
       material.keywords = repo_data['topics']
       material.licence = fetch_licence(repo_data['license'])
       material.status = repo_data['archived'] ? 'Archived' : 'Active'
@@ -127,10 +137,10 @@ module Ingestors
       material.date_published = repo_data['pushed_at']
       material.date_modified = repo_data['updated_at']
       material.contributors = fetch_contributors(repo_data['contributors_url'])
-      material.resource_type = 'GitHub repository'
+      material.resource_type = homepage_nil_or_empty ? ['Github Repository'] : ['Github Page']
       material.prerequisites = fetch_prerequisites(doc)
 
-      add_material material
+      material
     end
 
     # URL – Some github homepages automatically redirects the user to another webpage
@@ -138,20 +148,27 @@ module Ingestors
     def get_redirected_url(url, limit = 5)
       raise 'Too many redirects' if limit.zero?
 
-      response = HTTParty.get(url, follow_redirects: true, headers: { 'User-Agent' => config[:user_agent] })
-      return url unless response.headers['content-type']&.include?('html')
+      https_url = to_https(url) # some `homepage` were http
+      response = HTTParty.get(https_url, follow_redirects: true, headers: { 'User-Agent' => config[:user_agent] })
+      return https_url unless response.headers['content-type']&.include?('html')
 
       doc = Nokogiri::HTML(response.body)
       meta = doc.at('meta[http-equiv="Refresh"]')
       if meta && meta.to_s =~ /url=(.+)/i
         content = meta['content']
         relative_path = content[/url=(.+)/i, 1]
-        base = url.end_with?('/') ? url : "#{url}/"
+        base = https_url.end_with?('/') ? https_url : "#{https_url}/"
         escaped_path = URI::DEFAULT_PARSER.escape(relative_path).to_s
         new_url = "#{base}#{escaped_path}"
         return get_redirected_url(new_url, limit - 1)
       end
-      url
+      https_url
+    end
+
+    def to_https(url)
+      uri = URI.parse(url)
+      uri.scheme = 'https'
+      uri.to_s
     end
 
     # DEFINITION – Opens the GitHub homepage, fetches the 3 first >25 char <p> tags'text
@@ -164,11 +181,10 @@ module Ingestors
         p_txt = p&.text&.strip&.gsub(/\s+/, ' ')
         next if (p_txt.length < 25) || round.zero?
 
-        desc = "#{desc}#{p_txt} 
-        "
+        desc = "#{desc}\n#{p_txt}"
         round -= 1
       end
-      "#{desc}(...) [Read more...](#{url})"
+      "#{desc}\n(...) [Read more...](#{url})"
     end
 
     # LICENCE – Get proper licence
@@ -177,7 +193,7 @@ module Ingestors
       return 'notspecified' if licence.nil? || licence == 'null'
       return 'other-at' if licence['key'] == 'other'
 
-      licence['key'].upcase_first
+      licence['spdx_id']
     end
 
     # DOI – Fetches DOI from various sources in a repo
@@ -231,7 +247,7 @@ module Ingestors
         content = open_url(contributors_url)
         content ? JSON.parse(content.read) : nil
       end
-      contributors.map { |c| c['login'] }
+      contributors.map { |c| (c['login']) }
     rescue StandardError
       nil
     end
