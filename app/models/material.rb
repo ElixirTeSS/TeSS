@@ -200,52 +200,48 @@ class Material < ApplicationRecord
     end
 
     rdfxml_str = graph.dump(:rdfxml, prefixes: { sdo: 'http://schema.org/', dc: 'http://purl.org/dc/terms/' })
-    rdfxml_str.sub(/\A<\?xml.*?\?>\s*/, '') # remove XML declaration
+    rdfxml_str.sub(/\A<\?xml.*?\?>\s*/, '') # remove XML declaration because this is used inside OAI-PMH response
   end
 
-  # Dublin Core mappings for OAI-PMH
-  # no mapping needed for contributor, description and title
-  # coverage and source not mappable
-  alias_attribute :creators, :authors
+  def to_oai_dc
+    xml = ::Builder::XmlMarkup.new
+    xml.tag!('oai_dc:dc',
+             'xmlns:oai_dc' => 'http://www.openarchives.org/OAI/2.0/oai_dc/',
+             'xmlns:dc' => 'http://purl.org/dc/elements/1.1/',
+             'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
+             'xsi:schemaLocation' => 'http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd') do
+      xml.tag!('dc:title', title)
+      xml.tag!('dc:description', description)
+      authors.each { |a| xml.tag!('dc:creator', a) }
+      contributors.each { |a| xml.tag!('dc:contributor', a) }
+      xml.tag!('dc:publisher', content_provider.title) if content_provider
 
-  def dates
-    [date_published, date_created, date_modified].compact.map(&:iso8601)
-  end
+      xml.tag!('dc:format', 'text/html')
+      xml.tag!('dc:language', 'en')
+      xml.tag!('dc:rights', licence) if licence.present?
 
-  def format = 'text/html'
+      [date_published, date_created, date_modified].compact.each do |d|
+        xml.tag!('dc:date', d.iso8601)
+      end
 
-  def identifier
-    if !doi.nil? && !doi.empty?
-      doi_iri = doi.start_with?('http://', 'https://') ? doi : "https://doi.org/#{doi}"
-    else
-      url
+      if doi.present?
+        doi_iri = doi.start_with?('http://', 'https://') ? doi : "https://doi.org/#{doi}"
+        xml.tag!('dc:identifier', doi_iri)
+      else
+        xml.tag!('dc:identifier', url)
+      end
+
+      (keywords + scientific_topics.map(&:uri) + operations.map(&:uri)).each do |s|
+        xml.tag!('dc:subject', s)
+      end
+
+      xml.tag!('dc:type', 'http://purl.org/dc/dcmitype/Text')
+      xml.tag!('dc:type', 'https://schema.org/LearningResource')
+      resource_type.each { |t| xml.tag!('dc:type', t) }
+
+      xml.tag!('dc:relation', "#{TeSS::Config.base_url}#{Rails.application.routes.url_helpers.material_path(self)}")
+      xml.tag!('dc:relation', content_provider.url) if content_provider&.url
     end
-  end
-
-  def language = 'en'
-
-  def publishers
-    if content_provider
-      [content_provider.title]
-    else
-      []
-    end
-  end
-
-  # currently only url of tess resource, content provider url
-  def relations
-    [
-      "#{TeSS::Config.base_url}#{Rails.application.routes.url_helpers.material_path(self)}"
-    ] + (content_provider ? [content_provider.url] : [])
-  end
-
-  alias_attribute :rights, :licence
-
-  def subjects
-    keywords + scientific_topics.map(&:uri) + operations.map(&:uri)
-  end
-
-  def types
-    ['http://purl.org/dc/dcmitype/Text', 'https://schema.org/LearningResource'] + resource_type
+    xml.target!
   end
 end
