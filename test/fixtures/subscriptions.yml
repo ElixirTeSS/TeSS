@@ -32,3 +32,11 @@ event_subscription:
   facets: { "times" : ["good", "great"] }
   user: admin
   subscribable_type: Event
+
+learning_path_subscription:
+  frequency: 1
+  last_checked_at: 1986-11-23 10:16:33
+  query: bananas
+  facets: { "type": [ "fruit", "veg" ] }
+  user: regular_user
+  subscribable_type: LearningPath
