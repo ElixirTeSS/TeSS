@@ -22,13 +22,13 @@ class DccIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::Taxila::DccIngestor.new
 
     # check event doesn't
-    new_title = 'Training FAIR data management'
-    new_url = 'https://dcc-po.nl/agenda/training-fair-data-management/'
+    new_title = 'Training Beïnvloedings-vaardigheden'
+    new_url = 'https://dcc-po.nl/agenda/training-beinvloedingsvaardigheden/'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
     assert_difference 'Event.count', 2 do
-      freeze_time(2019) do
+      freeze_time(2025) do
         VCR.use_cassette('ingestors/dcc') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
@@ -51,8 +51,8 @@ class DccIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'DCC', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal Time.zone.parse('Fri, 30 Sep 2019 09:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Sat, 14 Oct 2019 17:00:00.000000000 UTC +00:00'), event.end
-    assert_equal 'Domstad, Utrecht', event.venue
+    assert_equal Time.zone.parse('Fri, 18 Sep 2025 09:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Sat, 10 Oct 2025 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal 'Utrecht, SURF en HU', event.venue
   end
 end

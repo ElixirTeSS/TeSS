@@ -22,13 +22,13 @@ class DansIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::Taxila::DansIngestor.new
 
     # check event doesn't
-    new_title = 'Open Hour SSH: live Q&A on Monday'
-    new_url = 'https://dans.knaw.nl/en/agenda/open-hour-ssh-live-qa-on-monday-2/'
+    new_title = 'Open Science Festival 2025'
+    new_url = 'https://opensciencefestival.nl/en/register-as-a-participant'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 6 do
-      freeze_time(2019) do
+    assert_difference 'Event.count', 11 do
+      freeze_time(2025) do
         VCR.use_cassette('ingestors/dans') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
@@ -36,9 +36,9 @@ class DansIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 6, ingestor.events.count
+    assert_equal 11, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 6, ingestor.stats[:events][:added]
+    assert_equal 11, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -51,8 +51,8 @@ class DansIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'DANS', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal ['Social Sciences and Humanities', 'Training &amp; Outreach', 'Consultancy'], event.keywords
-    assert_equal Time.zone.parse('Mon, 13 Feb 2023 09:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Mon, 13 Feb 2023 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal ['FAIR and Open data'], event.keywords
+    assert_equal Time.zone.parse('Mon, 24 Oct 2025 09:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Mon, 24 Oct 2025 17:00:00.000000000 UTC +00:00'), event.end
   end
 end
