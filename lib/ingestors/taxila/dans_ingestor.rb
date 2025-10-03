@@ -54,7 +54,7 @@ module Ingestors
               event.keywords << value unless value.nil?
             end
 
-            event.description = data.css("p[class='dmach-acf-value dmach-acf-video-container']")[0].children.to_s
+            event.description = data.css("p.dmach-acf-value")[0].text
 
             event.url = data.css("a[id$='_link']")[0]['href'].to_s
 
