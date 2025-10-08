@@ -233,6 +233,8 @@ en:
     funding: >
       %{site_name} has been funded by:
       <ul>
+      <li><a href="https://biofair.uk/" 
+        target="_blank">BioFAIR</a> Short Term Funding Award GP312</li>
       <li>European Commission, Horizon 2020 Research Infrastructures programme (ELIXIR-EXCELERATE,
       <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">grant agreement number 676559</a>);</li>
       <li>ELIXIR Implementation Study (Registry Integration from a User Perspective);</li>
