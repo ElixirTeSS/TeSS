@@ -104,6 +104,8 @@ module Ingestors
             event.set_default_times
             event.source = 'UU'
             event.timezone = 'Amsterdam'
+            # UU wants opt-in instead of opt-out for this scraper
+            event.visible = false
 
             # the below code allows fetching the long description, at the cost of a
             # page load per event.
