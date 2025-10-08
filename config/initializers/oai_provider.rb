@@ -23,7 +23,5 @@ class TrainingProvider < OAI::Provider::Base
 end
 
 Rails.application.config.after_initialize do
-  TrainingProvider.source_model OAI::Provider::ActiveRecordWrapper.new(Material.where(visible: true))
-rescue ActiveRecord::NoDatabaseError, ActiveRecord::StatementInvalid, ActiveRecord::ConnectionNotEstablished
-  Rails.logger.debug 'There is no database yet, so the OAI-PMH endpoint is not configured.'
+  TrainingProvider.source_model OAI::Provider::ActiveRecordWrapper.new(Material.where(visible: true), identifier_field: 'id')
 end
