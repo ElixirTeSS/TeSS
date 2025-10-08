@@ -1,6 +1,7 @@
+# The controller for actions related to OAI-PMH
 class OaiController < ApplicationController
-  # This view only returns static public content and CSRF token authentication causes problems with OAI-PMH POST requests
-  skip_before_action :verify_authenticity_token
+  # codeql-suppress CSRF-Violation "CSRF token authentication causes problems with OAI-PMH POST requests and OAI-PMH POST is safe because it returns static public content"
+  skip_before_action :verify_authenticity_token, only: [:index]
 
   # GET /oai-pmh
   def index
