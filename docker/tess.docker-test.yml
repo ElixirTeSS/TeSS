@@ -94,6 +94,8 @@ default: &default
     trainer_experience: 'trainer_experience.yml'
     online_keywords: 'online_keywords.yml'
   funders:
+    - url: https://biofair.uk/
+      logo: elixir/biofair-logo.png
     - url: https://elixir.ut.ee/
       logo: nodes/logos_svg/EE.svg
     - url: http://elixir-uk.org/
