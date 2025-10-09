@@ -1,6 +1,8 @@
 <div class="account-form">
   <div class="page-header">
+    <% if !TeSS::Config.feature["login_through_oidc_only"] %>
     <%= page_title 'Log in' %>
+    <% end %>
   </div>
   <div class="form-middle">
     <% if resource_class.omniauth_providers.any? && devise_mapping.omniauthable? %>
@@ -10,12 +12,20 @@
       <hr/>
     <% end %>
 
+    <% if TeSS::Config.feature["login_through_oidc_only"] %>
+    <dl class="faq">
+      <div class="question">
+        <dt>
+          <h4><div class="expand">+</div><%= t('authentication.omniauth.admin') %></h4>
+        </dt>
+        <dd style="display: none;">
+    <% end %>
     <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
       <div class="h4"><%= t('authentication.password.title') %></div>
       <p><%= t('authentication.password.description') %></p>
       <%= f.input :login, label: t('authentication.password.email_or_username'), autofocus: true %>
       <%= f.input :password, label: t('authentication.password.password'),
-                             input_html: { autocomplete: 'off' } %>
+                            input_html: { autocomplete: 'off' } %>
       <% if devise_mapping.rememberable? -%>
         <%= f.input :remember_me, label: t('authentication.password.remember_me'), as: :boolean %>
       <% end -%>
@@ -23,6 +33,12 @@
         <%= f.submit t('authentication.password.log_in'), :class => 'btn btn-primary' %>
       </div>
     <% end %>
+    <% if !TeSS::Config.feature["login_through_oidc_only"] %>
     <%= render "devise/shared/links" %>
+    <% else %>
+        </dd>
+      </div>
+    </dl>
+    <% end %>
   </div>
 </div>

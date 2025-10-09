@@ -62,7 +62,9 @@ class User < ApplicationRecord
   before_save :set_username_for_invitee
 
   # Include default devise modules. Others available are: :lockable, :timeoutable
-  if TeSS::Config.feature['registration']
+  if TeSS::Config.feature['login_through_oidc_only']
+    devise :database_authenticatable, :confirmable, :trackable, :validatable, :omniauthable, :authentication_keys => [:login]
+  elsif TeSS::Config.feature['registration']
     devise :database_authenticatable, :confirmable, :registerable, :invitable, :recoverable, :rememberable, :trackable,
            :validatable, :omniauthable, :authentication_keys => [:login]
   elsif TeSS::Config.feature['invitation']
