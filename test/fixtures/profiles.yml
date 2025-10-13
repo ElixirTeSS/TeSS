@@ -68,6 +68,7 @@ trainer_one_profile:
   expertise_technical: ['python', 'R']
   public: true
   type: Trainer
+  orcid_authenticated: true
 
 trainer_two_profile:
   user: private_user
@@ -76,13 +77,14 @@ trainer_two_profile:
   image_url:
   email: samael@research.org
   website: ''
-  orcid: ''
+  orcid: https://orcid.org/0000-0002-0048-3300
   description: none
   location: 'Sydney, Australia'
   experience: much
   expertise_technical: ['java', 'python', 'ruby']
   public: false
   type: Profile
+  orcid_authenticated: false
 
 admin_trainer_profile:
   user: admin_trainer

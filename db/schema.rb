@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_25_151745) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_13_115523) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -452,6 +452,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_25_151745) do
     t.string "social_media", default: [], array: true
     t.string "type", default: "Profile"
     t.string "fields", default: [], array: true
+    t.boolean "orcid_authenticated", default: false
     t.index ["slug"], name: "index_profiles_on_slug", unique: true
   end
 
