@@ -50,7 +50,7 @@
         <% if @user.profile.orcid.blank? %>
           <span class="empty">None specified</span>
         <% else %>
-          <%= link_to @user.profile.orcid, @user.profile.orcid, rel: 'nofollow', target: '_blank' %>
+          <%= orcid_link(@user.profile) %>
         <% end %>
       </p>
 
