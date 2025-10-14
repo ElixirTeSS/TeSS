@@ -94,6 +94,8 @@ default: &default
     trainer_experience: 'trainer_experience.yml'
     online_keywords: 'online_keywords.yml'
   funders:
+    - url: https://www.oscars-project.eu/projects/mtess-x-scaling-training-portal-federation-ris-through-multi-tenanting-and-exchange
+      logo: elixir/oscars-logo.svg
     - url: https://biofair.uk/
       logo: elixir/biofair-logo.png
     - url: https://elixir.ut.ee/

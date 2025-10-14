@@ -234,12 +234,15 @@ en:
     funding: >
       %{site_name} has been funded by:
       <ul>
+      <li>The <a href="https://www.oscars-project.eu/projects/mtess-x-scaling-training-portal-federation-ris-through-multi-tenanting-and-exchange"
+        target="_blank">OSCARS project</a>, which has received funding from the European Commission’s Horizon Europe 
+        Research and Innovation programme under grant agreement No. 101129751;</li>
       <li><a href="https://biofair.uk/" 
-        target="_blank">BioFAIR</a> Short Term Funding Award GP312</li>
+        target="_blank">BioFAIR</a> Short Term Funding Award GP312;</li>
       <li>European Commission, Horizon 2020 Research Infrastructures programme (ELIXIR-EXCELERATE,
       <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">grant agreement number 676559</a>);</li>
       <li>ELIXIR Implementation Study (Registry Integration from a User Perspective);</li>
-      <li>ELIXIR Implementation Study (Learning Paths).</li>
+      <li>ELIXIR Implementation Study (Learning Paths);</li>
       <li>BBSRC UK (Delivering ELIXIR-UK grant, grant agreement numbers
         <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1"
           target="_blank">BB/L005050/1</a> &amp;
