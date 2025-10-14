@@ -1,7 +1,9 @@
+
 # Contributing to TeSS
 
 While TeSS was originally developed to serve as the training portal for [ELIXIR](https://www.elixir-europe.org/), it endeavours to be a generic training platform that can be easily customized and re-used in other communities. 
 To that end we welcome and encourage new contributors to get involved and help to shape and improve TeSS. This document discusses and explains different ways you can contribute to TeSS.
+You can find a code checklist at the end of this document to summarize the important points.
 
 ### TeSS Club
 
@@ -116,7 +118,14 @@ or if using docker:
 docker compose run test
 ```
 
+or for a specific test
+```
+docker compose run --remove-orphans test rails test test/<PATHTOYOURTEST>
+```
+
 You can also see the test coverage % after the tests finish - make sure it has not decreased from before adding your code.
+
+Please setup your local IDE to see the test coverage of your code (e.g., Coverage Gutters in VSCode) – as said before, a pushed code should be close to 100% test coverage.
 
 ### Commit Meaningfully
 
@@ -134,6 +143,13 @@ Make sure that your feature branch is pushed to your fork of TeSS on GitHub and 
 - A brief summary of what changes were made.
 - Why the changes were made, with links to any relevant issues or discussions.
 - If appropriate, screenshots of the changes, or instructions on how the changes can be tried out.
+
+Other points to be aware of to ease the reviewer's work:
+
+- Review your own code
+- Add context to smaller changes
+- Highlight important parts
+- Ask specific questions if needed
 
 Also be sure to select the branch of TeSS where you want the changes to be merged back into, and if your contribution is a work-in-progress, flag the pull request as being a "Draft" (Click the arrow next to the "Create Pull Request" button).
 
@@ -153,6 +169,18 @@ TeSS has various levels of documentation that can also be contributed to:
 * User documentation - *Help wanted!* - Guidance for users of TeSS on best practices, how they can automatically register resources, etc. (Markdown?)
 
 Small changes can be made directly in GitHub. Simply open the relevant file, click the pencil icon to edit, make your change, and click the "Proprose changes" button - GitHub will automatically create a fork, a feature branch and a pull request for you.
+
+# Code contribution checklist
+
+- [ ] I agree to redistribute my work under [our BSD 3-Clause licence](LICENSE)
+- [ ] I followed the [Code of Conduct](CODE_OF_CONDUCT.md)
+- [ ] Issue is opened or I commented on an existing one
+- [ ] I followed [Ruby Style Guide](https://github.com/rubocop/ruby-style-guide)
+- [ ] Commits are meaningful
+- [ ] Changes are covered by tests
+- [ ] There is clear logging and error handling
+- [ ] Documentation is updated
+- [ ] I advertised my contribution in the [TeSS Club meetings](https://elixirtess.github.io/about/)
 
 # Thank You
 
