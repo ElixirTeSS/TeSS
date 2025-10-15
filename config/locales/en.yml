@@ -212,7 +212,7 @@ en:
       <a href="mailto:tess-support@googlegroups.com">tess-support@googlegroups.com</a>
     team: >
       <h5>Leadership</h5>
-      <ul><li>Carole Goble</li><li>Hedi Peterson</li><li>Alexia Cardona</li></ul>
+      <ul><li>Carole Goble</li><li>Hedi Peterson</li></ul>
       <h5>Project Management</h5>
       <ul><li>Munazah Andrabi</li><li>Phil Reed</li></ul>
       <h5>Software Engineering</h5>
@@ -229,14 +229,20 @@ en:
         <li>Milo Thurston - Software Engineering</li>
         <li>Chris Child - Project Management/Software Engineering</li>
         <li>Aitor Apaolaza - Software Engineering</li>
+        <li>Alexia Cardona - Leadership</li>
       </ul>
     funding: >
       %{site_name} has been funded by:
       <ul>
+      <li>The <a href="https://www.oscars-project.eu/projects/mtess-x-scaling-training-portal-federation-ris-through-multi-tenanting-and-exchange"
+        target="_blank">OSCARS project</a>, which has received funding from the European Commission’s Horizon Europe 
+        Research and Innovation programme under grant agreement No. 101129751;</li>
+      <li><a href="https://biofair.uk/" 
+        target="_blank">BioFAIR</a> Short Term Funding Award GP312;</li>
       <li>European Commission, Horizon 2020 Research Infrastructures programme (ELIXIR-EXCELERATE,
       <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">grant agreement number 676559</a>);</li>
       <li>ELIXIR Implementation Study (Registry Integration from a User Perspective);</li>
-      <li>ELIXIR Implementation Study (Learning Paths).</li>
+      <li>ELIXIR Implementation Study (Learning Paths);</li>
       <li>BBSRC UK (Delivering ELIXIR-UK grant, grant agreement numbers
         <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1"
           target="_blank">BB/L005050/1</a> &amp;
