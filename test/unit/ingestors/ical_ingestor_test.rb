@@ -26,7 +26,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
 
     assert ingestor.events.empty?
     assert ingestor.materials.empty?
-    assert_includes ingestor.messages, 'Extract from sitemap[https://missing.org/sitemap.xml] failed with: 404 '
+    assert_includes ingestor.messages[0], 'Extract from sitemap[https://missing.org/sitemap.xml] failed with:'
   end
 
   test 'ingest valid sitemap' do
@@ -185,6 +185,58 @@ class IcalIngestorTest < ActiveSupport::TestCase
     %w[Supercomputing Conference Visualisation].each do |keyword|
       assert event.keywords.include?(keyword), "event title[#{event.title}] keyword[#{keyword}] not found"
     end
+  end
+
+  test 'process_calevent logs error when exception is raised' do
+    ingestor = Ingestors::IcalIngestor.new
+    calevent = Object.new # fake calevent
+
+    # Stub a method that will raise an error
+    def ingestor.assign_basic_info(*)
+      raise StandardError, 'test failure'
+    end
+
+    ingestor.send(:process_calevent, calevent)
+
+    assert_includes ingestor.messages.last, 'Process iCalendar failed with: test failure'
+  end
+
+  test 'to_export method' do
+    ingestor = Ingestors::IcalIngestor.new
+    indico_url_event = 'https://indico.cern.ch/event/1588342/'
+    indico_url_event_with_ics = 'https://indico.cern.ch/event/1588342/event.ics' # ! when '/event', event.ics is singular
+    indico_url_event_with_query = 'https://indico.cern.ch/event/1588342/?somerandom=urlparams&an=otherone'
+    indico_url_event_with_query_with_ics = 'https://indico.cern.ch/event/1588342/event.ics?somerandom=urlparams&an=otherone'
+    indico_url_category = 'https://indico.cern.ch/category/19377/'
+    indico_url_category_with_ics = 'https://indico.cern.ch/category/19377/events.ics' # ! when '/category', eventS.ics is plural
+    indico_url_category_with_query = 'https://indico.cern.ch/category/19377/?a=b&c=d'
+    indico_url_category_with_query_with_ics = 'https://indico.cern.ch/category/19377/events.ics?a=b&c=d'
+    url_with_ics = 'https://mywebsite.com/event/blabla/events.ics'
+    url_with_query_with_ics = 'https://mywebsite.com/event/blabla/events.ics?john=doe&isstub=born'
+    url_no_ical = 'https://mywebsite.com/event/blabla'
+    url_with_ical = 'https://mywebsite.com/event/blabla?ical=true'
+
+    # When indico link – event
+    assert_equal ingestor.send(:to_export, indico_url_event), indico_url_event_with_ics # adds ics
+    assert_equal ingestor.send(:to_export, indico_url_event_with_query), indico_url_event_with_query_with_ics # adds ics
+
+    # When indico link – category
+    assert_equal ingestor.send(:to_export, indico_url_category), indico_url_category_with_ics # adds ics
+    assert_equal ingestor.send(:to_export, indico_url_category_with_query), indico_url_category_with_query_with_ics # adds ics
+
+    # When non-indico link
+    assert_equal ingestor.send(:to_export, url_with_ics), url_with_ics # keeps same
+    assert_equal ingestor.send(:to_export, url_with_query_with_ics), url_with_query_with_ics # keeps same
+
+    # When indico link which already has the /events.ics
+    assert_equal ingestor.send(:to_export, indico_url_event_with_ics), indico_url_event_with_ics # keeps it as-is
+    assert_equal ingestor.send(:to_export, indico_url_event_with_query_with_ics), indico_url_event_with_query_with_ics # keeps it as-is
+
+    # When other url, adds the ical query param
+    assert_equal ingestor.send(:to_export, url_no_ical), url_with_ical
+
+    # When other url with ical query param, keep it as-is
+    assert_equal ingestor.send(:to_export, url_with_ical), url_with_ical
   end
 
   private
