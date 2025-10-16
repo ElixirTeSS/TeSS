@@ -1,7 +1,8 @@
 <% if devise_mapping.omniauthable? -%>
   <% Devise.omniauth_configs.each do |provider, config| -%>
     <%= link_to(omniauth_authorize_path(resource_name, provider), method: :post,
-                class: config.options[:logo] ? '' : 'btn btn-default') do %>
+                class: config.options[:logo] ? '' :
+                    TeSS::Config.feature["login_through_oidc_only"] ? 'btn btn-default btn-lg btn-oidc-only' : 'btn btn-default') do %>
       <% if config.options[:logo].present? %>
         <%= image_tag(config.options[:logo], class: "omniauth-logo omniauth-#{provider}") -%>
       <% else %>
