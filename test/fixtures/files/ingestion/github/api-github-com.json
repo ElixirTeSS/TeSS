@@ -20,5 +20,6 @@
   "archived": true,
   "created_at": "2025-09-29T14:38:38Z",
   "updated_at": "2025-09-30T14:38:38Z",
-  "pushed_at": "2025-09-28T14:38:38Z"
+  "pushed_at": "2025-09-28T14:38:38Z",
+  "contributors_url": "https://api.github.com/repos/hsf-training/cpluspluscourse/contributors"
 }

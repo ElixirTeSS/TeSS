@@ -96,7 +96,7 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
     assert_equal sample.date_created, Date.new(2025, 9, 29)
     assert_equal sample.date_published, Date.new(2025, 9, 28)
     assert_equal sample.date_modified, Date.new(2025, 9, 30)
-    assert_equal sample.contributors, []
+    assert_equal sample.contributors, %w[jane doe]
     assert_equal sample.resource_type, ['Github Repository'] # when no gh page
     assert_equal sample.prerequisites, '1. Be kind'
   end
@@ -109,13 +109,13 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
     assert sample.persisted?
 
     assert_equal sample.url, 'https://swcarpentry.github.io/python-novice-inflammation/'
-    assert_equal sample.description, "This is the first p tag of the page\nThis is the second p tag of the page\n(...) [Read more...](https://swcarpentry.github.io/python-novice-inflammation/)"
+    assert_equal sample.description, "This is the second p tag of the page fetched because it has more than 50 chars\n(...) [Read more...](https://swcarpentry.github.io/python-novice-inflammation/)"
     assert_equal sample.status, 'Active' # changed to false
     assert_equal sample.resource_type, ['Github Page'] # when gh page
   end
 
   test 'should cache github repo metadata' do
-    cache = 'api.github.com_repos_hsf-training_cpluspluscourse'
+    cache = 'github_ingestor_api.github.com_repos_hsf-training_cpluspluscourse'
     # Clear it before test to avoid false positives
     Rails.cache.delete(cache)
 
@@ -134,7 +134,7 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
   end
 
   test 'should write cache of github repo metadata when first read and read cache only when second read' do
-    cache = 'api.github.com_repos_hsf-training_cpluspluscourse'
+    cache = 'github_ingestor_api.github.com_repos_hsf-training_cpluspluscourse'
     Rails.cache.delete(cache)
     @ingestor.read('https://github.com/hsf-training/cpluspluscourse')
 
@@ -160,7 +160,7 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
   end
 
   test 'should set cache and test cache and material before ttl' do
-    cache = 'api.github.com_repos_hsf-training_cpluspluscourse'
+    cache = 'github_ingestor_api.github.com_repos_hsf-training_cpluspluscourse'
     Rails.cache.delete(cache)
     @ingestor.read('https://github.com/hsf-training/cpluspluscourse')
     sample = @ingestor.materials.detect { |e| e.title == 'Cpluspluscourse' }
@@ -198,7 +198,7 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
   end
 
   test 'should set cache then test cache and material after ttl' do
-    cache = 'api.github.com_repos_hsf-training_cpluspluscourse'
+    cache = 'github_ingestor_api.github.com_repos_hsf-training_cpluspluscourse'
     Rails.cache.delete(cache)
     @ingestor.read('https://github.com/hsf-training/cpluspluscourse')
     sample = @ingestor.materials.detect { |e| e.title == 'Cpluspluscourse' }

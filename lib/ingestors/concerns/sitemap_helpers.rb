@@ -21,7 +21,6 @@ module Ingestors
         urls = SitemapParser.new(
           url,
           recurse: true,
-          url_regex: /(github\.com|github\.io)/i,
           headers: { 'User-Agent' => config[:user_agent] }
         ).to_a.uniq.map(&:strip)
 
