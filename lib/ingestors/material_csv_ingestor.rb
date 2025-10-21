@@ -4,7 +4,7 @@ require 'cgi'
 
 module Ingestors
   class MaterialCsvIngestor < Ingestor
-    include CsvIngestion
+    include SpreadsheetIngestion
 
     def self.config
       {
@@ -67,17 +67,6 @@ module Ingestors
 
     def process_competency(row, header)
       row[header].nil? ? 'notspecified' : row[header]
-    end
-
-    # if url is a raw google spreadsheet
-    # it returns the Google spreadsheet CSV export
-    # else it returns the url
-    def gsheet_to_csv(url)
-      return url unless url.include? 'docs.google.com/spreadsheets/d/'
-
-      spreadsheet_id = url.partition('d/').last.partition('/').first
-      gid = CGI.parse(URI.parse(url).query)['gid']&.first
-      "https://docs.google.com/spreadsheets/d/#{spreadsheet_id}/export?gid=#{gid}&exportFormat=csv"
     end
   end
 end

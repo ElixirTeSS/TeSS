@@ -3,7 +3,7 @@ require 'csv'
 
 module Ingestors
   class EventCsvIngestor < Ingestor
-    include CsvIngestion
+    include SpreadsheetIngestion
 
     def self.config
       {
@@ -16,6 +16,9 @@ module Ingestors
     def read(url)
       # parse csv file to table
       begin
+        # Google spreadsheet convertor
+        url = gsheet_to_csv(url)
+
         # parse csv as table
         web_contents = open_url(url).read
         table = CSV.parse(web_contents, headers: true)

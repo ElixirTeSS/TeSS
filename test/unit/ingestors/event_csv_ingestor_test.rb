@@ -95,6 +95,23 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
                  event.tech_requirements
   end
 
+  test 'should change url to google sheet export if needed' do
+    ingestor = Ingestors::EventCsvIngestor.new
+
+    url_random = 'https://this-might-not-be-reachable-at-all.com'
+    url_not_spreadsheet = 'https://google.com'
+    url_spreadsheet = 'https://docs.google.com/spreadsheets/d/abcde/edit?gid=12345#gid=12345'
+    url_export_spreadsheet = 'https://docs.google.com/spreadsheets/d/abcde/export?gid=12345&exportFormat=csv'
+
+    # doesn't change url, because not google spreadsheet
+    assert_equal ingestor.send(:gsheet_to_csv, url_random), url_random
+    assert_equal ingestor.send(:gsheet_to_csv, url_not_spreadsheet), url_not_spreadsheet
+
+    # do change url, because google spreadsheet
+    assert_equal ingestor.send(:gsheet_to_csv, url_spreadsheet), url_export_spreadsheet
+    assert_not_equal url_spreadsheet, url_export_spreadsheet
+  end
+
   private
 
   def check_array(collection, values, exclusions = [])
