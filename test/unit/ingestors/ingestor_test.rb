@@ -113,4 +113,78 @@ class IngestorTest < ActiveSupport::TestCase
     assert_nil(event.language)
   end
 
+  test 'open_url returns content when URL is valid' do
+    ingestor = DummyIngestor.new
+    stub_request(:get, 'https://example.com').to_return(body: 'ok', status: 200)
+
+    result = ingestor.open_url('https://example.com')
+    assert_equal 'ok', result.read
+  end
+
+  test 'open_url raises HTTPRedirect after too many retries' do
+    ingestor = DummyIngestor.new
+    fake_uri = URI('https://example.com/')
+
+    URI.stub(:parse, fake_uri) do
+      fake_uri.define_singleton_method(:open) do |*_args|
+        raise OpenURI::HTTPRedirect.new('Redirect', 1, URI('https://redirected.com'))
+      end
+
+      assert_raises(OpenURI::HTTPRedirect) do
+        ingestor.open_url('https://example.com/')
+      end
+    end
+  end
+
+  test 'open_url raises HTTPError' do
+    ingestor = DummyIngestor.new
+    stub_request(:get, 'https://bad.com')
+      .to_raise(OpenURI::HTTPError.new('404 not found', StringIO.new))
+
+    result = ingestor.open_url('https://bad.com')
+    assert_nil result
+    assert_includes ingestor.instance_variable_get(:@messages).last,
+                    "Couldn't open URL https://bad.com: 404 not found"
+  end
+
+  test 'get_redirected_url follows meta refresh redirect' do
+    ingestor = DummyIngestor.new
+    html_with_meta = '<html><head><meta http-equiv="Refresh" content="0; url=/redirected"></head></html>'
+    redirected_html = '<html><head><title>Final</title></head><body>Done</body></html>'
+
+    HTTParty.stub(:get, lambda { |url, **|
+      case url
+      when 'https://example.com/'
+        OpenStruct.new(headers: { 'content-type' => 'text/html' }, body: html_with_meta)
+      when 'https://example.com//redirected'
+        OpenStruct.new(headers: { 'content-type' => 'text/html' }, body: redirected_html)
+      else
+        raise "Unexpected URL: #{url}"
+      end
+    }) do
+      result = ingestor.get_redirected_url('http://example.com/')
+      assert_equal 'https://example.com//redirected', result
+    end
+  end
+
+  test 'get_redirected_url returns original url when no meta redirect' do
+    ingestor = DummyIngestor.new
+    html_no_meta = '<html><head><title>No redirect</title></head><body></body></html>'
+
+    HTTParty.stub(:get, ->(_url, **) { OpenStruct.new(headers: { 'content-type' => 'text/html' }, body: html_no_meta) }) do
+      result = ingestor.get_redirected_url('http://example.com/')
+      assert_equal 'https://example.com/', result
+    end
+  end
+
+  test 'get_redirected_url raises when too many redirects' do
+    ingestor = DummyIngestor.new
+    html_with_meta = '<html><head><meta http-equiv="Refresh" content="0; url=/loop"></head></html>'
+
+    HTTParty.stub(:get, ->(_url, **) { OpenStruct.new(headers: { 'content-type' => 'text/html' }, body: html_with_meta) }) do
+      assert_raises(RuntimeError, 'Too many redirects') do
+        ingestor.get_redirected_url('http://example.com/', 0)
+      end
+    end
+  end
 end

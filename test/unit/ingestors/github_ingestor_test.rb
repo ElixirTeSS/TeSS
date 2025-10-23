@@ -39,6 +39,10 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
     webmock('https://api.github.com/repos/hsf-training/cpluspluscourse/releases', 'github/releases.json')
     webmock('https://api.github.com/repos/swcarpentry/python-novice-inflammation/releases', 'github/releases.json')
     webmock('https://api.github.com/repos/hsf-training/hsf-training-scikit-hep-webpage/releases', 'github/releases.json')
+
+    # HTML
+    html = File.read(Rails.root.join('test/fixtures/files/ingestion/github/mock.html'))
+    @doc = Nokogiri::HTML(html)
   end
 
   teardown do
@@ -233,6 +237,102 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
     assert_equal sample_after_ttl_and_change.keywords, %w[those are NOT]
     # The material description is the new one: nil
     assert_nil sample_after_ttl_and_change.description
+  end
+
+  test 'std errors when exception is raised' do
+    @ingestor.stub(:get_sources, ->(_url) { raise StandardError, 'test failure' }) do
+      @ingestor.send(:read, 'https://github.com/example')
+    end
+    assert_includes @ingestor.instance_variable_get(:@messages).last,
+                    'Ingestors::GithubIngestor read failed, test failure'
+
+    @ingestor.stub(:open_url, ->(_url) { raise StandardError, 'test failure' }) do
+      @ingestor.send(:get_or_set_cache, 'key', 'https://github.com/example')
+    end
+    assert_includes @ingestor.instance_variable_get(:@messages).last,
+                    'Ingestors::GithubIngestor get_or_set_cache failed for https://github.com/example, test failure'
+
+    @ingestor.stub(:get_or_set_cache, ->(_key, _url) { raise StandardError, 'test failure' }) do
+      @ingestor.send(:fetch_doi, 'full_name')
+    end
+    assert_includes @ingestor.instance_variable_get(:@messages).last,
+                    'Ingestors::GithubIngestor fetch_doi failed for https://api.github.com/repos/full_name/contents/README.md, test failure'
+
+    @ingestor.stub(:get_or_set_cache, ->(_key, _url) { raise StandardError, 'test failure' }) do
+      @ingestor.send(:fetch_latest_release, 'full_name')
+    end
+    assert_includes @ingestor.instance_variable_get(:@messages).last,
+                    'Ingestors::GithubIngestor fetch_latest_release failed for https://api.github.com/repos/full_name/releases, test failure'
+
+    @ingestor.stub(:get_or_set_cache, ->(_key, _url) { raise StandardError, 'test failure' }) do
+      @ingestor.send(:fetch_contributors, 'my.url', 'full_name')
+    end
+    assert_includes @ingestor.instance_variable_get(:@messages).last,
+                    'Ingestors::GithubIngestor fetch_contributors failed for my.url, test failure'
+  end
+
+  test 'prereq_node? returns true when id includes prereq' do
+    node = Nokogiri::XML::Node.new('div', @doc)
+    node['id'] = 'prerequisites'
+    assert @ingestor.send(:prereq_node?, node)
+  end
+
+  test 'prereq_node? returns true when class includes prereq' do
+    node = Nokogiri::XML::Node.new('div', @doc)
+    node['class'] = 'has_prereq_section'
+    assert @ingestor.send(:prereq_node?, node)
+  end
+
+  test 'prereq_node? returns false for unrelated id/class' do
+    node = Nokogiri::XML::Node.new('div', @doc)
+    node['id'] = 'requirements'
+    refute @ingestor.send(:prereq_node?, node)
+  end
+
+  test 'extract_following_paragraphs finds immediate sibling paragraphs' do
+    doc = Nokogiri::HTML(<<~HTML)
+      <div id="prereq"></div>
+      <p>First paragraph</p>
+      <ul><li>List item</li></ul>
+      <h2>Stop here</h2>
+    HTML
+
+    node = doc.at_xpath('//*[@id="prereq"]')
+    paragraphs = []
+    @ingestor.send(:extract_following_paragraphs, node, paragraphs)
+
+    assert_equal 2, paragraphs.size
+    assert_equal %w[p ul], paragraphs.map(&:name)
+  end
+
+  test 'extract_nested_paragraphs finds paragraphs inside the node' do
+    doc = Nokogiri::HTML(<<~HTML)
+      <div id="prereq">
+        <p>Nested paragraph</p>
+        <ul><li>Nested list</li></ul>
+      </div>
+    HTML
+
+    node = doc.at_xpath('//*[@id="prereq"]')
+    paragraphs = []
+    @ingestor.send(:extract_nested_paragraphs, node, paragraphs)
+
+    assert_equal 2, paragraphs.size
+    assert_equal %w[p ul], paragraphs.map(&:name)
+  end
+
+  test 'fetch_prerequisites_from_id_or_class collects prerequisites correctly' do
+    doc = Nokogiri::HTML(<<~HTML)
+      <div id="prereq"></div>
+      <p>Be kind</p>
+      <p>Have Ruby installed</p>
+    HTML
+
+    paragraphs = []
+    result = @ingestor.send(:fetch_prerequisites_from_id_or_class, doc, paragraphs)
+
+    assert_equal 2, result.size
+    assert_equal 'Be kind', result.first.text
   end
 
   private

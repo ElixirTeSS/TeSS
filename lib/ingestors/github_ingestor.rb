@@ -55,9 +55,9 @@ module Ingestors
 
         # Add to material
         add_material to_material(repo_data)
-      rescue StandardError => e
-        @messages << "#{self.class.name} read failed for #{url}, #{e.message}"
       end
+    rescue StandardError => e
+      @messages << "#{self.class.name} read failed, #{e.message}"
     end
 
     private
@@ -92,26 +92,14 @@ module Ingestors
     # One GitHub URL equals to 4 GitHub API requests.
     # key: string key for the cache
     # ttl: time-to-live in seconds (default 7 days)
-    def get_or_set_cache(key, url) # rubocop:disable Metrics/AbcSize
-      content = open_url(url)
-      data = content ? JSON.parse(content.read) : nil
-
-      set_cache(key, data) if Rails.cache.read(key).nil? # sets cache only if there is no cache yet or is expired
-      get_cache(key)
-      data
+    def get_or_set_cache(key, url)
+      Rails.cache.fetch(key, expires_in: TTL) do
+        JSON.parse(open_url(url).read)
+      end
     rescue StandardError => e
       @messages << "#{self.class.name} get_or_set_cache failed for #{url}, #{e.message}"
-      yield
-    end
-
-    def set_cache(key, data, ttl: TTL)
-      Rails.logger.info "[Github Cache] SET cache #{key}"
-      Rails.cache.write(key, data, expires_in: ttl) unless data.nil?
-    end
-
-    def get_cache(key)
-      Rails.logger.info "[Github Cache] GET cache #{key}"
-      Rails.cache.read(key)
+      yield if block_given?
+      nil
     end
 
     # Sets material hash keys and values and add them to material
