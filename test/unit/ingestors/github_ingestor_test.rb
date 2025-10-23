@@ -43,11 +43,15 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
     # HTML
     html = File.read(Rails.root.join('test/fixtures/files/ingestion/github/mock.html'))
     @doc = Nokogiri::HTML(html)
+
+    # config cache working here
+    @old_cache_store = Rails.cache
+    Rails.cache = ActiveSupport::Cache::MemoryStore.new
   end
 
   teardown do
     reset_timezone
-    Rails.cache.clear
+    Rails.cache = @old_cache_store
   end
 
   test 'should read sitemap.txt composed of github.com and github.io but avoid keeping the non-github URLs' do
@@ -120,8 +124,6 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
 
   test 'should cache github repo metadata' do
     cache = 'github_ingestor_api.github.com_repos_hsf-training_cpluspluscourse'
-    # Clear it before test to avoid false positives
-    Rails.cache.delete(cache)
 
     @ingestor.read('https://github.com/hsf-training/cpluspluscourse')
 

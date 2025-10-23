@@ -62,28 +62,28 @@ module Ingestors
 
     private
 
-    # Takes a github.{com|io} url and returns its api.google.com url
+    # Takes a github.{com|io} url and returns its api.github.com url
     def to_github_api(url)
       uri = URI(url)
-      return nil unless uri.host =~ /(\.|\A)(github\.com|github\.io)\Z/i
+      parts = uri.path.split('/') # 'example.com/foo/bar' will have path == '/foo/bar', so three parts
 
-      if uri.host.end_with?('github.io')
-        github_api_from_io(uri)
-      elsif uri.host.end_with?('github.com')
-        github_api_from_com(uri)
+      # http(s)://github.com/<username>/<repo> is the strict way to pass
+      if uri.host&.downcase == 'github.com' && parts.size == 3
+        github_api_from_com(parts)
+      # http(s)://<username>.github.io/<repo> is the strict way to pass
+      elsif uri.host&.downcase&.end_with?('.github.io') && (uri.host.count('.') == 2) && parts.size >= 2
+        github_api_from_io(uri, parts)
       end
     end
 
-    def github_api_from_io(uri)
-      parts = uri.path.split('/')
+    def github_api_from_com(parts)
+      "#{GITHUB_API_BASE}/#{parts[1]}/#{parts[2]}"
+    end
+
+    def github_api_from_io(uri, parts)
       repo  = parts[1]
       owner = uri.host.split('.').first
       "#{GITHUB_API_BASE}/#{owner}/#{repo}"
-    end
-
-    def github_api_from_com(uri)
-      parts = uri.path.split('/')
-      "#{GITHUB_API_BASE}/#{parts[1]}/#{parts[2]}"
     end
 
     # Fetch cached data or opens webpage/api and cache it
@@ -93,8 +93,12 @@ module Ingestors
     # key: string key for the cache
     # ttl: time-to-live in seconds (default 7 days)
     def get_or_set_cache(key, url)
+      content = open_url(url)
+      return unless content
+
+      data = JSON.parse(content.read)
       Rails.cache.fetch(key, expires_in: TTL) do
-        JSON.parse(open_url(url).read)
+        data
       end
     rescue StandardError => e
       @messages << "#{self.class.name} get_or_set_cache failed for #{url}, #{e.message}"
