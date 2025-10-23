@@ -53,6 +53,48 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
     reset_timezone
     Rails.cache = @old_cache_store
   end
+  test 'valid https github.com URL' do
+    url = 'https://github.com/hsf-training/cpluspluscourse'
+    expected = 'https://api.github.com/repos/hsf-training/cpluspluscourse'
+    assert_equal expected, @ingestor.send(:to_github_api, url)
+  end
+
+  test 'valid http github.com URL' do
+    url = 'http://github.com/hsf-training/cpluspluscourse'
+    expected = 'https://api.github.com/repos/hsf-training/cpluspluscourse'
+    assert_equal expected, @ingestor.send(:to_github_api, url)
+  end
+
+  test 'invalid github.com URL missing reponame' do
+    url = 'https://github.com/hsf-training/'
+    assert_nil @ingestor.send(:to_github_api, url)
+  end
+
+  test 'invalid github.com URL too deep path' do
+    url = 'https://github.com/hsf-training/cpluspluscourse/extra'
+    assert_nil @ingestor.send(:to_github_api, url)
+  end
+
+  test 'valid github.io URL' do
+    url = 'https://hsf-training.github.io/cpluspluscourse/'
+    expected = 'https://api.github.com/repos/hsf-training/cpluspluscourse'
+    assert_equal expected, @ingestor.send(:to_github_api, url)
+  end
+
+  test 'invalid github.io with multiple subdomains' do
+    url = 'https://bad.url.github.io/repo'
+    assert_nil @ingestor.send(:to_github_api, url)
+  end
+
+  test 'invalid github.io without reponame' do
+    url = 'https://hsf-training.github.io/'
+    assert_nil @ingestor.send(:to_github_api, url)
+  end
+
+  test 'invalid non-github host' do
+    url = 'https://gitlab.com/hsf-training/cpluspluscourse'
+    assert_nil @ingestor.send(:to_github_api, url)
+  end
 
   test 'should read sitemap.txt composed of github.com and github.io but avoid keeping the non-github URLs' do
     # Read sitemap

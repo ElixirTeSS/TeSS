@@ -68,7 +68,7 @@ module Ingestors
       parts = uri.path.split('/') # 'example.com/foo/bar' will have path == '/foo/bar', so three parts
 
       # http(s)://github.com/<username>/<repo> is the strict way to pass
-      if uri.host&.downcase == 'github.com' && parts.size == 3
+      if uri.host&.downcase == 'github.com' && (uri.host.count('.') == 1) && parts.size == 3
         github_api_from_com(parts)
       # http(s)://<username>.github.io/<repo> is the strict way to pass
       elsif uri.host&.downcase&.end_with?('.github.io') && (uri.host.count('.') == 2) && parts.size >= 2
