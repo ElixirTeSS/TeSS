@@ -15,8 +15,7 @@ class LinkChecker
   def check_record(record)
     [record, *record.external_resources].each do |item|
       next if item.url.blank?
-      @cache[item.url] ||= bad_response(item.url) # Cache the result, there could be multiple resources linked to same URL
-      code = @cache[item.url]
+      code = @cache.fetch(item.url) { bad_response(item.url) } # Cache the result, there could be multiple resources linked to same URL
       if code
         puts "  #{code} - #{item.class.name} #{item.id}: #{item.url}" if log
         if item.link_monitor
