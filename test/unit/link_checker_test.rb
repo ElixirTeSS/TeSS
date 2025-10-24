@@ -2,13 +2,29 @@ require 'test_helper'
 
 class LinkCheckerTest < ActiveSupport::TestCase
 
+  setup do
+    @link_checker = LinkChecker.new(log: false)
+  end
+
+  test 'check collection' do
+    event = events(:two)
+    WebMock.stub_request(:head, event.url).to_return(status: 200)
+    assert_nil event.link_monitor
+
+    assert_no_difference('LinkMonitor.count') do
+      @link_checker.check(Event.where(id: event.id))
+    end
+
+    assert_nil event.link_monitor
+  end
+
   test 'check passing event url' do
     event = events(:two)
     WebMock.stub_request(:head, event.url).to_return(status: 200)
     assert_nil event.link_monitor
 
     assert_no_difference('LinkMonitor.count') do
-      LinkChecker.check(event, log: false)
+      @link_checker.check_record(event)
     end
 
     assert_nil event.link_monitor
@@ -20,7 +36,7 @@ class LinkCheckerTest < ActiveSupport::TestCase
     assert_nil event.link_monitor
 
     assert_difference('LinkMonitor.count', 1) do
-      LinkChecker.check(event, log: false)
+      @link_checker.check_record(event)
     end
 
     assert event.link_monitor
@@ -35,7 +51,7 @@ class LinkCheckerTest < ActiveSupport::TestCase
     assert_nil event.link_monitor
 
     assert_no_difference('LinkMonitor.count') do
-      LinkChecker.check(event, log: false)
+      @link_checker.check_record(event)
     end
 
     assert_nil event.link_monitor
@@ -49,7 +65,7 @@ class LinkCheckerTest < ActiveSupport::TestCase
     assert_nil event.link_monitor
 
     assert_difference('LinkMonitor.count', 1) do
-      LinkChecker.check(event, log: false)
+      @link_checker.check_record(event)
     end
 
     assert event.link_monitor
@@ -65,7 +81,7 @@ class LinkCheckerTest < ActiveSupport::TestCase
     assert_nil event.link_monitor
 
     assert_difference('LinkMonitor.count', 1) do
-      LinkChecker.check(event, log: false)
+      @link_checker.check_record(event)
     end
 
     assert event.link_monitor
@@ -81,7 +97,7 @@ class LinkCheckerTest < ActiveSupport::TestCase
     material = materials(:material_with_external_resource)
 
     assert_difference('LinkMonitor.count', 2) do
-      LinkChecker.check(material, log: false)
+      @link_checker.check_record(material)
     end
   end
 

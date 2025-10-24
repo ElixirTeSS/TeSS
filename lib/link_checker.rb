@@ -1,8 +1,22 @@
 class LinkChecker
-  def self.check(record, log: true)
+  attr_reader :log
+
+  def initialize(log: true)
+    @log = log
+    @cache = {}
+  end
+
+  def check(collection)
+    collection.find_each do |record|
+      check_record(record)
+    end
+  end
+
+  def check_record(record)
     [record, *record.external_resources].each do |item|
       next if item.url.blank?
-      code = bad_response(item.url, log: log)
+      @cache[item.url] ||= bad_response(item.url) # Cache the result, there could be multiple resources linked to same URL
+      code = @cache[item.url]
       if code
         puts "  #{code} - #{item.class.name} #{item.id}: #{item.url}" if log
         if item.link_monitor
@@ -18,9 +32,11 @@ class LinkChecker
     end
   end
 
+  private
+
   # The fake return codes on an exception are so the LinkMonitor object has something
   # to store as "code" which might be tracked back to a particular problem.
-  def self.bad_response(url, log: true)
+  def bad_response(url)
     begin
       host = URI.parse(url).host rescue nil
       if @prev_host == host
@@ -48,7 +64,7 @@ class LinkChecker
   end
 
   # Gets a response code using a GET request, for the case where HEAD is not supported.
-  def self.get_code(url, redirect_limit: 5, open_timeout: 5, read_timeout: 5, use_range: true)
+  def get_code(url, redirect_limit: 5, open_timeout: 5, read_timeout: 5, use_range: true)
     raise StandardError, 'too many redirects' if redirect_limit <= 0
 
     uri = URI(url)

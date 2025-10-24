@@ -24,14 +24,10 @@ end
 
 def check_materials
   puts 'Checking material URLs'
-  Material.find_each do |mat|
-    LinkChecker.check(mat)
-  end
+  LinkChecker.new.check(Material)
 end
 
 def check_events
   puts 'Checking event URLs'
-  Event.find_each do |event|
-    LinkChecker.check(event)
-  end
+  LinkChecker.new.check(Event)
 end
