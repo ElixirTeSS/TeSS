@@ -5,8 +5,39 @@ require 'test_helper'
 class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/ClassLength
   include ActiveSupport::Testing::TimeHelpers
 
+  class GithubIngestorDecorator
+    attr_reader :open_url_counter
+
+    def initialize(ingestor)
+      @ingestor = ingestor
+      @open_url_counter = 0
+
+      # Capture decorator reference inside the ingestor’s singleton method
+      decorator_ref = self
+
+      @ingestor.define_singleton_method(:open_url) do |url, **kwargs|
+        decorator_ref.instance_variable_set(
+          :@open_url_counter,
+          decorator_ref.open_url_counter + 1
+        )
+
+        # puts("open_url has been used, total #{decorator_ref.open_url_counter}")
+        super(url, **kwargs)
+      end
+    end
+
+    def read(url)
+      @ingestor.read(url)
+    end
+
+    def materials
+      @ingestor.materials
+    end
+  end
+
   setup do
     @ingestor = Ingestors::GithubIngestor.new
+    @ingestor_decorated = GithubIngestorDecorator.new(@ingestor)
     @user = users(:regular_user)
     @content_provider = content_providers(:portal_provider)
     mock_timezone # System time zone should not affect test result
@@ -53,6 +84,7 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
     reset_timezone
     Rails.cache = @old_cache_store
   end
+
   test 'valid https github.com URL' do
     url = 'https://github.com/hsf-training/cpluspluscourse'
     expected = 'https://api.github.com/repos/hsf-training/cpluspluscourse'
@@ -184,7 +216,8 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
   test 'should write cache of github repo metadata when first read and read cache only when second read' do
     cache = 'github_ingestor_api.github.com_repos_hsf-training_cpluspluscourse'
     Rails.cache.delete(cache)
-    @ingestor.read('https://github.com/hsf-training/cpluspluscourse')
+    @ingestor_decorated.read('https://github.com/hsf-training/cpluspluscourse')
+    assert_equal @ingestor_decorated.open_url_counter, 4 # we do 4 Github API request per new read
 
     # Set current cache `name` to something else to assure ourselves we keep this one
     cache_modified = Rails.cache.read(cache)
@@ -193,7 +226,8 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
     assert_equal cache_modified['name'], 'manualchange'
 
     # Reading a second time (within a specific time period) should GET cache and not SET cache
-    @ingestor.read('https://github.com/hsf-training/cpluspluscourse')
+    @ingestor_decorated.read('https://github.com/hsf-training/cpluspluscourse')
+    assert_equal @ingestor_decorated.open_url_counter, 4 # still have 4 Github API request because we used the cached data
     cache_second = Rails.cache.read(cache)
 
     # Assert cache STILL exists
@@ -203,15 +237,16 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
     assert_equal cache_second['name'], 'manualchange'
 
     # Material value is independent from this manual cache modification
-    sample = @ingestor.materials.detect { |e| e.title == 'Cpluspluscourse' }
+    sample = @ingestor_decorated.materials.detect { |e| e.title == 'Cpluspluscourse' }
     assert_equal sample.title, 'Cpluspluscourse'
   end
 
   test 'should set cache and test cache and material before ttl' do
     cache = 'github_ingestor_api.github.com_repos_hsf-training_cpluspluscourse'
     Rails.cache.delete(cache)
-    @ingestor.read('https://github.com/hsf-training/cpluspluscourse')
-    sample = @ingestor.materials.detect { |e| e.title == 'Cpluspluscourse' }
+    @ingestor_decorated.read('https://github.com/hsf-training/cpluspluscourse')
+    assert_equal @ingestor_decorated.open_url_counter, 4 # we do 4 Github API request per new read
+    sample = @ingestor_decorated.materials.detect { |e| e.title == 'Cpluspluscourse' }
     assert_equal sample.title, 'Cpluspluscourse'
     expires_at7 = Rails.cache.send(:read_entry, cache)&.expires_at
     assert_equal (expires_at7 - Time.now.to_f).round, 7 * 24 * 60 * 60 # time to live is 7 days by default
@@ -234,8 +269,9 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
 
     # After 1 second, even if the content changes, the previous material and cache are still used
     webmock('https://api.github.com/repos/hsf-training/cpluspluscourse', 'github/api-modified.json')
-    @ingestor.read('https://github.com/hsf-training/cpluspluscourse')
-    sample_second = @ingestor.materials.detect { |e| e.title == 'Manualchange' }
+    @ingestor_decorated.read('https://github.com/hsf-training/cpluspluscourse')
+    assert_equal @ingestor_decorated.open_url_counter, 4 # we still have 4 GitHub APIs requests, we use cached data even if content changes, but we are still < TTL
+    sample_second = @ingestor_decorated.materials.detect { |e| e.title == 'Manualchange' }
     cache_after = Rails.cache.read(cache)
     # manualchange instead of bigchange
     assert_equal sample_second.title, 'Manualchange'
@@ -248,8 +284,9 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
   test 'should set cache then test cache and material after ttl' do
     cache = 'github_ingestor_api.github.com_repos_hsf-training_cpluspluscourse'
     Rails.cache.delete(cache)
-    @ingestor.read('https://github.com/hsf-training/cpluspluscourse')
-    sample = @ingestor.materials.detect { |e| e.title == 'Cpluspluscourse' }
+    @ingestor_decorated.read('https://github.com/hsf-training/cpluspluscourse')
+    assert_equal @ingestor_decorated.open_url_counter, 4 # one new read, 4 GitHub API requests
+    sample = @ingestor_decorated.materials.detect { |e| e.title == 'Cpluspluscourse' }
     sample.title = 'Manualchange'
     cache_modified = Rails.cache.read(cache)
     cache_modified['name'] = 'manualchange'
@@ -264,17 +301,18 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
     # We do not have cache anymore
     assert_nil Rails.cache.read(cache)
     # But the material is still here with the manual modification
-    sample_after_ttl = @ingestor.materials.detect { |e| e.title == cache_modified['name'].titleize }
+    sample_after_ttl = @ingestor_decorated.materials.detect { |e| e.title == cache_modified['name'].titleize }
     assert_equal sample_after_ttl.title, cache_modified['name'].titleize
 
     # Now if content has changed and we read it
     webmock('https://api.github.com/repos/hsf-training/cpluspluscourse', 'github/api-modified.json')
-    @ingestor.read('https://github.com/hsf-training/cpluspluscourse')
+    @ingestor_decorated.read('https://github.com/hsf-training/cpluspluscourse')
+    assert_equal @ingestor_decorated.open_url_counter, 5 # one new read after TTL, here it is 1 added new GitHub API request because we only changed this one in the test
 
     # We should have our cache changed as well as the ENTIRE material
     cache_after_ttl = Rails.cache.read(cache)
     assert_equal cache_after_ttl['name'], 'bigchange'
-    sample_after_ttl_and_change = @ingestor.materials.detect { |e| e.title == cache_after_ttl['name'].titleize }
+    sample_after_ttl_and_change = @ingestor_decorated.materials.detect { |e| e.title == cache_after_ttl['name'].titleize }
     # The material title has changed – because api-modified.json only have 'name'
     assert_equal sample_after_ttl_and_change.title, cache_after_ttl['name'].titleize
     # The material keywords is the new one

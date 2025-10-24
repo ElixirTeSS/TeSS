@@ -93,13 +93,16 @@ module Ingestors
     # key: string key for the cache
     # ttl: time-to-live in seconds (default 7 days)
     def get_or_set_cache(key, url)
-      content = open_url(url)
-      return unless content
+      data = Rails.cache.read(key)
+      return data if data # this allows TeSS to not use one of the 60 daily Github API request
 
-      data = JSON.parse(content.read)
+      data = JSON.parse(open_url(url).read)
+      return unless data
+
       Rails.cache.fetch(key, expires_in: TTL) do
         data
       end
+      data
     rescue StandardError => e
       @messages << "#{self.class.name} get_or_set_cache failed for #{url}, #{e.message}"
       yield if block_given?
