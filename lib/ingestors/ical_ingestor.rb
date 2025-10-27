@@ -19,7 +19,7 @@ module Ingestors
     end
 
     def read(source_url)
-      @token << Rails.application.config.secrets.indico_api_token
+      @token = Rails.application.config.secrets.indico_api_token
       @verbose = false
       sources = get_sources(source_url)
       return if sources.nil?
