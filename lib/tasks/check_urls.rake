@@ -7,27 +7,24 @@ namespace :tess do
 
   desc 'Check material URLs for dead links'
   task check_material_urls: :environment do
-    check_materials
+    puts 'Checking material URLs'
+    LinkChecker.new.check(Material)
   end
 
   desc 'Check event URLs for dead links'
   task check_event_urls: :environment do
-    check_events
+    puts 'Checking event URLs'
+    LinkChecker.new.check(Event)
   end
 
   desc 'Check event and material URLs for dead links'
   task check_resource_urls: :environment do
-    check_materials
-    check_events
+    lc = LinkChecker.new
+
+    puts 'Checking material URLs'
+    lc.check(Material)
+
+    puts 'Checking event URLs'
+    lc.check(Event)
   end
-end
-
-def check_materials
-  puts 'Checking material URLs'
-  LinkChecker.new.check(Material)
-end
-
-def check_events
-  puts 'Checking event URLs'
-  LinkChecker.new.check(Event)
 end
