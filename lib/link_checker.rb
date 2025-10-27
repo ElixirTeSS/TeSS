@@ -1,4 +1,5 @@
 class LinkChecker
+  TIMEOUT = 5
   attr_reader :log
 
   def initialize(log: true)
@@ -43,7 +44,7 @@ class LinkChecker
         sleep(n)
       end
       @prev_host = host
-      code = HTTParty.head(url, verify: false).code
+      code = HTTParty.head(url, verify: false, open_timeout: TIMEOUT, read_timeout: TIMEOUT).code
       code = get_code(url) if code == 400 || code == 405 # Try a GET if HEAD not allowed (or generic 400 error)
       return nil if code >= 200 && code < 400 # Success or redirects are OK
       return code
@@ -63,7 +64,7 @@ class LinkChecker
   end
 
   # Gets a response code using a GET request, for the case where HEAD is not supported.
-  def get_code(url, redirect_limit: 5, open_timeout: 5, read_timeout: 5, use_range: true)
+  def get_code(url, redirect_limit: 5, open_timeout: TIMEOUT, read_timeout: TIMEOUT, use_range: true)
     raise StandardError, 'too many redirects' if redirect_limit <= 0
 
     uri = URI(url)
