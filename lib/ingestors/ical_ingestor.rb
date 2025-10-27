@@ -9,7 +9,6 @@ module Ingestors
   # Reads from direct ical / .ics / Indico (event or category) URLs, .xml sitemaps, and .txt sitemaps.
   class IcalIngestor < Ingestor
     include Ingestors::Concerns::SitemapHelpers
-    include Ingestors::Concerns::IcalIngestorExportUrl
 
     def self.config
       {
@@ -37,11 +36,54 @@ module Ingestors
     def process_url(url)
       export_url = to_export(url)
       events = Icalendar::Event.parse(open_url(export_url, raise: true).set_encoding('utf-8'))
+      raise 'Not found' if events.nil? || events.empty?
+
       events.each do |e|
         process_calevent(e)
       end
     rescue StandardError => e
       @messages << "Process file url[#{export_url}] failed with: #{e.message}"
+    end
+
+    # 1. If the path already ends with '/events.ics', return as-is.
+    # 2. If the host includes 'indico', ensures the path ends with '/events.ics'.
+    # 3. Otherwise, append '?ical=true' query param if not already present.
+    #
+    # This method never mutates the original URL string.
+    # Returns the updated URL string or nil if input is blank.
+    def to_export(url)
+      return nil if url.blank?
+
+      uri = URI.parse(url)
+      path = uri.path.to_s
+
+      if path.match?(%r{/(event|events)\.ics\z})
+        uri.to_s
+      elsif uri.host&.include?('indico')
+        ensure_events_ics_path(uri)
+      else
+        ensure_ical_query(uri)
+      end
+    end
+
+    # Ensures the Indico URL ends with '/events.ics'
+    def ensure_events_ics_path(uri)
+      paths = uri.path.split('/')
+      uri.path = "#{paths[0..2].join('/')}/"
+      if paths[1] == 'event'
+        uri.path = File.join(uri.path, 'event.ics')
+      elsif paths[1] == 'category'
+        uri.path = File.join(uri.path, 'events.ics')
+      end
+      uri.to_s
+    end
+
+    # Ensures the URL has '?ical=true' in its query params
+    def ensure_ical_query(uri)
+      query = URI.decode_www_form(uri.query.to_s).to_h
+      query['ical'] = 'true' unless query['ical'] == 'true'
+      uri.query = URI.encode_www_form(query)
+      uri.to_s
     end
 
     # Builds the OpenStruct event and adds it in event.
@@ -60,8 +102,9 @@ module Ingestors
     def assign_basic_info(event, calevent)
       event.url = calevent.url.to_s
       event.title = calevent.summary.to_s
-      event.description = process_description calevent.description
+      event.description = calevent.description.to_s
       event.keywords = process_keywords(calevent.categories)
+      event.contact = calevent.contact.join(', ')
     end
 
     # Assigns to event: start, end, timezone.
@@ -73,19 +116,11 @@ module Ingestors
 
     # Assigns to event: venue, online, city.
     def assign_location_info(event, location)
-      return if location.blank? || !location.present?
+      return if location.blank?
 
       event.venue = location.to_s
       event.online = location.downcase.include?('online')
       event.city, event.postcode, event.country = process_location(location)
-    end
-
-    # Removes all `<br />` tags and converts HTML to MD.
-    def process_description(input)
-      return input if input.nil?
-
-      desc = input.to_s.gsub('', '<br />')
-      convert_description(desc)
     end
 
     # Extracts the timezone identifier (TZID) from an iCalendar event's dtstart field.
@@ -102,17 +137,9 @@ module Ingestors
     # Returns an array of 3 location characteristics: suburb, postcode, country
     # Everything is nil if location.blank or location is online
     def process_location(location)
-      return [nil, nil, nil] if location.blank?
+      return [location['suburb'], location['postcode'], location['country']] if location.is_a?(Array)
 
-      if location.to_s.downcase.include?('online')
-        [nil, nil, nil]
-      else
-        [
-          location['suburb'],
-          location['postcode'],
-          location['country']
-        ]
-      end
+      [nil, nil, nil]
     end
 
     # Returns keywords from the `CATEGORIES` ICal field

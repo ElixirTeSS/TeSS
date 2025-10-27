@@ -192,11 +192,9 @@ class IcalIngestorTest < ActiveSupport::TestCase
     calevent = Object.new # fake calevent
 
     # Stub a method that will raise an error
-    def ingestor.assign_basic_info(*)
-      raise StandardError, 'test failure'
+    ingestor.stub(:assign_basic_info, ->(*) { raise StandardError, 'test failure' }) do
+      ingestor.send(:process_calevent, calevent)
     end
-
-    ingestor.send(:process_calevent, calevent)
 
     assert_includes ingestor.messages.last, 'Process iCalendar failed with: test failure'
   end
