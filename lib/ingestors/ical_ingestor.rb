@@ -19,6 +19,7 @@ module Ingestors
     end
 
     def read(source_url)
+      @token << Rails.application.config.secrets.indico_api_token
       @verbose = false
       sources = get_sources(source_url)
       return if sources.nil?
@@ -35,7 +36,8 @@ module Ingestors
     # Note: One .ics file can have multiple Ical events.
     def process_url(url)
       export_url = to_export(url)
-      events = Icalendar::Event.parse(open_url(export_url, raise: true).set_encoding('utf-8'))
+      content = open_url(export_url, token: @token, raise: true).set_encoding('utf-8')
+      events = Icalendar::Event.parse(content)
       raise 'Not found' if events.nil? || events.empty?
 
       events.each do |e|
