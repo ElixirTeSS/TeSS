@@ -1,0 +1,18 @@
+<div class="form-group">
+  <label>Theme</label>
+  <div class="theme-selector">
+    <% TeSS::Config.themes.each do |theme, colours| %>
+      <% id = "space_theme_#{theme}" %>
+      <% primary = colours['primary'] %>
+      <% secondary = colours['secondary'] %>
+      <div class="theme-select-option">
+        <%= label_tag(id, class: 'radio_buttons optional', style: "border-color: #{primary};") do %>
+          <%= form.radio_button(:theme, theme, id: id) %>
+          <%= theme.titleize %>
+          <hr style="border-color: <%= primary %>">
+          <hr style="border-color: <%= secondary %>">
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
