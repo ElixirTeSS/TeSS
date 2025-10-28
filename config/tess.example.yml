@@ -264,7 +264,7 @@ default: &default
       primary: '#047eaa' # Blue by default
       secondary: '#f47d21' # Orange by default
     green:
-      primary: '529d00'
+      primary: '#529d00'
       secondary: '#829d30'
     blue:
       primary: '#024552'
