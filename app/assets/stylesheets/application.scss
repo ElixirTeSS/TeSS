@@ -18,7 +18,32 @@
 @import "font-awesome-sprockets";
 @import "font-awesome";
 @import "mixins/mixins";
-@import "*";
+
+// Local
+@import "about";
+@import "account";
+@import "activities";
+@import "autocomplete";
+@import "bootstrap-tweaks";
+@import "collaborations";
+@import "collection";
+@import "curators";
+@import "events";
+@import "external-resources";
+@import "footer";
+@import "forms";
+@import "headers";
+@import "helpers";
+@import "home";
+@import "icons";
+@import "learning-paths";
+@import "masonry";
+@import "nodes";
+@import "showcase";
+@import "toggle";
+@import "workflows";
+
+// Vendor
 @import "cytoscape-panzoom";
 @import "jquery.simplecolorpicker";
 @import "eonasdan-bootstrap-datetimepicker";
