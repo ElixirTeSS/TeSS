@@ -7,97 +7,24 @@ namespace :tess do
 
   desc 'Check material URLs for dead links'
   task check_material_urls: :environment do
-    check_materials
+    puts 'Checking material URLs'
+    LinkChecker.new.check(Material)
   end
 
   desc 'Check event URLs for dead links'
   task check_event_urls: :environment do
-    check_events
+    puts 'Checking event URLs'
+    LinkChecker.new.check(Event)
   end
 
   desc 'Check event and material URLs for dead links'
   task check_resource_urls: :environment do
-    check_materials
-    check_events
+    lc = LinkChecker.new
+
+    puts 'Checking material URLs'
+    lc.check(Material)
+
+    puts 'Checking event URLs'
+    lc.check(Event)
   end
 end
-
-def check_materials
-  puts 'Checking material URLs'
-  Material.find_each do |mat|
-    process_record(mat)
-  end
-end
-
-def check_events
-  puts 'Checking event URLs'
-  Event.find_each do |event|
-    process_record(event)
-  end
-end
-
-def process_record(record)
-  if record.url
-    code = get_bad_response(record.url)
-    if code
-      puts "  #{code} - #{record.class.name} #{record.id}: #{record.url}"
-      if record.link_monitor
-        record.link_monitor.fail!(code)
-      else
-        record.create_link_monitor(url: record.url, code: code)
-      end
-    else
-      if record.link_monitor
-        record.link_monitor.success!
-      end
-    end
-  end
-
-  record.external_resources.each do |res|
-    next unless res.url
-
-    code = get_bad_response(res.url)
-
-    if code
-      puts "  #{code} - ExternalResource #{res.id}: #{res.url}"
-      if res.link_monitor
-        res.link_monitor.fail!(code)
-      else
-        res.create_link_monitor(url: res.url, code: code)
-      end
-    else
-      if res.link_monitor
-        res.link_monitor.success!
-      end
-    end
-  end
-end
-
-# The fake return codes on an exception are so the LinkMonitor object has something
-# to store as "code" which might be tracked back to a particular problem.
-def get_bad_response(url)
-  begin
-    host = URI.parse(url).host rescue nil
-    if @prev_host == host
-      n = rand(4) + 1
-      sleep(n)
-    end
-    @prev_host = host
-    response = HTTParty.head(url, verify: false)
-    return nil if response.code >= 200 && response.code < 400 # Success or redirects are OK
-    return response.code
-  rescue EOFError => e
-    puts "  #{e.class.name}: #{e}"
-    return 490
-  rescue SocketError => e
-    puts "  #{e.class.name}: #{e}"
-    return 491
-  rescue Net::ReadTimeout => e
-    puts "  #{e.class.name}: #{e}"
-    return 492
-  rescue StandardError => e
-    puts "  #{e.class.name}: #{e}"
-    return 493
-  end
-end
-
