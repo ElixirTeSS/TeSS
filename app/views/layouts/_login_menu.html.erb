@@ -1,14 +1,16 @@
+<% if TeSS::Config.feature["login_through_oidc_only"] && Devise.omniauth_configs.size == 1 %>
+<li>
+  <% provider, config = Devise.omniauth_configs.first %>
+  <%= omniauth_login_link(provider, config) %>
+</li>
+<% else %>
 <li class="dropdown">
   <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
     <strong>Log In</strong> <span class="caret"></span>
   </a>
   <ul class="dropdown-menu dropdown-menu-right">
     <% Devise.omniauth_configs.each do |provider, config| -%>
-      <li class="dropdown-item">
-        <%= link_to t('authentication.omniauth.log_in_with',
-              provider: config.options[:label] || t("authentication.omniauth.providers.#{provider}", default: provider.to_s.titleize)),
-                    omniauth_authorize_path('user', provider), method: :post %>
-      </li>
+      <li class="dropdown-item"><%= omniauth_login_link(provider, config) %></li>
     <% end %>
 
     <li class="dropdown-item">
@@ -23,3 +25,4 @@
     <% end %>
   </ul>
 </li>
+<% end %>
