@@ -630,4 +630,15 @@ class MaterialTest < ActiveSupport::TestCase
     @material.node_names = ['ignore me', 'test node', '  WeSTeRoS', 'Ignore me', '']
     assert_equal ['Test Node', 'Westeros'], @material.nodes.map(&:name)
   end
+
+  test 'excludes notspecified licence from bioschemas json' do
+    m = Material.new(title: 'Hello', licence: 'cc-by-4.0')
+
+    bioschemas = m.to_bioschemas.first.generate
+    assert_equal 'https://spdx.org/licenses/CC-BY-4.0.html', bioschemas[:license]
+
+    m.licence = 'notspecified'
+    bioschemas = m.to_bioschemas.first.generate
+    refute bioschemas.key?(:license)
+  end
 end
