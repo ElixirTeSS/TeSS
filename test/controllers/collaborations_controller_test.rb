@@ -86,4 +86,18 @@ class CollaborationsControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
+  test "should list collaborations for resource that does not support friendly ID" do
+    lpt = learning_path_topics(:good_and_bad)
+    lpt.collaborators << users(:another_regular_user)
+
+    sign_in(lpt.user)
+
+    get :index, params: { format: :json, learning_path_topic_id: lpt.id }
+    assert_response :success
+    collaborations = JSON.parse(@response.body)
+
+    assert_equal 1, collaborations.length
+    assert_includes collaborations.map { |e| e['user']['id'] }, users(:another_regular_user).id
+  end
+
 end
