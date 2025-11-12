@@ -284,4 +284,33 @@ class WorkflowsControllerTest < ActionController::TestCase
     get :show, params: { id: workflow }
     assert_response :forbidden
   end
+
+  test "should not show private workflow" do
+    get :show, params: { id: workflows(:private_workflow) }
+    assert_response :forbidden
+    assert_select '.embedded-container', count: 0
+  end
+
+  test "should show private workflow to owner" do
+    workflow = workflows(:private_workflow)
+    sign_in workflow.user
+    get :show, params: { id: workflow }
+    assert_response :success
+  end
+
+  test "should show private workflow to admin" do
+    workflow = workflows(:private_workflow)
+    sign_in users(:admin)
+    get :show, params: { id: workflow }
+    assert_response :success
+  end
+
+  test "should show private workflow to collaborator" do
+    workflow = workflows(:private_workflow)
+    user = users(:another_regular_user)
+    workflow.collaborators << user
+    sign_in user
+    get :show, params: { id: workflow }
+    assert_response :success
+  end
 end
