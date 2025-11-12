@@ -96,10 +96,10 @@ module Bioschemas
           'addressRegion' => event.county,
           'addressCountry' => event.country,
           'postalCode' => event.postcode
-        }.compact,
+        }.compact_blank,
         'latitude' => event.latitude,
         'longitude' => event.longitude
-      }.compact
+      }.compact_blank
     end
 
     # Reverse the process used by TeSS_RDF_Extractors to turn a list of values into a markdown list.
@@ -137,15 +137,6 @@ module Bioschemas
     def self.provider(resource)
       p = []
 
-      if resource.respond_to?(:host_institutions)
-        resource.host_institutions.each do |i|
-          p << {
-            '@type' => 'Organization',
-            'name' => i
-          }
-        end
-      end
-
       if resource.content_provider
         p << {
           '@type' => 'Organization',
@@ -161,6 +152,17 @@ module Bioschemas
           'url' => node.home_page
         }
       end
+
+      if resource.respond_to?(:host_institutions)
+        resource.host_institutions.each do |i|
+          p << {
+            '@type' => 'Organization',
+            'name' => i
+          }
+        end
+      end
+
+      p.uniq! { |o| o['name'].downcase.strip }
 
       p.any? ? p : nil
     end

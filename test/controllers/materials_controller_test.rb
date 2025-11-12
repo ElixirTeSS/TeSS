@@ -398,6 +398,29 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal @collection.id.to_s, body['data']['relationships']['collections']['data'][0]['id']
   end
 
+  test 'should show material as bioschemas JSON-LD' do
+    @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @material.events << @event
+    @material.collections << @collection
+    @material.save!
+
+    get :show, params: { id: @material, format: :jsonld }
+    assert_response :success
+    assert assigns(:material)
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert_equal 'http://schema.org', body['@context']
+    assert_equal 'LearningResource', body['@type']
+    assert_equal 'https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE', body['dct:conformsTo']['@id']
+    assert_equal @material.title, body['name']
+    assert_equal @material.url, body['url']
+    assert_equal @material.scientific_topic_uris.first, body['about'].first['@id']
+    assert_equal material_url(assigns(:material), host: TeSS::Config.base_url), body['@id']
+  end
+
   #UPDATE TEST
   test 'should update material' do
     sign_in @material.user

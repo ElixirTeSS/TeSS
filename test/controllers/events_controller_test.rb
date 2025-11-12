@@ -323,6 +323,31 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal 'hybrid', body['data']['attributes']['presence']
   end
 
+  test 'should show event as bioschemas JSON-LD' do
+    @event.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @event.materials << @material
+    @event.collections << @collection
+    @event.save!
+
+    get :show, params: { id: @event, format: :jsonld }
+    assert_response :success
+    assert assigns(:event)
+
+    body = nil
+    assert_nothing_raised do
+      body = JSON.parse(response.body)
+    end
+
+    assert_equal 'http://schema.org', body['@context']
+    assert_equal 'Course', body['@type']
+    assert_equal 'https://bioschemas.org/profiles/Course/1.0-RELEASE', body['dct:conformsTo']['@id']
+    assert_equal @event.title, body['name']
+    assert_equal @event.url, body['url']
+    assert_equal @event.scientific_topic_uris.first, body['about'].first['@id']
+    assert_equal event_url(assigns(:event), host: TeSS::Config.base_url), body['@id']
+    assert_equal @event.external_resources.first.url, body['mentions'].first['url']
+  end
+
   # UPDATE TEST
   test 'should update event' do
     sign_in @event.user
