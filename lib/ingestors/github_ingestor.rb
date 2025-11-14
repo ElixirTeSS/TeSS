@@ -50,7 +50,7 @@ module Ingestors
 
         # Gets the cached repo data or reads and sets it
         key = "#{CACHE_PREFIX}#{repo_api_url.gsub(%r{https?://}, '').gsub('/', '_')}"
-        repo_data = get_or_set_cache(key, repo_api_url)
+        repo_data = cache_fetch(key, repo_api_url)
         next unless repo_data
 
         # Add to material
@@ -91,20 +91,14 @@ module Ingestors
     # https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28#primary-rate-limit-for-unauthenticated-users
     # One GitHub URL equals to 4 GitHub API requests.
     # key: string key for the cache
+    # url: url to open
     # ttl: time-to-live in seconds (default 7 days)
-    def get_or_set_cache(key, url)
-      data = Rails.cache.read(key)
-      return data if data # this allows TeSS to not use one of the 60 daily Github API request
-
-      data = JSON.parse(open_url(url).read)
-      return unless data
-
+    def cache_fetch(key, url)
       Rails.cache.fetch(key, expires_in: TTL) do
-        data
+        JSON.parse(open_url(url).read)
       end
-      data
     rescue StandardError => e
-      @messages << "#{self.class.name} get_or_set_cache failed for #{url}, #{e.message}"
+      @messages << "#{self.class.name} cache_fetch failed for #{url}, #{e.message}"
       yield if block_given?
       nil
     end
@@ -175,31 +169,25 @@ module Ingestors
     def fetch_doi(full_name)
       filename = 'README.md'
       url = "#{GITHUB_API_BASE}/#{full_name}/contents/#{filename}"
-      data = get_or_set_cache("#{CACHE_PREFIX}doi_#{full_name.gsub('/', '_')}_#{filename.downcase}", url)
+      data = cache_fetch("#{CACHE_PREFIX}doi_#{full_name.gsub('/', '_')}_#{filename.downcase}", url)
       return nil unless data && data['content']
 
       decoded = Base64.decode64(data['content'])
       doi_match = decoded.match(%r{doi.org/\s*([^\s,)]+)}i)
       doi_match ? "https://doi.org/#{doi_match[1]}" : nil
-    rescue StandardError => e
-      @messages << "#{self.class.name} fetch_doi failed for #{url}, #{e.message}"
     end
 
     # RELEASE – Opens releases API address and returns last release
     def fetch_latest_release(full_name)
       url = "#{GITHUB_API_BASE}/#{full_name}/releases"
-      releases = get_or_set_cache("#{CACHE_PREFIX}releases_#{full_name.gsub('/', '_')}", url)
+      releases = cache_fetch("#{CACHE_PREFIX}releases_#{full_name.gsub('/', '_')}", url)
       releases.is_a?(Array) && releases.first ? releases.first['tag_name'] : nil
-    rescue StandardError => e
-      @messages << "#{self.class.name} fetch_latest_release failed for #{url}, #{e.message}"
     end
 
     # CONTRIBUTORS – Opens contributors API address and returns list of contributors
     def fetch_contributors(contributors_url, full_name)
-      contributors = get_or_set_cache("#{CACHE_PREFIX}contributors_#{full_name.gsub('/', '_')}", contributors_url)
+      contributors = cache_fetch("#{CACHE_PREFIX}contributors_#{full_name.gsub('/', '_')}", contributors_url)
       contributors.map { |c| (c['login']) }
-    rescue StandardError => e
-      @messages << "#{self.class.name} fetch_contributors failed for #{contributors_url}, #{e.message}"
     end
 
     # PREREQUISITES – From the homepage HTML, looks for <p> tags which are children of ...

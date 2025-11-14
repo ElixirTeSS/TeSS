@@ -329,28 +329,10 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
                     'Ingestors::GithubIngestor read failed, test failure'
 
     @ingestor.stub(:open_url, ->(_url) { raise StandardError, 'test failure' }) do
-      @ingestor.send(:get_or_set_cache, 'key', 'https://github.com/example')
+      @ingestor.send(:cache_fetch, 'key', 'https://github.com/example')
     end
     assert_includes @ingestor.instance_variable_get(:@messages).last,
-                    'Ingestors::GithubIngestor get_or_set_cache failed for https://github.com/example, test failure'
-
-    @ingestor.stub(:get_or_set_cache, ->(_key, _url) { raise StandardError, 'test failure' }) do
-      @ingestor.send(:fetch_doi, 'full_name')
-    end
-    assert_includes @ingestor.instance_variable_get(:@messages).last,
-                    'Ingestors::GithubIngestor fetch_doi failed for https://api.github.com/repos/full_name/contents/README.md, test failure'
-
-    @ingestor.stub(:get_or_set_cache, ->(_key, _url) { raise StandardError, 'test failure' }) do
-      @ingestor.send(:fetch_latest_release, 'full_name')
-    end
-    assert_includes @ingestor.instance_variable_get(:@messages).last,
-                    'Ingestors::GithubIngestor fetch_latest_release failed for https://api.github.com/repos/full_name/releases, test failure'
-
-    @ingestor.stub(:get_or_set_cache, ->(_key, _url) { raise StandardError, 'test failure' }) do
-      @ingestor.send(:fetch_contributors, 'my.url', 'full_name')
-    end
-    assert_includes @ingestor.instance_variable_get(:@messages).last,
-                    'Ingestors::GithubIngestor fetch_contributors failed for my.url, test failure'
+                    'Ingestors::GithubIngestor cache_fetch failed for https://github.com/example, test failure'
   end
 
   test 'prereq_node? returns true when id includes prereq' do
