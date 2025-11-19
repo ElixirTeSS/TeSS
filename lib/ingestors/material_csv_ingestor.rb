@@ -42,7 +42,7 @@ module Ingestors
           material.date_published = get_column row, 'Published'
           material.date_modified = get_column row, 'Modified'
           material.difficulty_level = process_competency row, 'Competency'
-          material.authors = process_array row, 'Authors'
+          material.authors_attributes = process_authors(process_array(row, 'Authors'))
           material.contributors = process_array row, 'Contributors'
           material.fields = process_array row, 'Fields'
           material.target_audience = process_array row, 'Audiences'
@@ -64,6 +64,23 @@ module Ingestors
     end
 
     private
+
+    def process_authors(authors_array)
+      return [] if authors_array.blank?
+      
+      authors_array.map do |author_name|
+        # Parse name into first and last name
+        name_parts = author_name.to_s.strip.split(/\s+/, 2)
+        first_name = name_parts.length > 1 ? name_parts[0] : ''
+        last_name = name_parts.length > 1 ? name_parts[1] : name_parts[0]
+        
+        {
+          first_name: first_name,
+          last_name: last_name,
+          orcid: nil
+        }
+      end
+    end
 
     def process_competency(row, header)
       row[header].nil? ? 'notspecified' : row[header]
