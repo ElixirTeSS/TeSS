@@ -1,0 +1,26 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+horace:
+  first_name: Horace
+  last_name: Smith
+  orcid: 0000-0001-2345-6789
+
+flo:
+  first_name: Flo
+  last_name: Johnson
+  orcid: null
+
+nicolai_tesla:
+  first_name: Nicolai
+  last_name: Tesla
+  orcid: null
+
+thomas_edison:
+  first_name: Thomas
+  last_name: Edison
+  orcid: null
+
+saskia:
+  first_name: Saskia
+  last_name: Lawson-Tovey
+  orcid: null
