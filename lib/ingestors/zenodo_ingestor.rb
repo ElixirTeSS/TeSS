@@ -60,7 +60,7 @@ module Ingestors
         material = OpenStruct.new
         material.status = 'active'
         material.doi = input['doi'] unless metadata['doi'].nil?
-        material.authors = []
+        material.authors_attributes = []
         material.contributors = []
         unless metadata.nil?
           material.title = metadata['title'] unless metadata['title'].nil?
@@ -69,8 +69,16 @@ module Ingestors
           material.licence = metadata['license']['id'] unless metadata.dig('license', 'id').nil?
           unless metadata['creators'].nil?
             metadata['creators'].each do |c|
-              entry = c['orcid'].nil? ? c['name'] : "#{c['name']} (orcid: #{c['orcid']})"
-              material.authors << entry
+              # Parse name into first and last name
+              name_parts = c['name'].to_s.strip.split(/\s+/, 2)
+              first_name = name_parts.length > 1 ? name_parts[0] : ''
+              last_name = name_parts.length > 1 ? name_parts[1] : name_parts[0]
+              
+              material.authors_attributes << {
+                first_name: first_name,
+                last_name: last_name,
+                orcid: c['orcid']
+              }
             end
           end
           unless metadata['contributors'].nil?

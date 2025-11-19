@@ -15,7 +15,13 @@ module Bioschemas
     property :version, :version
     property :description, :description
     property :keywords, :keywords
-    property :author, -> (material) { material.authors.map { |p| person(p) } }
+    property :author, -> (material) { 
+      material.authors.map { |a| 
+        author_hash = { "@type" => "Person", "name" => a.full_name }
+        author_hash["@id"] = "https://orcid.org/#{a.orcid}" if a.orcid.present?
+        author_hash
+      } 
+    }
     property :contributor, -> (material) { material.contributors.map { |p| person(p) } }
     property :provider, -> (material) { provider(material) }
     property :audience, -> (material) {
