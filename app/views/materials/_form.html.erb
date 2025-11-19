@@ -68,8 +68,22 @@
               visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Authors -->
-  <%= f.multi_input :authors, suggestions_url: people_autocomplete_suggestions_path, title: t('materials.hints.authors'),
-                    visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
+  <div class="form-group" id="authors">
+    <%= f.label :authors %>
+    <%= f.field_lock :authors %>
+
+    <div id="authors-list">
+      <% @material.authors.each_with_index do |author, index| %>
+        <%= render partial: 'common/author_form',
+                   locals: { form_name: 'material', index: index, author: author } %>
+      <% end %>
+    </div>
+
+    <a href="#" id="add-author-btn" class="btn btn-icon">
+      <i class="icon icon-h4 plus-icon"></i>
+    </a>
+    <span class="help-inline-block help-block">Add author information</span>
+  </div>
 
   <!-- Field: Contributors -->
   <%= f.multi_input :contributors, suggestions_url: people_autocomplete_suggestions_path, title: t('materials.hints.contributors'),
@@ -195,6 +209,10 @@
              locals: { form_name: 'material', external_resource: ExternalResource.new } %>
 </div>
 
+<div id="author-template" style="display: none">
+  <%= render partial: 'common/author_form',
+             locals: { form_name: 'material', author: Author.new } %>
+</div>
 
 <script type="text/javascript">
     function removeSuggestion(suggestion) {

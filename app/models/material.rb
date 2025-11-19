@@ -30,7 +30,9 @@ class Material < ApplicationRecord
       text :description
       text :contact
       text :doi
-      text :authors
+      text :authors do
+        authors.map(&:full_name)
+      end
       text :contributors
       text :target_audience
       text :keywords
@@ -51,7 +53,9 @@ class Material < ApplicationRecord
       end
       # other fields
       string :title
-      string :authors, multiple: true
+      string :authors, multiple: true do
+        authors.map(&:full_name)
+      end
       string :scientific_topics, multiple: true do
         scientific_topics_and_synonyms
       end
@@ -102,6 +106,10 @@ class Material < ApplicationRecord
 
   has_many :stars, as: :resource, dependent: :destroy
 
+  has_many :material_authors, dependent: :destroy
+  has_many :authors, through: :material_authors
+  accepts_nested_attributes_for :authors, allow_destroy: true, reject_if: :all_blank
+
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
   auto_strip_attributes :title, :description, :url, squish: false
@@ -111,10 +119,10 @@ class Material < ApplicationRecord
   validates :other_types, presence: true, if: proc { |m| m.resource_type.include?('other') }
   validates :keywords, length: { maximum: 20 }
 
-  clean_array_fields(:keywords, :fields, :contributors, :authors,
+  clean_array_fields(:keywords, :fields, :contributors,
                      :target_audience, :resource_type, :subsets)
 
-  update_suggestions(:keywords, :contributors, :authors, :target_audience,
+  update_suggestions(:keywords, :contributors, :target_audience,
                      :resource_type)
 
   def description=(desc)
@@ -212,7 +220,7 @@ class Material < ApplicationRecord
              'xsi:schemaLocation' => 'http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd') do
       xml.tag!('dc:title', title)
       xml.tag!('dc:description', description)
-      authors.each { |a| xml.tag!('dc:creator', a) }
+      authors.each { |a| xml.tag!('dc:creator', a.full_name) }
       contributors.each { |a| xml.tag!('dc:contributor', a) }
       xml.tag!('dc:publisher', content_provider.title) if content_provider
 
