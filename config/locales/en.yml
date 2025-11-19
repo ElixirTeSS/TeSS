@@ -584,7 +584,7 @@ en:
     post: "<strong>The %{site_name} Team</strong><br/>Room 1.17 c/o School of Computer Science,<br/>Kilburn Building,<br/>Oxford Road,<br/>Manchester,<br/>M13 9PL"
   events:
     hints:
-      address: 'Where is this event being held?'
+      address: 'Physical location of the event if its being conducted Face-to-face.'
       capacity: >
         Provide the total number (cap) of individuals that can attend the training event.
         Leave blank if there is no limit.
@@ -595,28 +595,28 @@ en:
       description: 'Provide a textual description of the training event, for additional context.'
       visible: 'Whether this event should be shown or hidden from the events page.'
       duration: 'In hours and minutes (HH:MM), how long will your training event run?'
-      eligibility: 'Who can attend the training event?'
+      eligibility: 'Options for registration. To be chosen from one of the three: First come first served, Registration of Interest, By invitation.'
       end: 'When does the event end?'
       event_type: 'Select the most appropriate event type for the training event.'
       fields: 'Select Fields of Research to better classify your event.'
-      hosts: ''
+      hosts: 'Institution/Organisation where the event will be held.'
       keywords: "Provide words or terms that clearly identify the training event's topics."
-      language: 'Language of instruction'
+      language: 'The language in which the training/seminar/lecture will be delivered. Select from the list of available options.'
       materials: 'Add any training materials that are associated with the training event.'
       objectives: 'What knowledge, skills, or abilities should your audience gain from completing the training?'
-      organizer: ''
+      organizer: 'Institution/Organisation or the individual coordinating to organise the event.'
       prerequisites: 'What understanding or knowledge does the audience need to have covered before the training event?'
       recognition: 'Provide a description of any qualifications, awards, certificates, diplomas, or other
         educational credentials that will be awarded on successful completion of the training event.'
       requirements: 'Indicate the technical requirements needed to participate in the training event.'
-      sponsors: 'Who sponsored, or funded the event?'
+      sponsors: 'Institution/Organisation or funding bodies that funded that event.'
       start: 'When does the event start?'
       subtitle: 'Include a subtitle to add context for your intended audience.'
       targets: 'Indicate the type of audience for which the training event is intended.'
       topics: 'Select the Fields of Research (FoR) codes that the training covers.'
       timezone: 'Select the appropriate timezone'
       title: 'Add a title for your training event.'
-      url: 'Enter a valid URL for the event landing page.'
+      url: 'Location where the event and its details are advertised on the internet.'
     prompts:
       language: 'Select a language...'
     long: 'Long events'
