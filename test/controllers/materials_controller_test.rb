@@ -253,7 +253,7 @@ class MaterialsControllerTest < ActionController::TestCase
           date_published: test_material.date_published,
           doi: test_material.doi,
           subsets: test_material.subsets,
-          authors: test_material.authors,
+          authors_attributes: test_material.authors.map { |a| { first_name: a.first_name, last_name: a.last_name, orcid: a.orcid } },
           contributors: test_material.contributors,
           prerequisites: test_material.prerequisites,
           syllabus: test_material.syllabus,
@@ -291,7 +291,15 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal test_material.other_types, JSON.parse(response.body)['other_types'], 'other_types not matched'
     #assert_equal test_material.events, JSON.parse(response.body)['events'], 'events not matched'
     assert_equal test_material.target_audience, JSON.parse(response.body)['target_audience'], 'target audience not matched'
-    assert_equal test_material.authors, JSON.parse(response.body)['authors'], 'authors not matched'
+    # Authors is now an array of objects with id, first_name, last_name, orcid, full_name
+    response_authors = JSON.parse(response.body)['authors']
+    assert_equal test_material.authors.size, response_authors.size, 'authors count not matched'
+    response_authors.each_with_index do |author_json, i|
+      expected_author = test_material.authors[i]
+      assert_equal expected_author.first_name, author_json['first_name'], "author #{i} first_name not matched"
+      assert_equal expected_author.last_name, author_json['last_name'], "author #{i} last_name not matched"
+      assert_equal expected_author.full_name, author_json['full_name'], "author #{i} full_name not matched"
+    end
     assert_equal test_material.contributors, JSON.parse(response.body)['contributors'], 'contributors not matched'
     assert_equal test_material.subsets, JSON.parse(response.body)['subsets'], 'subsets not matched'
     assert_equal test_material.prerequisites, JSON.parse(response.body)['prerequisites'], 'prerequisites not matched'
