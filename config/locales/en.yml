@@ -597,7 +597,7 @@ en:
       description: 'Provide a textual description of the training event, for additional context.'
       visible: 'Whether this event should be shown or hidden from the events page.'
       duration: 'In hours and minutes (HH:MM), how long will your training event run?'
-      eligibility: 'Options for registration. To be chosen from one of the three: First come first served, Registration of Interest, By invitation.'
+      eligibility: 'Who can attend the training event?'
       end: 'When does the event end?'
       event_type: 'Select the most appropriate event type for the training event.'
       fields: 'Select Fields of Research to better classify your event.'
