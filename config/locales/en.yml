@@ -653,7 +653,6 @@ en:
         The most appropriate license that specifies the terms under which your training material and dataset can be used, 
         modified, and distributed. 
         Various options of licenses, for example, Creative Commons License are available to choose from. 
-        Free text is allowed if your license is not available in the menu.
       objectives: >
         Clearly defined, measurable statements describing the specific knowledge, skills a learner should acquire 
         after completing the training course.
