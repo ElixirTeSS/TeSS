@@ -385,6 +385,10 @@ class User < ApplicationRecord
     space_roles.where(key: role).any?
   end
 
+  def show_website?
+    sign_in_count > 10
+  end
+
   protected
 
   def reassign_resources(new_owner = User.get_default_user)
