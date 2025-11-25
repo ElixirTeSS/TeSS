@@ -63,6 +63,11 @@ Variable that should be available
         count: '-',
         enable_text: t('sidebar.filter.values.show_disabled_events'),
         disable_text: t('sidebar.filter.values.hide_disabled_events') } %>
+    <%= render partial: 'search/common/facet_sidebar_boolean_filter',
+        locals: { facet_field: 'include_broken_links',
+        count: '-',
+        enable_text: t('sidebar.filter.values.show_broken_links', resource: resource_type.model_name.human.downcase.pluralize),
+        disable_text: t('sidebar.filter.values.hide_broken_links', resource: resource_type.model_name.human.downcase.pluralize) } %>
   <% elsif resource_type.name == 'Material' || resource_type.name == 'LearningPath' %>
     <% resource_name = resource_type.model_name.human.downcase.pluralize %>
     <% if resource_type.name == 'Material' %>
@@ -71,6 +76,11 @@ Variable that should be available
           count: '-',
           enable_text: t('sidebar.filter.values.show_disabled', resource: resource_name),
           disable_text: t('sidebar.filter.values.hide_disabled', resource: resource_name) } %>
+      <%= render partial: 'search/common/facet_sidebar_boolean_filter',
+          locals: { facet_field: 'include_broken_links',
+          count: '-',
+          enable_text: t('sidebar.filter.values.show_broken_links', resource: resource_name),
+          disable_text: t('sidebar.filter.values.hide_broken_links', resource: resource_name) } %>
     <% end %>
     <%= render partial: 'search/common/facet_sidebar_boolean_filter',
         locals: { facet_field: 'include_archived',
