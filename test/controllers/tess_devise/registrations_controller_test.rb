@@ -68,6 +68,21 @@ module TessDevise
        assert assigns(:user).errors[:base].first.include?('processing')
     end
 
+    test 'should not register user if website given' do
+      assert_no_difference('User.count') do
+        post :create, params: {
+          user: {
+            username: 'mileyfan1997',
+            email: 'h4nn4hm0nt4n4@example.com',
+            password: '12345678',
+            password_confirmation: '12345678',
+            processing_consent: '1',
+            website: 'https://myhomepage.com'
+          }
+        }
+      end
+    end
+
     test 'should redirect to user page after changing password' do
       user = users(:regular_user)
       sign_in user
