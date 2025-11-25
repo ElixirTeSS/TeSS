@@ -29,10 +29,17 @@
 
         <%= f.input :email, required: true %>
 
+        <div style="opacity: 0; height: 0; overflow: hidden">
+          <div class="form-group website required user_website">
+            <label class="control-label website" for="user_website"><abbr title="required">*</abbr> Website</label>
+            <input class="form-control string website required" type="text" value="" name="user[website]" id="user_website">
+          </div>
+        </div>
+
         <%= f.input :publicize_email, as: :boolean, label: 'Make my email publicly visible' %>
 
         <%= f.input :password, required: true, input_html: { autocomplete: 'off' },
-                    hint: "(#{@minimum_password_length} characters minimum)" if @minimum_password_length %>
+                    hint: @minimum_password_length ? "(#{@minimum_password_length} characters minimum)" : nil %>
 
         <%= f.input :password_confirmation, required: true, input_html: { autocomplete: 'off' } %>
 

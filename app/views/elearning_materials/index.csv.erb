@@ -1,0 +1,20 @@
+<%
+  fields = [:id, :title, :url, :description, :keywords, :resource_type, :other_types, :scientific_topics, :operations, :fields, :external_resources, :doi, :licence, :version, :status, :contact, :contributors, :authors, :difficulty_level, :target_audience, :prerequisites, :syllabus, :learning_objectives, :subsets, :date_created, :date_modified, :date_published, :created_at, :updated_at].freeze
+%>
+<%= (['TeSS URL'] + fields.map { |f| Material.human_attribute_name(f) }).to_csv(row_sep: nil) %>
+<% @index_resources.each do |material| %>
+<%= ([material_url(material)] + fields.map do |f|
+  value = material.send(f)
+  value = value.map do |v|
+    case v
+    when OntologyTerm
+      v.label
+    when ExternalResource
+      v.url
+    else
+      v
+    end
+  end.join(', ') if value.respond_to?(:each)
+  value
+end).to_csv(row_sep: nil).html_safe %>
+<% end %>
