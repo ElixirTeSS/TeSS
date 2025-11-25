@@ -1698,4 +1698,18 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_select 'p.scientific_topics a[href="http://edamontology.org/topic_0622"]', text: 'Genomics'
     assert_select 'p.operations a[href="http://edamontology.org/operation_0292"]', text: 'Sequence alignment'
   end
+
+  test 'should get e-learning index as csv' do
+    with_settings(solr_enabled: true, feature: { elearning_materials: true }) do
+      Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
+        get :index, params: { resource_type: 'e-learning', format: :csv }
+
+        assert_response :success
+      end
+    end
+
+    csv = CSV.parse(@response.body, headers: true)
+    assert_equal Material.count, csv.length
+    assert csv.any? { |row| row[0] == material_url(@material) }
+  end
 end
