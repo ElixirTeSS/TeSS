@@ -32,7 +32,7 @@ module Ingestors
           material.description = process_description row, 'Description'
           material.keywords = process_array row, 'Keywords'
           material.contact = get_column row, 'Contact'
-          material.licence = get_column row, 'Licence'
+          material.licence = process_licence row, 'Licence'
           material.status = get_column row, 'Status'
 
           # copy optional values
@@ -67,6 +67,10 @@ module Ingestors
 
     def process_competency(row, header)
       row[header].nil? ? 'notspecified' : row[header]
+    end
+
+    def process_licence(row, header)
+      row[header].nil? ? 'notspecified' : row[header]&.to_s&.lstrip
     end
 
     # if url is a raw google spreadsheet
