@@ -50,6 +50,6 @@ class LinkMonitor < ApplicationRecord
   def reindex_resource
     return unless TeSS::Config.solr_enabled
     return unless status_changed?
-    link_checkable.solr_index
+    link_checkable.solr_index if link_checkable&.respond_to?(:solr_index)
   end
 end

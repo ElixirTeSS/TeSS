@@ -120,4 +120,27 @@ class LinkMonitorTest < ActiveSupport::TestCase
     refute @link_monitor.failing?
     refute @link_monitor.status_changed?
   end
+
+  test 'reindex after status changing' do
+    with_settings(solr_enabled: true) do
+      e = events(:one)
+      lm = e.create_link_monitor
+      index = []
+      e.stub(:solr_index, -> { index << e }) do
+        assert_empty index
+        lm.fail!(404)
+        assert_includes index, e
+      end
+    end
+  end
+
+  test 'do not try and reindex non-solr resource' do
+    with_settings(solr_enabled: true) do
+      er = external_resources(:biotools)
+      lm = er.create_link_monitor
+      assert_nothing_raised do
+        lm.fail!(404)
+      end
+    end
+  end
 end
