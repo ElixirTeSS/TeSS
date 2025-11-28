@@ -490,4 +490,72 @@ class UsersControllerTest < ActionController::TestCase
       assert_select '.masonry-brick-heading h4', text: 'Learn about plants'
     end
   end
+
+  test 'authenticate orcid logged-in user' do
+    sign_in users(:regular_user)
+
+    post :authenticate_orcid
+
+    assert_redirected_to /https:\/\/sandbox\.orcid\.org\/oauth\/authorize\?.+/
+  end
+
+  test 'do not authenticate orcid if user not logged-in' do
+    post :authenticate_orcid
+
+    assert_redirected_to new_user_session_path
+  end
+
+  test 'handle callback and assign orcid if free' do
+    mock_images
+    user = users(:regular_user)
+    sign_in user
+
+    VCR.use_cassette('orcid/get_token_free_orcid') do
+      get :orcid_callback, params: { code: '123xyz' }
+    end
+
+    profile = user.profile.reload
+    assert_equal '0009-0006-0987-5702', profile.orcid
+    assert profile.orcid_authenticated?
+    assert_redirected_to user
+  end
+
+  test 'handle callback and assign orcid if unauthenticated' do
+    mock_images
+    user = users(:regular_user)
+    sign_in user
+
+    VCR.use_cassette('orcid/get_token_unauth_orcid') do
+      get :orcid_callback, params: { code: '123xyz' }
+    end
+
+    profile = user.profile.reload
+    assert_equal '0000-0002-0048-3300', profile.orcid
+    assert profile.orcid_authenticated?
+    assert_redirected_to user
+  end
+
+  test 'handle callback but do not assign orcid if already used' do
+    mock_images
+    user = users(:regular_user)
+    sign_in user
+
+    VCR.use_cassette('orcid/get_token_existing_orcid') do
+      get :orcid_callback, params: { code: '123xyz' }
+    end
+
+    profile = user.profile.reload
+    assert profile.orcid.blank?
+    refute profile.orcid_authenticated?
+    assert_redirected_to user
+    assert_includes flash[:error], 'ORCID has already been'
+  end
+
+  test 'do not handle callback if not logged-in' do
+    mock_images
+
+    get :orcid_callback, params: { code: '123xyz' }
+
+    assert_redirected_to new_user_session_path
+  end
 end

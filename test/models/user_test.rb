@@ -390,7 +390,7 @@ class UserTest < ActiveSupport::TestCase
     profile = user1.profile
     assert_equal 'John', profile.firstname
     assert_equal 'Userton', profile.surname
-    assert_equal 'https://orcid.org/0000-0002-1825-0097', profile.orcid
+    assert_equal 'https://orcid.org/0000-0002-1825-0097', profile.orcid_url
     assert_equal 'Cool guy', profile.description
     assert_equal ['Python', 'Ruby', 'R', 'Java'], profile.expertise_technical
 

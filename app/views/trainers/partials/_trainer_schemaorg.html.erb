@@ -13,7 +13,7 @@
     <%= content_tag 'span', langs, { itemprop: 'knowsLanguage', content: langs, class: 'schemaorg-element' } %>
   <% end %>
   <%= content_tag :span, trainer.website, { itemprop: 'url', content: trainer.website, class: 'schemaorg-element' } %>
-  <%= content_tag :span, trainer.orcid, { itemprop: 'identifier', content: trainer.orcid, class: 'schemaorg-element' } %>
+  <%= content_tag :span, trainer.orcid_url, { itemprop: 'identifier', content: trainer.orcid_url, class: 'schemaorg-element' } %>
   <% if trainer.image_url and not trainer.image_url.empty? %>
     <%= content_tag :span, trainer.image_url, { itemprop: 'image', content: trainer.image_url, class: 'shemaorg-element' } %>
   <% end %>

@@ -177,6 +177,9 @@ Rails.application.routes.draw do
 
   get 'up' => 'health_check#show'
 
+  post 'orcid/authenticate' => 'users#authenticate_orcid'
+  get 'orcid/callback' => 'users#orcid_callback'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -30,7 +30,7 @@ class TrackingTest < ActionDispatch::IntegrationTest
 
     get trainer_path(trainer)
 
-    assert_select 'a[href=?]', trainer.orcid do
+    assert_select 'a[href=?]', trainer.orcid_url do
       assert_select '[data-trackable]'
       assert_select '[data-trackable-id]', count: 0
     end
