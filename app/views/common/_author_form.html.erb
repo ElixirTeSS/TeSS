@@ -1,0 +1,25 @@
+<% index ||= 'replace-me' %> <%# This is so we can render a blank version of this sub-form in the page, %>
+                             <%# which can be dynamically cloned using JavaScript to add more Authors to the main material form %>
+<% field_name_prefix = "#{form_name}[authors_attributes][#{index}]" %> <%# This format is dictated by "accepts_nested_attributes_for" %>
+
+<div class="form-inline author-form" data-index="<%= index -%>">
+  <%= hidden_field_tag("#{field_name_prefix}[id]", author.id) %>
+
+  <div class="form-group">
+    <%= text_field_tag "#{field_name_prefix}[first_name]", author.first_name, :class => 'form-control author-first-name', :placeholder => 'First Name' %>
+  </div>
+
+  <div class="form-group">
+    <%= text_field_tag "#{field_name_prefix}[last_name]", author.last_name, :class => 'form-control author-last-name', :placeholder => 'Last Name' %>
+  </div>
+
+  <div class="form-group">
+    <%= text_field_tag "#{field_name_prefix}[orcid]", author.orcid, :class => 'form-control author-orcid', :placeholder => 'ORCID (optional)' %>
+  </div>
+
+  <label class="ml-2 delete-author-btn">
+    <i class="icon icon-sm cross-icon icon-greyscale"></i>
+    <%= hidden_field_tag "#{field_name_prefix}[_destroy]", '0', :autocomplete => 'off' %>
+    <%= check_box_tag "#{field_name_prefix}[_destroy]", '1', false, :class => 'destroy-attribute', :autocomplete => 'off' %>
+  </label>
+</div>

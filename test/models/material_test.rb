@@ -9,7 +9,10 @@ class MaterialTest < ActiveSupport::TestCase
                                  description: 'short desc',
                                  url: 'http://goog.e.com',
                                  user: @user,
-                                 authors: ['horace', 'flo'],
+                                 authors_attributes: [
+                                   { first_name: 'Horace', last_name: 'Smith' },
+                                   { first_name: 'Flo', last_name: 'Johnson' }
+                                 ],
                                  doi: 'https://doi.org/10.1011/RSE.2019.55',
                                  licence: 'CC-BY-NC-SA-4.0',
                                  keywords: ['goblet'],
@@ -54,7 +57,7 @@ class MaterialTest < ActiveSupport::TestCase
 
     assert_not_nil m.authors, 'old authors is nil.'
     assert_equal 2, m.authors.size, 'old authors size not matched.'
-    assert_equal 'Thomas Edison', m.authors[1], 'old authors[1] not matched.'
+    assert_equal 'Thomas Edison', m.authors[1].full_name, 'old authors[1] not matched.'
 
     assert_not_nil m.contributors, 'old contributors is nil.'
     assert_equal 1, m.contributors.size, 'old contributors size not matched.'
@@ -76,7 +79,8 @@ class MaterialTest < ActiveSupport::TestCase
     m.date_modified = '2021-06-13'
     m.date_published = '2021-06-14'
     m.subsets = []
-    m.authors = ['Nikolai Tesla']
+    m.authors.destroy_all
+    m.authors.create!(first_name: 'Nikolai', last_name: 'Tesla')
     m.contributors = ['Prof. Stephen Hawking']
     m.prerequisites = 'Bring your enthusiasm'
     m.syllabus = "1. Overview\  2. The main part\  3. Summary"
@@ -119,7 +123,7 @@ class MaterialTest < ActiveSupport::TestCase
 
     assert_not_nil m2.authors, 'new authors is nil.'
     assert_equal 1, m2.authors.size, 'new authors size not matched.'
-    assert_equal 'Nikolai Tesla', m2.authors[0], 'new authors[0] not matched.'
+    assert_equal 'Nikolai Tesla', m2.authors[0].full_name, 'new authors[0] not matched.'
 
     assert_not_nil m2.contributors, 'new contributors is nil.'
     assert_equal 1, m2.contributors.size, 'new contributors size not matched.'
@@ -140,23 +144,29 @@ class MaterialTest < ActiveSupport::TestCase
     assert_equal 'default_user', material.user.role.name
   end
 
-  test 'should convert string value to empty array in authors' do
-    assert_not_equal @material.authors, []
-    assert @material.update(authors: 'string')
-    assert_equal [], @material.authors
+  test 'should add authors via nested attributes' do
+    assert_equal 2, @material.authors.size
+    assert @material.update(authors_attributes: [
+      { first_name: 'John', last_name: 'Doe' },
+      { first_name: 'Jane', last_name: 'Smith', orcid: '0000-0002-1234-5678' }
+    ])
+    @material.reload
+    assert_equal 4, @material.authors.size
+    jane = @material.authors.find { |a| a.first_name == 'Jane' }
+    assert_not_nil jane
+    assert_equal 'Jane Smith', jane.full_name
+    assert_equal '0000-0002-1234-5678', jane.orcid
   end
 
-  test 'should convert nil to empty array in authors fields' do
-    assert_not_equal @material.authors, []
-    assert @material.update(authors: nil)
-    assert_equal [], @material.authors
-  end
-
-  test 'should remove bad values and strip authors array input' do
-    authors = ['john', 'bob', nil, [], '', 'frank ']
-    expected_authors = ['john', 'bob', 'frank']
-    assert @material.update(authors: authors)
-    assert_equal expected_authors, @material.authors
+  test 'should remove authors via nested attributes' do
+    assert_equal 2, @material.authors.size
+    author_to_remove = @material.authors.first
+    assert @material.update(authors_attributes: [
+      { id: author_to_remove.id, _destroy: '1' }
+    ])
+    @material.reload
+    assert_equal 1, @material.authors.size
+    refute @material.authors.include?(author_to_remove)
   end
 
   test 'should delete material when content provider deleted' do

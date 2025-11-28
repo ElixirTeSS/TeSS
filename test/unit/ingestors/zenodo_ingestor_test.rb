@@ -48,7 +48,7 @@ class ZenodoIngestorTest < ActiveSupport::TestCase
     assert_equal 'CC-BY-4.0', material.licence, 'material licence not matched'
     assert_equal 'active', material.status, 'material status not matched'
     assert_equal 1, material.authors.size, 'material authors count not matched.'
-    assert material.authors.include?('Australian Research Data Commons')
+    assert material.authors.any? { |a| a.full_name == 'Australian Research Data Commons' }, 'author not found'
     assert_equal '10.5281/zenodo.10656276', material.doi, 'material.doi not matched.'
 
     # check material with contributors
@@ -62,7 +62,7 @@ class ZenodoIngestorTest < ActiveSupport::TestCase
 
     # check material from page 2
     material = get_zenodo_id(10052012, 'Privacy focused health data storage and access control through personal online datastores', 'Portal Provider')
-    assert material.authors.include?('Vidanage, Anushka (orcid: 0000-0002-5386-5871)'), 'material contributors[0] missing.'
+    assert material.authors.any? { |a| a.full_name == 'Vidanage, Anushka' && a.orcid == '0000-0002-5386-5871' }, 'author with ORCID not found'
   end
 
   private

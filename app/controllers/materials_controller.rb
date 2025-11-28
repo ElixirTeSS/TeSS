@@ -171,11 +171,12 @@ class MaterialsController < ApplicationController
                                      :content_provider_id, :difficulty_level, :version, :status,
                                      :date_created, :date_modified, :date_published, :other_types,
                                      :prerequisites, :syllabus, :visible, :learning_objectives, { subsets: [] },
-                                     { contributors: [] }, { authors: [] }, { target_audience: [] },
+                                     { contributors: [] }, { target_audience: [] },
                                      { collection_ids: [] }, { keywords: [] }, { resource_type: [] },
                                      { scientific_topic_names: [] }, { scientific_topic_uris: [] },
                                      { operation_names: [] }, { operation_uris: [] },
                                      { node_ids: [] }, { node_names: [] }, { fields: [] },
+                                     authors_attributes: %i[id first_name last_name orcid _destroy],
                                      external_resources_attributes: %i[id url title _destroy],
                                      external_resources: %i[url title],
                                      event_ids: [], locked_fields: [])
