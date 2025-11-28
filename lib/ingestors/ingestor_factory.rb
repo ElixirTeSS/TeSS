@@ -10,6 +10,7 @@ module Ingestors
         Ingestors::MaterialCsvIngestor,
         Ingestors::TessEventIngestor,
         Ingestors::ZenodoIngestor,
+        Ingestors::GithubIngestor,
       ] + taxila_ingestors + llm_ingestors
     end
 
