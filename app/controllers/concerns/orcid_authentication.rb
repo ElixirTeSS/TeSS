@@ -2,7 +2,7 @@ module OrcidAuthentication
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_oauth2_client, only: [:authenticate_orcid, :orcid_callback]
+    before_action :set_orcid_oauth_client, only: [:authenticate_orcid, :orcid_callback]
   end
 
   def authenticate_orcid
@@ -26,12 +26,12 @@ module OrcidAuthentication
 
   private
 
-  def set_oauth2_client
+  def set_orcid_oauth_client
     config = Rails.application.config.secrets.orcid
     @oauth2_client ||= Rack::OAuth2::Client.new(
       identifier: config[:client_id],
       secret: config[:secret],
-      redirect_uri: 'https://localhost:3001/orcid/callback',#config[:redirect_uri].presence || orcid_callback_url,
+      redirect_uri: config[:redirect_uri].presence || orcid_callback_url,
       authorization_endpoint: '/oauth/authorize',
       token_endpoint: '/oauth/token',
       host: config[:host].presence || (Rails.env.production? ? 'orcid.org' : 'sandbox.orcid.org')
