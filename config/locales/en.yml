@@ -839,6 +839,8 @@ en:
     422: "The request you sent was well-formed but the change you wanted was rejected (422 Unprocessable Entity)."
     404: "The requested page could not be found - you may have mistyped the address or the page may have moved (404 Not Found)."
     406: "The requested format is not available (406 Not Acceptable)."
+    messages:
+      orcid_taken: 'has already been linked to another profile.'
   warnings:
     link_broken: >
       %{site_name} has been unable to access this %{resource_type}'s URL since %{fail_date} - the page may have been moved.
@@ -1114,3 +1116,7 @@ en:
       title: What are spaces?
       description: |
         Spaces are customizable, community-managed sub-portals within %{site_name}, each with their own catalogue of training content.
+  orcid:
+    error: 'An error occurred whilst trying to authenticate your ORCID.'
+    authenticate: 'Authenticate your ORCID'
+    authentication_success: 'You have successfully authenticated your ORCID.'

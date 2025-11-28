@@ -9,6 +9,7 @@ class UsersController < ApplicationController
   before_action :check_profile_id, only: [:update]
 
   include ActionView::Helpers::TextHelper
+  include OrcidAuthentication
 
   # GET /users
   # GET /users.json
