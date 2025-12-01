@@ -11,7 +11,7 @@ module UsersHelper
         concat image_tag('ORCID-iD_icon_vector.svg', size: 16)
         concat ' '
         concat external_link(profile.orcid, profile.orcid_url, *opts)
-      else profile.orcid.present?
+      elsif profile.orcid.present?
         concat image_tag('ORCID-iD_icon_unauth_vector.svg', size: 16)
         concat ' '
         concat external_link(profile.orcid, profile.orcid_url, *opts)
