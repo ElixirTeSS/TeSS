@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_28_160923) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_01_143501) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -453,6 +453,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_28_160923) do
     t.string "type", default: "Profile"
     t.string "fields", default: [], array: true
     t.boolean "orcid_authenticated", default: false
+    t.index ["orcid"], name: "index_profiles_on_orcid"
     t.index ["slug"], name: "index_profiles_on_slug", unique: true
   end
 
