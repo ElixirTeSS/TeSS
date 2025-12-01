@@ -26,6 +26,7 @@ class Profile < ApplicationRecord
   end
 
   def orcid_url
+    return nil if orcid.blank?
     "#{OrcidValidator::ORCID_PREFIX}#{orcid}"
   end
 

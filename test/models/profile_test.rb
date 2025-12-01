@@ -134,4 +134,10 @@ class ProfileTest < ActiveSupport::TestCase
     assert profile.orcid.present?
     assert profile.orcid_authenticated
   end
+
+  test 'orcid_url' do
+    assert_nil Profile.new.orcid_url
+    assert_nil Profile.new(orcid: '').orcid_url
+    assert_equal 'https://orcid.org/0009-0006-0987-5702', Profile.new(orcid: '0009-0006-0987-5702').orcid_url
+  end
 end
