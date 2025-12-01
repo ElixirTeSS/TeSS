@@ -81,7 +81,7 @@ class OrcidControllerTest < ActionController::TestCase
     end
 
     assert_response :unprocessable_entity
-    assert_select '#error-message', text: /ORCID/
+    assert_select '#error-message', text: /error occurred.+ORCID/
     profile = user.profile.reload
     assert profile.orcid.blank?
     refute profile.orcid_authenticated?
@@ -92,12 +92,28 @@ class OrcidControllerTest < ActionController::TestCase
     user = users(:regular_user)
     sign_in user
 
-    VCR.use_cassette('orcid/error_500') do
+    VCR.use_cassette('orcid/get_token_orcid_missing') do
       get :callback, params: { code: '123xyz' }
     end
 
     assert_response :unprocessable_entity
-    assert_select '#error-message', text: /ORCID/
+    assert_select '#error-message', text: /error occurred.+ORCID/
+    profile = user.profile.reload
+    assert profile.orcid.blank?
+    refute profile.orcid_authenticated?
+  end
+
+  test 'handle missing orcid during callback' do
+    mock_images
+    user = users(:regular_user)
+    sign_in user
+
+    VCR.use_cassette('orcid/get_token_orcid_missing') do
+      get :callback, params: { code: '123xyz' }
+    end
+
+    assert_redirected_to user
+    assert_includes flash[:error], 'Failed to authenticat'
     profile = user.profile.reload
     assert profile.orcid.blank?
     refute profile.orcid_authenticated?

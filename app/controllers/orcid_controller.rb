@@ -17,10 +17,14 @@ class OrcidController < ApplicationController
     orcid = token.access_token&.raw_attributes['orcid']
     respond_to do |format|
       profile = current_user.profile
-      if profile.authenticate_orcid(orcid)
-        flash[:notice] = t('orcid.authentication_success')
+      if orcid.present?
+        if profile.authenticate_orcid(orcid)
+          flash[:notice] = t('orcid.authentication_success')
+        else
+          flash[:error] = profile.errors.full_messages.join(', ')
+        end
       else
-        flash[:error] = profile.errors.full_messages.join(', ')
+        flash[:error] = t('orcid.authentication_failure')
       end
       format.html { redirect_to current_user }
     end

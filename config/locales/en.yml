@@ -1120,3 +1120,4 @@ en:
     error: 'An error occurred whilst trying to authenticate your ORCID.'
     authenticate: 'Authenticate your ORCID'
     authentication_success: 'You have successfully authenticated your ORCID.'
+    authentication_failure: 'Failed to authenticate your ORCID.'
