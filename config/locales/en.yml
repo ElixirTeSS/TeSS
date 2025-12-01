@@ -619,6 +619,7 @@ en:
       timezone: 'Select the appropriate timezone'
       title: 'Add a title for your training event.'
       url: 'Location where the event and its details are advertised on the internet.'
+      providers: The organisation providing the event metadata.
     prompts:
       language: 'Select a language...'
     long: 'Long events'
