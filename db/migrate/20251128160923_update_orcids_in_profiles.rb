@@ -2,7 +2,7 @@ class UpdateOrcidsInProfiles < ActiveRecord::Migration[7.2]
   ORCID_PREFIX = 'https://orcid.org/'.freeze
   def up
     Profile.where('orcid IS NOT NULL').find_each do |profile|
-      profile.update_column(:orcid, profile.orcid.gsub(ORCID_PREFIX, ''))
+      profile.update_column(:orcid, profile.orcid.gsub(ORCID_PREFIX, '')) if profile.orcid.start_with?(ORCID_PREFIX)
     end
   end
 
