@@ -491,71 +491,38 @@ class UsersControllerTest < ActionController::TestCase
     end
   end
 
-  test 'authenticate orcid logged-in user' do
-    sign_in users(:regular_user)
+  test 'should show authenticate orcid button if own profile' do
+    user = users(:private_user)
+    assert user.profile.orcid.present?
+    refute user.profile.orcid_authenticated?
 
-    post :authenticate_orcid
-
-    assert_redirected_to /https:\/\/sandbox\.orcid\.org\/oauth\/authorize\?.+/
-  end
-
-  test 'do not authenticate orcid if user not logged-in' do
-    post :authenticate_orcid
-
-    assert_redirected_to new_user_session_path
-  end
-
-  test 'handle callback and assign orcid if free' do
-    mock_images
-    user = users(:regular_user)
     sign_in user
 
-    VCR.use_cassette('orcid/get_token_free_orcid') do
-      get :orcid_callback, params: { code: '123xyz' }
-    end
+    get :show, params: { id: user }
 
-    profile = user.profile.reload
-    assert_equal '0009-0006-0987-5702', profile.orcid
-    assert profile.orcid_authenticated?
-    assert_redirected_to user
+    assert_response :success
+    assert_select '#sidebar button', text: 'Authenticate your ORCID'
   end
 
-  test 'handle callback and assign orcid if unauthenticated' do
-    mock_images
-    user = users(:regular_user)
-    sign_in user
+  test 'should not show authenticate orcid button if not own profile' do
+    user = users(:private_user)
+    assert user.profile.orcid.present?
+    refute user.profile.orcid_authenticated?
 
-    VCR.use_cassette('orcid/get_token_unauth_orcid') do
-      get :orcid_callback, params: { code: '123xyz' }
-    end
+    get :show, params: { id: user }
 
-    profile = user.profile.reload
-    assert_equal '0000-0002-0048-3300', profile.orcid
-    assert profile.orcid_authenticated?
-    assert_redirected_to user
+    assert_response :success
+    assert_select '#sidebar button', text: 'Authenticate your ORCID', count: 0
   end
 
-  test 'handle callback but do not assign orcid if already used' do
-    mock_images
-    user = users(:regular_user)
-    sign_in user
+  test 'should not show authenticate orcid button if already authenticated' do
+    user = users(:trainer_user)
+    assert user.profile.orcid.present?
+    assert user.profile.orcid_authenticated?
 
-    VCR.use_cassette('orcid/get_token_existing_orcid') do
-      get :orcid_callback, params: { code: '123xyz' }
-    end
+    get :show, params: { id: user }
 
-    profile = user.profile.reload
-    assert profile.orcid.blank?
-    refute profile.orcid_authenticated?
-    assert_redirected_to user
-    assert_includes flash[:error], 'ORCID has already been'
-  end
-
-  test 'do not handle callback if not logged-in' do
-    mock_images
-
-    get :orcid_callback, params: { code: '123xyz' }
-
-    assert_redirected_to new_user_session_path
+    assert_response :success
+    assert_select '#sidebar button', text: 'Authenticate your ORCID', count: 0
   end
 end

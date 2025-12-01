@@ -52,7 +52,7 @@
         <% else %>
           <%= orcid_link(@user.profile) %>
           <% if current_user == @user && !@user.profile.orcid_authenticated? %>
-            <%= button_to t('orcid.authenticate'), orcid_authenticate_path, class: 'btn btn-default' %>
+            <%= button_to t('orcid.authenticate'), authenticate_orcid_path, class: 'btn btn-default' %>
           <% end %>
         <% end %>
       </p>
