@@ -101,21 +101,23 @@ class ProfileTest < ActiveSupport::TestCase
     assert profile.orcid_authenticated
   end
 
-  test 'does not assign authenticated orcid if already taken' do
+  test 'assigns authenticated orcid and de-authenticates other profiles that use it' do
     existing_profile = profiles(:trainer_one_profile)
     profile = users(:regular_user).profile
     assert existing_profile.orcid.present?
     assert existing_profile.orcid_authenticated
     refute profile.orcid.present?
     refute profile.orcid_authenticated
+    existing_orcid = existing_profile.orcid
 
-    profile.authenticate_orcid(existing_profile.orcid)
+    profile.authenticate_orcid(existing_orcid)
 
-    assert profile.errors.added?(:orcid, :orcid_taken)
-    assert existing_profile.orcid.present?
-    assert existing_profile.orcid_authenticated
-    refute profile.orcid.present?
-    refute profile.orcid_authenticated
+    assert_empty profile.errors
+    assert_equal existing_orcid, profile.orcid
+    assert profile.orcid_authenticated
+    existing_profile.reload
+    assert_equal existing_orcid, existing_profile.orcid
+    refute existing_profile.orcid_authenticated
   end
 
   test 'assigns authenticated orcid if existing orcid is not authenticated' do

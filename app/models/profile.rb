@@ -50,14 +50,18 @@ class Profile < ApplicationRecord
 
   def authenticate_orcid(orcid)
     existing = Profile.where(orcid: orcid, orcid_authenticated: true)
-    if existing.any?
-      errors.add(:orcid, :orcid_taken)
-      false
-    else
-      self.orcid = orcid
-      self.orcid_authenticated = true
-      self.save
+    self.orcid = orcid
+    self.orcid_authenticated = true
+    out = self.save
+
+    if out
+      existing.each do |profile|
+        next if profile == self
+        profile.update_column(:orcid_authenticated, false)
+      end
     end
+
+    out
   end
 
   private

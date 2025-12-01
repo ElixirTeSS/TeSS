@@ -47,9 +47,11 @@ class OrcidControllerTest < ActionController::TestCase
     assert_redirected_to user
   end
 
-  test 'handle callback but do not assign orcid if already used' do
+  test 'handle callback and assign orcid even if already used' do
     mock_images
     user = users(:regular_user)
+    existing_orcid_user = users(:trainer_user)
+    assert existing_orcid_user.profile.orcid_authenticated?
     sign_in user
 
     VCR.use_cassette('orcid/get_token_existing_orcid') do
@@ -57,10 +59,11 @@ class OrcidControllerTest < ActionController::TestCase
     end
 
     profile = user.profile.reload
-    assert profile.orcid.blank?
-    refute profile.orcid_authenticated?
+    assert_equal '0000-0002-1825-0097', profile.orcid
+    assert profile.orcid_authenticated?
+    refute existing_orcid_user.reload.profile.orcid_authenticated?
     assert_redirected_to user
-    assert_includes flash[:error], 'ORCID has already been'
+    assert flash[:error].blank?
   end
 
   test 'do not handle callback if not logged-in' do
@@ -92,7 +95,7 @@ class OrcidControllerTest < ActionController::TestCase
     user = users(:regular_user)
     sign_in user
 
-    VCR.use_cassette('orcid/get_token_orcid_missing') do
+    VCR.use_cassette('orcid/error_500') do
       get :callback, params: { code: '123xyz' }
     end
 
