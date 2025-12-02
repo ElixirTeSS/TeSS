@@ -169,6 +169,61 @@ class MaterialTest < ActiveSupport::TestCase
     assert_equal 1, @material.authors.size
   end
 
+  test 'should set authors from array of strings (legacy API support)' do
+    @material.authors = ['John Doe', 'Jane Smith']
+    @material.save!
+    @material.reload
+    
+    assert_equal 2, @material.authors.size
+    john = @material.authors.find { |a| a.last_name == 'Doe' }
+    assert_not_nil john
+    assert_equal 'John', john.first_name
+    assert_equal 'Doe', john.last_name
+    
+    jane = @material.authors.find { |a| a.last_name == 'Smith' }
+    assert_not_nil jane
+    assert_equal 'Jane', jane.first_name
+    assert_equal 'Smith', jane.last_name
+  end
+
+  test 'should set authors from array of hashes' do
+    @material.authors = [
+      { first_name: 'John', last_name: 'Doe', orcid: '0000-0001-1234-5678' },
+      { first_name: 'Jane', last_name: 'Smith' }
+    ]
+    @material.save!
+    @material.reload
+    
+    assert_equal 2, @material.authors.size
+    john = @material.authors.find { |a| a.last_name == 'Doe' }
+    assert_not_nil john
+    assert_equal '0000-0001-1234-5678', john.orcid
+  end
+
+  test 'should set authors from array of Person objects' do
+    person1 = Person.create!(first_name: 'Alice', last_name: 'Wonder')
+    person2 = Person.create!(first_name: 'Bob', last_name: 'Builder')
+    
+    @material.authors = [person1, person2]
+    @material.save!
+    @material.reload
+    
+    assert_equal 2, @material.authors.size
+    assert @material.authors.include?(person1)
+    assert @material.authors.include?(person2)
+  end
+
+  test 'should handle single name in legacy author string' do
+    @material.authors = ['Madonna', 'Prince']
+    @material.save!
+    @material.reload
+    
+    assert_equal 2, @material.authors.size
+    madonna = @material.authors.find { |a| a.last_name == 'Madonna' }
+    assert_not_nil madonna
+    assert_equal '', madonna.first_name
+  end
+
   test 'should delete material when content provider deleted' do
     material = @material
     content_provider = @material.content_provider

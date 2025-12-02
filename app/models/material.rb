@@ -111,6 +111,41 @@ class Material < ApplicationRecord
   has_many :authors, -> { where(person_links: { role: 'author' }) }, through: :person_links, source: :person
   accepts_nested_attributes_for :person_links, allow_destroy: true, reject_if: :all_blank
 
+  # Custom setter for authors that accepts both strings (legacy API) and Person objects
+  def authors=(value)
+    return if value.nil?
+    
+    # Convert to array if needed
+    authors_array = Array(value).reject(&:blank?)
+    
+    # Remove existing author links
+    person_links.where(role: 'author').destroy_all
+    
+    authors_array.each do |author|
+      if author.is_a?(String)
+        # Legacy format: parse string into first_name and last_name
+        parts = author.strip.split(/\s+/, 2)
+        first_name = parts.length > 1 ? parts[0] : ''
+        last_name = parts.length > 1 ? parts[1] : parts[0]
+        
+        person = Person.find_or_create_by!(first_name: first_name, last_name: last_name)
+        person_links.build(person: person, role: 'author')
+      elsif author.is_a?(Hash)
+        # Hash format from API
+        first_name = author[:first_name] || author['first_name'] || ''
+        last_name = author[:last_name] || author['last_name'] || ''
+        orcid = author[:orcid] || author['orcid']
+        
+        person = Person.find_or_create_by!(first_name: first_name, last_name: last_name)
+        person.update!(orcid: orcid) if orcid.present?
+        person_links.build(person: person, role: 'author')
+      elsif author.is_a?(Person)
+        # Person object
+        person_links.build(person: author, role: 'author')
+      end
+    end
+  end
+
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
   auto_strip_attributes :title, :description, :url, squish: false
