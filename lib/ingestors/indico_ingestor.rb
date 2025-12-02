@@ -32,13 +32,13 @@ module Ingestors
     private
 
     # Modifies the given URL to the ics export.
-    # Loops into each Ical event to process it.
-    # Note: One .ics file can have multiple Ical events.
+    # Loops into each event to process it.
+    # Note: One .ics file can have multiple events.
     def process_url(url)
       export_url = to_export(url)
       raise 'Not an indico link' if export_url.nil?
 
-      content = open_url(export_url, token: @token, raise: true).set_encoding('utf-8')
+      content = open_url(export_url, raise: true, token: @token).set_encoding('utf-8')
       events = Icalendar::Event.parse(content)
       raise 'Not found' if events.nil? || events.empty?
 
@@ -51,8 +51,6 @@ module Ingestors
 
     # 1. If the path already ends with '/events.ics', return as-is.
     # 2. If the host includes 'indico', ensures the path ends with '/events.ics'.
-    # 3. Otherwise, append '?ical=true' query param if not already present.
-    #
     # This method never mutates the original URL string.
     # Returns the updated URL string or nil if input is blank.
     def to_export(url)
@@ -65,8 +63,6 @@ module Ingestors
         uri.to_s
       elsif indico_page?(uri)
         ensure_events_ics_path(uri)
-      else
-        nil
       end
     end
 
@@ -93,14 +89,6 @@ module Ingestors
       uri.to_s
     end
 
-    # Ensures the URL has '?ical=true' in its query params
-    def ensure_ical_query(uri)
-      query = URI.decode_www_form(uri.query.to_s).to_h
-      query['ical'] = 'true' unless query['ical'] == 'true'
-      uri.query = URI.encode_www_form(query)
-      uri.to_s
-    end
-
     # Builds the OpenStruct event and adds it in event.
     def process_calevent(calevent)
       event_to_add = OpenStruct.new.tap do |event|
@@ -110,7 +98,7 @@ module Ingestors
       end
       add_event(event_to_add)
     rescue StandardError => e
-      @messages << "Process iCalendar failed with: #{e.message}"
+      @messages << "process_calevent failed with: #{e.message}"
     end
 
     # Assigns to event: url, title, description, keywords.
