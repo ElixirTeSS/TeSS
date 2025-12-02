@@ -1,6 +1,6 @@
 class MigrateMaterialAuthorsData < ActiveRecord::Migration[7.2]
   def up
-    # Migrate existing authors from array to Author model
+    # Migrate existing authors from array to Person model
     Material.find_each do |material|
       next if material.authors.blank?
 
@@ -20,25 +20,26 @@ class MigrateMaterialAuthorsData < ActiveRecord::Migration[7.2]
           last_name = parts[1] || ''
         end
 
-        # Find or create author
-        author = Author.find_or_create_by!(
+        # Find or create person
+        person = Person.find_or_create_by!(
           first_name: first_name,
           last_name: last_name
         )
 
         # Create the association if it doesn't exist
-        MaterialAuthor.find_or_create_by!(
-          material_id: material.id,
-          author_id: author.id
+        PersonLink.find_or_create_by!(
+          resource: material,
+          person_id: person.id,
+          role: 'author'
         )
       end
     end
   end
 
   def down
-    # Restore authors array from Author model
+    # Restore authors array from Person model
     Material.find_each do |material|
-      author_names = material.authors.map(&:full_name).compact
+      author_names = material.people.where(person_links: { role: 'author' }).map(&:full_name).compact
       # Use raw SQL to avoid validation issues
       Material.connection.execute(
         "UPDATE materials SET authors = ARRAY[#{author_names.map { |n| "'#{n.gsub("'", "''")}'" }.join(',')}]::varchar[] WHERE id = #{material.id}"
@@ -46,7 +47,7 @@ class MigrateMaterialAuthorsData < ActiveRecord::Migration[7.2]
     end
 
     # Clean up the new tables
-    MaterialAuthor.delete_all
-    Author.delete_all
+    PersonLink.delete_all
+    Person.delete_all
   end
 end

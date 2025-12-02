@@ -106,9 +106,10 @@ class Material < ApplicationRecord
 
   has_many :stars, as: :resource, dependent: :destroy
 
-  has_many :material_authors, dependent: :destroy
-  has_many :authors, through: :material_authors
-  accepts_nested_attributes_for :authors, allow_destroy: true, reject_if: :all_blank
+  has_many :person_links, as: :resource, dependent: :destroy
+  has_many :people, through: :person_links
+  has_many :authors, -> { where(person_links: { role: 'author' }) }, through: :person_links, source: :person
+  accepts_nested_attributes_for :person_links, allow_destroy: true, reject_if: :all_blank
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"

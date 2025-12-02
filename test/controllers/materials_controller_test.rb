@@ -253,7 +253,7 @@ class MaterialsControllerTest < ActionController::TestCase
           date_published: test_material.date_published,
           doi: test_material.doi,
           subsets: test_material.subsets,
-          authors_attributes: test_material.authors.map { |a| { first_name: a.first_name, last_name: a.last_name, orcid: a.orcid } },
+          person_links_attributes: test_material.person_links.where(role: 'author').map { |pl| { role: 'author', person_attributes: { first_name: pl.person.first_name, last_name: pl.person.last_name, orcid: pl.person.orcid } } },
           contributors: test_material.contributors,
           prerequisites: test_material.prerequisites,
           syllabus: test_material.syllabus,

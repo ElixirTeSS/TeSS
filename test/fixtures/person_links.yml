@@ -1,0 +1,16 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+material_with_optionals_author1:
+  resource: material_with_optionals (Material)
+  person: nicolai_tesla
+  role: author
+
+material_with_optionals_author2:
+  resource: material_with_optionals (Material)
+  person: thomas_edison
+  role: author
+
+youtube_video_material_author:
+  resource: youtube_video_material (Material)
+  person: saskia
+  role: author

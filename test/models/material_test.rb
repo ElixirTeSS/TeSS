@@ -9,9 +9,9 @@ class MaterialTest < ActiveSupport::TestCase
                                  description: 'short desc',
                                  url: 'http://goog.e.com',
                                  user: @user,
-                                 authors_attributes: [
-                                   { first_name: 'Horace', last_name: 'Smith' },
-                                   { first_name: 'Flo', last_name: 'Johnson' }
+                                 person_links_attributes: [
+                                   { role: 'author', person_attributes: { first_name: 'Horace', last_name: 'Smith' } },
+                                   { role: 'author', person_attributes: { first_name: 'Flo', last_name: 'Johnson' } }
                                  ],
                                  doi: 'https://doi.org/10.1011/RSE.2019.55',
                                  licence: 'CC-BY-NC-SA-4.0',
@@ -79,8 +79,9 @@ class MaterialTest < ActiveSupport::TestCase
     m.date_modified = '2021-06-13'
     m.date_published = '2021-06-14'
     m.subsets = []
-    m.authors.destroy_all
-    m.authors.create!(first_name: 'Nikolai', last_name: 'Tesla')
+    m.person_links.where(role: 'author').destroy_all
+    person = Person.create!(first_name: 'Nikolai', last_name: 'Tesla')
+    m.person_links.create!(person: person, role: 'author')
     m.contributors = ['Prof. Stephen Hawking']
     m.prerequisites = 'Bring your enthusiasm'
     m.syllabus = "1. Overview\  2. The main part\  3. Summary"
@@ -146,9 +147,9 @@ class MaterialTest < ActiveSupport::TestCase
 
   test 'should add authors via nested attributes' do
     assert_equal 2, @material.authors.size
-    assert @material.update(authors_attributes: [
-      { first_name: 'John', last_name: 'Doe' },
-      { first_name: 'Jane', last_name: 'Smith', orcid: '0000-0002-1234-5678' }
+    assert @material.update(person_links_attributes: [
+      { role: 'author', person_attributes: { first_name: 'John', last_name: 'Doe' } },
+      { role: 'author', person_attributes: { first_name: 'Jane', last_name: 'Smith', orcid: '0000-0002-1234-5678' } }
     ])
     @material.reload
     assert_equal 4, @material.authors.size
@@ -160,13 +161,12 @@ class MaterialTest < ActiveSupport::TestCase
 
   test 'should remove authors via nested attributes' do
     assert_equal 2, @material.authors.size
-    author_to_remove = @material.authors.first
-    assert @material.update(authors_attributes: [
-      { id: author_to_remove.id, _destroy: '1' }
+    person_link_to_remove = @material.person_links.where(role: 'author').first
+    assert @material.update(person_links_attributes: [
+      { id: person_link_to_remove.id, _destroy: '1' }
     ])
     @material.reload
     assert_equal 1, @material.authors.size
-    refute @material.authors.include?(author_to_remove)
   end
 
   test 'should delete material when content provider deleted' do

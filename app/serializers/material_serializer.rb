@@ -18,5 +18,5 @@ class MaterialSerializer < ApplicationSerializer
   has_many :nodes
   has_many :collections
   has_many :events
-  has_many :authors
+  has_many :authors, serializer: PersonSerializer
 end

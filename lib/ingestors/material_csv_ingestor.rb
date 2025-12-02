@@ -42,7 +42,7 @@ module Ingestors
           material.date_published = get_column row, 'Published'
           material.date_modified = get_column row, 'Modified'
           material.difficulty_level = process_competency row, 'Competency'
-          material.authors_attributes = process_authors(process_array(row, 'Authors'))
+          material.person_links_attributes = process_authors(process_array(row, 'Authors'))
           material.contributors = process_array row, 'Contributors'
           material.fields = process_array row, 'Fields'
           material.target_audience = process_array row, 'Audiences'
@@ -75,9 +75,12 @@ module Ingestors
         last_name = name_parts.length > 1 ? name_parts[1] : name_parts[0]
         
         {
-          first_name: first_name,
-          last_name: last_name,
-          orcid: nil
+          role: 'author',
+          person_attributes: {
+            first_name: first_name,
+            last_name: last_name,
+            orcid: nil
+          }
         }
       end
     end
