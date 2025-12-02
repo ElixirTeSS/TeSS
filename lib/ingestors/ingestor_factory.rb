@@ -6,6 +6,7 @@ module Ingestors
         Ingestors::EventbriteIngestor,
         Ingestors::EventCsvIngestor,
         Ingestors::IcalIngestor,
+        Ingestors::IndicoIngestor,
         Ingestors::LibcalIngestor,
         Ingestors::MaterialCsvIngestor,
         Ingestors::TessEventIngestor,
