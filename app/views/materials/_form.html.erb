@@ -68,18 +68,18 @@
               visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Authors -->
-  <div class="form-group" id="authors">
+  <div class="form-group" id="person-author">
     <%= f.label :authors %>
     <%= f.field_lock :authors %>
 
-    <div id="authors-list">
-      <% @material.authors.each_with_index do |author, index| %>
-        <%= render partial: 'common/author_form',
-                   locals: { form_name: 'material', index: index, author: author } %>
+    <div id="person-author-list">
+      <% @material.person_links.where(role: 'author').each_with_index do |person_link, index| %>
+        <%= render partial: 'common/person_form',
+                   locals: { form_name: 'material', index: index, person_link: person_link, role: 'author' } %>
       <% end %>
     </div>
 
-    <a href="#" id="add-author-btn" class="btn btn-icon">
+    <a href="#" id="add-person-author" data-role="author" class="btn btn-icon">
       <i class="icon icon-h4 plus-icon"></i>
     </a>
     <span class="help-inline-block help-block">Add author information</span>
@@ -209,9 +209,9 @@
              locals: { form_name: 'material', external_resource: ExternalResource.new } %>
 </div>
 
-<div id="author-template" style="display: none">
-  <%= render partial: 'common/author_form',
-             locals: { form_name: 'material', author: Author.new } %>
+<div id="person-author-template" style="display: none">
+  <%= render partial: 'common/person_form',
+             locals: { form_name: 'material', person_link: nil, role: 'author' } %>
 </div>
 
 <script type="text/javascript">

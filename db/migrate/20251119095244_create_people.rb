@@ -1,6 +1,6 @@
-class CreateAuthors < ActiveRecord::Migration[7.2]
+class CreatePeople < ActiveRecord::Migration[7.2]
   def change
-    create_table :authors do |t|
+    create_table :people do |t|
       t.string :first_name
       t.string :last_name
       t.string :orcid
@@ -8,6 +8,6 @@ class CreateAuthors < ActiveRecord::Migration[7.2]
       t.timestamps
     end
 
-    add_index :authors, :orcid
+    add_index :people, :orcid
   end
 end
