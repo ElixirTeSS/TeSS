@@ -105,13 +105,6 @@ module Searchable
           facet ff, exclude: active_facets[ff]
         end
 
-        # Hide records the urls of which are failing
-        if method_defined?(:link_monitor)
-          unless user&.is_admin?
-            without(:failing, true)
-          end
-        end
-
       end
     end
   end
