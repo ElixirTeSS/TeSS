@@ -109,7 +109,7 @@
 
   <!-- Field: Topics -->
   <% if !TeSS::Config.feature['disabled'].include? 'topics' %>
-    <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term', label: 'Topics',
+    <%= f.autocompleter :scientific_topics, url: edam_topics_path, template: 'autocompleter/term',
                         id_field: :uri, label_field: :preferred_label, input_html: { title: t('events.hints.topics') } %>
   <% end %>
 
@@ -149,7 +149,7 @@
   <!-- Field: Content Provider -->
   <%= f.input :content_provider_id, label: 'Content provider (where the event metadata is obtained from)',
               collection: current_user.get_editable_providers, label_method: :title, value_method: :id, include_blank: true,
-              field_lock: true %>
+              field_lock: true, input_html: { title: t('events.hints.providers') } %>
 
   <!-- Field: Materials -->
   <%= f.autocompleter :materials, input_html: { title: t('events.hints.materials') }, url: materials_path %>
