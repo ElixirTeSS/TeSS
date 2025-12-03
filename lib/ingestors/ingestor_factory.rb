@@ -36,7 +36,8 @@ module Ingestors
         Ingestors::Taxila::DccIngestor,
         Ingestors::Taxila::SenseIngestor,
         Ingestors::Taxila::VuMaterialIngestor,
-        Ingestors::Taxila::HanIngestor,
+        Ingestors::Taxila::RdnlIngestor,
+        Ingestors::Taxila::HanIngestor
       ]
     end
 
