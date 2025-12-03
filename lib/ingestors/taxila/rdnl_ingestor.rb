@@ -54,11 +54,6 @@ module Ingestors
           event.source = 'RDNL'
           event.timezone = 'Amsterdam'
           event.set_default_times
-          puts event.title
-          puts event.url
-          puts event.start
-          puts event.end
-          puts event.venue
 
           add_event(event)
         rescue Exception => e
