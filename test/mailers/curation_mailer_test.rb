@@ -250,3 +250,71 @@ class CurationMailerTest < ActionMailer::TestCase
     end
   end
 end
+
+class ContentProvidersWithBrokenScrapersTest < ActionMailer::TestCase
+  setup do
+    @cutoff = 1.week.ago
+    @user = users(:regular_user)
+    @provider = ContentProvider.create!(title: 'Goblet', user: @user, url: 'http://www.google.com#1')
+    @provider_2 = ContentProvider.create!(title: 'Two', user: @user, url: 'http://www.google.com#1')
+    @params = {title: 'my_title', description: 'my_description', url: 'http://www.google.com#1', user: @user}
+  end
+
+  test "excludes providers with no events and no materials" do
+    result = ContentProvider.with_broken_scrapers(["Goblet"], @cutoff)
+    assert_empty result
+  end
+
+  test "includes provider only with events all before cutoff" do
+    @provider.events.create!(@params.merge({updated_at: 2.weeks.ago}))
+    @provider.events.create!(@params.merge({updated_at: 3.weeks.ago}))
+    result = ContentProvider.with_broken_scrapers(["Goblet"], @cutoff)
+    assert_includes result, @provider
+  end
+
+  test "excludes provider with any event after cutoff" do
+    @provider.events.create!(@params.merge({updated_at: 2.days.ago}))
+    @provider.events.create!(@params.merge({updated_at: 2.weeks.ago}))
+    result = ContentProvider.with_broken_scrapers(["Goblet"], @cutoff)
+    refute_includes result, @provider
+  end
+
+  test "includes provider only with materials all before cutoff" do
+    @provider.materials.create!(@params.merge({updated_at: 2.weeks.ago}))
+    @provider.materials.create!(@params.merge({updated_at: 3.weeks.ago}))
+    result = ContentProvider.with_broken_scrapers(["Goblet"], @cutoff)
+    assert_includes result, @provider
+  end
+
+  test "excludes provider with any material after cutoff" do
+    @provider.materials.create!(@params.merge({updated_at: 2.days.ago}))
+    @provider.materials.create!(@params.merge({updated_at: 2.weeks.ago}))
+    result = ContentProvider.with_broken_scrapers(["Goblet"], @cutoff)
+    refute_includes result, @provider
+  end
+
+  test "includes provider with both events and materials all before cutoff" do
+    @provider.events.create!(@params.merge({updated_at: 2.weeks.ago}))
+    @provider.events.create!(@params.merge({updated_at: 3.weeks.ago}))
+    @provider.materials.create!(@params.merge({updated_at: 2.weeks.ago}))
+    @provider.materials.create!(@params.merge({updated_at: 3.weeks.ago}))
+    result = ContentProvider.with_broken_scrapers(["Goblet"], @cutoff)
+    assert_includes result, @provider
+  end
+
+  test "excludes provider with mixed cases where one event or material is too new" do
+    @provider.events.create!(@params.merge({updated_at: 2.days.ago}))
+    @provider.events.create!(@params.merge({updated_at: 2.weeks.ago}))
+    @provider.materials.create!(@params.merge({updated_at: 2.weeks.ago}))
+    result = ContentProvider.with_broken_scrapers(["Goblet"], @cutoff)
+    refute_includes result, @provider
+  end
+
+  test "filters correctly by title" do
+    @provider.events.create!(@params.merge({updated_at: 2.weeks.ago}))
+    @provider_2.events.create!(@params.merge({updated_at: 2.weeks.ago}))
+    result = ContentProvider.with_broken_scrapers(["Goblet"], @cutoff)
+    assert_includes result, @provider
+    refute_includes result, @provider_b
+  end
+end

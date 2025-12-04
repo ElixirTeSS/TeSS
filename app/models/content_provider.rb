@@ -161,4 +161,15 @@ class ContentProvider < ApplicationRecord
     editors.each { |item| remove_editor(item) if !editors_list.include?(item) }
   end
 
+  def self.with_broken_scrapers(source_names, cut_off_time)
+    ContentProvider
+      .left_joins(%i[events materials])
+      .where(title: source_names)
+      .group("content_providers.id")
+      .having('(COUNT(events.id) > 0 OR COUNT(materials.id) > 0)')
+      .having('(COUNT(events.id) = 0 OR MAX(events.updated_at) < :cutoff)', cutoff: cut_off_time)
+      .having('(COUNT(materials.id) = 0 OR MAX(materials.updated_at) < :cutoff)', cutoff: cut_off_time)
+      .to_a
+      .uniq
+  end
 end
