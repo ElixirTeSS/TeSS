@@ -253,8 +253,7 @@ class MaterialsControllerTest < ActionController::TestCase
           date_published: test_material.date_published,
           doi: test_material.doi,
           subsets: test_material.subsets,
-          person_links_attributes: test_material.person_links.where(role: 'author').map { |pl| { role: 'author', person_attributes: { first_name: pl.person.first_name, last_name: pl.person.last_name, orcid: pl.person.orcid } } },
-          contributors: test_material.contributors,
+          person_links_attributes: test_material.person_links.map { |pl| { role: pl.role, person_attributes: { first_name: pl.person.first_name, last_name: pl.person.last_name, orcid: pl.person.orcid } } },
           prerequisites: test_material.prerequisites,
           syllabus: test_material.syllabus,
           learning_objectives: test_material.learning_objectives
@@ -300,7 +299,15 @@ class MaterialsControllerTest < ActionController::TestCase
       assert_equal expected_author.last_name, author_json['last_name'], "author #{i} last_name not matched"
       assert_equal expected_author.full_name, author_json['full_name'], "author #{i} full_name not matched"
     end
-    assert_equal test_material.contributors, JSON.parse(response.body)['contributors'], 'contributors not matched'
+    # Contributors is now an array of objects with id, first_name, last_name, orcid, full_name
+    response_contributors = JSON.parse(response.body)['contributors']
+    assert_equal test_material.contributors.size, response_contributors.size, 'contributors count not matched'
+    response_contributors.each_with_index do |contributor_json, i|
+      expected_contributor = test_material.contributors[i]
+      assert_equal expected_contributor.first_name, contributor_json['first_name'], "contributor #{i} first_name not matched"
+      assert_equal expected_contributor.last_name, contributor_json['last_name'], "contributor #{i} last_name not matched"
+      assert_equal expected_contributor.full_name, contributor_json['full_name'], "contributor #{i} full_name not matched"
+    end
     assert_equal test_material.subsets, JSON.parse(response.body)['subsets'], 'subsets not matched'
     assert_equal test_material.prerequisites, JSON.parse(response.body)['prerequisites'], 'prerequisites not matched'
     assert_equal test_material.syllabus, JSON.parse(response.body)['syllabus'], 'syllabus not matched'

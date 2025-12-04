@@ -10,7 +10,22 @@ material_with_optionals_author2:
   person: thomas_edison
   role: author
 
+material_with_optionals_contributor1:
+  resource: material_with_optionals (Material)
+  person: dr_dre
+  role: contributor
+
 youtube_video_material_author:
   resource: youtube_video_material (Material)
   person: saskia
   role: author
+
+youtube_video_material_contributor1:
+  resource: youtube_video_material (Material)
+  person: robert_andrews
+  role: contributor
+
+youtube_video_material_contributor2:
+  resource: youtube_video_material (Material)
+  person: munazah_andrabi
+  role: contributor

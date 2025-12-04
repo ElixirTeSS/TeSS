@@ -6,7 +6,7 @@ json.extract! @material, :id, :title, :url, :description,
 
               :doi, :licence, :version, :status,
 
-              :contact, :contributors,
+              :contact,
 
               :difficulty_level, :target_audience, :prerequisites, :syllabus, :learning_objectives, :subsets,
 
@@ -22,6 +22,7 @@ json.collections @material.collections.collect { |x| { title: x[:title], id: x[:
 json.events @material.events.collect { |x| { title: x[:title], id: x[:id] } }
 
 json.authors @material.authors.collect { |a| { id: a.id, first_name: a.first_name, last_name: a.last_name, orcid: a.orcid, full_name: a.full_name } }
+json.contributors @material.contributors.collect { |c| { id: c.id, first_name: c.first_name, last_name: c.last_name, orcid: c.orcid, full_name: c.full_name } }
 
 json.external_resources do
   @material.external_resources.each do |external_resource|

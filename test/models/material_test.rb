@@ -61,7 +61,7 @@ class MaterialTest < ActiveSupport::TestCase
 
     assert_not_nil m.contributors, 'old contributors is nil.'
     assert_equal 1, m.contributors.size, 'old contributors size not matched.'
-    assert_equal 'Dr Dre', m.contributors[0], 'old contributors[0] not matched.'
+    assert_equal 'Dr Dre', m.contributors[0].full_name, 'old contributors[0] not matched.'
 
     assert_equal " * None\n * Nothing at all\n", m.prerequisites, 'old prerequisites not matched.'
     assert_equal '1. Overview\  2. The main part\  3. Summing up', m.syllabus, 'old syllabus not matched.'
@@ -128,7 +128,7 @@ class MaterialTest < ActiveSupport::TestCase
 
     assert_not_nil m2.contributors, 'new contributors is nil.'
     assert_equal 1, m2.contributors.size, 'new contributors size not matched.'
-    assert_equal 'Prof. Stephen Hawking', m2.contributors[0], 'new contributors[0] not matched.'
+    assert_equal 'Prof. Stephen Hawking', m2.contributors[0].full_name, 'new contributors[0] not matched.'
 
     assert_equal 'Bring your enthusiasm', m2.prerequisites, 'new prerequisites not matched.'
     assert_equal "1. Overview\  2. The main part\  3. Summary", m2.syllabus, 'new syllabus not matched.'
@@ -173,13 +173,13 @@ class MaterialTest < ActiveSupport::TestCase
     @material.authors = ['John Doe', 'Jane Smith']
     @material.save!
     @material.reload
-    
+
     assert_equal 2, @material.authors.size
     john = @material.authors.find { |a| a.last_name == 'Doe' }
     assert_not_nil john
     assert_equal 'John', john.first_name
     assert_equal 'Doe', john.last_name
-    
+
     jane = @material.authors.find { |a| a.last_name == 'Smith' }
     assert_not_nil jane
     assert_equal 'Jane', jane.first_name
@@ -193,7 +193,7 @@ class MaterialTest < ActiveSupport::TestCase
     ]
     @material.save!
     @material.reload
-    
+
     assert_equal 2, @material.authors.size
     john = @material.authors.find { |a| a.last_name == 'Doe' }
     assert_not_nil john
@@ -203,11 +203,11 @@ class MaterialTest < ActiveSupport::TestCase
   test 'should set authors from array of Person objects' do
     person1 = Person.create!(first_name: 'Alice', last_name: 'Wonder')
     person2 = Person.create!(first_name: 'Bob', last_name: 'Builder')
-    
+
     @material.authors = [person1, person2]
     @material.save!
     @material.reload
-    
+
     assert_equal 2, @material.authors.size
     assert @material.authors.include?(person1)
     assert @material.authors.include?(person2)
@@ -217,11 +217,50 @@ class MaterialTest < ActiveSupport::TestCase
     @material.authors = ['Madonna', 'Prince']
     @material.save!
     @material.reload
-    
+
     assert_equal 2, @material.authors.size
     madonna = @material.authors.find { |a| a.last_name == 'Madonna' }
     assert_not_nil madonna
     assert_equal '', madonna.first_name
+  end
+
+  test 'should set contributors from array of strings (legacy API support)' do
+    @material.contributors = ['John Doe', 'Jane Smith']
+    @material.save!
+    @material.reload
+
+    assert_equal 2, @material.contributors.size
+    john = @material.contributors.find { |c| c.last_name == 'Doe' }
+    assert_not_nil john
+    assert_equal 'John', john.first_name
+    assert_equal 'Doe', john.last_name
+  end
+
+  test 'should set contributors from array of hashes' do
+    @material.contributors = [
+      { first_name: 'John', last_name: 'Doe', orcid: '0000-0001-1234-5678' },
+      { first_name: 'Jane', last_name: 'Smith' }
+    ]
+    @material.save!
+    @material.reload
+
+    assert_equal 2, @material.contributors.size
+    john = @material.contributors.find { |c| c.last_name == 'Doe' }
+    assert_not_nil john
+    assert_equal '0000-0001-1234-5678', john.orcid
+  end
+
+  test 'should set contributors from array of Person objects' do
+    person1 = Person.create!(first_name: 'Alice', last_name: 'Wonder')
+    person2 = Person.create!(first_name: 'Bob', last_name: 'Builder')
+
+    @material.contributors = [person1, person2]
+    @material.save!
+    @material.reload
+
+    assert_equal 2, @material.contributors.size
+    assert @material.contributors.include?(person1)
+    assert @material.contributors.include?(person2)
   end
 
   test 'should delete material when content provider deleted' do

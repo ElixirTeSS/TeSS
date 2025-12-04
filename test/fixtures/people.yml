@@ -24,3 +24,18 @@ saskia:
   first_name: Saskia
   last_name: Lawson-Tovey
   orcid: null
+
+dr_dre:
+  first_name: Dr
+  last_name: Dre
+  orcid: null
+
+robert_andrews:
+  first_name: Robert
+  last_name: Andrews
+  orcid: null
+
+munazah_andrabi:
+  first_name: Munazah
+  last_name: Andrabi
+  orcid: null
