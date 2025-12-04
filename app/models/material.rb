@@ -21,6 +21,7 @@ class Material < ApplicationRecord
   include HasDifficultyLevel
   include HasEdamTerms
   include InSpace
+  include HasPeople
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -33,7 +34,9 @@ class Material < ApplicationRecord
       text :authors do
         authors.map(&:full_name)
       end
-      text :contributors
+      text :contributors do
+        contributors.map(&:full_name)
+      end
       text :target_audience
       text :keywords
       text :resource_type
@@ -66,7 +69,9 @@ class Material < ApplicationRecord
       string :keywords, multiple: true
       string :fields, multiple: true
       string :resource_type, multiple: true
-      string :contributors, multiple: true
+      string :contributors, multiple: true do
+        contributors.map(&:full_name)
+      end
       string :content_provider do
         content_provider.try(:title)
       end
@@ -106,45 +111,9 @@ class Material < ApplicationRecord
 
   has_many :stars, as: :resource, dependent: :destroy
 
-  has_many :person_links, as: :resource, dependent: :destroy
-  has_many :people, through: :person_links
-  has_many :authors, -> { where(person_links: { role: 'author' }) }, through: :person_links, source: :person
-  accepts_nested_attributes_for :person_links, allow_destroy: true, reject_if: :all_blank
-
-  # Custom setter for authors that accepts both strings (legacy API) and Person objects
-  def authors=(value)
-    return if value.nil?
-    
-    # Convert to array if needed
-    authors_array = Array(value).reject(&:blank?)
-    
-    # Remove existing author links
-    person_links.where(role: 'author').destroy_all
-    
-    authors_array.each do |author|
-      if author.is_a?(String)
-        # Legacy format: parse string into first_name and last_name
-        parts = author.strip.split(/\s+/, 2)
-        first_name = parts.length > 1 ? parts[0] : ''
-        last_name = parts.length > 1 ? parts[1] : parts[0]
-        
-        person = Person.find_or_create_by!(first_name: first_name, last_name: last_name)
-        person_links.build(person: person, role: 'author')
-      elsif author.is_a?(Hash)
-        # Hash format from API
-        first_name = author[:first_name] || author['first_name'] || ''
-        last_name = author[:last_name] || author['last_name'] || ''
-        orcid = author[:orcid] || author['orcid']
-        
-        person = Person.find_or_create_by!(first_name: first_name, last_name: last_name)
-        person.update!(orcid: orcid) if orcid.present?
-        person_links.build(person: person, role: 'author')
-      elsif author.is_a?(Person)
-        # Person object
-        person_links.build(person: author, role: 'author')
-      end
-    end
-  end
+  # Use HasPeople concern for authors and contributors
+  has_person_role :authors, role_key: 'author'
+  has_person_role :contributors, role_key: 'contributor'
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
@@ -155,10 +124,10 @@ class Material < ApplicationRecord
   validates :other_types, presence: true, if: proc { |m| m.resource_type.include?('other') }
   validates :keywords, length: { maximum: 20 }
 
-  clean_array_fields(:keywords, :fields, :contributors,
+  clean_array_fields(:keywords, :fields,
                      :target_audience, :resource_type, :subsets)
 
-  update_suggestions(:keywords, :contributors, :target_audience,
+  update_suggestions(:keywords, :target_audience,
                      :resource_type)
 
   def description=(desc)
@@ -257,7 +226,7 @@ class Material < ApplicationRecord
       xml.tag!('dc:title', title)
       xml.tag!('dc:description', description)
       authors.each { |a| xml.tag!('dc:creator', a.full_name) }
-      contributors.each { |a| xml.tag!('dc:contributor', a) }
+      contributors.each { |c| xml.tag!('dc:contributor', c.full_name) }
       xml.tag!('dc:publisher', content_provider.title) if content_provider
 
       xml.tag!('dc:format', 'text/html')

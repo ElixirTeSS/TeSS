@@ -60,7 +60,7 @@
 <% end %>
 
 <%= display_attribute(resource, :authors) { |values| values.map(&:full_name).join(', ') } if resource.respond_to?(:authors) %>
-<%= display_attribute(resource, :contributors) { |values| values.join(', ') } if resource.respond_to?(:contributors) %>
+<%= display_attribute(resource, :contributors) { |values| values.map(&:full_name).join(', ') } if resource.respond_to?(:contributors) %>
 <%= display_attribute(resource, :remote_created_date) if resource.respond_to?(:remote_created_date) %>
 <%= display_attribute(resource, :remote_updated_date) if resource.respond_to?(:remote_updated_date) %>
 <%= display_attribute(resource, :scientific_topics) { |values| values.map { |x| x.preferred_label }.join(', ') } %>

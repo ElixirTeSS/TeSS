@@ -136,7 +136,6 @@ material_with_optionals:
   date_modified: 2021-07-13
   date_published: 2021-07-14
   subsets: [ 'https://training.com/material/023/part-one', 'https://training.com/material/023/part-two' ]
-  contributors: [ 'Dr Dre' ]
   prerequisites: " * None\n * Nothing at all\n"
   syllabus: '1. Overview\  2. The main part\  3. Summing up'
   learning_objectives: ' - Understand the new materials model'
@@ -169,9 +168,6 @@ youtube_video_material:
   keywords:
     - REDCap
     - " sensitive data"
-  contributors:
-    - Robert Andrews
-    - Munazah Andrabi
   resource_type:
     - Video
   learning_objectives: In this video, I will show you how to create and run data quality checks in REDCap.

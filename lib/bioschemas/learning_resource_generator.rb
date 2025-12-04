@@ -22,7 +22,13 @@ module Bioschemas
         author_hash
       } 
     }
-    property :contributor, -> (material) { material.contributors.map { |p| person(p) } }
+    property :contributor, -> (material) { 
+      material.contributors.map { |c| 
+        contributor_hash = { "@type" => "Person", "name" => c.full_name }
+        contributor_hash["@id"] = "https://orcid.org/#{c.orcid}" if c.orcid.present?
+        contributor_hash
+      } 
+    }
     property :provider, -> (material) { provider(material) }
     property :audience, -> (material) {
       material.target_audience.map { |audience| { '@type' => 'Audience', 'audienceType' => audience } }
