@@ -94,11 +94,11 @@ module Ingestors
       event_to_add = OpenStruct.new.tap do |event|
         assign_basic_info(event, calevent)
         assign_time_info(event, calevent)
-        assign_location_info(event, calevent.location)
+        assign_location_info(event, calevent)
       end
       add_event(event_to_add)
     rescue StandardError => e
-      @messages << "process_calevent failed with: #{e.message}"
+      Rails.logger.error("#{e.class}: #{e.message}")
     end
 
     # Assigns to event: url, title, description, keywords.
@@ -118,11 +118,13 @@ module Ingestors
     end
 
     # Assigns to event: venue, online, city.
-    def assign_location_info(event, location)
+    def assign_location_info(event, calevent)
+      location = calevent.location
       return if location.blank?
 
       event.venue = location.to_s
-      event.online = location.downcase.include?('online')
+      event.online = calevent.description.include?('zoom')
+      event.presence = calevent.description.include?('zoom') ? :hybrid : :onsite # can do best, but sufficient for now
       event.city, event.postcode, event.country = process_location(location)
     end
 
