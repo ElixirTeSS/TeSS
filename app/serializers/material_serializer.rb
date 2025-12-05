@@ -18,6 +18,4 @@ class MaterialSerializer < ApplicationSerializer
   has_many :nodes
   has_many :collections
   has_many :events
-  has_many :authors, serializer: PersonSerializer
-  has_many :contributors, serializer: PersonSerializer
 end
