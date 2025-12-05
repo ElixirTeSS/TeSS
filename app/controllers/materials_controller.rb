@@ -181,7 +181,6 @@ class MaterialsController < ApplicationController
                                      external_resources: %i[url title],
                                      event_ids: [], locked_fields: [])
   end
-  end
 
   def set_learning_path_navigation
     return unless params[:lp]
