@@ -1,7 +1,9 @@
 require 'uri'
 
 class Profile < ApplicationRecord
-  auto_strip_attributes :firstname, :surname, :website, :orcid, squish: false
+  include HasOrcid
+
+  auto_strip_attributes :firstname, :surname, :website, squish: false
   belongs_to :user, inverse_of: :profile
 
   before_validation :normalize_orcid
@@ -23,11 +25,6 @@ class Profile < ApplicationRecord
 
   def full_name
     "#{firstname} #{surname}".strip
-  end
-
-  def orcid_url
-    return nil if orcid.blank?
-    "#{OrcidValidator::ORCID_PREFIX}#{orcid}"
   end
 
   def merge(*others)
@@ -65,11 +62,6 @@ class Profile < ApplicationRecord
   end
 
   private
-
-  def normalize_orcid
-    return if orcid.blank?
-    self.orcid = orcid.strip.sub(OrcidValidator::ORCID_DOMAIN_REGEX, '')
-  end
 
   def check_public
     public ? self.type = 'Trainer' : self.type = 'Profile'
