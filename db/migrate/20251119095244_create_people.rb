@@ -5,6 +5,7 @@ class CreatePeople < ActiveRecord::Migration[7.2]
       t.string :family_name
       t.string :full_name
       t.string :orcid
+      t.references :profile, null: true, foreign_key: true
 
       t.timestamps
     end
