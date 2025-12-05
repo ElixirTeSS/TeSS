@@ -39,4 +39,45 @@ class PersonTest < ActiveSupport::TestCase
     person = people(:horace)
     assert_respond_to person, :person_links
   end
+
+  test 'should allow optional profile association' do
+    person = Person.create(full_name: 'John Doe')
+    assert person.valid?
+    assert_nil person.profile
+  end
+
+  test 'should automatically link to profile by orcid on save' do
+    profile = profiles(:trainer_one_profile)
+    # The trainer_one_profile has orcid: https://orcid.org/000-0002-1825-0097
+    person = Person.create(full_name: 'Josiah Carberry', orcid: 'https://orcid.org/000-0002-1825-0097')
+    assert person.valid?
+    assert_equal profile, person.profile
+  end
+
+  test 'should automatically link to profile using short orcid format' do
+    profile = profiles(:trainer_one_profile)
+    # The trainer_one_profile has orcid: https://orcid.org/000-0002-1825-0097
+    person = Person.create(full_name: 'Josiah Carberry', orcid: '000-0002-1825-0097')
+    assert person.valid?
+    assert_equal profile, person.profile
+  end
+
+  test 'should not link to profile if no matching orcid' do
+    person = Person.create(full_name: 'John Doe', orcid: '0000-0001-9999-9999')
+    assert person.valid?
+    assert_nil person.profile
+  end
+
+  test 'should not override existing profile link' do
+    profile1 = profiles(:trainer_one_profile)
+    profile2 = profiles(:admin_trainer_profile)
+
+    # First, manually set a profile
+    person = Person.create(full_name: 'John Doe', profile: profile2)
+    assert_equal profile2, person.profile
+
+    # Even if we update the ORCID to match profile1, it should keep profile2
+    person.update(orcid: 'https://orcid.org/000-0002-1825-0097')
+    assert_equal profile2, person.profile
+  end
 end
