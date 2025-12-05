@@ -42,7 +42,7 @@ module Ingestors
           material.date_published = get_column row, 'Published'
           material.date_modified = get_column row, 'Modified'
           material.difficulty_level = process_competency row, 'Competency'
-          material.person_links_attributes = process_authors(process_array(row, 'Authors'))
+          material.authors = process_array row, 'Authors'
           material.contributors = process_array row, 'Contributors'
           material.fields = process_array row, 'Fields'
           material.target_audience = process_array row, 'Audiences'
@@ -64,21 +64,6 @@ module Ingestors
     end
 
     private
-
-    def process_authors(authors_array)
-      return [] if authors_array.blank?
-
-      authors_array.map do |author_name|
-        # Store the full name directly without trying to parse it
-        {
-          role: 'author',
-          person_attributes: {
-            full_name: author_name.to_s.strip,
-            orcid: nil
-          }
-        }
-      end
-    end
 
     def process_competency(row, header)
       row[header].nil? ? 'notspecified' : row[header]
