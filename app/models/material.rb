@@ -32,10 +32,10 @@ class Material < ApplicationRecord
       text :contact
       text :doi
       text :authors do
-        authors.map(&:full_name)
+        authors.map(&:display_name)
       end
       text :contributors do
-        contributors.map(&:full_name)
+        contributors.map(&:display_name)
       end
       text :target_audience
       text :keywords
@@ -57,7 +57,7 @@ class Material < ApplicationRecord
       # other fields
       string :title
       string :authors, multiple: true do
-        authors.map(&:full_name)
+        authors.map(&:display_name)
       end
       string :scientific_topics, multiple: true do
         scientific_topics_and_synonyms
@@ -70,7 +70,7 @@ class Material < ApplicationRecord
       string :fields, multiple: true
       string :resource_type, multiple: true
       string :contributors, multiple: true do
-        contributors.map(&:full_name)
+        contributors.map(&:display_name)
       end
       string :content_provider do
         content_provider.try(:title)
@@ -225,8 +225,8 @@ class Material < ApplicationRecord
              'xsi:schemaLocation' => 'http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd') do
       xml.tag!('dc:title', title)
       xml.tag!('dc:description', description)
-      authors.each { |a| xml.tag!('dc:creator', a.full_name) }
-      contributors.each { |c| xml.tag!('dc:contributor', c.full_name) }
+      authors.each { |a| xml.tag!('dc:creator', a.display_name) }
+      contributors.each { |c| xml.tag!('dc:contributor', c.display_name) }
       xml.tag!('dc:publisher', content_provider.title) if content_provider
 
       xml.tag!('dc:format', 'text/html')

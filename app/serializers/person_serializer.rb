@@ -1,3 +1,8 @@
 class PersonSerializer < ApplicationSerializer
-  attributes :id, :first_name, :last_name, :orcid, :full_name
+  attributes :id, :given_name, :family_name, :full_name, :orcid
+
+  # Return display_name for API responses
+  attribute :name do |person|
+    person.display_name
+  end
 end

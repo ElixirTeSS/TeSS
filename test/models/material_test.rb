@@ -10,8 +10,8 @@ class MaterialTest < ActiveSupport::TestCase
                                  url: 'http://goog.e.com',
                                  user: @user,
                                  person_links_attributes: [
-                                   { role: 'author', person_attributes: { first_name: 'Horace', last_name: 'Smith' } },
-                                   { role: 'author', person_attributes: { first_name: 'Flo', last_name: 'Johnson' } }
+                                   { role: 'author', person_attributes: { full_name: 'Horace Smith', given_name: 'Horace', family_name: 'Smith' } },
+                                   { role: 'author', person_attributes: { full_name: 'Flo Johnson', given_name: 'Flo', family_name: 'Johnson' } }
                                  ],
                                  doi: 'https://doi.org/10.1011/RSE.2019.55',
                                  licence: 'CC-BY-NC-SA-4.0',
@@ -57,11 +57,11 @@ class MaterialTest < ActiveSupport::TestCase
 
     assert_not_nil m.authors, 'old authors is nil.'
     assert_equal 2, m.authors.size, 'old authors size not matched.'
-    assert_equal 'Thomas Edison', m.authors[1].full_name, 'old authors[1] not matched.'
+    assert_equal 'Thomas Edison', m.authors[1].display_name, 'old authors[1] not matched.'
 
     assert_not_nil m.contributors, 'old contributors is nil.'
     assert_equal 1, m.contributors.size, 'old contributors size not matched.'
-    assert_equal 'Dr Dre', m.contributors[0].full_name, 'old contributors[0] not matched.'
+    assert_equal 'Dr Dre', m.contributors[0].display_name, 'old contributors[0] not matched.'
 
     assert_equal " * None\n * Nothing at all\n", m.prerequisites, 'old prerequisites not matched.'
     assert_equal '1. Overview\  2. The main part\  3. Summing up', m.syllabus, 'old syllabus not matched.'
@@ -80,7 +80,7 @@ class MaterialTest < ActiveSupport::TestCase
     m.date_published = '2021-06-14'
     m.subsets = []
     m.person_links.where(role: 'author').destroy_all
-    person = Person.create!(first_name: 'Nikolai', last_name: 'Tesla')
+    person = Person.create!(full_name: 'Nikolai Tesla', given_name: 'Nikolai', family_name: 'Tesla')
     m.person_links.create!(person: person, role: 'author')
     m.contributors = ['Prof. Stephen Hawking']
     m.prerequisites = 'Bring your enthusiasm'
@@ -124,11 +124,11 @@ class MaterialTest < ActiveSupport::TestCase
 
     assert_not_nil m2.authors, 'new authors is nil.'
     assert_equal 1, m2.authors.size, 'new authors size not matched.'
-    assert_equal 'Nikolai Tesla', m2.authors[0].full_name, 'new authors[0] not matched.'
+    assert_equal 'Nikolai Tesla', m2.authors[0].display_name, 'new authors[0] not matched.'
 
     assert_not_nil m2.contributors, 'new contributors is nil.'
     assert_equal 1, m2.contributors.size, 'new contributors size not matched.'
-    assert_equal 'Prof. Stephen Hawking', m2.contributors[0].full_name, 'new contributors[0] not matched.'
+    assert_equal 'Prof. Stephen Hawking', m2.contributors[0].display_name, 'new contributors[0] not matched.'
 
     assert_equal 'Bring your enthusiasm', m2.prerequisites, 'new prerequisites not matched.'
     assert_equal "1. Overview\  2. The main part\  3. Summary", m2.syllabus, 'new syllabus not matched.'
@@ -148,14 +148,14 @@ class MaterialTest < ActiveSupport::TestCase
   test 'should add authors via nested attributes' do
     assert_equal 2, @material.authors.size
     assert @material.update(person_links_attributes: [
-      { role: 'author', person_attributes: { first_name: 'John', last_name: 'Doe' } },
-      { role: 'author', person_attributes: { first_name: 'Jane', last_name: 'Smith', orcid: '0000-0002-1234-5678' } }
+      { role: 'author', person_attributes: { full_name: 'John Doe', given_name: 'John', family_name: 'Doe' } },
+      { role: 'author', person_attributes: { full_name: 'Jane Smith', given_name: 'Jane', family_name: 'Smith', orcid: '0000-0002-1234-5678' } }
     ])
     @material.reload
     assert_equal 4, @material.authors.size
-    jane = @material.authors.find { |a| a.first_name == 'Jane' }
+    jane = @material.authors.find { |a| a.given_name == 'Jane' }
     assert_not_nil jane
-    assert_equal 'Jane Smith', jane.full_name
+    assert_equal 'Jane Smith', jane.display_name
     assert_equal '0000-0002-1234-5678', jane.orcid
   end
 
@@ -175,34 +175,32 @@ class MaterialTest < ActiveSupport::TestCase
     @material.reload
 
     assert_equal 2, @material.authors.size
-    john = @material.authors.find { |a| a.last_name == 'Doe' }
+    john = @material.authors.find { |a| a.display_name == 'John Doe' }
     assert_not_nil john
-    assert_equal 'John', john.first_name
-    assert_equal 'Doe', john.last_name
+    assert_equal 'John Doe', john.full_name
 
-    jane = @material.authors.find { |a| a.last_name == 'Smith' }
+    jane = @material.authors.find { |a| a.display_name == 'Jane Smith' }
     assert_not_nil jane
-    assert_equal 'Jane', jane.first_name
-    assert_equal 'Smith', jane.last_name
+    assert_equal 'Jane Smith', jane.full_name
   end
 
   test 'should set authors from array of hashes' do
     @material.authors = [
-      { first_name: 'John', last_name: 'Doe', orcid: '0000-0001-1234-5678' },
-      { first_name: 'Jane', last_name: 'Smith' }
+      { given_name: 'John', family_name: 'Doe', orcid: '0000-0001-1234-5678' },
+      { full_name: 'Jane Smith' }
     ]
     @material.save!
     @material.reload
 
     assert_equal 2, @material.authors.size
-    john = @material.authors.find { |a| a.last_name == 'Doe' }
+    john = @material.authors.find { |a| a.family_name == 'Doe' }
     assert_not_nil john
     assert_equal '0000-0001-1234-5678', john.orcid
   end
 
   test 'should set authors from array of Person objects' do
-    person1 = Person.create!(first_name: 'Alice', last_name: 'Wonder')
-    person2 = Person.create!(first_name: 'Bob', last_name: 'Builder')
+    person1 = Person.create!(full_name: 'Alice Wonder', given_name: 'Alice', family_name: 'Wonder')
+    person2 = Person.create!(full_name: 'Bob Builder', given_name: 'Bob', family_name: 'Builder')
 
     @material.authors = [person1, person2]
     @material.save!
@@ -219,9 +217,9 @@ class MaterialTest < ActiveSupport::TestCase
     @material.reload
 
     assert_equal 2, @material.authors.size
-    madonna = @material.authors.find { |a| a.last_name == 'Madonna' }
+    madonna = @material.authors.find { |a| a.full_name == 'Madonna' }
     assert_not_nil madonna
-    assert_equal '', madonna.first_name
+    assert_equal 'Madonna', madonna.display_name
   end
 
   test 'should set contributors from array of strings (legacy API support)' do
@@ -230,29 +228,28 @@ class MaterialTest < ActiveSupport::TestCase
     @material.reload
 
     assert_equal 2, @material.contributors.size
-    john = @material.contributors.find { |c| c.last_name == 'Doe' }
+    john = @material.contributors.find { |c| c.display_name == 'John Doe' }
     assert_not_nil john
-    assert_equal 'John', john.first_name
-    assert_equal 'Doe', john.last_name
+    assert_equal 'John Doe', john.full_name
   end
 
   test 'should set contributors from array of hashes' do
     @material.contributors = [
-      { first_name: 'John', last_name: 'Doe', orcid: '0000-0001-1234-5678' },
-      { first_name: 'Jane', last_name: 'Smith' }
+      { given_name: 'John', family_name: 'Doe', orcid: '0000-0001-1234-5678' },
+      { full_name: 'Jane Smith' }
     ]
     @material.save!
     @material.reload
 
     assert_equal 2, @material.contributors.size
-    john = @material.contributors.find { |c| c.last_name == 'Doe' }
+    john = @material.contributors.find { |c| c.family_name == 'Doe' }
     assert_not_nil john
     assert_equal '0000-0001-1234-5678', john.orcid
   end
 
   test 'should set contributors from array of Person objects' do
-    person1 = Person.create!(first_name: 'Alice', last_name: 'Wonder')
-    person2 = Person.create!(first_name: 'Bob', last_name: 'Builder')
+    person1 = Person.create!(full_name: 'Alice Wonder', given_name: 'Alice', family_name: 'Wonder')
+    person2 = Person.create!(full_name: 'Bob Builder', given_name: 'Bob', family_name: 'Builder')
 
     @material.contributors = [person1, person2]
     @material.save!

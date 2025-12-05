@@ -67,18 +67,13 @@ module Ingestors
 
     def process_authors(authors_array)
       return [] if authors_array.blank?
-      
+
       authors_array.map do |author_name|
-        # Parse name into first and last name
-        name_parts = author_name.to_s.strip.split(/\s+/, 2)
-        first_name = name_parts.length > 1 ? name_parts[0] : ''
-        last_name = name_parts.length > 1 ? name_parts[1] : name_parts[0]
-        
+        # Store the full name directly without trying to parse it
         {
           role: 'author',
           person_attributes: {
-            first_name: first_name,
-            last_name: last_name,
+            full_name: author_name.to_s.strip,
             orcid: nil
           }
         }

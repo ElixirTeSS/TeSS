@@ -1,41 +1,47 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 horace:
-  first_name: Horace
-  last_name: Smith
+  full_name: Horace Smith
+  given_name: Horace
+  family_name: Smith
   orcid: 0000-0001-2345-6789
 
 flo:
-  first_name: Flo
-  last_name: Johnson
+  full_name: Flo Johnson
+  given_name: Flo
+  family_name: Johnson
   orcid: null
 
 nicolai_tesla:
-  first_name: Nicolai
-  last_name: Tesla
+  full_name: Nicolai Tesla
+  given_name: Nicolai
+  family_name: Tesla
   orcid: null
 
 thomas_edison:
-  first_name: Thomas
-  last_name: Edison
+  full_name: Thomas Edison
+  given_name: Thomas
+  family_name: Edison
   orcid: null
 
 saskia:
-  first_name: Saskia
-  last_name: Lawson-Tovey
+  full_name: Saskia Lawson-Tovey
+  given_name: Saskia
+  family_name: Lawson-Tovey
   orcid: null
 
 dr_dre:
-  first_name: Dr
-  last_name: Dre
+  full_name: Dr Dre
   orcid: null
 
 robert_andrews:
-  first_name: Robert
-  last_name: Andrews
+  full_name: Robert Andrews
+  given_name: Robert
+  family_name: Andrews
   orcid: null
 
 munazah_andrabi:
-  first_name: Munazah
-  last_name: Andrabi
+  full_name: Munazah Andrabi
+  given_name: Munazah
+  family_name: Andrabi
   orcid: null
