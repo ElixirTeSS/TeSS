@@ -52,7 +52,7 @@ class RDNLIngestorTest < ActiveSupport::TestCase
     assert_equal 'RDNL', event.source
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'DANS-KNAW', event.venue
-    assert_equal Time.zone.parse('Thu, 5 Feb 2026 09:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Tue, 10 Feb 2026 09:00:00.000000000 UTC +00:00'), event.start
     assert_equal Time.zone.parse('Mon, 26 Mar 2026 17:00:00.000000000 UTC +00:00'), event.end
   end
 end
