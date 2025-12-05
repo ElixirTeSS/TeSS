@@ -363,8 +363,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_29_164644) do
     t.datetime "updated_at", null: false
     t.text "description"
     t.string "target_audience", default: [], array: true
-    t.string "authors", default: [], array: true
-    t.string "contributors", default: [], array: true
     t.string "licence", default: "notspecified"
     t.string "difficulty_level", default: "notspecified"
     t.integer "content_provider_id"
@@ -427,6 +425,30 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_29_164644) do
     t.index ["field"], name: "index_ontology_term_links_on_field"
     t.index ["resource_type", "resource_id"], name: "index_ontology_term_links_on_resource_type_and_resource_id"
     t.index ["term_uri"], name: "index_ontology_term_links_on_term_uri"
+  end
+
+  create_table "people", force: :cascade do |t|
+    t.string "given_name"
+    t.string "family_name"
+    t.string "full_name"
+    t.string "orcid"
+    t.bigint "profile_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["orcid"], name: "index_people_on_orcid"
+    t.index ["profile_id"], name: "index_people_on_profile_id"
+  end
+
+  create_table "person_links", force: :cascade do |t|
+    t.string "resource_type", null: false
+    t.bigint "resource_id", null: false
+    t.bigint "person_id", null: false
+    t.string "role", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_person_links_on_person_id"
+    t.index ["resource_type", "resource_id", "person_id", "role"], name: "index_person_links_uniqueness", unique: true
+    t.index ["resource_type", "resource_id"], name: "index_person_links_on_resource"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -680,6 +702,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_29_164644) do
   add_foreign_key "node_links", "nodes"
   add_foreign_key "nodes", "users"
   add_foreign_key "source_filters", "sources"
+  add_foreign_key "people", "profiles"
+  add_foreign_key "person_links", "people"
   add_foreign_key "sources", "content_providers"
   add_foreign_key "sources", "spaces"
   add_foreign_key "sources", "users"
