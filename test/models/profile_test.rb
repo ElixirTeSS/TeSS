@@ -21,7 +21,7 @@ class ProfileTest < ActiveSupport::TestCase
     assert_equal 'Space', profile.firstname
     assert_equal 'Spaceson', profile.surname
     assert_equal 'http://website.com', profile.website
-    assert_equal 'https://orcid.org/0000-0002-1825-0097', profile.orcid
+    assert_equal '0000-0002-1825-0097', profile.orcid
   end
 
   test 'validates orcid' do
@@ -46,11 +46,8 @@ class ProfileTest < ActiveSupport::TestCase
 
     # check validation of valid orcid - fixes non-secure scheme
     assert profile.update(orcid: 'http://orcid.org/0000-0002-1825-0097')
-    assert_equal 'https://orcid.org/0000-0002-1825-0097', profile.orcid
-
-    # check validation of invalid orcid - scheme and host only
-    refute profile.update(orcid: 'https://orcid.org/')
-    assert_equal "ORCID isn't a valid ORCID identifier", profile.errors.full_messages_for(:orcid).first
+    assert_equal '0000-0002-1825-0097', profile.orcid
+    assert_equal 'https://orcid.org/0000-0002-1825-0097', profile.orcid_url
 
     # check validation of invalid orcid, preserves original value
     refute profile.update(orcid: 'some junk')
@@ -90,5 +87,59 @@ class ProfileTest < ActiveSupport::TestCase
     # address that times out is OK
     assert profile.update(website: 'http://slowhost.com')
     refute profile.errors.added?(:website, 'is not accessible')
+  end
+
+  test 'assigns authenticated orcid' do
+    profile = users(:regular_user).profile
+    refute profile.orcid.present?
+    refute profile.orcid_authenticated
+
+    assert profile.authenticate_orcid('0009-0006-0987-5702')
+
+    assert_empty profile.errors
+    assert_equal '0009-0006-0987-5702', profile.orcid
+    assert profile.orcid_authenticated
+  end
+
+  test 'assigns authenticated orcid and de-authenticates other profiles that use it' do
+    existing_profile = profiles(:trainer_one_profile)
+    profile = users(:regular_user).profile
+    assert existing_profile.orcid.present?
+    assert existing_profile.orcid_authenticated
+    refute profile.orcid.present?
+    refute profile.orcid_authenticated
+    existing_orcid = existing_profile.orcid
+
+    profile.authenticate_orcid(existing_orcid)
+
+    assert_empty profile.errors
+    assert_equal existing_orcid, profile.orcid
+    assert profile.orcid_authenticated
+    existing_profile.reload
+    assert_equal existing_orcid, existing_profile.orcid
+    refute existing_profile.orcid_authenticated
+  end
+
+  test 'assigns authenticated orcid if existing orcid is not authenticated' do
+    existing_profile = profiles(:trainer_two_profile)
+    profile = users(:regular_user).profile
+    assert existing_profile.orcid.present?
+    refute existing_profile.orcid_authenticated
+    refute profile.orcid.present?
+    refute profile.orcid_authenticated
+
+    profile.authenticate_orcid(existing_profile.orcid)
+
+    assert_empty profile.errors
+    assert existing_profile.orcid.present?
+    refute existing_profile.orcid_authenticated
+    assert profile.orcid.present?
+    assert profile.orcid_authenticated
+  end
+
+  test 'orcid_url' do
+    assert_nil Profile.new.orcid_url
+    assert_nil Profile.new(orcid: '').orcid_url
+    assert_equal 'https://orcid.org/0009-0006-0987-5702', Profile.new(orcid: '0009-0006-0987-5702').orcid_url
   end
 end

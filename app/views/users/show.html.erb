@@ -50,7 +50,10 @@
         <% if @user.profile.orcid.blank? %>
           <span class="empty">None specified</span>
         <% else %>
-          <%= link_to @user.profile.orcid, @user.profile.orcid, rel: 'nofollow', target: '_blank' %>
+          <%= orcid_link(@user.profile) %>
+          <% if current_user == @user && !@user.profile.orcid_authenticated? %>
+            <%= button_to t('orcid.authenticate'), authenticate_orcid_path, class: 'btn btn-default' %>
+          <% end %>
         <% end %>
       </p>
 
