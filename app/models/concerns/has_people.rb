@@ -35,20 +35,28 @@ module HasPeople
 
     people_array.each do |person_data|
       if person_data.is_a?(String)
-        # Legacy format: parse string into first_name and last_name
-        parts = person_data.strip.split(/\s+/, 2)
-        first_name = parts.length > 1 ? parts[0] : ''
-        last_name = parts.length > 1 ? parts[1] : parts[0]
-
-        person = Person.find_or_create_by!(first_name: first_name, last_name: last_name)
+        # Legacy format: store as full_name directly
+        person = Person.find_or_create_by!(full_name: person_data.strip)
         person_links.build(person: person, role: role)
       elsif person_data.is_a?(Hash)
-        # Hash format from API
-        first_name = person_data[:first_name] || person_data['first_name'] || ''
-        last_name = person_data[:last_name] || person_data['last_name'] || ''
+        # Hash format from API - supports both legacy (first_name/last_name) and new (given_name/family_name) field names
+        given_name = person_data[:given_name] || person_data['given_name'] || person_data[:first_name] || person_data['first_name']
+        family_name = person_data[:family_name] || person_data['family_name'] || person_data[:last_name] || person_data['last_name']
+        full_name = person_data[:full_name] || person_data['full_name']
         orcid = person_data[:orcid] || person_data['orcid']
 
-        person = Person.find_or_create_by!(first_name: first_name, last_name: last_name)
+        # Prefer full_name if provided, otherwise use given_name and family_name
+        if full_name.present?
+          person = Person.find_or_create_by!(full_name: full_name)
+        elsif given_name.present? && family_name.present?
+          person = Person.find_or_create_by!(given_name: given_name, family_name: family_name)
+        elsif given_name.present? || family_name.present?
+          # If only one part is provided, treat it as full_name
+          person = Person.find_or_create_by!(full_name: "#{given_name}#{family_name}".strip)
+        else
+          next # Skip if no name data provided
+        end
+
         person.update!(orcid: orcid) if orcid.present?
         person_links.build(person: person, role: role)
       elsif person_data.is_a?(Person)

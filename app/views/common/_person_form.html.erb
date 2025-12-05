@@ -8,11 +8,15 @@
   <%= hidden_field_tag("#{field_name_prefix}[person_attributes][id]", person_link&.person&.id) %>
 
   <div class="form-group">
-    <%= text_field_tag "#{field_name_prefix}[person_attributes][first_name]", person_link&.person&.first_name, :class => 'form-control person-first-name', :placeholder => 'First Name' %>
+    <%= text_field_tag "#{field_name_prefix}[person_attributes][full_name]", person_link&.person&.full_name, :class => 'form-control person-full-name', :placeholder => 'Full Name' %>
   </div>
 
   <div class="form-group">
-    <%= text_field_tag "#{field_name_prefix}[person_attributes][last_name]", person_link&.person&.last_name, :class => 'form-control person-last-name', :placeholder => 'Last Name' %>
+    <%= text_field_tag "#{field_name_prefix}[person_attributes][given_name]", person_link&.person&.given_name, :class => 'form-control person-given-name', :placeholder => 'Given Name (optional)' %>
+  </div>
+
+  <div class="form-group">
+    <%= text_field_tag "#{field_name_prefix}[person_attributes][family_name]", person_link&.person&.family_name, :class => 'form-control person-family-name', :placeholder => 'Family Name (optional)' %>
   </div>
 
   <div class="form-group">

@@ -61,7 +61,6 @@ module Ingestors
         material.status = 'active'
         material.doi = input['doi'] unless metadata['doi'].nil?
         material.person_links_attributes = []
-        material.contributors = []
         unless metadata.nil?
           material.title = metadata['title'] unless metadata['title'].nil?
           material.description = process_description metadata['description']
@@ -69,16 +68,11 @@ module Ingestors
           material.licence = metadata['license']['id'] unless metadata.dig('license', 'id').nil?
           unless metadata['creators'].nil?
             metadata['creators'].each do |c|
-              # Parse name into first and last name
-              name_parts = c['name'].to_s.strip.split(/\s+/, 2)
-              first_name = name_parts.length > 1 ? name_parts[0] : ''
-              last_name = name_parts.length > 1 ? name_parts[1] : name_parts[0]
-              
+              # Store the full name directly without trying to parse it
               material.person_links_attributes << {
                 role: 'author',
                 person_attributes: {
-                  first_name: first_name,
-                  last_name: last_name,
+                  full_name: c['name'].to_s.strip,
                   orcid: c['orcid']
                 }
               }
@@ -86,8 +80,14 @@ module Ingestors
           end
           unless metadata['contributors'].nil?
             metadata['contributors'].each do |c|
-              entry = c['type'].nil? ? c['name'] : "#{c['name']} (type: #{c['type']})"
-              material.contributors << entry
+              # Store the full name directly without trying to parse it
+              material.person_links_attributes << {
+                role: 'contributor',
+                person_attributes: {
+                  full_name: c['name'].to_s.strip,
+                  orcid: c['orcid']
+                }
+              }
             end
           end
 
