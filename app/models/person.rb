@@ -1,4 +1,6 @@
 class Person < ApplicationRecord
+  include HasOrcid
+
   belongs_to :profile, optional: true
   has_many :person_links, dependent: :destroy
 
@@ -23,16 +25,11 @@ class Person < ApplicationRecord
 
   # Automatically link to a Profile if one exists with a matching ORCID
   def link_to_profile_by_orcid
-    return if orcid.blank?
-    return if profile_id.present? # Already linked
-
-    # Normalize the ORCID for matching - Profile stores it as a full URL
-    normalized_orcid = orcid.strip
-    if normalized_orcid =~ OrcidValidator::ORCID_ID_REGEX
-      normalized_orcid = "#{OrcidValidator::ORCID_PREFIX}#{normalized_orcid}"
+    if orcid.blank?
+      self.profile = nil
+    else
+      matching_profile = Profile.find_by(orcid: orcid)
+      self.profile = matching_profile if matching_profile.present?
     end
-
-    matching_profile = Profile.find_by(orcid: normalized_orcid)
-    self.profile = matching_profile if matching_profile.present?
   end
 end
