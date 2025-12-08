@@ -36,6 +36,8 @@
                 include_blank: false %>
   <% end %>
 
+  <%= f.input :keyword_filter, hint: 'Comma separated list of keywords that must be present. Leave empty to disable filter.', label: 'Keyword Filter' %>
+
   <div class="form-group actions">
     <%= f.submit(class: 'btn btn-primary') %>
     <%= link_to t('.cancel', default: t("helpers.links.cancel")),
