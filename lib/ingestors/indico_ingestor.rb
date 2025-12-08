@@ -106,7 +106,7 @@ module Ingestors
       event.url = calevent.url.to_s
       event.title = calevent.summary.to_s
       event.description = calevent.description.to_s
-      event.keywords = process_keywords(calevent.categories)
+      event.keywords = calevent.categories.flatten
       event.contact = calevent.contact.join(', ')
     end
 
@@ -125,7 +125,6 @@ module Ingestors
       event.venue = location.to_s
       event.online = calevent.description.include?('zoom')
       event.presence = calevent.description.include?('zoom') ? :hybrid : :onsite # can do best, but sufficient for now
-      event.city, event.postcode, event.country = process_location(location)
     end
 
     # Extracts the timezone identifier (TZID) from an iCalendar event's dtstart field.
@@ -137,21 +136,6 @@ module Ingestors
       return nil if tzid.nil?
 
       tzid.is_a?(Array) ? tzid.first.to_s : tzid.to_s
-    end
-
-    # Returns an array of 3 location characteristics: suburb, postcode, country
-    # Everything is nil if location.blank or location is online
-    def process_location(location)
-      return [location['suburb'], location['postcode'], location['country']] if location.is_a?(Array)
-
-      [nil, nil, nil]
-    end
-
-    # Returns keywords from the `CATEGORIES` ICal field
-    def process_keywords(categories)
-      return [] if categories.blank?
-
-      categories.flatten.compact.map { |cat| cat.to_s.strip }
     end
   end
 end
