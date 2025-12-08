@@ -757,4 +757,22 @@ class EventTest < ActiveSupport::TestCase
     refute event.valid?
     assert event.errors.added?(:keywords, :too_long, count: 20)
   end
+
+  test 'blank address fields are removed from event bioschemas json' do
+    e = Event.new(city: 'Manchester', country: '', event_types: ['workshops_and_courses'])
+    bioschemas = e.to_bioschemas.first.generate
+    address = bioschemas[:hasCourseInstance].first[:location]['address']
+    assert_equal 'Manchester', address['addressLocality']
+    assert_equal ['@type', 'addressLocality'].sort, address.keys.sort
+  end
+
+  test 'de-duplicates provider in event bioschemas json' do
+    e = Event.new(content_provider: content_providers(:goblet), host_institutions: 'Goblet',
+                  event_types: ['workshops_and_courses'])
+
+    bioschemas = e.to_bioschemas.first.generate
+    assert_equal 1, bioschemas[:provider].length
+    assert_equal 'Goblet', bioschemas[:provider].first['name']
+    assert_equal 'http://mygoblet.org', bioschemas[:provider].first['url']
+  end
 end

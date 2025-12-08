@@ -38,7 +38,7 @@ class CollaborationsController < ApplicationController
       if name.end_with?('_id')
         c = name.chomp('_id').classify.constantize rescue NameError
         if c.method_defined?(:collaborations)
-          @resource = c.friendly.find(value)
+          @resource = c.respond_to?(:friendly) ? c.friendly.find(value) : c.find(value)
         end
       end
     end

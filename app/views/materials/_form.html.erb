@@ -13,7 +13,7 @@
   <% # Required Fields    -%>
 
   <!-- Field: Title -->
-  <%= f.input :title, as: :string, field_lock: true, input_html: { title: t('materials.hints.title'), placeholder: t('materials.hints.title') } %>
+  <%= f.input :title, as: :string, field_lock: true, input_html: { title: t('materials.hints.title') } %>
 
   <!-- Field: URL -->
   <%= render partial: 'common/url_checker',
@@ -64,7 +64,7 @@
 
   <!-- Field: Provider -->
   <%= f.input :content_provider_id, collection: current_user.get_editable_providers, label_method: :title, value_method: :id,
-              include_blank: true, field_lock: true, label: t('materials.hints.providers'),
+              include_blank: true, field_lock: true, input_html: { title: t('materials.hints.providers') },
               visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Authors -->

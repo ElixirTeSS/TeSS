@@ -115,7 +115,7 @@ class Event < ApplicationRecord
   has_one :llm_interaction, inverse_of: :event, dependent: :destroy
   accepts_nested_attributes_for :llm_interaction, allow_destroy: true
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
-  has_one :link_monitor, as: :lcheck, dependent: :destroy
+  has_one :link_monitor, as: :lcheck, dependent: :destroy, inverse_of: :link_checkable
   has_many :collection_items, as: :resource
   has_many :collections, through: :collection_items
   has_many :event_materials, dependent: :destroy

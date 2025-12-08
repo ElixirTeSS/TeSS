@@ -1,7 +1,7 @@
 class LearningPathPolicy < ScrapedResourcePolicy
 
   def show?
-    @record.public? || manage?
+    @record.public? || update? || manage?
   end
 
   def update?

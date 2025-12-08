@@ -32,7 +32,7 @@ module Bioschemas
       LicenceDictionary.instance.lookup_value(material.licence, 'reference') ||
         LicenceDictionary.instance.lookup_value(material.licence, 'url') ||
         material.licence
-    }
+    }, condition: -> (material) { material.licence != 'notspecified' }
     property :educationalLevel, :difficulty_level,
              condition: -> (material) { material.difficulty_level != 'notspecified' }
     property :competencyRequired, -> (material) {
