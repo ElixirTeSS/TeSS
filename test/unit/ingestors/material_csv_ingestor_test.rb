@@ -232,13 +232,11 @@ class MaterialCsvIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::MaterialCsvIngestor.new
 
     # Stub a method that will raise an error
-    def ingestor.get_column(*)
-      raise CSV::MalformedCSVError.new('test failure', 22)
+    ingestor.stub(:get_column, -> (*) { raise CSV::MalformedCSVError.new('test failure', 11) }) do
+      ingestor.read(source.url)
     end
 
-    ingestor.read(source.url)
-
-    assert_includes ingestor.messages.last, 'parse table failed with: test failure'
+    assert_equal ingestor.messages.last, 'parse table failed with: test failure in line 11.'
   end
 
   private
