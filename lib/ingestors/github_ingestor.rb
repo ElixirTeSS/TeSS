@@ -23,7 +23,7 @@ module Ingestors
 
     GITHUB_API_BASE = 'https://api.github.com/repos'
     CACHE_PREFIX = 'github_ingestor_'
-    TTL = 1.week # time to live after the cache is deleted
+    TTL = 1.week # cache expiration time (time to live before cache expires)
 
     def self.config
       {
@@ -57,7 +57,7 @@ module Ingestors
         add_material to_material(repo_data)
       end
     rescue StandardError => e
-      @messages << "#{self.class.name} read failed, #{e.message}"
+      Rails.logger.error("#{e.class}: read() failed, #{e.message}")
     end
 
     private
@@ -94,13 +94,9 @@ module Ingestors
     # url: url to open
     # ttl: time-to-live in seconds (default 7 days)
     def cache_fetch(key, url)
-      Rails.cache.fetch(key, expires_in: TTL) do
+      Rails.cache.fetch(key, expires_in: TTL, skip_nil: true) do
         JSON.parse(open_url(url).read)
       end
-    rescue StandardError => e
-      @messages << "#{self.class.name} cache_fetch failed for #{url}, #{e.message}"
-      yield if block_given?
-      nil
     end
 
     # Sets material hash keys and values and add them to material
@@ -137,15 +133,15 @@ module Ingestors
       Nokogiri::HTML(response.body)
     end
 
-    # DEFINITION – Opens the GitHub homepage, fetches the 3 first >25 char <p> tags'text
+    # DEFINITION – Opens the GitHub homepage, fetches the 3 first >50 char <p> tags'text
     # and joins them with a 'Read more...' link at the end of the description
     # Some of the first <p> tags were not descriptive, thus skipping them
     def fetch_definition(doc, url)
       desc = ''
       round = 3
       doc.css('p').each do |p|
-        p_txt = p&.text&.strip&.gsub(/\s+/, ' ')
-        next if (p_txt.length < 50) || round.zero?
+        p_txt = p&.text&.strip&.gsub(/\s+/, ' ') || ''
+        next if p_txt.length < 50 || round.zero?
 
         desc = "#{desc}\n#{p_txt}"
         round -= 1
@@ -187,6 +183,8 @@ module Ingestors
     # CONTRIBUTORS – Opens contributors API address and returns list of contributors
     def fetch_contributors(contributors_url, full_name)
       contributors = cache_fetch("#{CACHE_PREFIX}contributors_#{full_name.gsub('/', '_')}", contributors_url)
+      return [] unless contributors
+
       contributors.map { |c| (c['login']) }
     end
 
@@ -200,7 +198,7 @@ module Ingestors
       # ... any tag with id containing "prereq" (EN) or "prerreq" (ES)
       prereq_paragraphs = fetch_prerequisites_from_id_or_class(doc, prereq_paragraphs) if prereq_paragraphs.empty?
 
-      prereq_paragraphs&.join("\n")&.gsub(/\n\n+/, "\n")&.to_s&.strip
+      prereq_paragraphs&.join("\n")&.gsub(/\n\n+/, "\n")&.strip || ''
     end
 
     def fetch_prerequisites_from_h(doc, prereq_paragraphs)

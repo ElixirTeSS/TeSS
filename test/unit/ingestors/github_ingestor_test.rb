@@ -21,7 +21,6 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
           decorator_ref.open_url_counter + 1
         )
 
-        # puts("open_url has been used, total #{decorator_ref.open_url_counter}")
         super(url, **kwargs)
       end
     end
@@ -157,7 +156,7 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
       ingestor.open_url("| touch #{file}")
     rescue StandardError
     end
-    `ls #{dir}` # This is needed or the `exist?` check below seems to return a stale result
+    Dir.children(dir) # This is needed or the `exist?` check below seems to return a stale result
     refute File.exist?(file)
   end
 
@@ -322,17 +321,17 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
   end
 
   test 'std errors when exception is raised' do
-    @ingestor.stub(:get_sources, ->(_url) { raise StandardError, 'test failure' }) do
-      @ingestor.send(:read, 'https://github.com/example')
-    end
-    assert_includes @ingestor.instance_variable_get(:@messages).last,
-                    'Ingestors::GithubIngestor read failed, test failure'
+    @ingestor.stub(:get_sources, ->(*) { raise StandardError, 'test failure' }) do
+      mock_logger = Minitest::Mock.new
+      mock_logger.expect(:error, nil, ['StandardError: read() failed, test failure'])
 
-    @ingestor.stub(:open_url, ->(_url) { raise StandardError, 'test failure' }) do
-      @ingestor.send(:cache_fetch, 'key', 'https://github.com/example')
+      Rails.stub(:logger, mock_logger) do
+        @ingestor.send(:read, 'https://github.com/example')
+      end
+      mock_logger.verify
     end
-    assert_includes @ingestor.instance_variable_get(:@messages).last,
-                    'Ingestors::GithubIngestor cache_fetch failed for https://github.com/example, test failure'
+
+    assert true, 'Mock verification passed'
   end
 
   test 'prereq_node? returns true when id includes prereq' do

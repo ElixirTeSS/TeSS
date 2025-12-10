@@ -77,7 +77,7 @@ module Ingestors
       raise 'Too many redirects' if limit.zero?
 
       https_url = to_https(url) # some `homepage` were http
-      response = HTTParty.get(https_url, follow_redirects: true, headers: { 'User-Agent' => config[:user_agent] })
+      response = HTTParty.get(https_url, follow_redirects: true, headers: { 'User-Agent' => config[:user_agent] || 'TeSS Bot' })
       return https_url unless response.headers['content-type']&.include?('html')
 
       doc = Nokogiri::HTML(response.body)
