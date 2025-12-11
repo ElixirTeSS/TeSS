@@ -101,15 +101,15 @@ module Ingestors
 
     # Sets material hash keys and values and add them to material
     def to_material(repo_data) # rubocop:disable Metrics/AbcSize
-      homepage_nil_or_empty = nil_or_empty? repo_data['homepage']
-      url = homepage_nil_or_empty ? repo_data['html_url'] : repo_data['homepage']
+      github_io_homepage = github_io_homepage? repo_data['homepage']
+      url = github_io_homepage ? repo_data['homepage'] : repo_data['html_url']
       redirected_url = get_redirected_url(url)
-      doc = fetch_homepage_doc(redirected_url)
+      html = get_html(redirected_url)
 
       material = OpenStruct.new
       material.title = repo_data['name'].titleize
       material.url = url
-      material.description = homepage_nil_or_empty ? repo_data['description'] : fetch_definition(doc, redirected_url)
+      material.description = github_io_homepage ? fetch_definition(html, redirected_url) : repo_data['description']
       material.keywords = repo_data['topics']
       material.licence = fetch_licence(repo_data['license'])
       material.status = repo_data['archived'] ? 'Archived' : 'Active'
@@ -119,16 +119,19 @@ module Ingestors
       material.date_published = repo_data['pushed_at']
       material.date_modified = repo_data['updated_at']
       material.contributors = fetch_contributors(repo_data['contributors_url'], repo_data['full_name'])
-      material.resource_type = homepage_nil_or_empty ? ['Github Repository'] : ['Github Page']
-      material.prerequisites = fetch_prerequisites(doc)
+      material.resource_type = github_io_homepage ? ['Github Page'] : ['Github Repository']
+      material.prerequisites = fetch_prerequisites(html)
       material
     end
 
-    def nil_or_empty?(repo_data)
-      repo_data.nil? || repo_data.empty?
+    def github_io_homepage?(homepage)
+      return false if homepage.nil? || homepage.empty?
+
+      url = URI(homepage)
+      url.host&.downcase&.end_with?('.github.io')
     end
 
-    def fetch_homepage_doc(url)
+    def get_html(url)
       response = HTTParty.get(url, follow_redirects: true, headers: { 'User-Agent' => config[:user_agent] })
       Nokogiri::HTML(response.body)
     end
@@ -136,10 +139,10 @@ module Ingestors
     # DEFINITION – Opens the GitHub homepage, fetches the 3 first >50 char <p> tags'text
     # and joins them with a 'Read more...' link at the end of the description
     # Some of the first <p> tags were not descriptive, thus skipping them
-    def fetch_definition(doc, url)
+    def fetch_definition(html, url)
       desc = ''
       round = 3
-      doc.css('p').each do |p|
+      html.css('p').each do |p|
         p_txt = p&.text&.strip&.gsub(/\s+/, ' ') || ''
         next if p_txt.length < 50 || round.zero?
 
@@ -189,20 +192,20 @@ module Ingestors
     end
 
     # PREREQUISITES – From the homepage HTML, looks for <p> tags which are children of ...
-    def fetch_prerequisites(doc)
+    def fetch_prerequisites(html)
       prereq_paragraphs = []
 
       # ... any heading tag (h1–h6) or span tag with text "prereq" (EN) or "prerreq" (ES)
-      prereq_paragraphs = fetch_prerequisites_from_h(doc, prereq_paragraphs)
+      prereq_paragraphs = fetch_prerequisites_from_h(html, prereq_paragraphs)
 
       # ... any tag with id containing "prereq" (EN) or "prerreq" (ES)
-      prereq_paragraphs = fetch_prerequisites_from_id_or_class(doc, prereq_paragraphs) if prereq_paragraphs.empty?
+      prereq_paragraphs = fetch_prerequisites_from_id_or_class(html, prereq_paragraphs) if prereq_paragraphs.empty?
 
       prereq_paragraphs&.join("\n")&.gsub(/\n\n+/, "\n")&.strip || ''
     end
 
-    def fetch_prerequisites_from_h(doc, prereq_paragraphs)
-      doc.xpath('//h1|//h2|//h3|//h4|//h5|//h6|//span').each do |h|
+    def fetch_prerequisites_from_h(html, prereq_paragraphs)
+      html.xpath('//h1|//h2|//h3|//h4|//h5|//h6|//span').each do |h|
         next unless h.text =~ /prereq|prerreq/i # if prereq in text
 
         paragraph = h.xpath('following-sibling::*')
@@ -212,8 +215,8 @@ module Ingestors
       prereq_paragraphs
     end
 
-    def fetch_prerequisites_from_id_or_class(doc, prereq_paragraphs)
-      doc.xpath('//*[@id]').each do |node|
+    def fetch_prerequisites_from_id_or_class(html, prereq_paragraphs)
+      html.xpath('//*[@id]').each do |node|
         next unless prereq_node?(node)
 
         extract_following_paragraphs(node, prereq_paragraphs)
