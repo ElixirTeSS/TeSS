@@ -40,7 +40,7 @@
         </li>
       <% end %>
 
-      <% if !TeSS::Config.feature['disabled'].include?('topics') && is_admin || is_curator %>
+      <% if !TeSS::Config.feature['disabled'].include?('topics') && (is_admin || is_curator) %>
         <li class="dropdown-item">
           <%= link_to curate_topic_suggestions_path,
                       title: t('menu.user.assign_scientific_topics',

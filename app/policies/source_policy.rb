@@ -27,7 +27,7 @@ class SourcePolicy < ScrapedResourcePolicy
   private
 
   def administration? # Can edit sources for any content provider
-    curators_and_admin || user_has_role?(:admin)
+    curators_and_admin
   end
 
   def user_management?
