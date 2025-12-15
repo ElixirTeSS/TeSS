@@ -27,6 +27,10 @@
         <div class="search-results-count">
           <%= pluralize(resources.total, resource_type.model_name.human.downcase ) %> found
         </div>
+        <div class="search-results-per-page form-inline pull-right">
+            <label for="per_page"><%= t('sidebar.per_page') %></label>
+            <%= select_tag('per_page', per_page_options_for_select, onchange: 'apply_per_page()', class: 'font-size-sm') %>
+        </div>
       <% end %>
     </div>
   </div>

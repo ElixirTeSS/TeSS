@@ -50,6 +50,15 @@ function redirect_to_sort_url(){
     window.location.replace(url.toString());
 }
 
+function apply_per_page(){
+    url = new URL(window.location.href);
+    url.searchParams.set(
+        "per_page",
+        $("#per_page").val()
+    );
+    window.location.replace(url.toString());
+}
+
 function redirect_with_updated_search(param, paramVal) {
     url = new URL(window.location.href);
     // special case for empty range types
