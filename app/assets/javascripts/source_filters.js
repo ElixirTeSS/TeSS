@@ -11,7 +11,7 @@ var SourceFilters = {
     // This is just cosmetic. The actual removal is done by rails,
     //   by virtue of the hidden checkbox being checked when the label is clicked.
     delete: function () {
-        $(this).parents('.source-filter-form').fadeOut();
+        $(this).parents('.source-filter-form').fadeOut().find("input[name$='[_destroy]']").val("true");
     }
 };
 
@@ -19,5 +19,5 @@ document.addEventListener("turbolinks:load", function() {
     $('#source-filters')
         .on('click', '#add-source-filter-btn', SourceFilters.add)
         .on('click', '#add-source-filter-btn-label', SourceFilters.add)
-        .on('change', '.delete-source-filter-btn input.destroy-attribute', SourceFilters.delete);
+        .on('click', '.delete-source-filter-btn', SourceFilters.delete);
 });
