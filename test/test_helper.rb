@@ -44,7 +44,7 @@ class ActiveSupport::TestCase
   parallelize(workers: :number_of_processors)
 
   parallelize_setup do |worker|
-    TeSS::Config._redis = Redis.new(url: ENV.fetch('REDIS_TEST_URL') { "redis://localhost:6379/#{2 + worker}" })
+    TeSS::Config._redis = Redis.new(url: TeSS::Config.redis_url.sub(/\/\d+\Z/, "/#{2 + worker}"))
   end
 
   setup do
