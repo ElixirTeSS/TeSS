@@ -41,45 +41,41 @@
 //= require ol
 //= require ol-geocoder
 
-function redirect_to_sort_url(){
-    url = new URL(window.location.href);
-    url.searchParams.set(
-        "sort",
-        $("#sort").find(":selected").val()
-    );
-    window.location.replace(url.toString());
-}
+const Index = {
+    applySorting: function () {
+        Index.setParam("sort", $("#sort").val());
+    },
 
-function apply_per_page(){
-    url = new URL(window.location.href);
-    url.searchParams.set(
-        "per_page",
-        $("#per_page").val()
-    );
-    window.location.replace(url.toString());
-}
+    applyPerPage: function () {
+        Index.setParam("per_page", $("#per_page").val());
+    },
 
-function redirect_with_updated_search(param, paramVal) {
-    url = new URL(window.location.href);
-    // special case for empty range types
-    if (param == 'start' && paramVal == '/') {
-        url.searchParams.delete(param);
-    } else {
-        url.searchParams.set(param, paramVal);
-    }
-    window.location.replace(url.toString());
-}
+    applyDateParam: function (param, value) {
+        const url = new URL(window.location.href);
+        if (param === 'start' && value === '/') {
+            url.searchParams.delete(param);
+        } else {
+            url.searchParams.set(param, value);
+        }
+        window.location.replace(url.toString());
+    },
 
-function reposition_tiles(container, tileClass){
-    var $container = $("." + container);
+    setParam: function (param, value) {
+        const url = new URL(window.location.href);
+        url.searchParams.set(param, value);
+        window.location.replace(url.toString());
+    },
 
-    $container.imagesLoaded(function () {
-        $container.masonry({
-            // options...
-            itemSelector: "." + tileClass,
-            columnWidth: 20
+    repositionTiles(containerSelector, itemSelector) {
+        const container = $(containerSelector);
+        container.imagesLoaded(function () {
+            container.masonry({
+                // options...
+                itemSelector: itemSelector,
+                columnWidth: 20
+            });
         });
-    });
+    }
 }
 
 // Perform an ajax request to load the calendar and replace the contents
@@ -161,7 +157,7 @@ document.addEventListener("turbolinks:load", function(e) {
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         addTabToFilters(e.target.href.split('#').pop());
         // and reposition masonry tiles
-        reposition_tiles('masonry', 'masonry-brick');
+        Index.repositionTiles('.masonry', '.masonry-brick');
     });
 
     // Manually trigger bootstrap tab history (we should probably remove the dependency and reimplement in a turbolink-compatible way)
@@ -177,12 +173,14 @@ document.addEventListener("turbolinks:load", function(e) {
 
     // Masonry
     $(".nav-tabs a").on("shown.bs.tab", function(e) {
-        reposition_tiles('masonry', 'masonry-brick');
+        Index.repositionTiles('.masonry', '.masonry-brick');
     });
+
     $(window).on("orientationchange", function() {
-        reposition_tiles("masonry", "masonry-brick");
+        Index.repositionTiles('.masonry', '.masonry-brick');
     });
-    reposition_tiles("masonry", "masonry-brick");
+
+    Index.repositionTiles('.masonry', '.masonry-brick');
 
     new Clipboard(".clipboard-btn");
 
