@@ -1,5 +1,4 @@
-<%#<%= simple_form_for (@content_provider ? [@content_provider, @source] : @source), html: { class: 'source', multipart: true } do |f| %>
-<%= simple_form_for (@source), html: { class: 'source', multipart: true } do |f| %>
+<%= simple_form_for (@content_provider ? [@content_provider, @source] : @source), html: { class: 'source', multipart: true } do |f| %>
   <%= render partial: 'common/error_summary', locals: { resource: @source } %>
 
   <% unless @content_provider %>
@@ -41,48 +40,14 @@
 
   <h3>Filters</h3>
 
-  <% f.object.source_filters.load %>
-  <%= 'hi' %>
-  <%= f.object.class %>
-  <%= f.object.persisted? %>
-  <%= f.object.nested_attributes_options %>
-  <%= f.object.association(:source_filters).reader.class %>
-  <%= f.object.source_filters.loaded? %><br>
-  <%= f.object.source_filters.any? %><br>
-  <%= f.object.source_filters.map(&:marked_for_destruction?) %><br>
-  <%= @source.object_id %><br>
-  <%= f.object.object_id %><br>
   <div class="form-group" id="source-filters">
-
-    
-    <% f.object.source_filters.each_with_index do |sf, index| %>
-      <%= fields_for "source[source_filters_attributes][#{index}]", sf do |ff| %>
-        <span>a source exists</span>
-        <%= ff.text_field :filter_value %>
-      <% end %>
-    <% end %>
-    
     <div id="source-filter-list">
-      <% f.simple_fields_for :source_filters do |ff| %>
-        <span>a source exists</span>
-        <%= render partial: 'source_filter_form', locals: { f: ff } %>
-      <% end %>
-    </div>
-
-    <div id="source-filter-list">
-      <% f.fields_for :source_filters, @source.source_filters do |ff| %>
-        <span>a source exists</span>
-        <%= render partial: 'source_filter_form', locals: { f: ff } %>
-      <% end %>
-    </div>
-
-    <% f.object.source_filters.each do |filter| %>
-      <div>
+      <% f.object.source_filters.each do |filter| %>
         <%= f.simple_fields_for :source_filters, filter, child_index: filter.id do |ff| %>
           <%= render partial: 'source_filter_form', locals: { f: ff } %>
         <% end %>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
 
     <a href="#" id="add-source-filter-btn" class="btn btn-icon">
       <i class="icon icon-h4 plus-icon"></i>
@@ -96,10 +61,10 @@
                 sources_path, class: 'btn btn-default' %>
   </div>
 
-  <div id="source-filter-template" style="display: none">
+  <template id="source-filter-template" style="display: none">
     <%= f.simple_fields_for :source_filters, SourceFilter.new, child_index: "REPLACE_ME" do |ff| %>
       <%= render partial: 'source_filter_form', locals: { f: ff } %>
     <% end %>
-  </div>
+  </template>
 
 <% end %>

@@ -1,4 +1,4 @@
-<div class="form-inline source-filter-form">
+<div class="form-inline source-filter-form" data-id-in-filter-list="<%= f.options[:child_index] %>">
   <%= f.input :filter_by, collection: SourceFilter.filter_bies.keys.map { |t| [t.humanize, t] }, include_blank: false %>
 
   <%= f.input :filter_value %>

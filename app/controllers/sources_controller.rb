@@ -30,10 +30,6 @@ class SourcesController < ApplicationController
 
   # GET /sources/1/edit
   def edit
-    puts '------------------'
-    puts 'b'
-    @source.source_filters.all.each { |sf| puts sf.filter_value }
-    puts '------------------'
     authorize @source
   end
 
@@ -78,9 +74,6 @@ class SourcesController < ApplicationController
   # PATCH/PUT /sources/1.json
   def update
     authorize @source
-
-    puts '------------ HI FROM CREATE ------------'
-    puts source_params
 
     respond_to do |format|
       if @source.update(source_params)
