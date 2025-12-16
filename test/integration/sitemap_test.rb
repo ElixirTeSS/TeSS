@@ -3,8 +3,10 @@ require 'test_helper'
 class SitemapTest < ActionDispatch::IntegrationTest
   teardown do
     dir = Rails.root.join('public', 'test_sitemaps')
-    dir.glob('*.xml').each(&:delete)
-    dir.delete
+    if dir.exist?
+      dir.glob('*.xml').each(&:delete)
+      dir.delete
+    end
   end
 
   test 'generates sitemap' do

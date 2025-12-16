@@ -7,7 +7,6 @@ module Fairsharing
       @token_issue_date = Time.new(2022, 12, 1, 16, 7, 18)
       @token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyMjIxMDlhMi0wZWZkLTQ0Y2EtYTYzOC1jNjFmMWZmNmQxYjAiLCJzdWIiOiI4MjI0Iiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNjY5OTEwODM4LCJleHAiOjE2Njk5OTcyMzh9.Dv_E6JiyRSrvoOZMHZeQLiEbqYnsTR0qkyrKyWWqb80'
       @expiry = '1669997238'
-      @redis = Redis.new(url: TeSS::Config.redis_url)
     end
 
     test 'should get token' do
@@ -21,8 +20,8 @@ module Fairsharing
     end
 
     test 'should store token in redis' do
-      assert_nil @redis.hget(Fairsharing::Client::REDIS_KEY, 'expiry')
-      assert_nil @redis.hget(Fairsharing::Client::REDIS_KEY, 'token')
+      assert_nil TeSS::Config.redis.hget(Fairsharing::Client::REDIS_KEY, 'expiry')
+      assert_nil TeSS::Config.redis.hget(Fairsharing::Client::REDIS_KEY, 'token')
 
       VCR.use_cassette('fairsharing/get_token') do
         travel_to(@token_issue_date) do
@@ -30,11 +29,11 @@ module Fairsharing
         end
       end
 
-      assert_equal @expiry, @redis.hget(Fairsharing::Client::REDIS_KEY, 'expiry')
-      assert_equal @token, @redis.hget(Fairsharing::Client::REDIS_KEY, 'token')
+      assert_equal @expiry, TeSS::Config.redis.hget(Fairsharing::Client::REDIS_KEY, 'expiry')
+      assert_equal @token, TeSS::Config.redis.hget(Fairsharing::Client::REDIS_KEY, 'token')
     end
 
-    test 'should re-use token from @redis' do
+    test 'should re-use token from TeSS::Config.redis' do
       set_cached_token('abcdefg', 1_669_997_273)
 
       VCR.use_cassette('fairsharing/get_token') do
@@ -44,11 +43,11 @@ module Fairsharing
         end
       end
 
-      assert_equal '1669997273', @redis.hget(Fairsharing::Client::REDIS_KEY, 'expiry')
-      assert_equal 'abcdefg', @redis.hget(Fairsharing::Client::REDIS_KEY, 'token')
+      assert_equal '1669997273', TeSS::Config.redis.hget(Fairsharing::Client::REDIS_KEY, 'expiry')
+      assert_equal 'abcdefg', TeSS::Config.redis.hget(Fairsharing::Client::REDIS_KEY, 'token')
     end
 
-    test 'should not re-use token from @redis if expired' do
+    test 'should not re-use token from TeSS::Config.redis if expired' do
       set_cached_token('abcdefg', 3.days.ago.to_i)
 
       VCR.use_cassette('fairsharing/get_token') do
@@ -56,8 +55,8 @@ module Fairsharing
         assert_equal @token, token, 'Token should have been renewed'
       end
 
-      assert_equal @expiry, @redis.hget(Fairsharing::Client::REDIS_KEY, 'expiry')
-      assert_equal @token, @redis.hget(Fairsharing::Client::REDIS_KEY, 'token')
+      assert_equal @expiry, TeSS::Config.redis.hget(Fairsharing::Client::REDIS_KEY, 'expiry')
+      assert_equal @token, TeSS::Config.redis.hget(Fairsharing::Client::REDIS_KEY, 'token')
     end
 
     test 'can search' do
@@ -164,8 +163,8 @@ module Fairsharing
     private
 
     def set_cached_token(token = @token, expiry = @expiry)
-      @redis.hset(Fairsharing::Client::REDIS_KEY, 'token', token)
-      @redis.hset(Fairsharing::Client::REDIS_KEY, 'expiry', expiry)
+      TeSS::Config.redis.hset(Fairsharing::Client::REDIS_KEY, 'token', token)
+      TeSS::Config.redis.hset(Fairsharing::Client::REDIS_KEY, 'expiry', expiry)
     end
   end
 end

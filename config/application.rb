@@ -112,6 +112,11 @@ module TeSS
   merge_config(Rails.configuration.tess_defaults.with_indifferent_access, tess_config)
 
   class TessConfig < OpenStruct
+
+    def redis
+      _redis || Redis.new(url: TeSS::Config.redis_url)
+    end
+
     def redis_url
       if Rails.env.test?
         ENV.fetch('REDIS_TEST_URL') { 'redis://localhost:6379/0' }

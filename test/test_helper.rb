@@ -41,9 +41,14 @@ end
 class ActiveSupport::TestCase
   include SchemaHelper
 
+  parallelize(workers: :number_of_processors)
+
+  parallelize_setup do |worker|
+    TeSS::Config._redis = Redis.new(url: ENV.fetch('REDIS_TEST_URL') { "redis://localhost:6379/#{2 + worker}" })
+  end
+
   setup do
-    redis = Redis.new(url: TeSS::Config.redis_url)
-    redis.flushdb
+    TeSS::Config.redis.flushdb
   end
 
   teardown do

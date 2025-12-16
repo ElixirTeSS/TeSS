@@ -321,8 +321,7 @@ class EventTest < ActiveSupport::TestCase
                                     venue: 'A place', city: 'Manchester',
                                     country: @event.country, postcode: @event.postcode })
     event = Event.new(parameters)
-    redis = Redis.new(url: TeSS::Config.redis_url)
-    redis.set(event.address, [45, 45].to_json)
+    TeSS::Config.redis.set(event.address, [45, 45].to_json)
 
     refute event.address.blank?
 

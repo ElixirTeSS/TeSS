@@ -33,7 +33,7 @@ module Fairsharing
     end
 
     def token
-      redis = Redis.new(url: TeSS::Config.redis_url)
+      redis = TeSS::Config.redis
       expiry = redis.hget(REDIS_KEY, 'expiry')
       t = redis.hget(REDIS_KEY, 'token')
       if t && expiry && !Time.at(expiry.to_i).past?

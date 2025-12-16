@@ -18,7 +18,7 @@ class GeocodingWorker
       return
     end
 
-    redis = Redis.new(url: TeSS::Config.redis_url)
+    redis = TeSS::Config.redis
 
     if redis.exists?(location)
       event.geocoding_cache_lookup

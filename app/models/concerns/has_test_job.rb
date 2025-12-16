@@ -2,11 +2,11 @@ module HasTestJob
   extend ActiveSupport::Concern
 
   def test_job_id
-    Redis.new(url: TeSS::Config.redis_url).get(test_job_id_key)
+    TeSS::Config.redis.get(test_job_id_key)
   end
 
   def test_job_id=(job_id)
-    Redis.new(url: TeSS::Config.redis_url).set(test_job_id_key, job_id)
+    TeSS::Config.redis.set(test_job_id_key, job_id)
   end
 
   def test_job_status
