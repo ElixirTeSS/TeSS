@@ -1,0 +1,11 @@
+<div class="form-inline source-filter-form">
+  <%= f.input :filter_by, collection: SourceFilter.filter_bies.keys.map { |t| [t.humanize, t] }, include_blank: false %>
+
+  <%= f.input :filter_value %>
+
+  <%= f.input :filter_mode, collection: SourceFilter.filter_modes.keys.map { |m| [m.humanize, m] }, include_blank: false %>
+
+  <%= f.input :_destroy, as: :hidden %>
+
+  <button type="button" class="btn btn-danger" data-action="click->filters#remove">Remove</button>
+</div>

@@ -35,7 +35,7 @@ module Ingestors
 
     def filter(source)
       keyword_filter = source.keyword_filter.split(',').map(&:strip)
-      @materials = @materials.select { |m| (Array(m.keywords) & keyword_filter).any? }
+      @materials = @materials.select { |m| (Array(m.keywords) & keyword_filter).any? } unless keyword_filter.empty?
     end
 
     def write(user, provider, source: nil)

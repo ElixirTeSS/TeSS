@@ -30,6 +30,10 @@ class SourcesController < ApplicationController
 
   # GET /sources/1/edit
   def edit
+    puts '------------------'
+    puts 'b'
+    @source.source_filters.all.each { |sf| puts sf.filter_value }
+    puts '------------------'
     authorize @source
   end
 
@@ -74,6 +78,10 @@ class SourcesController < ApplicationController
   # PATCH/PUT /sources/1.json
   def update
     authorize @source
+
+    puts '------------ HI FROM CREATE ------------'
+    puts source_params
+
     respond_to do |format|
       if @source.update(source_params)
         @source.create_activity(:update, owner: current_user) if @source.log_update_activity?
@@ -152,11 +160,11 @@ class SourcesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def source_params
-    permitted = %i[url method token default_language enabled keyword_filter]
+    permitted = %i[url method token default_language enabled keyword_filter source_filters]
     permitted << :approval_status if policy(Source).approve?
     permitted << :content_provider_id if policy(Source).index?
 
-    params.require(:source).permit(permitted)
+    params.require(:source).permit(permitted, source_filters_attributes: %i[id filter_mode filter_by filter_value _destroy])
   end
 
   def set_breadcrumbs

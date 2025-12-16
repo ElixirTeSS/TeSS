@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_08_203629) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_09_112056) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -462,6 +462,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_08_203629) do
     t.string "title"
   end
 
+  create_table "source_filters", force: :cascade do |t|
+    t.bigint "source_id", null: false
+    t.string "filter_mode"
+    t.string "filter_by"
+    t.string "filter_value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["source_id"], name: "index_source_filters_on_source_id"
+  end
+
   create_table "sources", force: :cascade do |t|
     t.bigint "content_provider_id"
     t.bigint "user_id"
@@ -665,6 +675,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_08_203629) do
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"
   add_foreign_key "nodes", "users"
+  add_foreign_key "source_filters", "sources"
   add_foreign_key "sources", "content_providers"
   add_foreign_key "sources", "users"
   add_foreign_key "space_roles", "spaces"
