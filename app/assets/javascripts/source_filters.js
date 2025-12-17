@@ -1,24 +1,23 @@
 var SourceFilters = {
+    last_id: function () {
+        var existing_list_item_ids = $(".source-filter-form").map(function (i, c) { return $(c).data("id-in-filter-list") });
+        return Math.max(Math.max.apply(null, existing_list_item_ids) + 1, 0);
+    },
+
     add: function () {
-        var existing_list_item_ids = $("#source-filter-list").children("div").map(function (i, c) { return $(c).data("id-in-filter-list") });
-        var new_id = Math.max(Math.max.apply(null, existing_list_item_ids) + 1, 0);
-        var new_form = $($('#source-filter-template').clone().html().replace(/REPLACE_ME/g, new_id));
+        var new_form = $($('#source-filter-template').clone().html().replace(/REPLACE_ME/g, SourceFilters.last_id()));
         new_form.appendTo('#source-filter-list');
 
         return false; // Stop form being submitted
     },
 
     add_block_filter: function () {
-        var existing_list_item_ids = $("#source-block-list").children("div").map(function (i, c) { return $(c).data("id-in-filter-list") });
-        var new_id = Math.max(Math.max.apply(null, existing_list_item_ids) + 100000, 0);
-        var new_form = $($('#source-filter-template').clone().html().replace(/REPLACE_ME/g, new_id).replace(/allow/, 'block'));
+        var new_form = $($('#source-filter-template').clone().html().replace(/REPLACE_ME/g, SourceFilters.last_id()).replace(/allow/, 'block'));
         new_form.appendTo('#source-block-list');
 
         return false; // Stop form being submitted
     },
 
-    // This is just cosmetic. The actual removal is done by rails,
-    //   by virtue of the hidden checkbox being checked when the label is clicked.
     delete: function () {
         $(this).parents('.source-filter-form').fadeOut().find("input[name$='[_destroy]']").val("true");
     }
