@@ -38,10 +38,10 @@
 
   <%= f.input :keyword_filter, hint: 'Comma separated list of keywords that must be present. Leave empty to disable filter.', label: 'Keyword Filter' %>
 
-  <h3>Filters</h3>
+  <h3><%= t('sources.headings.filters') %></h3>
 
-  <h4>Allow List</h4>
-  <span class="help-block">Only things that match one of the conditions are allowed for import. Everything is allowed for an empty allow list.</span>
+  <h4><%= t('sources.headings.allow_list') %></h4>
+  <span class="help-block"><%= t('sources.hints.allow_list') %></span>
   <div class="form-group" id="source-filters">
     <div id="source-filter-list">
       <% f.object.source_filters.allow.each do |filter| %>
@@ -54,11 +54,11 @@
     <a href="#" id="add-source-filter-btn" class="btn btn-icon">
       <i class="icon icon-h4 plus-icon"></i>
     </a>
-    <span id="add-source-filter-btn-label" class="help-inline-block help-block">Add filter condition</span>
+    <span id="add-source-filter-btn-label" class="help-inline-block help-block"><%= t('sources.hints.add_filter') %></span>
   </div>
 
-  <h4>Block List</h4>
-  <span class="help-block">Everything that matches a filter in the block list is not allowed for import even if it is allowed by the allow list.</span>
+  <h4><%= t('sources.headings.block_list') %></h4>
+  <span class="help-block"><%= t('sources.hints.block_list') %></span>
   <div class="form-group" id="source-block-filters">
     <div id="source-block-list">
       <% f.object.source_filters.block.each do |filter| %>
@@ -71,7 +71,7 @@
     <a href="#" id="add-source-block-filter-btn" class="btn btn-icon">
       <i class="icon icon-h4 plus-icon"></i>
     </a>
-    <span id="add-source-block-filter-btn-label" class="help-inline-block help-block">Add filter condition</span>
+    <span id="add-source-block-filter-btn-label" class="help-inline-block help-block"><%= t('sources.hints.add_filter') %></span>
   </div>
 
 

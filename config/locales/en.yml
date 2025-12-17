@@ -790,10 +790,17 @@ en:
       token: Some ingestion methods require an authentication token, leave blank if you aren't sure.
       enabled: Sources that are not enabled will not be ingested.
       default_language: 'Default language of ingested events/materials'
+      allow_list: Only things that match one of the conditions are allowed for import. Everything is allowed for an empty allow list.
+      block_list: Everything that matches a filter in the block list is not allowed for import even if it is allowed by the allow list.
+      add_filter: Add filter condition
     approval_status:
       not_approved: Not approved
       requested: Approval requested
       approved: Approved
+    headings:
+      filters: Filters
+      allow_list: Allow List
+      block_list: Block List
     prompts:
       default_language: 'Select a default language...'
   scraper:
