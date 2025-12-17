@@ -21,7 +21,7 @@ module Ingestors
     def read(source_url)
       @token = Rails.application.config.secrets.indico_api_token
       @verbose = false
-      sources = get_sources(source_url)
+      sources = parse_sitemap(source_url)
       return if sources.nil?
 
       sources.each do |url|

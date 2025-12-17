@@ -8,7 +8,7 @@ module Ingestors
 
       # Reads either a sitemap.{xml|txt} or a single URL
       # Returns a list of URLs from 1 to n URLs
-      def get_sources(source_url)
+      def parse_sitemap(source_url)
         case source_url.downcase
         when /sitemap(.*)?\.xml\Z/
           parse_xml_sitemap(source_url)
