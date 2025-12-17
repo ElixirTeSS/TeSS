@@ -16,7 +16,9 @@ class StaticControllerTest < ActionController::TestCase
                  'collections': true,
                  'content_providers': true,
                  'trainers': true,
-                 'nodes': true }
+                 'nodes': true,
+                 'spaces': true
+    }
 
     with_settings(feature: features) do
       get :home
@@ -45,7 +47,9 @@ class StaticControllerTest < ActionController::TestCase
                  'collections': false,
                  'content_providers': false,
                  'trainers': false,
-                 'nodes': false }
+                 'nodes': false,
+                 'spaces': false
+    }
 
     with_settings(feature: features) do
       get :home
@@ -151,7 +155,9 @@ class StaticControllerTest < ActionController::TestCase
                  'collections': true,
                  'content_providers': true,
                  'trainers': true,
-                 'nodes': true }
+                 'nodes': true,
+                 'spaces': true
+    }
 
     with_settings(feature: features, site: { tab_order: %w[materials events], directory_tabs: [] }) do
       get :home
