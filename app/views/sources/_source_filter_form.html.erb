@@ -3,7 +3,7 @@
 
   <%= f.input :filter_value %>
 
-  <%= f.input :filter_mode, collection: SourceFilter.filter_modes.keys.map { |m| [m.humanize, m] }, include_blank: false %>
+  <%= f.input :filter_mode, collection: SourceFilter.filter_modes.keys.map { |m| [m.humanize, m] }, include_blank: false, as: :hidden %>
 
   <%= f.input :_destroy, as: :hidden %>
 

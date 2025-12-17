@@ -135,6 +135,22 @@ class Source < ApplicationRecord
     TeSS::Config.feature['user_source_creation'] && !User.current_user&.is_admin?
   end
 
+  def passes_filter?(item)
+    passes = false
+    allow_all = true
+
+    source_filters.each do |filter|
+      if filter.allow?
+        allow_all = false
+        passes ||= filter.match(item)
+      elsif filter.block? && filter.match(item)
+        return false
+      end
+    end
+
+    passes || allow_all
+  end
+
   private
 
   def set_approval_status

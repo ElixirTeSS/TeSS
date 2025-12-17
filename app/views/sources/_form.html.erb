@@ -40,9 +40,11 @@
 
   <h3>Filters</h3>
 
+  <h4>Allow List</h4>
+  <span class="help-block">Only things that match one of the conditions are allowed for import. Everything is allowed for an empty allow list.</span>
   <div class="form-group" id="source-filters">
     <div id="source-filter-list">
-      <% f.object.source_filters.each do |filter| %>
+      <% f.object.source_filters.allow.each do |filter| %>
         <%= f.simple_fields_for :source_filters, filter, child_index: filter.id do |ff| %>
           <%= render partial: 'source_filter_form', locals: { f: ff } %>
         <% end %>
@@ -55,6 +57,24 @@
     <span id="add-source-filter-btn-label" class="help-inline-block help-block">Add filter condition</span>
   </div>
 
+  <h4>Block List</h4>
+  <span class="help-block">Everything that matches a filter in the block list is not allowed for import even if it is allowed by the allow list.</span>
+  <div class="form-group" id="source-block-filters">
+    <div id="source-block-list">
+      <% f.object.source_filters.block.each do |filter| %>
+        <%= f.simple_fields_for :source_filters, filter, child_index: filter.id do |ff| %>
+          <%= render partial: 'source_filter_form', locals: { f: ff } %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <a href="#" id="add-source-block-filter-btn" class="btn btn-icon">
+      <i class="icon icon-h4 plus-icon"></i>
+    </a>
+    <span id="add-source-block-filter-btn-label" class="help-inline-block help-block">Add filter condition</span>
+  </div>
+
+
   <div class="form-group actions">
     <%= f.submit(class: 'btn btn-primary') %>
     <%= link_to t('.cancel', default: t("helpers.links.cancel")),
@@ -62,7 +82,7 @@
   </div>
 
   <template id="source-filter-template" style="display: none">
-    <%= f.simple_fields_for :source_filters, SourceFilter.new, child_index: "REPLACE_ME" do |ff| %>
+    <%= f.simple_fields_for :source_filters, SourceFilter.new(filter_mode: 'allow'), child_index: "REPLACE_ME" do |ff| %>
       <%= render partial: 'source_filter_form', locals: { f: ff } %>
     <% end %>
   </template>
