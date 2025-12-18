@@ -9,7 +9,6 @@ class SourceFilter < ApplicationRecord
     title: 'title',
     description: 'description',
     description_contains: 'description_contains',
-    id: 'id',
     url: 'url',
     url_prefix: 'url_prefix',
     doi: 'doi',
@@ -22,7 +21,6 @@ class SourceFilter < ApplicationRecord
     subtitle_contains: 'subtitle_contains',
     city: 'city',
     country: 'country',
-    presence: 'presence',
     event_type: 'event_type',
     timezone: 'timezone'
   }
@@ -39,7 +37,7 @@ class SourceFilter < ApplicationRecord
 
     # string match
     if %w[title id url doi description license difficulty_level subtitle city country].include?(filter_by)
-      val.to_s.casecmp(filter_value)
+      val.to_s.casecmp(filter_value).zero?
     # prefix string match
     elsif %w[url_prefix].include?(filter_by)
       val.to_s.downcase.start_with?(filter_value.downcase)
@@ -49,10 +47,6 @@ class SourceFilter < ApplicationRecord
     # array string match
     elsif %w[target_audience keyword resource_type event_type].include?(filter_by)
       val.any? { |i| i.to_s.casecmp?(filter_value) }
-    # boolean match
-    elsif %w[presence].include?(filter_by)
-      bool_map = { 'yes' => 'true', 'no' => 'false' }
-      (val != 0).to_s.casecmp(bool_map.fetch(filter_value.downcase, filter_value))
     else
       false
     end
