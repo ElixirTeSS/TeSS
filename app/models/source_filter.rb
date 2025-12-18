@@ -36,13 +36,13 @@ class SourceFilter < ApplicationRecord
     val = item.send(filter_property)
 
     # string match
-    if %w[title id url doi description license difficulty_level subtitle city country].include?(filter_by)
+    if %w[title url doi description license difficulty_level subtitle city country timezone].include?(filter_by)
       val.to_s.casecmp(filter_value).zero?
     # prefix string match
     elsif %w[url_prefix].include?(filter_by)
       val.to_s.downcase.start_with?(filter_value.downcase)
     # contains string match
-    elsif %w[description_contains prerequisites_contains subtitle_contains].include?(filter_by)
+    elsif %w[description_contains prerequisites_contains learning_objectives_contains subtitle_contains].include?(filter_by)
       val.to_s.downcase.include?(filter_value.downcase)
     # array string match
     elsif %w[target_audience keyword resource_type event_type].include?(filter_by)
@@ -60,7 +60,8 @@ class SourceFilter < ApplicationRecord
       'description_contains' => 'description',
       'prerequisites_contains' => 'prerequisites',
       'learning_objectives_contains' => 'learning_objectives',
-      'subtitle_contains' => 'subtitle'
+      'subtitle_contains' => 'subtitle',
+      'license' => 'licence'
     }.fetch(filter_by, filter_by)
   end
 end

@@ -15,7 +15,7 @@ module SchemaHelper
       URI.parse(@request.original_fullpath).path.chomp('.json_api')
     end
 
-    alias_method :path_info, :path
+    alias path_info path
 
     def request_method
       @request.env['action_dispatch.original_request_method'] || @request.request_method
@@ -33,7 +33,7 @@ module SchemaHelper
   def assert_valid_json_response(validator, options, expected_status = nil)
     unless validator.link_exist?
       response = "`#{committee_request_object.request_method} #{committee_request_object.path_info}` undefined in schema (prefix: #{options[:prefix].inspect})."
-      raise Committee::InvalidResponse.new(response)
+      raise Committee::InvalidResponse, response
     end
 
     status, headers, body = committee_response_data
@@ -42,7 +42,7 @@ module SchemaHelper
       Committee.warn_deprecated('Pass expected response status code to check it against the corresponding schema explicitly.')
     elsif expected_status != status
       response = "Expected `#{expected_status}` status code, but it was `#{status}`."
-      raise Committee::InvalidResponse.new(response)
+      raise Committee::InvalidResponse, response
     end
 
     valid = Committee::Middleware::ResponseValidation.validate?(status, options.fetch(:validate_success_only, false))
@@ -60,8 +60,8 @@ module SchemaHelper
 
   def current_committee_options
     @current_committee_options ||= {
-      schema: Committee::Drivers::load_from_file('public/api/definitions/tess.yml',
-                                                 parser_options: { strict_reference_validation: true }),
+      schema: Committee::Drivers.load_from_file('public/api/definitions/tess.yml',
+                                                parser_options: { strict_reference_validation: true }),
       query_hash_key: 'rack.request.query_hash',
       parse_response_by_content_type: false
     }
@@ -69,8 +69,8 @@ module SchemaHelper
 
   def legacy_committee_options
     @legacy_committee_options ||= {
-      schema: Committee::Drivers::load_from_file('public/api/definitions/tess_legacy.yml',
-                                                 parser_options: { strict_reference_validation: true }),
+      schema: Committee::Drivers.load_from_file('public/api/definitions/tess_legacy.yml',
+                                                parser_options: { strict_reference_validation: true }),
       query_hash_key: 'rack.request.query_hash',
       parse_response_by_content_type: false
     }

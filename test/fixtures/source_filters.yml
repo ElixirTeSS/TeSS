@@ -1,13 +1,121 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  source: one
-  filter_mode: MyString
-  filter_by: MyString
-  filter_value: MyString
+source_filter_target_audience:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: target_audience
+  filter_value: does_match
 
-two:
-  source: two
-  filter_mode: MyString
-  filter_by: MyString
-  filter_value: MyString
+source_filter_keyword:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: keyword
+  filter_value: does_match
+
+source_filter_keyword_block:
+  source: filtered_source
+  filter_mode: block
+  filter_by: keyword
+  filter_value: does_match
+
+source_filter_title:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: title
+  filter_value: does_match
+
+source_filter_description:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: description
+  filter_value: does_match
+
+source_filter_description_contains:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: description_contains
+  filter_value: does_match
+
+source_filter_url:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: url
+  filter_value: does_match
+
+source_filter_url_prefix:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: url_prefix
+  filter_value: does_match
+
+source_filter_doi:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: doi
+  filter_value: does_match
+
+source_filter_license:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: license
+  filter_value: does_match
+
+source_filter_difficulty_level:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: difficulty_level
+  filter_value: does_match
+
+source_filter_resource_type:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: resource_type
+  filter_value: does_match
+
+source_filter_prerequisites_contains:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: prerequisites_contains
+  filter_value: does_match
+
+source_filter_learning_objectives_contains:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: learning_objectives_contains
+  filter_value: does_match
+
+source_filter_learning_subtitle:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: subtitle
+  filter_value: does_match
+
+source_filter_subtitle_contains:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: subtitle_contains
+  filter_value: does_match
+
+source_filter_city:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: city
+  filter_value: does_match
+
+source_filter_country:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: country
+  filter_value: does_match
+
+source_filter_event_type:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: event_type
+  filter_value: does_match
+
+source_filter_timezone:
+  source: filtered_source
+  filter_mode: allow
+  filter_by: timezone
+  filter_value: does_match

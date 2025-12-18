@@ -506,3 +506,34 @@ plant_space_event:
   end: 2126-12-12 12:00:00
   timezone: UTC
   space: plants
+
+passing_import_filters_event:
+  title: MyString
+  url: MyString
+  user: regular_user
+  subtitle: does_match
+  city: does_match
+  country: does_match
+  event_types:
+    - other
+    - does_match
+  timezone: does_match
+
+passing_contains_import_filters_event:
+  title: MyString
+  url: MyString
+  user: regular_user
+  subtitle: prefix does_match suffix
+
+failing_import_filters_event:
+  title: MyString
+  url: MyString
+  user: regular_user
+  subtitle: does_not_match
+  city: does_not_match
+  country: does_not_match
+  event_types:
+    - other
+    - does_not_match
+  timezone: does_not_match
+
