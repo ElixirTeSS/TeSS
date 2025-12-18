@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_09_112056) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_18_100418) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -490,7 +490,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_09_112056) do
     t.integer "approval_status"
     t.datetime "updated_at"
     t.string "default_language"
-    t.string "keyword_filter"
     t.index ["content_provider_id"], name: "index_sources_on_content_provider_id"
     t.index ["user_id"], name: "index_sources_on_user_id"
   end

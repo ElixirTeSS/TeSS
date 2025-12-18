@@ -36,8 +36,6 @@ module Ingestors
     def filter(source)
       material_count = @materials.length
       event_count = @events.length
-      keyword_filter = source.keyword_filter.split(',').map(&:strip)
-      @materials = @materials.select { |m| (Array(m.keywords) & keyword_filter).any? } unless keyword_filter.empty?
 
       @materials = @materials.select { |m| source.passes_filter? m }
       @events = @events.select { |e| source.passes_filter? e }
