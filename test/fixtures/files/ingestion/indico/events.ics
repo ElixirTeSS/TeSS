@@ -1,0 +1,25 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CERN//INDICO//EN
+BEGIN:VEVENT
+SUMMARY:14th HEP C++ Course and Hands-on Training - The Essentials
+DTSTART:20260309T080000Z
+DTEND:20260313T161500Z
+DTSTAMP:20251203T150800Z
+UID:indico-event-1617123@indico.cern.ch
+CONTACT:name.surname@test.com
+DESCRIPTION:speakers and zoom here
+LOCATION:CERN
+URL:https://indico.cern.ch/event/1617123/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:HEP C++ Course and Hands-on Training - Stay Informed
+DTSTART:20991231T225800Z
+DTEND:20991231T225900Z
+DTSTAMP:20251203T150800Z
+UID:indico-event-1211412@indico.cern.ch
+CONTACT:name.surname@test.com
+DESCRIPTION:mockdescription
+URL:https://indico.cern.ch/event/1211412/
+END:VEVENT
+END:VCALENDAR
