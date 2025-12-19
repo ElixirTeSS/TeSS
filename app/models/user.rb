@@ -381,6 +381,10 @@ class User < ApplicationRecord
     space_roles.where(key: role, space: space).any?
   end
 
+  def has_role_in_any_space?(role)
+    space_roles.where(key: role).any?
+  end
+
   protected
 
   def reassign_resources(new_owner = User.get_default_user)

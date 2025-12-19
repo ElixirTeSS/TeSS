@@ -24,7 +24,7 @@ class SourcesController < ApplicationController
 
   # GET /sources/new
   def new
-    authorize Source
+    authorize @content_provider, :create_source?
     @source = @content_provider.sources.build
   end
 
@@ -36,9 +36,10 @@ class SourcesController < ApplicationController
   # POST /sources
   # POST /sources.json
   def create
-    authorize Source
+    authorize @content_provider, :create_source?
     @source = @content_provider.sources.build(source_params)
     @source.user = current_user
+    @source.space = current_space
 
     respond_to do |format|
       if @source.save
@@ -145,13 +146,12 @@ class SourcesController < ApplicationController
   def set_content_provider
     @content_provider = @source.content_provider if @source
     @content_provider ||= ContentProvider.friendly.find(params[:content_provider_id])
-    authorize @content_provider, :manage?
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def source_params
     permitted = [:url, :method, :token, :default_language, :enabled]
-    permitted << :approval_status if policy(Source).approve?
+    permitted << :approval_status if policy(@source || Source).approve?
     permitted << :content_provider_id if policy(Source).index?
 
     params.require(:source).permit(permitted)

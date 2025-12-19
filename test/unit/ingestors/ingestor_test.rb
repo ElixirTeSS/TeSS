@@ -89,7 +89,7 @@ class IngestorTest < ActiveSupport::TestCase
     assert_equal(event.language, 'de')
   end
 
-  test 'does not set event language when languare and source default language missing' do
+  test 'does not set event language when language and source default language missing' do
     user = users(:scraper_user)
     provider = content_providers(:portal_provider)
 
@@ -187,4 +187,28 @@ class IngestorTest < ActiveSupport::TestCase
       end
     end
   end
+
+  test 'sets event space from source space' do
+    user = users(:scraper_user)
+    provider = content_providers(:portal_provider)
+    space = spaces(:plants)
+
+    @source = Source.create!(url: 'https://somewhere.com/stuff', method: 'bioschemas',
+                             enabled: true, approval_status: 'approved',
+                             space: space, content_provider: provider, user: users(:admin))
+
+    ingestor = Ingestors::Ingestor.new
+
+    ingestor.instance_variable_set(:@events,
+                                   [OpenStruct.new(url: 'https://some-course.ca',
+                                                   title: 'Some course',
+                                                   start: '2021-01-31 13:00:00',
+                                                   end:'2021-01-31 14:00:00')])
+    assert_difference('provider.events.count', 1) do
+      ingestor.write(user, provider, source: @source)
+    end
+    event = Event.find_by(title: 'Some course')
+    assert_equal space, event.space
+  end
+
 end

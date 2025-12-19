@@ -51,7 +51,8 @@
             { feature: 'collections', link: collections_path },
             { feature: 'trainers', link: trainers_path },
             { feature: 'content_providers', link: content_providers_path },
-            { feature: 'nodes', link: nodes_path }
+            { feature: 'nodes', link: nodes_path },
+            { feature: 'spaces', link: spaces_path }
           ].select do |t|
             t[:feature] == 'about' || TeSS::Config.feature[t[:feature]]
           end.sort_by do |t|

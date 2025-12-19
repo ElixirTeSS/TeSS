@@ -1,7 +1,5 @@
 <% show_last_scraped_filter = resource_type.method_defined?(:last_scraped) %>
 <% show_hidden_filter = resource_type.method_defined?(:user_requires_approval?) %>
-<% show_cross_space_filter = current_user&.is_admin? %>
-<% resource_name = resource_type.model_name.human.downcase.pluralize %>
 
 <% if show_last_scraped_filter || show_hidden_filter %>
   <ul class="unstyled nav-simple">
@@ -46,14 +44,6 @@
           count: '-',
           enable_text: t('sidebar.hidden.values.show_hidden'),
           disable_text: t('sidebar.hidden.values.hide_hidden') } %>
-    <% end %>
-
-    <% if show_cross_space_filter %>
-      <%= render partial: 'search/common/facet_sidebar_boolean_filter',
-                 locals: { facet_field: 'across_all_spaces',
-                           count: '-',
-                           enable_text: t('sidebar.filter.values.show_cross_space', resource: resource_name),
-                           disable_text: t('sidebar.filter.values.hide_cross_space', resource: resource_name) } %>
     <% end %>
   </ul>
 <% end %>

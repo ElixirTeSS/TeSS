@@ -126,7 +126,7 @@ default: &default
     # The order in which the tabs appear (if feature enabled)
     tab_order: ['about', 'events', 'materials', 'elearning_materials', 'workflows', 'collections', 'trainers', 'content_providers', 'nodes']
     # The tabs that should be collapsed under the "Directory" tab. Can be left blank to hide it.
-    directory_tabs: ['trainers', 'content_providers', 'nodes']
+    directory_tabs: ['trainers', 'content_providers', 'nodes', 'spaces']
     # The order in with the 'about us' tabs appear
     about_us_tab_order: ['tess_club', 'contact', 'team', 'funding', 'acknowledgements', 'cite']
     n_provider_ids: 5
@@ -264,7 +264,7 @@ default: &default
       primary: '#047eaa' # Blue by default
       secondary: '#f47d21' # Orange by default
     green:
-      primary: '529d00'
+      primary: '#529d00'
       secondary: '#829d30'
     blue:
       primary: '#024552'

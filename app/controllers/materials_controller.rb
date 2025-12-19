@@ -132,7 +132,7 @@ class MaterialsController < ApplicationController
     @material.create_activity :destroy, owner: current_user
     @material.destroy
     respond_to do |format|
-      format.html { redirect_to materials_url, notice: 'Material was successfully destroyed.' }
+      format.html { redirect_to materials_path, notice: 'Material was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

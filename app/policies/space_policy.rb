@@ -1,7 +1,7 @@
 class SpacePolicy < ApplicationPolicy
 
   def create?
-    @user && @user.has_role?(:admin)
+    @user&.has_role?(:admin)
   end
 
   def edit?
@@ -13,7 +13,7 @@ class SpacePolicy < ApplicationPolicy
   end
 
   def manage?
-    @user && @user.is_admin?
+    @user&.is_admin?
   end
 
 end

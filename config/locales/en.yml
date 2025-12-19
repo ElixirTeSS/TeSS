@@ -905,7 +905,7 @@ en:
         show_broken_links: 'Show %{resource} with broken links'
         hide_broken_links: 'Hide %{resource} with broken links'
         show_cross_space: 'Show %{resource} from all spaces'
-        hide_cross_space: 'Hide %{resource} from all spaces'
+        hide_cross_space: 'Only show %{resource} from current space'
     hidden:
       values:
         show_hidden: 'Show hidden items'
@@ -940,6 +940,7 @@ en:
       log_out: 'Log out'
       log_out_confirm: 'Are you sure you want to log out?'
       spaces_admin: 'Manage spaces'
+      current_space_admin: 'Manage current space'
   activity:
     empty: No activities recorded.
     deleted_owner: Someone

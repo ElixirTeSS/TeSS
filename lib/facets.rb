@@ -140,7 +140,7 @@ module Facets
 
     def across_all_spaces(scope, value, user)
       sunspot_scoped(scope) do
-        all_spaces = (user&.is_admin? && value)
+        all_spaces = value
         with(:space_id, Space.current_space.id) unless all_spaces
       end
     end
