@@ -29,6 +29,24 @@ class LoginTest < ActionDispatch::IntegrationTest
     logout_user
   end
 
+  test 'should not see big login button and admin login when login_through_oidc_only is disabled' do
+    with_settings({ feature: { login_through_oidc_only: false } }) do
+      get '/users/sign_in'
+      assert_response :success
+      assert_select 'div.form-middle a.btn-oidc-only', false
+      assert_select 'dl.faq', false
+    end
+  end
+
+  test 'should see big login button and admin login when login_through_oidc_only is enabled' do
+    with_settings({ feature: { login_through_oidc_only: true } }) do
+      get '/users/sign_in'
+      assert_response :success
+      assert_select 'div.form-middle a.btn-oidc-only'
+      assert_select 'dl.faq'
+    end
+  end
+
   private
 
   def login_user(username, identifier, password)

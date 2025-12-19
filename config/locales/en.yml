@@ -776,6 +776,7 @@ en:
         oidc: OpenID Connect
         oidc2: Alternative OpenID Connect
       log_in_with: 'Log in with %{provider}'
+      admin: Admin
   ingestion:
     categories:
       events: 'Events'

@@ -148,13 +148,11 @@ default: &default
   feature:
     elearning_materials: false
     events: true
-    invitation: false
     materials: true
     nodes: false
     collections: true
     content_providers: true
     subscription: true
-    registration: true
     trainers: false
     workflows: true
     sources: false
@@ -172,6 +170,9 @@ default: &default
     learning_paths: false
     collection_curation: true
     spaces: false
+    invitation: false
+    registration: true
+    login_through_oidc_only: false # when true, only the first oidc authentication will be available in TeSS, useful when you have your org SSO. Be careful! invitation and registration must be false when using this feature.
   restrict_content_provider_selection: false
   user_ingestion_methods: ['bioschemas']
   placeholder:

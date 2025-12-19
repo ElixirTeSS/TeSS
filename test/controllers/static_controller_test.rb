@@ -493,4 +493,25 @@ class StaticControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test 'should find log in drop down when login_through_oidc_only is disabled' do
+    with_settings({ feature: { login_through_oidc_only: false } }) do
+      get :home
+      assert_select 'ul.user-options.nav.navbar-nav.navbar-right' do
+        assert_select 'a.dropdown-toggle', count: 1
+      end
+    end
+  end
+
+  test 'should find log in button when login_through_oidc_only is enabled' do
+    Devise.stub( :omniauth_configs, { oidc: OpenStruct.new(options: { label: "OIDC" }) }
+    ) do
+      with_settings({ feature: { login_through_oidc_only: true } }) do
+        get :home
+        assert_select 'ul.user-options.nav.navbar-nav.navbar-right' do
+          assert_select 'a[href="/users/auth/oidc"]', count: 1
+        end
+      end
+    end
+  end
 end
