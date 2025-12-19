@@ -6,6 +6,7 @@ module Ingestors
         Ingestors::EventbriteIngestor,
         Ingestors::EventCsvIngestor,
         Ingestors::IcalIngestor,
+        Ingestors::IndicoIngestor,
         Ingestors::LibcalIngestor,
         Ingestors::MaterialCsvIngestor,
         Ingestors::TessEventIngestor,
@@ -36,6 +37,8 @@ module Ingestors
         Ingestors::Taxila::DccIngestor,
         Ingestors::Taxila::SenseIngestor,
         Ingestors::Taxila::VuMaterialIngestor,
+        Ingestors::Taxila::RdnlIngestor,
+        Ingestors::Taxila::HanIngestor
       ]
     end
 

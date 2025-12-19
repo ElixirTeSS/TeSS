@@ -1,5 +1,5 @@
 class LinkMonitor < ApplicationRecord
-  belongs_to :link_checkable, polymorphic: true, foreign_key: :lcheck_id, foreign_type: :lcheck_type
+  belongs_to :link_checkable, polymorphic: true, foreign_key: :lcheck_id, foreign_type: :lcheck_type, inverse_of: :link_monitor
   before_create :set_initial_date
   after_commit :reindex_resource, on: :update
 
@@ -50,6 +50,6 @@ class LinkMonitor < ApplicationRecord
   def reindex_resource
     return unless TeSS::Config.solr_enabled
     return unless status_changed?
-    link_checkable.solr_index
+    link_checkable.solr_index if link_checkable&.respond_to?(:solr_index)
   end
 end

@@ -619,6 +619,7 @@ en:
       timezone: 'Select the appropriate timezone'
       title: 'Add a title for your training event.'
       url: 'Location where the event and its details are advertised on the internet.'
+      providers: The organisation providing the event metadata.
     prompts:
       language: 'Select a language...'
     long: 'Long events'
@@ -845,6 +846,8 @@ en:
     422: "The request you sent was well-formed but the change you wanted was rejected (422 Unprocessable Entity)."
     404: "The requested page could not be found - you may have mistyped the address or the page may have moved (404 Not Found)."
     406: "The requested format is not available (406 Not Acceptable)."
+    messages:
+      orcid_taken: 'has already been linked to another profile.'
   warnings:
     link_broken: >
       %{site_name} has been unable to access this %{resource_type}'s URL since %{fail_date} - the page may have been moved.
@@ -905,6 +908,8 @@ en:
         hide_disabled: 'Hide disabled %{resource}'
         show_archived: 'Show archived %{resource}'
         hide_archived: 'Hide archived %{resource}'
+        show_broken_links: 'Show %{resource} with broken links'
+        hide_broken_links: 'Hide %{resource} with broken links'
         show_cross_space: 'Show %{resource} from all spaces'
         hide_cross_space: 'Hide %{resource} from all spaces'
     hidden:
@@ -1118,3 +1123,8 @@ en:
       title: What are spaces?
       description: |
         Spaces are customizable, community-managed sub-portals within %{site_name}, each with their own catalogue of training content.
+  orcid:
+    error: 'An error occurred whilst trying to authenticate your ORCID.'
+    authenticate: 'Authenticate your ORCID'
+    authentication_success: 'You have successfully authenticated your ORCID.'
+    authentication_failure: 'Failed to authenticate your ORCID.'

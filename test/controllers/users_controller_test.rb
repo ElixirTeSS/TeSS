@@ -490,4 +490,39 @@ class UsersControllerTest < ActionController::TestCase
       assert_select '.masonry-brick-heading h4', text: 'Learn about plants'
     end
   end
+
+  test 'should show authenticate orcid button if own profile' do
+    user = users(:private_user)
+    assert user.profile.orcid.present?
+    refute user.profile.orcid_authenticated?
+
+    sign_in user
+
+    get :show, params: { id: user }
+
+    assert_response :success
+    assert_select '#sidebar button', text: 'Authenticate your ORCID'
+  end
+
+  test 'should not show authenticate orcid button if not own profile' do
+    user = users(:private_user)
+    assert user.profile.orcid.present?
+    refute user.profile.orcid_authenticated?
+
+    get :show, params: { id: user }
+
+    assert_response :success
+    assert_select '#sidebar button', text: 'Authenticate your ORCID', count: 0
+  end
+
+  test 'should not show authenticate orcid button if already authenticated' do
+    user = users(:trainer_user)
+    assert user.profile.orcid.present?
+    assert user.profile.orcid_authenticated?
+
+    get :show, params: { id: user }
+
+    assert_response :success
+    assert_select '#sidebar button', text: 'Authenticate your ORCID', count: 0
+  end
 end

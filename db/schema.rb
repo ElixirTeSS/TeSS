@@ -452,6 +452,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_18_100418) do
     t.string "social_media", default: [], array: true
     t.string "type", default: "Profile"
     t.string "fields", default: [], array: true
+    t.boolean "orcid_authenticated", default: false
+    t.index ["orcid"], name: "index_profiles_on_orcid"
     t.index ["slug"], name: "index_profiles_on_slug", unique: true
   end
 

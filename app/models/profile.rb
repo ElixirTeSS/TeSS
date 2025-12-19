@@ -25,6 +25,11 @@ class Profile < ApplicationRecord
     "#{firstname} #{surname}".strip
   end
 
+  def orcid_url
+    return nil if orcid.blank?
+    "#{OrcidValidator::ORCID_PREFIX}#{orcid}"
+  end
+
   def merge(*others)
     Profile.transaction do
       attrs = attributes
@@ -43,16 +48,27 @@ class Profile < ApplicationRecord
     end
   end
 
+  def authenticate_orcid(orcid)
+    existing = Profile.where(orcid: orcid, orcid_authenticated: true)
+    self.orcid = orcid
+    self.orcid_authenticated = true
+    out = self.save
+
+    if out
+      existing.each do |profile|
+        next if profile == self
+        profile.update_column(:orcid_authenticated, false)
+      end
+    end
+
+    out
+  end
+
   private
 
   def normalize_orcid
     return if orcid.blank?
-    self.orcid = orcid.strip
-    if orcid =~ OrcidValidator::ORCID_ID_REGEX
-      self.orcid = "#{OrcidValidator::ORCID_PREFIX}#{orcid}"
-    elsif orcid.start_with?(OrcidValidator::ORCID_DOMAIN_REGEX)
-      self.orcid = orcid.sub(OrcidValidator::ORCID_DOMAIN_REGEX, OrcidValidator::ORCID_PREFIX)
-    end
+    self.orcid = orcid.strip.sub(OrcidValidator::ORCID_DOMAIN_REGEX, '')
   end
 
   def check_public

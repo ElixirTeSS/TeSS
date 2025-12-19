@@ -21,7 +21,7 @@
     <!-- Field: orcid -->
     <% if @trainer.orcid.present? %>
       <div class="url-wrap">
-        <%= external_link @trainer.orcid, @trainer.orcid, class: 'h5', target: '_blank', rel: 'noopener', track: true %>
+        <%= orcid_link(@trainer, class: 'h5', track: true) %>
       </div>
     <% end %>
 

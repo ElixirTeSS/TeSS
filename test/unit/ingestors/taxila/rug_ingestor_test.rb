@@ -12,51 +12,6 @@ class RugIngestorTest < ActiveSupport::TestCase
     reset_timezone
   end
 
-  test 'can ingest events from rug' do
-    source = @content_provider.sources.build(
-      url: 'https://www.rug.nl/about-ug/latest-news/events/calendar/',
-      method: 'rug',
-      enabled: true
-    )
-
-    ingestor = Ingestors::Taxila::RugIngestor.new
-
-    # check event doesn't
-    new_title = "Studium Generale: Work, Work, Work | The Invention and Future of Work - Jason Resnikoff"
-    new_url = 'https://www.rug.nl/about-ug/latest-news/events/calendar/studium-generale/work-jason-resnikoff'
-    refute Event.where(title: new_title, url: new_url).any?
-
-    # run task
-    assert_difference 'Event.count', 7 do
-      freeze_time(2019) do
-        VCR.use_cassette("ingestors/rug") do
-          ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
-        end
-      end
-    end
-
-    assert_equal 7, ingestor.events.count
-    assert ingestor.materials.empty?
-    assert_equal 7, ingestor.stats[:events][:added]
-    assert_equal 0, ingestor.stats[:events][:updated]
-    assert_equal 0, ingestor.stats[:events][:rejected]
-
-    # check event does exist
-    event = Event.where(title: new_title, url: new_url).first
-    assert event
-    assert_equal new_title, event.title
-    assert_equal new_url, event.url
-
-    # check other fields
-    assert_equal 'RUG', event.source
-    assert_equal 'Amsterdam', event.timezone
-    assert_equal Time.zone.parse('Mon, 08 May 2023 20:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Mon, 08 May 2023 21:30:00.000000000 UTC +00:00'), event.end
-    assert_equal 'Academy Building, Broerstraat 5, Groningen', event.venue
-  end
-
-
   test 'can ingest events from rug in various timezones' do
     source = @content_provider.sources.build(
       url: 'https://www.rug.nl/about-ug/latest-news/events/calendar/',
@@ -66,12 +21,12 @@ class RugIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::RugIngestor.new
     # check event doesn't exist
-    new_title = "Studium Generale: Work, Work, Work | The Invention and Future of Work - Jason Resnikoff"
-    new_url = 'https://www.rug.nl/about-ug/latest-news/events/calendar/studium-generale/work-jason-resnikoff'
+    new_title = "Brainstorm: The Human Brain & Research in Groningen"
+    new_url = 'https://www.rug.nl/about-ug/latest-news/events/calendar/2025/brainstorm-the-human-brain-research-in-groningen'
     refute Event.where(title: new_title, url: new_url).any?
 
     # Scrape the initial events
-    assert_difference 'Event.count', 7 do
+    assert_difference 'Event.count', 47 do
       freeze_time(2016) do
         VCR.use_cassette("ingestors/rug") do
           ingestor.read(source.url)
@@ -95,9 +50,9 @@ class RugIngestorTest < ActiveSupport::TestCase
         end
       end
 
-      assert_equal 7, ingestor.events.count
+      assert_equal 47, ingestor.events.count
       assert_equal 0, ingestor.stats[:events][:added]
-      assert_equal 7, ingestor.stats[:events][:updated]
+      assert_equal 47, ingestor.stats[:events][:updated]
       assert_equal 0, ingestor.stats[:events][:rejected]
 
       # Get last updated event
@@ -110,9 +65,9 @@ class RugIngestorTest < ActiveSupport::TestCase
       # check other fields
       assert_equal 'RUG', event.source
       assert_equal 'Amsterdam', event.timezone
-      assert_equal Time.zone.parse('Mon, 08 May 2023 20:00:00.000000000 UTC +00:00'), event.start
-      assert_equal Time.zone.parse('Mon, 08 May 2023 21:30:00.000000000 UTC +00:00'), event.end
-      assert_equal 'Academy Building, Broerstraat 5, Groningen', event.venue
+      assert_equal Time.zone.parse('Sat, 15 Feb 2025 09:00:00.000000000 UTC +00:00'), event.start
+      assert_equal Time.zone.parse('Sun, 04 jan 2026 17:00:00.000000000 UTC +00:00'), event.end
+      assert_equal 'University museum, Oude Kijk in Het Jatstraat 7A, 9712 EA Groningen', event.venue
     end
   end
 end

@@ -222,6 +222,23 @@ class MaterialCsvIngestorTest < ActiveSupport::TestCase
     assert_not_equal url_spreadsheet, url_export_spreadsheet
   end
 
+  test 'read logs error when exception is raised' do
+    source = @content_provider.sources.build(
+      url: 'https://app.com/materials.csv',
+      method: 'material_csv',
+      enabled: true
+    )
+
+    ingestor = Ingestors::MaterialCsvIngestor.new
+
+    # Stub a method that will raise an error
+    ingestor.stub(:get_column, -> (*) { raise CSV::MalformedCSVError.new('test failure', 11) }) do
+      ingestor.read(source.url)
+    end
+
+    assert_equal ingestor.messages.last, 'parse table failed with: test failure in line 11.'
+  end
+
   private
 
   def get_material(title, url, provider = nil)
