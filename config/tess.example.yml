@@ -13,6 +13,7 @@ default: &default
   announcement_message:
   prevent_robot_indexing: false
   require_cookie_consent: true
+  login_expires_after: # in seconds, sets the login session duration, after this, users must login again, leave blank to disable.
   blocked_domains:
     - !ruby/regexp '/bad-domain\.example/'
   blocked_countries: # Block registration from the following ISO 3166-1 alpha-2 codes

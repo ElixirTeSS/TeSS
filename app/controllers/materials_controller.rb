@@ -35,6 +35,7 @@ class MaterialsController < ApplicationController
       format.html
       format.json
       format.json_api { render json: @material }
+      format.jsonld { render plain: @bioschemas.first.to_json }
     end
   end
 

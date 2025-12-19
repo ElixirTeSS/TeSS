@@ -92,6 +92,7 @@ services:
       - .:/code
       - bundle-cache:/usr/local/bundle
       - node_modules:/code/node_modules
+      - ./coverage:/code/coverage
     environment:
       RAILS_ENV: test
       DB_HOST: test-db

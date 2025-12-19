@@ -1,4 +1,8 @@
 require 'rails/html/sanitizer'
+require 'json/ld'
+require 'rdf'
+require 'rdf/rdfxml'
+require 'builder'
 
 class Material < ApplicationRecord
   include PublicActivity::Common
@@ -185,5 +189,59 @@ class Material < ApplicationRecord
 
   def archived?
     status == 'archived'
+  end
+
+  def to_rdf
+    jsonld_str = to_bioschemas[0].to_json
+
+    graph = RDF::Graph.new
+    JSON::LD::Reader.new(jsonld_str) do |reader|
+      reader.each_statement { |stmt| graph << stmt }
+    end
+
+    rdfxml_str = graph.dump(:rdfxml, prefixes: { sdo: 'http://schema.org/', dc: 'http://purl.org/dc/terms/' })
+    rdfxml_str.sub(/\A<\?xml.*?\?>\s*/, '') # remove XML declaration because this is used inside OAI-PMH response
+  end
+
+  def to_oai_dc
+    xml = ::Builder::XmlMarkup.new
+    xml.tag!('oai_dc:dc',
+             'xmlns:oai_dc' => 'http://www.openarchives.org/OAI/2.0/oai_dc/',
+             'xmlns:dc' => 'http://purl.org/dc/elements/1.1/',
+             'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
+             'xsi:schemaLocation' => 'http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd') do
+      xml.tag!('dc:title', title)
+      xml.tag!('dc:description', description)
+      authors.each { |a| xml.tag!('dc:creator', a) }
+      contributors.each { |a| xml.tag!('dc:contributor', a) }
+      xml.tag!('dc:publisher', content_provider.title) if content_provider
+
+      xml.tag!('dc:format', 'text/html')
+      xml.tag!('dc:language', 'en')
+      xml.tag!('dc:rights', licence) if licence.present?
+
+      [date_published, date_created, date_modified].compact.each do |d|
+        xml.tag!('dc:date', d.iso8601)
+      end
+
+      if doi.present?
+        doi_iri = doi.start_with?('http://', 'https://') ? doi : "https://doi.org/#{doi}"
+        xml.tag!('dc:identifier', doi_iri)
+      else
+        xml.tag!('dc:identifier', url)
+      end
+
+      (keywords + scientific_topics.map(&:uri) + operations.map(&:uri)).each do |s|
+        xml.tag!('dc:subject', s)
+      end
+
+      xml.tag!('dc:type', 'http://purl.org/dc/dcmitype/Text')
+      xml.tag!('dc:type', 'https://schema.org/LearningResource')
+      resource_type.each { |t| xml.tag!('dc:type', t) }
+
+      xml.tag!('dc:relation', "#{TeSS::Config.base_url}#{Rails.application.routes.url_helpers.material_path(self)}")
+      xml.tag!('dc:relation', content_provider.url) if content_provider&.url
+    end
+    xml.target!
   end
 end

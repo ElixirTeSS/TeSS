@@ -382,9 +382,18 @@ class LearningPathsControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
-  test 'should allow access to private learning_paths if privileged' do
+  test 'should allow access to private learning_paths if privileged by role' do
     sign_in users(:learning_path_curator)
     get :show, params: { id: learning_paths(:in_development_learning_path) }
+    assert_response :success
+  end
+
+  test 'should allow access to private learning_paths if collaborator' do
+    lp = learning_paths(:in_development_learning_path)
+    user = users(:regular_user)
+    lp.collaborators << user
+    sign_in user
+    get :show, params: { id: lp }
     assert_response :success
   end
 

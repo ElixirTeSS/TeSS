@@ -4,3 +4,4 @@
 # Mime::Type.register "text/richtext", :rtf
 
 Mime::Type.register 'application/vnd.api+json', :json_api
+Mime::Type.register 'application/ld+json', :jsonld, ['application/vnd.schemaorg.ld+json']

@@ -1,0 +1,56 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://sandbox.orcid.org/oauth/token
+    body:
+      encoding: UTF-8
+      string: code=123xyz&grant_type=authorization_code&redirect_uri=https%3A%2F%2Flocalhost%3A3001%2Forcid%2Fcallback
+    headers:
+      User-Agent:
+      - Rack::OAuth2 (2.2.0)
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 28 Nov 2025 15:23:49 GMT
+      Content-Type:
+      - application/json;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Cf-Ray:
+      - 9a5ade5f5be79527-LHR
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Pragma:
+      - no-cache
+      Expires:
+      - '0'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - DENY
+      X-Content-Type-Options:
+      - nosniff
+      Vary:
+      - accept-encoding
+      Cf-Cache-Status:
+      - DYNAMIC
+      Server:
+      - cloudflare
+    body:
+      encoding: ASCII-8BIT
+      string: '{"access_token":"12345678-1234-1234-1234-123412341234","token_type":"bearer","refresh_token":"12345678-1234-1234-1234-123412341234","expires_in":631138518,"scope":"/authenticate",
+      "name":"Josiah Carberry","orcid":"0000-0002-1825-0097"}'
+  recorded_at: Fri, 28 Nov 2025 15:23:49 GMT
+recorded_with: VCR 6.2.0

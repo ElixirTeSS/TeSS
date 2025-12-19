@@ -179,6 +179,8 @@ en:
       <a href="https://github.com/ElixirTeSS/TeSS/blob/master/LICENSE", target="_blank">BSD 3-Clause<i class="icon icon-md arrow-top-right-icon"></i></a>
     data_license: >
       <a href="https://creativecommons.org/licenses/by/4.0/", target="_blank">CC-BY 4.0<i class="icon icon-md arrow-top-right-icon"></i></a>
+    contributions: >
+      <a href="https://github.com/ElixirTeSS/TeSS/blob/master/CONTRIBUTING.md", target="_blank">contributions<i class="icon icon-md arrow-top-right-icon"></i></a>
     gmaps_countries: >
       'United Kingdom', 'Spain', 'Portugal', 'France', 'Belgium', 'Ireland', 'Estonia', 'Finland',
       'Germany', 'Austria', 'Italy', 'Hungary', 'Czech Republic', 'Estonia', 'Denmark',
@@ -212,7 +214,7 @@ en:
       <a href="mailto:tess-support@googlegroups.com">tess-support@googlegroups.com</a>
     team: >
       <h5>Leadership</h5>
-      <ul><li>Carole Goble</li><li>Hedi Peterson</li><li>Alexia Cardona</li></ul>
+      <ul><li>Carole Goble</li><li>Hedi Peterson</li></ul>
       <h5>Project Management</h5>
       <ul><li>Munazah Andrabi</li><li>Phil Reed</li></ul>
       <h5>Software Engineering</h5>
@@ -229,14 +231,20 @@ en:
         <li>Milo Thurston - Software Engineering</li>
         <li>Chris Child - Project Management/Software Engineering</li>
         <li>Aitor Apaolaza - Software Engineering</li>
+        <li>Alexia Cardona - Leadership</li>
       </ul>
     funding: >
       %{site_name} has been funded by:
       <ul>
+      <li>The <a href="https://www.oscars-project.eu/projects/mtess-x-scaling-training-portal-federation-ris-through-multi-tenanting-and-exchange"
+        target="_blank">OSCARS project</a>, which has received funding from the European Commission’s Horizon Europe 
+        Research and Innovation programme under grant agreement No. 101129751;</li>
+      <li><a href="https://biofair.uk/" 
+        target="_blank">BioFAIR</a> Short Term Funding Award GP312;</li>
       <li>European Commission, Horizon 2020 Research Infrastructures programme (ELIXIR-EXCELERATE,
       <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">grant agreement number 676559</a>);</li>
       <li>ELIXIR Implementation Study (Registry Integration from a User Perspective);</li>
-      <li>ELIXIR Implementation Study (Learning Paths).</li>
+      <li>ELIXIR Implementation Study (Learning Paths);</li>
       <li>BBSRC UK (Delivering ELIXIR-UK grant, grant agreement numbers
         <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1"
           target="_blank">BB/L005050/1</a> &amp;
@@ -255,6 +263,7 @@ en:
             </li>
           <li>The UK structural bioinformatics group, particularly Christine Orengo</li>
         </ul>
+      <p>%{site_name} is based on the <a href='https://elixir-europe.org/' target='_blank'>ELIXIR</a> TeSS platform.</p>
     cite: >
       Niall Beard, Finn Bacall, Aleksandra Nenadic, Milo Thurston, Carole A Goble, Susanna-Assunta Sansone, Teresa K Attwood,
       <strong>TeSS: a platform for discovering life-science training opportunities</strong>,
@@ -572,14 +581,16 @@ en:
     retention: "Your information will be retained by %{site_name} until you choose to remove it, you delete your account, or the %{site_name} service ceases to exist."
     code: "%{site_name} adheres to the <a href='https://www.geant.net/uri/dataprotection-code-of-conduct/v1'> GÉANT Data Protection Code of Conduct for Service Providers in EU/EEA </a>"
     controller: "The data controller for %{site_name} is The University of Manchester."
-    post: "<strong>The %{site_name} Team</strong><br/>Room 1.17 c/o School of Computer Science,<br/>Kilburn Building,<br/>Oxford Road,<br/>Manchester,<br/>M13 9PL"
+    post: "<strong>The TeSS Team</strong><br/>Room 2.86 c/o School of Computer Science,<br/>Kilburn Building,<br/>Oxford Road,<br/>Manchester,<br/>M13 9PL"
   events:
     hints:
-      address: 'Where is this event being held?'
+      address: 'Physical location of the event if its being conducted Face-to-face.'
       capacity: >
         Provide the total number (cap) of individuals that can attend the training event.
         Leave blank if there is no limit.
-      contact: ''
+      contact: >
+        The individual responsible for communication regarding the training material, typically including 
+        name, affiliation, email address, and an ORCID identifier if possible.
       cost_basis: 'Select the basis by which costs, if any, are applied.'
       cost_value: 'Input the cost of the training event.'
       cost_currency: 'Select the currency associated with the cost.'
@@ -590,24 +601,25 @@ en:
       end: 'When does the event end?'
       event_type: 'Select the most appropriate event type for the training event.'
       fields: 'Select Fields of Research to better classify your event.'
-      hosts: ''
+      hosts: 'Institution/Organisation where the event will be held.'
       keywords: "Provide words or terms that clearly identify the training event's topics."
-      language: 'Language of instruction'
+      language: 'The language in which the training/seminar/lecture will be delivered. Select from the list of available options.'
       materials: 'Add any training materials that are associated with the training event.'
       objectives: 'What knowledge, skills, or abilities should your audience gain from completing the training?'
-      organizer: ''
+      organizer: 'Institution/Organisation or the individual coordinating to organise the event.'
       prerequisites: 'What understanding or knowledge does the audience need to have covered before the training event?'
       recognition: 'Provide a description of any qualifications, awards, certificates, diplomas, or other
         educational credentials that will be awarded on successful completion of the training event.'
       requirements: 'Indicate the technical requirements needed to participate in the training event.'
-      sponsors: 'Who sponsored, or funded the event?'
+      sponsors: 'Institution/Organisation or funding bodies that funded that event.'
       start: 'When does the event start?'
       subtitle: 'Include a subtitle to add context for your intended audience.'
       targets: 'Indicate the type of audience for which the training event is intended.'
       topics: 'Select the Fields of Research (FoR) codes that the training covers.'
       timezone: 'Select the appropriate timezone'
       title: 'Add a title for your training event.'
-      url: 'Enter a valid URL for the event landing page.'
+      url: 'Location where the event and its details are advertised on the internet.'
+      providers: The organisation providing the event metadata.
     prompts:
       language: 'Select a language...'
     long: 'Long events'
@@ -615,40 +627,61 @@ en:
   materials:
     hints:
       authors: >
-        Add individuals and organisations involved in the preparation, creation or presentation of the published work.
+        Individuals who made substantial intellectual or technical contributions to the 
+        conception, design, execution of the training material.
       contact: >
-        Include the first name, last name and contact details of the person or organisation that can be contacted about
-        the training material.
-      contributors: 'Add individual and organisations that contributed to the training material.'
+        The individual responsible for communication regarding the training material, typically including 
+        name, affiliation, email address, and an ORCID identifier if possible.
+      contributors: >
+        Individuals or entities who provided specific assistance, technical input, data, or materials to the work 
+        but may not meet the full criteria for authorship.
       date_created: 'Add the date that the training material was created.'
       date_modified: 'Add the date that the training material was last modified.'
       date_published: 'Add the date that the training material was published.'
-      description: 'Provide a textual description of your training material, for additional context.'
+      description: >
+        A short, informative summary that outlines the purpose, scope, key topic and of the training material. 
+        It should help the learners and instructors understand the content and relevance of the training before engaging with it.
       difficulty: 'Indicate the learners expected level of competency in the topic covered by the material.'
-      doi: 'Include a DOI if one exists for the training material.'
-      events: ''
+      doi: >
+        Digital Object Identifier. 
+        A unique, persistent alphanumeric string assigned to the training material 
+        that provides a permanent link to its location for long-term accessibility and citation tracking.
+      events: >
+        Workshops, seminars, conferences, summer or winter schools that contribute to or disseminate the training.
       fields: 'Select Fields of Research to better classify your material.'
       keywords: "Provide words or terms that clearly identify the training material's topics."
-      licence: 'Select the licence for the training material.'
+      licence: >
+        The most appropriate license that specifies the terms under which your training material and dataset can be used, 
+        modified, and distributed. 
+        Various options of licenses, for example, Creative Commons License are available to choose from. 
       objectives: >
-        Describe the knowledge, skills or abilities that students should acquire throught the completion or use of the
-        training material.
+        Clearly defined, measurable statements describing the specific knowledge, skills a learner should acquire 
+        after completing the training course.
       other_types: 'Enter the types of resources that are not included on the above list.'
       part_of: 'Describe the larger service of training to which this material belongs.'
       prerequisites: >
-        What prior understanding or knowledge does your audience need to have on the topics covered in the training
-        material?
-      providers: ''
+        The foundational knowledge, skills, or competencies that a learner or user must possess 
+        before engaging with the training content.
+      providers: >
+        The organisation, institution, or individual responsible for providing, and maintaining the training material.
       resources: 'Are there any external resources that relate to the is training material?'
-      status: 'Indicate the current status of the training material.'
+      status: >
+        The current state or stage of the training material indicating whether it is 
+        Active, Under development, or Archived.
       subsets: 'Add identifier URLs or DOIs for each subset of the training material.'
       syllabus: 'Describe the syllabus or provide an overview of the topics covered.'
       targets: 'Indicate the type of audience intended to use your training material.'
       time: 'What is the estimated time it takes to work through this resource in hours?'
-      title: 'Add a title for your training material.'
-      resource_type: 'Select the type of resource that best matches the training material. '
+      title: >
+        A concise sentence that clearly indicates the topic of the training material. 
+        It should provide context and help learners understand what the material will cover.
+      resource_type: >
+        The predominant category that describes the kind of learning material, 
+        for example, a presentation, video, handout, publication, poster.
       url: 'Preferred URL to direct people to your training material landing page.'
-      version: 'Indicate the current version of the training material.'
+      version: >
+        A specific iteration or release of the training material document, labeled to track updates 
+        (for example, v1.0, v2.1).
       visible: 'Whether this material should be shown or hidden from the materials page.'
   learning_paths:
     hints:
@@ -675,7 +708,8 @@ en:
       part_of: 'Describe the larger service of training to which this learning path belongs.'
       prerequisites: >
         What prior understanding or knowledge does your audience need to have on the topics covered in the learning path?
-      providers: ''
+      providers: >
+        The organisation, institution, or individual responsible for providing, and maintaining the learning path.
       resources: 'Are there any external resources that relate to the is learning path?'
       status: 'Indicate the current status of the learning path.'
       subsets: 'Add identifier URLs or DOIs for each subset of the learning path.'
@@ -805,6 +839,8 @@ en:
     422: "The request you sent was well-formed but the change you wanted was rejected (422 Unprocessable Entity)."
     404: "The requested page could not be found - you may have mistyped the address or the page may have moved (404 Not Found)."
     406: "The requested format is not available (406 Not Acceptable)."
+    messages:
+      orcid_taken: 'has already been linked to another profile.'
   warnings:
     link_broken: >
       %{site_name} has been unable to access this %{resource_type}'s URL since %{fail_date} - the page may have been moved.
@@ -865,6 +901,8 @@ en:
         hide_disabled: 'Hide disabled %{resource}'
         show_archived: 'Show archived %{resource}'
         hide_archived: 'Hide archived %{resource}'
+        show_broken_links: 'Show %{resource} with broken links'
+        hide_broken_links: 'Hide %{resource} with broken links'
         show_cross_space: 'Show %{resource} from all spaces'
         hide_cross_space: 'Hide %{resource} from all spaces'
     hidden:
@@ -1078,3 +1116,8 @@ en:
       title: What are spaces?
       description: |
         Spaces are customizable, community-managed sub-portals within %{site_name}, each with their own catalogue of training content.
+  orcid:
+    error: 'An error occurred whilst trying to authenticate your ORCID.'
+    authenticate: 'Authenticate your ORCID'
+    authentication_success: 'You have successfully authenticated your ORCID.'
+    authentication_failure: 'Failed to authenticate your ORCID.'

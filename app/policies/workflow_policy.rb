@@ -5,7 +5,7 @@ class WorkflowPolicy < ResourcePolicy
   end
 
   def show?
-    (!@record.from_unverified_or_rejected? && @record.public?)  || manage?
+    (!@record.from_unverified_or_rejected? && @record.public?) || update? || manage?
   end
 
   class Scope < Scope

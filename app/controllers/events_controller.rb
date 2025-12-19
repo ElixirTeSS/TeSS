@@ -67,6 +67,7 @@ class EventsController < ApplicationController
       format.json
       format.json_api { render json: @event }
       format.ics { send_data @event.to_ical, type: 'text/calendar', disposition: 'attachment', filename: "#{@event.slug}.ics" }
+      format.jsonld { render plain: @bioschemas.first.to_json }
     end
   end
 
@@ -236,7 +237,7 @@ class EventsController < ApplicationController
                                   :timezone, :content_provider_id, { collection_ids: [] }, { node_ids: [] },
                                   { node_names: [] }, { target_audience: [] }, { eligibility: [] }, :visible,
                                   { host_institutions: [] }, :capacity, :contact, :recognition, :learning_objectives,
-                                  :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency, :language,
+                                  :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency, :language, :presence,
                                   external_resources_attributes: %i[id url title _destroy],
                                   external_resources: %i[url title], material_ids: [],
                                   llm_interaction_attributes: %i[id scrape_or_process model prompt input output needs_processing _destroy],
