@@ -1,0 +1,25 @@
+{
+  "name": "hsf-training-scikit-hep-webpage",
+  "full_name": "hsf-training/hsf-training-scikit-hep-webpage",
+  "owner": {
+    "login": "hsf-training"
+  },
+  "html_url": "https://github.com/hsf-training/hsf-training-scikit-hep-webpage",
+  "description": null,
+  "homepage": "https://hsf-training.github.io/hsf-training-scikit-hep-webpage/",
+  "topics": [
+    "hacktoberfest",
+    "hey",
+    "test"
+  ],
+  "license": {
+    "key": "other",
+    "name": "Other",
+    "spdx_id": "NOASSERTION"
+  },
+  "archived": false,
+  "created_at": "2022-03-23T17:00:05Z",
+  "updated_at": "2025-09-29T06:14:55Z",
+  "pushed_at": "2025-09-23T20:09:10Z",
+  "contributors_url": "https://api.github.com/repos/hsf-training/hsf-training-scikit-hep-webpage/contributors"
+}
