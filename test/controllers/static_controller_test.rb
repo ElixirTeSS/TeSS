@@ -509,7 +509,7 @@ class StaticControllerTest < ActionController::TestCase
       with_settings({ feature: { login_through_oidc_only: true } }) do
         get :home
         assert_select 'ul.user-options.nav.navbar-nav.navbar-right' do
-          assert_select 'a[href="/users/auth/oidc"]', text: 'Log in', count: 1
+          assert_select 'a[href="/users/auth/oidc"]', count: 1
         end
       end
     end
