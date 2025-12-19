@@ -6,12 +6,12 @@ class SitemapHelperTest < ActionView::TestCase
     @messages = []
   end
 
-  test 'get_sources with url only returns url only' do
+  test 'parse_sitemap with url only returns url only' do
     url = 'https://test.com'
-    assert_equal @ingestor.send(:get_sources, url), [url]
+    assert_equal @ingestor.send(:parse_sitemap, url), [url]
   end
 
-  test 'get_sources returns parsed URLs from sitemap.xml' do
+  test 'parse_sitemap returns parsed URLs from sitemap.xml' do
     sitemap_xml = <<~XML
       <?xml version="1.0" encoding="UTF-8"?>
       <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -27,11 +27,11 @@ class SitemapHelperTest < ActionView::TestCase
     stub_request(:get, 'https://app.com/events/sitemap.xml')
       .to_return(status: 200, body: sitemap_xml, headers: { 'Content-Type' => 'application/xml' })
 
-    urls = @ingestor.send(:get_sources, 'https://app.com/events/sitemap.xml')
+    urls = @ingestor.send(:parse_sitemap, 'https://app.com/events/sitemap.xml')
     assert_equal ['https://app.com/events/123', 'https://app.com/events/456'], urls
   end
 
-  test 'get_sources returns parsed URLs from sitemap.txt' do
+  test 'parse_sitemap returns parsed URLs from sitemap.txt' do
     sitemap_txt = <<~TXT
       https://app.com/events/123
       https://app.com/events/456
@@ -40,7 +40,7 @@ class SitemapHelperTest < ActionView::TestCase
     stub_request(:get, 'https://app.com/events/sitemap.txt')
       .to_return(status: 200, body: sitemap_txt, headers: { 'Content-Type' => 'txt' })
 
-    urls = @ingestor.send(:get_sources, 'https://app.com/events/sitemap.txt')
+    urls = @ingestor.send(:parse_sitemap, 'https://app.com/events/sitemap.txt')
     assert_equal ['https://app.com/events/123', 'https://app.com/events/456'], urls
   end
 

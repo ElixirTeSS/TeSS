@@ -41,7 +41,7 @@ module Ingestors
     def read(source_url)
       @verbose = false
       # Returns either a map of unique URL entries, either the URL itself
-      sources = get_sources(source_url)
+      sources = parse_sitemap(source_url)
 
       sources.each do |url|
         # Reads each source, if github.{com|io}, gets the repo's api, if not, next

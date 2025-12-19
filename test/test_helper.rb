@@ -411,7 +411,7 @@ class ActiveSupport::TestCase
     end
 
     def read(url)
-      get_sources(url)
+      parse_sitemap(url)
       open_url(url)
     end
   end

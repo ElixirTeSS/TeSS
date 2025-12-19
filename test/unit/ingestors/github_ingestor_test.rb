@@ -321,7 +321,7 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
   end
 
   test 'std errors when exception is raised' do
-    @ingestor.stub(:get_sources, ->(*) { raise StandardError, 'test failure' }) do
+    @ingestor.stub(:parse_sitemap, ->(*) { raise StandardError, 'test failure' }) do
       mock_logger = Minitest::Mock.new
       mock_logger.expect(:error, nil, ['StandardError: read() failed, test failure'])
 
