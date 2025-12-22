@@ -520,4 +520,178 @@ class StaticControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test 'should respect space disabled_features when displaying tabs' do
+    space = spaces(:plants)
+    space.disabled_features = ['events', 'materials']
+    space.save!
+
+    features = { 
+      'events': true,
+      'materials': true,
+      'elearning_materials': true,
+      'workflows': true,
+      'collections': true,
+      'content_providers': true,
+      'trainers': true,
+      'nodes': true,
+      'spaces': true
+    }
+
+    with_settings(feature: features) do
+      with_host('plants.mytess.training') do
+        get :home
+        
+        # These should NOT appear because they're disabled for this space
+        assert_select 'ul.nav.navbar-nav' do
+          assert_select 'li a[href=?]', events_path, count: 0
+          assert_select 'li a[href=?]', materials_path, count: 0
+        end
+        
+        # These should still appear because they're not disabled
+        assert_select 'ul.nav.navbar-nav' do
+          assert_select 'li a[href=?]', about_path
+          assert_select 'li a[href=?]', elearning_materials_path
+          assert_select 'li a[href=?]', workflows_path
+          assert_select 'li a[href=?]', collections_path
+        end
+      end
+    end
+  end
+
+  test 'space disabled_features do not affect default space' do
+    space = spaces(:plants)
+    space.disabled_features = ['events', 'materials']
+    space.save!
+
+    features = { 
+      'events': true,
+      'materials': true,
+      'elearning_materials': true,
+      'workflows': true,
+      'collections': true,
+      'content_providers': true,
+      'trainers': true,
+      'nodes': true,
+      'spaces': true
+    }
+
+    with_settings(feature: features) do
+      # Access the default space (not plants)
+      get :home
+      
+      # All features should appear in the default space
+      assert_select 'ul.nav.navbar-nav' do
+        assert_select 'li a[href=?]', about_path
+        assert_select 'li a[href=?]', events_path
+        assert_select 'li a[href=?]', materials_path
+        assert_select 'li a[href=?]', elearning_materials_path
+        assert_select 'li a[href=?]', workflows_path
+        assert_select 'li a[href=?]', collections_path
+      end
+    end
+  end
+
+  test 'different spaces can have different disabled features' do
+    plants_space = spaces(:plants)
+    plants_space.disabled_features = ['events']
+    plants_space.save!
+
+    astro_space = spaces(:astro)
+    astro_space.disabled_features = ['materials']
+    astro_space.save!
+
+    features = { 
+      'events': true,
+      'materials': true,
+      'workflows': true,
+      'spaces': true
+    }
+
+    with_settings(feature: features) do
+      # Check plants space - events disabled
+      with_host('plants.mytess.training') do
+        get :home
+        
+        assert_select 'ul.nav.navbar-nav' do
+          assert_select 'li a[href=?]', events_path, count: 0
+          assert_select 'li a[href=?]', materials_path
+          assert_select 'li a[href=?]', workflows_path
+        end
+      end
+
+      # Check astro space - materials disabled
+      with_host('space.mytess.training') do
+        get :home
+        
+        assert_select 'ul.nav.navbar-nav' do
+          assert_select 'li a[href=?]', events_path
+          assert_select 'li a[href=?]', materials_path, count: 0
+          assert_select 'li a[href=?]', workflows_path
+        end
+      end
+    end
+  end
+
+  test 'space with no disabled features shows all enabled global features' do
+    space = spaces(:plants)
+    space.disabled_features = []
+    space.save!
+
+    features = { 
+      'events': true,
+      'materials': true,
+      'elearning_materials': true,
+      'workflows': true,
+      'collections': true,
+      'content_providers': true,
+      'trainers': true,
+      'nodes': true,
+      'spaces': true
+    }
+
+    with_settings(feature: features) do
+      with_host('plants.mytess.training') do
+        get :home
+        
+        # All globally enabled features should appear
+        assert_select 'ul.nav.navbar-nav' do
+          assert_select 'li a[href=?]', about_path
+          assert_select 'li a[href=?]', events_path
+          assert_select 'li a[href=?]', materials_path
+          assert_select 'li a[href=?]', elearning_materials_path
+          assert_select 'li a[href=?]', workflows_path
+          assert_select 'li a[href=?]', collections_path
+        end
+      end
+    end
+  end
+
+  test 'space disabled features work with directory tabs' do
+    space = spaces(:plants)
+    space.disabled_features = ['content_providers']
+    space.save!
+
+    features = { 
+      'events': true,
+      'materials': true,
+      'content_providers': true,
+      'trainers': true,
+      'nodes': true,
+      'spaces': true
+    }
+
+    with_settings(feature: features, site: { tab_order: [], directory_tabs: ['content_providers', 'trainers', 'nodes'] }) do
+      with_host('plants.mytess.training') do
+        get :home
+        
+        # content_providers should not appear even in directory menu
+        assert_select 'li.dropdown.directory-menu' do
+          assert_select 'li a[href=?]', content_providers_path, count: 0
+          assert_select 'li a[href=?]', trainers_path
+          assert_select 'li a[href=?]', nodes_path
+        end
+      end
+    end
+  end
 end
