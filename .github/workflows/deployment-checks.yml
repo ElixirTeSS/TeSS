@@ -12,17 +12,32 @@ jobs:
       DB_PASSWORD: password
       SECRET_BASE_KEY: test_key
       RAILS_ENV: production
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_DB: ${{ env.DB_NAME }}
+          POSTGRES_USER: ${{ env.DB_USER }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
     steps:
-      - uses: harmon758/postgresql-action@v1
-        with:
-          postgresql db: ${DB_NAME}
-          postgresql user: ${DB_USER}
-          postgresql password: ${DB_PASSWORD}
-        name: Set up database
-
       - uses: actions/checkout@v4
         name: Set up Ruby
-
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
