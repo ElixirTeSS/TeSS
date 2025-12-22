@@ -2,8 +2,9 @@ require 'uri'
 
 class Profile < ApplicationRecord
   include HasOrcid
+  include InSpace
 
-  auto_strip_attributes :firstname, :surname, :website, squish: false
+  auto_strip_attributes :firstname, :surname, :website, :orcid, squish: false
   belongs_to :user, inverse_of: :profile
 
   validates :firstname, :surname, :description, presence: true, if: :public?
