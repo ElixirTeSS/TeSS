@@ -1,5 +1,5 @@
 <% per_slide = 3 %>
-<% return unless TeSS::Config.feature['content_providers'] %>
+<% return unless Space.current_space.feature_enabled?('content_providers') %>
 <% provider_ids = TeSS::Config.site.dig('home_page', 'featured_providers') %>
 <% provider_ids = ContentProvider.from_verified_users.
   where.not(image_file_size: nil).

@@ -43,7 +43,7 @@
           <%= user_f.input :check_broken_scrapers %>
         <% end %>
 
-        <% if TeSS::Config.feature['trainers'] %>
+        <% if Space.current_space.feature_enabled?('trainers') %>
           <p><br/>
 
           <h3 id='trainer_details'>Trainer Details</h3>

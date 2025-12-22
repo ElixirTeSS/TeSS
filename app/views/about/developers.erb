@@ -72,7 +72,7 @@
 
         <p>
           <!-- Events -->
-          <% if TeSS::Config.feature['events'] %>
+          <% if Space.current_space.feature_enabled?('events') %>
             <code>
               <a href="<%= TeSS::Config.base_url %><%== t 'developer.api_example_1' %>">
                 <%= TeSS::Config.base_url %><%== t 'developer.api_example_1' %></a>
@@ -80,7 +80,7 @@
           <% end %>
 
           <!-- Materials -->
-          <% if TeSS::Config.feature['materials'] %>
+          <% if Space.current_space.feature_enabled?('materials') %>
             <code>
               <a href="<%= TeSS::Config.base_url %><%== t 'developer.api_example_3' %>">
                 <%= TeSS::Config.base_url %><%== t 'developer.api_example_3' %> </a>
@@ -88,7 +88,7 @@
           <% end %>
 
           <!-- Providers -->
-          <% if TeSS::Config.feature['content_providers'] %>
+          <% if Space.current_space.feature_enabled?('content_providers') %>
             <code>
               <a href="<%= TeSS::Config.base_url %><%== t 'developer.api_example_4' %>">
                 <%= TeSS::Config.base_url %><%== t 'developer.api_example_4' %> </a>
