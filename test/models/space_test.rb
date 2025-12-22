@@ -46,7 +46,7 @@ class SpaceTest < ActiveSupport::TestCase
   test 'disabled_features rejects invalid features' do
     @space.disabled_features = ['invalid_feature', 'events']
     assert_not @space.valid?
-    assert_includes @space.errors[:disabled_features], :inclusion
+    assert @space.errors.added?(:disabled_features, :inclusion)
   end
 
   test 'disabled_features allows empty strings' do
