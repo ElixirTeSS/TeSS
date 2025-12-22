@@ -129,7 +129,7 @@ class UsersController < ApplicationController
   def user_params
     allowed_parameters = [:email, :username, :password, :image, :image_url, {
       profile_attributes: [:id, :firstname, :surname, :email, :website, :public,
-                           :description, :location, :orcid, :experience,
+                           :description, :location, :orcid, :experience, :space_id,
                            { expertise_academic: [] }, { expertise_technical: [] },
                            { interest: [] }, { activity: [] }, { language: [] },
                            { fields: [] }, { social_media: [] }]

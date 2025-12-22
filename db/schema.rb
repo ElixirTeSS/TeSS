@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_22_142740) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_22_154205) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -453,8 +453,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_22_142740) do
     t.string "type", default: "Profile"
     t.string "fields", default: [], array: true
     t.boolean "orcid_authenticated", default: false
+    t.bigint "space_id"
     t.index ["orcid"], name: "index_profiles_on_orcid"
     t.index ["slug"], name: "index_profiles_on_slug", unique: true
+    t.index ["space_id"], name: "index_profiles_on_space_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -669,6 +671,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_22_142740) do
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"
   add_foreign_key "nodes", "users"
+  add_foreign_key "profiles", "spaces"
   add_foreign_key "sources", "content_providers"
   add_foreign_key "sources", "spaces"
   add_foreign_key "sources", "users"

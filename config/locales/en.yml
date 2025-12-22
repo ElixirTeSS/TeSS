@@ -761,6 +761,7 @@ en:
       interest: 'Add keyword(s) to identify your main areas of interest.'
       activity: 'Include any global connections or activities that relate to your skills and training work.'
       social_media: 'Links or handles for your social media profiles.'
+      space: 'The space in which your trainer profile will appear.'
   authentication:
     password:
       title: Login
@@ -1035,6 +1036,7 @@ en:
         check_broken_scrapers: Receive emails with scrapers that have not found anything last period.
       profile:
         language: Languages Spoken
+        space: Home space
 
   helpers:
     submit:
