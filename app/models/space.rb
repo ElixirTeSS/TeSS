@@ -1,4 +1,6 @@
 class Space < ApplicationRecord
+  FEATURES = %w[events materials elearning_materials learning_paths workflows collections trainers content_providers nodes].freeze
+
   include PublicActivity::Common
   include LogParameterChanges
 
@@ -15,6 +17,7 @@ class Space < ApplicationRecord
   has_many :administrators, through: :administrator_roles, source: :user, class_name: 'User'
 
   validates :theme, inclusion: { in: TeSS::Config.themes.keys, allow_blank: true }
+  validate :disabled_features_valid?
 
   has_image(placeholder: TeSS::Config.placeholder['content_provider'])
 
@@ -44,5 +47,32 @@ class Space < ApplicationRecord
 
   def users_with_role(role)
     space_role_users.joins(:space_roles).where(space_roles: { key: role })
+  end
+
+  def feature_enabled?(feature)
+    if FEATURES.include?(feature)
+      !disabled_features.include?(feature)
+    else
+      TeSS::Config.feature[feature]
+    end
+  end
+
+  def enabled_features= features
+    self.disabled_features = (FEATURES - features)
+  end
+
+  def enabled_features
+    (FEATURES - disabled_features)
+  end
+
+  private
+
+  def disabled_features_valid?
+    disabled_features.each do |feature|
+      next if feature.blank?
+      unless FEATURES.include?(feature)
+        errors.add(:disabled_features, :inclusion)
+      end
+    end
   end
 end
