@@ -102,6 +102,12 @@
                             model_name: 'user[profile_attributes]',
                             title: t('profile.hints.social_media') %>
 
+          <% if TeSS::Config.feature['spaces'] %>
+            <%= f.association :space, errors: @user.profile.errors[:space],
+                              model_name: 'user[profile_attributes]',
+                              hint: t('profile.hints.space') %>
+          <% end %>
+
           <p><i class="fa fa-exclamation-triangle"></i>&nbsp;<%= t 'profile.trainer.disclaimer' %></p>
 
 

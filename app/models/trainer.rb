@@ -6,6 +6,7 @@ class Trainer < Profile
   friendly_id :full_name, use: :slugged
 
   include Searchable
+  include InSpace
 
   if TeSS::Config.solr_enabled
     # :nocov:
