@@ -15,7 +15,7 @@ jobs:
       REDIS_TEST_URL: redis://localhost:6379/0
     services:
       postgres:
-        image: postgres:14
+        image: postgres
         env:
           POSTGRES_DB: ${{ env.DB_NAME }}
           POSTGRES_USER: ${{ env.DB_USER }}
