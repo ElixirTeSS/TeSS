@@ -19,12 +19,9 @@
 <%= select_tag '', options_for_select(predefined_colours), id: 'simple-colour-picker' %>
 <script>
   document.addEventListener("turbolinks:load", function() {
-    $('#simple-colour-picker').simplecolorpicker();
-
-    $('#simple-colour-picker').on('change', function (e) {
+    $('#simple-colour-picker').simplecolorpicker().on('change', function (e) {
       var valueSelected = this.value.toUpperCase();
       $('#node-modal-form-colour').val(valueSelected);
-      $('#node-modal-form-colour')[0].jscolor.fromString(valueSelected);
     });
   });
 </script>
