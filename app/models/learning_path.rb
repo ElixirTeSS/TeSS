@@ -96,7 +96,7 @@ class LearningPath < ApplicationRecord
                     difficulty_level licence target_audience authors contributors user node status)
 
     field_list.delete('scientific_topics') if TeSS::Config.feature['disabled'].include? 'topics'
-    field_list.delete('node') unless TeSS::Config.feature['nodes']
+    field_list.delete('node') unless Space.current_space.feature_enabled?('nodes')
     field_list.delete('status') if TeSS::Config.feature['disabled'].include? 'status'
 
     field_list

@@ -9,9 +9,9 @@ class StaticController < ApplicationController
     @resources = []
     if TeSS::Config.solr_enabled
       enabled = []
-      enabled.append(Event) if TeSS::Config.feature['events']
-      enabled.append(Material) if TeSS::Config.feature['materials']
-      enabled.append(Collection) if TeSS::Config.feature['collections']
+      enabled.append(Event) if feature_enabled?('events')
+      enabled.append(Material) if feature_enabled?('materials')
+      enabled.append(Collection) if feature_enabled?('collections')
       enabled.each do |resource|
         @resources += resource.search_and_filter(nil, '', { 'max_age' => '1 month' },
                                                  sort_by: 'new', per_page: 5).results

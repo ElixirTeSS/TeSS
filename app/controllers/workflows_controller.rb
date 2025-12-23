@@ -1,6 +1,6 @@
 # The controller for actions related to the Workflows model
 class WorkflowsController < ApplicationController
-  before_action :feature_enabled?
+  before_action :ensure_feature_enabled
 
   layout 'application'
 

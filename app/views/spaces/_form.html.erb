@@ -19,6 +19,10 @@
                       id_field: :id,
                       existing_items_method: :administrators %>
 
+  <div>
+    <%= f.input :enabled_features, label: t('features.enabled'), collection: space_feature_options, as: :check_boxes %>
+  </div>
+
   <div class="form-group">
     <%= f.submit(class: 'btn btn-primary') %>
     <%= link_to t('.cancel', default:  t("helpers.links.cancel")),

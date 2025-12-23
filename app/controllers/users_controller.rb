@@ -2,7 +2,7 @@
 
 # The controller for actions related to the Users model
 class UsersController < ApplicationController
-  before_action -> { feature_enabled?('invitation') }, only: [:invitees]
+  before_action -> { ensure_feature_enabled('invitation') }, only: [:invitees]
   prepend_before_action :set_user, only: %i[show edit update destroy change_token]
   prepend_before_action :init_user, only: [:create]
   before_action :set_breadcrumbs
@@ -137,10 +137,6 @@ class UsersController < ApplicationController
     allowed_parameters << :role_id if policy(@user).change_role?
     allowed_parameters << :check_broken_scrapers if @user.is_admin?
     params.require(:user).permit(allowed_parameters)
-  end
-
-  def invitees_enabled?
-    feature_enabled?('invitation')
   end
 
   # Prevent assigning other profiles

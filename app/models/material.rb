@@ -140,8 +140,8 @@ class Material < ApplicationRecord
     field_list.delete('standard_database_or_policy') if TeSS::Config.feature['disabled'].include? 'fairshare'
     field_list.delete('tools') if TeSS::Config.feature['disabled'].include? 'biotools'
     field_list.delete('fields') if TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research'
-    field_list.delete('node') unless TeSS::Config.feature['nodes']
-    field_list.delete('collections') unless TeSS::Config.feature['collections']
+    field_list.delete('node') unless Space.current_space.feature_enabled?('nodes')
+    field_list.delete('collections') unless Space.current_space.feature_enabled?('collections')
     field_list.delete('status') if TeSS::Config.feature['disabled'].include? 'status'
 
     field_list

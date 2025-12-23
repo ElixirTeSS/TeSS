@@ -238,4 +238,28 @@ class SpacesControllerTest < ActionController::TestCase
     assert_includes admins, existing_admin
     assert_includes admins, new_admin
   end
+
+  test 'only instance-enabled features are listed on management page' do
+    sign_in @space.user
+    features = { 'events': true,
+                 'materials': false,
+                 'elearning_materials': false,
+                 'learning_paths': false,
+                 'workflows': true,
+                 'collections': false,
+                 'content_providers': false,
+                 'trainers': false,
+                 'nodes': false
+    }
+
+    with_settings(feature: features) do
+      get :edit, params: { id: @space }
+      assert_response :success
+      assert_select '[name="space[enabled_features][]"]', count: 3 # +1 because of the blank input that allows you to
+                                                                   #  clear the list
+      assert_select '#space_enabled_features_events', count: 1
+      assert_select '#space_enabled_features_workflows', count: 1
+      assert_select '#space_enabled_features_materials', count: 0
+    end
+  end
 end
