@@ -85,6 +85,20 @@ class SpaceTest < ActiveSupport::TestCase
     end
   end
 
+  test 'feature_enabled? is limited by instance enabled features' do
+    @space.disabled_features = []
+    assert_includes @space.enabled_features, 'events'
+    with_settings(feature: { 'events' => true }) do
+      assert @space.feature_enabled?('events')
+      assert @space.feature_enabled?('materials')
+    end
+
+    with_settings(feature: { 'events' => false }) do
+      refute @space.feature_enabled?('events')
+      assert @space.feature_enabled?('materials')
+    end
+  end
+
   test 'enabled_features returns all features except disabled ones' do
     @space.disabled_features = ['events', 'materials']
     enabled = @space.enabled_features

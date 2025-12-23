@@ -694,4 +694,22 @@ class StaticControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test 'space enabled features are limited by instance enabled features' do
+    space = spaces(:plants)
+    space.disabled_features = []
+    space.save!
+
+    assert_includes space.enabled_features, 'events'
+
+    with_settings(feature: { 'events': false }) do
+      with_host('plants.mytess.training') do
+        get :home
+        assert_select 'ul.nav.navbar-nav' do
+          assert_select 'li a[href=?]', materials_path, count: 1
+          assert_select 'li a[href=?]', events_path, count: 0
+        end
+      end
+    end
+  end
 end

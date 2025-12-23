@@ -51,7 +51,7 @@ class Space < ApplicationRecord
 
   def feature_enabled?(feature)
     if FEATURES.include?(feature)
-      !disabled_features.include?(feature)
+      TeSS::Config.feature[feature] && !disabled_features.include?(feature)
     else
       TeSS::Config.feature[feature]
     end

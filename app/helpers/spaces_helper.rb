@@ -5,6 +5,10 @@ module SpacesHelper
   end
 
   def space_feature_options
-    Space::FEATURES.map { |f| [t("features.#{f}.short"), f] }
+    Space::FEATURES.select do |f|
+      TeSS::Config.feature[f]
+    end.map do |f|
+      [t("features.#{f}.short"), f]
+    end
   end
 end
