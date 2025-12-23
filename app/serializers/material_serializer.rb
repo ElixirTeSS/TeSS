@@ -5,7 +5,7 @@ class MaterialSerializer < ApplicationSerializer
 
              :doi, :licence, :version, :status,
 
-             :contact, :contributors, :authors,
+             :contact,
 
              :difficulty_level, :target_audience, :prerequisites, :syllabus, :learning_objectives, :subsets,
 
@@ -18,4 +18,6 @@ class MaterialSerializer < ApplicationSerializer
   has_many :nodes
   has_many :collections
   has_many :events
+  has_many :authors, serializer: PersonSerializer
+  has_many :contributors, serializer: PersonSerializer
 end
