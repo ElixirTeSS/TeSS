@@ -166,7 +166,7 @@
         <% end %>
 
         <!-- Tab: Workflows -->
-        <% if TeSS::Config.feature['workflows'] %>
+        <% if Space.current_space.feature_enabled?('workflows') %>
           <%= tab('Workflows', icon_class_for_model('workflows'), 'workflows', activator: activator,
                   disabled: { check: workflows.none?, message: 'No workflows' },
                   count: workflows_count) %>
@@ -209,7 +209,7 @@
         <% end %>
 
         <!-- Tab: Workflows -->
-        <% if TeSS::Config.feature['workflows'] %>
+        <% if Space.current_space.feature_enabled?('workflows') %>
           <%= render partial: 'common/associated_resources',
                      locals: { model: Workflow,
                                total_count: workflows_count,

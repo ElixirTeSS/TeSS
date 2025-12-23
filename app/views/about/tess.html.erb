@@ -83,7 +83,7 @@
       <% end %>
 
       <!-- WORKFLOWS -->
-      <% if TeSS::Config.feature['workflows'] %>
+      <% if Space.current_space.feature_enabled?('workflows') %>
         <div id="workflows" class="row <%= next_about_block(@feature_count += 1) %>">
           <h3 class="col-lg-12"><%= t('about.headings.workflows') %></h3>
           <div class="col-lg-2 col-lg-push-10 about-resource-icon">

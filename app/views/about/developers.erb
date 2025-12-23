@@ -96,7 +96,7 @@
           <% end %>
 
           <!-- Workflows -->
-          <% if TeSS::Config.feature['workflows'] %>
+          <% if Space.current_space.feature_enabled?('workflows') %>
             <code>
               <a href="<%= TeSS::Config.base_url %><%== t 'developer.api_example_5' %>">
                 <%= TeSS::Config.base_url %><%== t 'developer.api_example_5' %> </a>

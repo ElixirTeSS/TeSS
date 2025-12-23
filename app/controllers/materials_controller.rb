@@ -17,7 +17,7 @@ class MaterialsController < ApplicationController
   # GET /materials.json?q=queryparam
 
   def index
-    elearning = @facet_params[:resource_type] == 'e-learning' && TeSS::Config.feature['elearning_materials']
+    elearning = @facet_params[:resource_type] == 'e-learning' && Space.current_space.feature_enabled?('elearning_materials')
     @bioschemas = @materials.flat_map(&:to_bioschemas)
     respond_to do |format|
       format.html { render elearning ? 'elearning_materials/index' : 'index' }
