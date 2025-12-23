@@ -1,4 +1,4 @@
-<% features = ['events', 'materials', 'learning_paths', 'trainers'].select { |f| Space.current_space.feature_enabled?(f) } %>
+<% features = ['events', 'materials', 'learning_paths', 'trainers'].select { |f| feature_enabled?(f) } %>
 
 <section id="catalogue">
   <h2 class="text-center"><%= t('home.catalogue.title') %></h2>

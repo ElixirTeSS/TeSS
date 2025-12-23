@@ -24,7 +24,7 @@
   </ul>
 
   <!-- REGISTERING YOUR LEARNING PATHS -->
-  <% if Space.current_space.feature_enabled?('learning_paths') %>
+  <% if feature_enabled?('learning_paths') %>
     <ul class="nav nav-stacked <%= show_active(show, 'learning_paths') %>">
       <li class="about-page-category">
         <%= link_to t('about.sidebar.learning_paths'), registering_learning_paths_path %>

@@ -54,11 +54,11 @@ class SearchController < ApplicationController
   def search_models
     return @_models if @_models
     @_models = ['User']
-    @_models << 'Event' if Space.current_space.feature_enabled?('events')
-    @_models << 'Material' if Space.current_space.feature_enabled?('materials')
-    @_models << 'Collection' if Space.current_space.feature_enabled?('collections')
-    @_models << 'ContentProvider' if Space.current_space.feature_enabled?('content_providers')
-    @_models << 'Trainer' if Space.current_space.feature_enabled?('trainers')
+    @_models << 'Event' if feature_enabled?('events')
+    @_models << 'Material' if feature_enabled?('materials')
+    @_models << 'Collection' if feature_enabled?('collections')
+    @_models << 'ContentProvider' if feature_enabled?('content_providers')
+    @_models << 'Trainer' if feature_enabled?('trainers')
     @_models
   end
 end

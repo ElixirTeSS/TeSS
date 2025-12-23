@@ -1,6 +1,6 @@
 # The controller for actions related to the Content Providers model
 class ContentProvidersController < ApplicationController
-  before_action -> { feature_enabled?('content_providers') }
+  before_action :ensure_feature_enabled
   before_action :set_content_provider, only: %i[show edit update destroy]
   before_action :set_breadcrumbs
 

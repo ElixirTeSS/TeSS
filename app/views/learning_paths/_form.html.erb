@@ -62,7 +62,7 @@
               visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
 
   <!-- Nodes: check feature enabled -->
-  <% if Space.current_space.feature_enabled?('nodes') %>
+  <% if feature_enabled?('nodes') %>
     <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes' %>
   <% end %>
 

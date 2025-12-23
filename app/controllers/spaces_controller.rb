@@ -1,6 +1,6 @@
 # The controller for actions related to the Spaces model
 class SpacesController < ApplicationController
-  before_action :feature_enabled?
+  before_action :ensure_feature_enabled
   before_action :set_space, only: [:show, :edit, :update, :destroy]
   before_action :set_breadcrumbs
 

@@ -37,7 +37,7 @@
   <%= f.multi_input :keywords %>
 
   <!-- Nodes: check feature enabled -->
-  <% if Space.current_space.feature_enabled?('nodes') %>
+  <% if feature_enabled?('nodes') %>
     <%= f.input :node_id, label: 'ELIXIR node', collection: Node.order(:name).all, label_method: :name %>
   <% end %>
 

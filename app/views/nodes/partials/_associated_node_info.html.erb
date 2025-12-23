@@ -3,7 +3,7 @@
 Variable that should be available
 - associated_nodes - an array (or AR collection) of nodes
 %>
-<% if Space.current_space.feature_enabled?('nodes') %>
+<% if feature_enabled?('nodes') %>
   <% if associated_nodes.any? %>
     <%# Content provider  %>
     <h4 class="nav-heading"><%= 'Node'.pluralize(associated_nodes.count) %></h4>

@@ -11,11 +11,11 @@
           <%= render partial: 'collaborations/collaborators_button', locals: { resource: @collection } %>
         <% end %>
         <% if TeSS::Config.feature['collection_curation'] && current_user && policy(@collection).curate? %>
-          <% if Space.current_space.feature_enabled?('events') %>
+          <% if feature_enabled?('events') %>
             <%= link_to t('.curate_events', default: [:'helpers.links.events', 'events']),
                         curate_events_collection_path(@collection), class: 'btn btn-default' %>
           <% end %>
-          <% if Space.current_space.feature_enabled?('materials') %>
+          <% if feature_enabled?('materials') %>
             <%= link_to t('.curate_materials', default: [:'helpers.links.materials', 'materials']),
                         curate_materials_collection_path(@collection), class: 'btn btn-default' %>
           <% end %>
@@ -33,12 +33,12 @@
       <% not_finished_events_count = e.not_finished.count %>
       <% activator = tab_activator %>
       <ul class="nav nav-tabs">
-        <% if Space.current_space.feature_enabled?('materials') %>
+        <% if feature_enabled?('materials') %>
           <%= tab('Materials', icon_class_for_model('materials'), 'materials', activator: activator,
                   disabled: { check: materials_count.zero?, message: 'No registered training materials' },
                   count: materials_count) %>
         <% end %>
-        <% if Space.current_space.feature_enabled?('events') %>
+        <% if feature_enabled?('events') %>
           <%= tab('Events', icon_class_for_model('events'), 'events', activator: activator,
                   disabled: { check: events_count.zero?, message: 'No associated events' },
                   count: not_finished_events_count.zero? && events_count.positive? ? '0*' : not_finished_events_count) %>
@@ -47,7 +47,7 @@
     </div>
 
     <div class="tab-content ml-3">
-      <% if Space.current_space.feature_enabled?('materials') %>
+      <% if feature_enabled?('materials') %>
         <%= render partial: 'common/associated_resources',
                    locals: { model: Material,
                              total_count: materials_count,
@@ -56,7 +56,7 @@
                              view_all_link: materials_path(collections: @collection.title) } %>
       <% end %>
 
-      <% if Space.current_space.feature_enabled?('events') %>
+      <% if feature_enabled?('events') %>
         <%= render partial: 'common/associated_events',
                    locals: { total_count: events_count,
                              resources: event_items,

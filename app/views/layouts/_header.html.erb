@@ -54,7 +54,7 @@
             { feature: 'nodes', link: nodes_path },
             { feature: 'spaces', link: spaces_path }
           ].select do |t|
-            t[:feature] == 'about' || Space.current_space.feature_enabled?(t[:feature])
+            t[:feature] == 'about' || feature_enabled?(t[:feature])
           end.sort_by do |t|
             TeSS::Config.site['tab_order'].index(t[:feature]) || 99
           end

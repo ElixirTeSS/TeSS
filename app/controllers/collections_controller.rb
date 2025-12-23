@@ -1,6 +1,6 @@
 # The controller for actions related to the Collection model
 class CollectionsController < ApplicationController
-  before_action :feature_enabled?
+  before_action :ensure_feature_enabled
   before_action :set_collection, only: %i[show edit curate update_curation add_item remove_item update destroy]
   before_action :set_breadcrumbs
 

@@ -57,7 +57,7 @@
         <% end %>
       </p>
 
-      <% if Space.current_space.feature_enabled?('trainers') %>
+      <% if feature_enabled?('trainers') %>
         <p>
           <strong>Included in Registry of Trainers:</strong>
           <% if @user.profile.public? %>
@@ -145,28 +145,28 @@
 
       <ul class="nav nav-tabs">
         <!-- Tab: Events -->
-        <% if Space.current_space.feature_enabled?('events') %>
+        <% if feature_enabled?('events') %>
           <%= tab('Events', icon_class_for_model('events'), 'events', activator: activator,
                   disabled: { check: events_count.zero?, message: 'No associated events' },
                   count: not_finished_events_count.zero? && events_count.positive? ? '0*' : not_finished_events_count) %>
         <% end %>
 
         <!-- Tab: Materials -->
-        <% if Space.current_space.feature_enabled?('materials') %>
+        <% if feature_enabled?('materials') %>
           <%= tab('Materials', icon_class_for_model('materials'), 'materials', activator: activator,
                   disabled: { check: materials.none?, message: 'No registered training materials' },
                   count: materials_count) %>
         <% end %>
 
         <!-- Tab: Collections -->
-        <% if Space.current_space.feature_enabled?('collections') %>
+        <% if feature_enabled?('collections') %>
           <%= tab('Collections', icon_class_for_model('collections'), 'collections', activator: activator,
                   disabled: { check: collections.none?, message: 'No registered collections' },
                   count: collections_count) %>
         <% end %>
 
         <!-- Tab: Workflows -->
-        <% if Space.current_space.feature_enabled?('workflows') %>
+        <% if feature_enabled?('workflows') %>
           <%= tab('Workflows', icon_class_for_model('workflows'), 'workflows', activator: activator,
                   disabled: { check: workflows.none?, message: 'No workflows' },
                   count: workflows_count) %>
@@ -175,7 +175,7 @@
 
       <div class="tab-content">
         <!-- Tab: Events -->
-        <% if Space.current_space.feature_enabled?('events') %>
+        <% if feature_enabled?('events') %>
           <%= render partial: 'common/associated_events',
                      locals: { total_count: upcoming_events.count,
                                past_count: past_events.count,
@@ -187,7 +187,7 @@
         <% end %>
 
         <!-- Tab: Materials -->
-        <% if Space.current_space.feature_enabled?('materials') %>
+        <% if feature_enabled?('materials') %>
           <%= render partial: 'common/associated_resources',
                      locals: { model: Material,
                                total_count: materials_count,
@@ -198,7 +198,7 @@
         <% end %>
 
         <!-- Tab: Collections -->
-        <% if Space.current_space.feature_enabled?('collections') %>
+        <% if feature_enabled?('collections') %>
           <%= render partial: 'common/associated_resources',
                      locals: { model: Collection,
                                total_count: collections_count,
@@ -209,7 +209,7 @@
         <% end %>
 
         <!-- Tab: Workflows -->
-        <% if Space.current_space.feature_enabled?('workflows') %>
+        <% if feature_enabled?('workflows') %>
           <%= render partial: 'common/associated_resources',
                      locals: { model: Workflow,
                                total_count: workflows_count,
