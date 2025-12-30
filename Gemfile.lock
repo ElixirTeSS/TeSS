@@ -778,7 +778,7 @@ GEM
     unf_ext (0.0.8.2)
     unicode-display_width (2.4.2)
     unicode-types (1.10.0)
-    uri (1.0.3)
+    uri (1.0.4)
     useragent (0.16.11)
     validate_email (0.1.6)
       activemodel (>= 3.0)
