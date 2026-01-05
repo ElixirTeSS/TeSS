@@ -29,7 +29,7 @@ e.g.
       <li class="facet-sort-group">
         <span class="icon icon-lg sort-icon facet-sort-icon"></span>
         <%= select_tag(:sort, options_for_select(options, @sort_by),
-                       onchange: 'redirect_to_sort_url()', class: 'form-control facet-select font-size-sm facet-sort')
+                       onchange: 'Index.applySorting()', class: 'form-control facet-select font-size-sm facet-sort')
         %>
       </li>
     </ul>

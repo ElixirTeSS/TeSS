@@ -418,8 +418,19 @@ ul.unstyled {
 }
 
 .search-results-count {
-  margin-right: 5px;
+  margin-right: 1em;
   display: inline-block
+}
+
+.search-results-per-page {
+  display: inline-block;
+
+  select {
+    border: none;
+    padding: 0;
+    background: transparent;
+    border-bottom: 1px dashed $text-color;
+  }
 }
 
 .index-display-options {

@@ -910,6 +910,7 @@ en:
       values:
         show_hidden: 'Show hidden items'
         hide_hidden: 'Hide hidden items'
+    per_page: 'Results per page: '
   collections:
     show:
       curate_materials: "Curate materials"
