@@ -1,5 +1,5 @@
 class LearningPathsController < ApplicationController
-  before_action :feature_enabled?
+  before_action :ensure_feature_enabled
   before_action :set_learning_path, only: [:show, :edit, :update, :destroy]
   before_action :set_breadcrumbs
 

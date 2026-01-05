@@ -54,11 +54,11 @@ class SearchController < ApplicationController
   def search_models
     return @_models if @_models
     @_models = ['User']
-    @_models << 'Event' if TeSS::Config.feature['events']
-    @_models << 'Material' if TeSS::Config.feature['materials']
-    @_models << 'Collection' if TeSS::Config.feature['collections']
-    @_models << 'ContentProvider' if TeSS::Config.feature['content_providers']
-    @_models << 'Trainer' if TeSS::Config.feature['trainers']
+    @_models << 'Event' if feature_enabled?('events')
+    @_models << 'Material' if feature_enabled?('materials')
+    @_models << 'Collection' if feature_enabled?('collections')
+    @_models << 'ContentProvider' if feature_enabled?('content_providers')
+    @_models << 'Trainer' if feature_enabled?('trainers')
     @_models
   end
 end

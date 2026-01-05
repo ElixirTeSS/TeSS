@@ -172,3 +172,15 @@ space_admin:
   email: 'plantboss@example.com'
   encrypted_password: <%= Devise::Encryptor.digest(User, 'plantsrule') %>
   confirmed_at: <%= Time.zone.now %>
+
+astro_owner:
+  username: 'astro_boss'
+  email: 'astroboss@example.com'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'spacerules') %>
+  confirmed_at: <%= Time.zone.now %>
+
+other_owner:
+  username: 'other_boss'
+  email: 'otherboss@example.com'
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  confirmed_at: <%= Time.zone.now %>

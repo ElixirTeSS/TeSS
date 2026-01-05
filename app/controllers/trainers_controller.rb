@@ -1,6 +1,6 @@
 # The controller for actions related to the Profiles model
 class TrainersController < ApplicationController
-  before_action :feature_enabled?
+  before_action :ensure_feature_enabled
   before_action :set_trainer, only: [:show]
   before_action :set_breadcrumbs
 
