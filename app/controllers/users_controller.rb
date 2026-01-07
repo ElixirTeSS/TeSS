@@ -39,6 +39,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    @bioschemas = registrations.flat_map(&:to_bioschemas)
     respond_to do |format|
       format.html
       format.json
@@ -150,5 +151,12 @@ class UsersController < ApplicationController
     if profile_id && incoming_id && profile_id.to_i != incoming_id.to_i
       handle_error(:forbidden, 'Invalid profile ID.')
     end
+  end
+
+  # Get user's registrations
+  def registrations
+    events = @user.events.in_current_space
+    materials = @user.materials.in_current_space
+    events + materials
   end
 end
