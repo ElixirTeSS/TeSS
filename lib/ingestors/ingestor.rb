@@ -33,10 +33,22 @@ module Ingestors
       raise NotImplementedError
     end
 
+    def filter(source)
+      material_count = @materials.length
+      event_count = @events.length
+
+      @materials = @materials.select { |m| source.passes_filter? m }
+      @events = @events.select { |e| source.passes_filter? e }
+
+      @messages << "#{@materials.length} of #{material_count} materials match filters" if @materials.length != material_count
+      @messages << "#{@events.length} of #{event_count} events match filters" if @events.length != event_count
+    end
+
     def write(user, provider, source: nil)
-      write_resources(Event, @events, user, provider, source: source)
+      filter(source) if source
+      write_resources(Event, @events, user, provider, source:)
       @messages << stats_summary(:events)
-      write_resources(Material, @materials, user, provider, source: source)
+      write_resources(Material, @materials, user, provider, source:)
       @messages << stats_summary(:materials)
     end
 
@@ -174,9 +186,7 @@ module Ingestors
                      type.new(resource.to_h)
                    end
 
-        if resource.has_attribute?(:language) && resource.new_record?
-          resource.language ||= source&.default_language
-        end
+        resource.language ||= source&.default_language if resource.has_attribute?(:language) && resource.new_record?
 
         resource = set_resource_defaults(resource)
         if resource.valid?
