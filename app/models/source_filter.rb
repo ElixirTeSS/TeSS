@@ -2,6 +2,7 @@ class SourceFilter < ApplicationRecord
   belongs_to :source
 
   auto_strip_attributes :filter_value
+  validates :filter_mode, :filter_by, presence: true
 
   enum :filter_by, {
     target_audience: 'target_audience',
