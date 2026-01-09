@@ -5,7 +5,7 @@ require 'test_helper'
 class ScraperTest < ActiveSupport::TestCase
   setup do
     mock_ingestions
-    Source.destroy_all
+    Source.destroy_all # use destroy_all instead of delete_all to delete related objects correctly
   end
 
   def run
