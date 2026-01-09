@@ -1,7 +1,8 @@
 var SourceFilters = {
     last_id: function () {
         var existing_list_item_ids = $(".source-filter-form").map(function (i, c) { return $(c).data("id-in-filter-list") });
-        return Math.max(Math.max.apply(null, existing_list_item_ids) + 1, 0);
+        if (existing_list_item_ids.length == 0) return 0;
+        return Math.max.apply(null, existing_list_item_ids) + 1;
     },
 
     add: function () {
