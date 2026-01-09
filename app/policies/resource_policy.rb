@@ -10,7 +10,7 @@ class ResourcePolicy < ApplicationPolicy
   end
 
   def manage?
-    super || (@user && (@user.is_owner?(@record) || (request_is_api?(@request) && @user.has_role?(:scraper_user))))
+    super || (@user&.is_owner?(@record) || scraper?)
   end
 
 end

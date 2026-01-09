@@ -400,6 +400,21 @@ class ActiveSupport::TestCase
       end
     end
   end
+
+  class DummyIngestor < Ingestors::Ingestor
+    include Ingestors::Concerns::SitemapHelpers
+
+    def self.config
+      {
+        key: 'dummy'
+      }
+    end
+
+    def read(url)
+      parse_sitemap(url)
+      open_url(url)
+    end
+  end
 end
 
 # Minitest's `stub` method but ignores any blocks

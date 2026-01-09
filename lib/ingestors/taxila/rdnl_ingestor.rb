@@ -51,7 +51,6 @@ module Ingestors
           end
 
           event.description = event_data.css('.card__excerpt > p')[0].text.strip
-          puts event.description
 
           event.venue = event_data.css('dl.meta-list > div > dd')[1].text.strip
           event.source = 'RDNL'

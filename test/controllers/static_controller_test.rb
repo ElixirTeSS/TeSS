@@ -16,7 +16,9 @@ class StaticControllerTest < ActionController::TestCase
                  'collections': true,
                  'content_providers': true,
                  'trainers': true,
-                 'nodes': true }
+                 'nodes': true,
+                 'spaces': true
+    }
 
     with_settings(feature: features) do
       get :home
@@ -45,7 +47,9 @@ class StaticControllerTest < ActionController::TestCase
                  'collections': false,
                  'content_providers': false,
                  'trainers': false,
-                 'nodes': false }
+                 'nodes': false,
+                 'spaces': false
+    }
 
     with_settings(feature: features) do
       get :home
@@ -151,7 +155,9 @@ class StaticControllerTest < ActionController::TestCase
                  'collections': true,
                  'content_providers': true,
                  'trainers': true,
-                 'nodes': true }
+                 'nodes': true,
+                 'spaces': true
+    }
 
     with_settings(feature: features, site: { tab_order: %w[materials events], directory_tabs: [] }) do
       get :home
@@ -490,6 +496,27 @@ class StaticControllerTest < ActionController::TestCase
       end
       assert_select 'footer .row > div:nth-of-type(3)' do
         assert_select 'a[href="https://example.org/r"]', 'Right Example Link'
+      end
+    end
+  end
+
+  test 'should find log in drop down when login_through_oidc_only is disabled' do
+    with_settings({ feature: { login_through_oidc_only: false } }) do
+      get :home
+      assert_select 'ul.user-options.nav.navbar-nav.navbar-right' do
+        assert_select 'a.dropdown-toggle', count: 1
+      end
+    end
+  end
+
+  test 'should find log in button when login_through_oidc_only is enabled' do
+    Devise.stub( :omniauth_configs, { oidc: OpenStruct.new(options: { label: "OIDC" }) }
+    ) do
+      with_settings({ feature: { login_through_oidc_only: true } }) do
+        get :home
+        assert_select 'ul.user-options.nav.navbar-nav.navbar-right' do
+          assert_select 'a[href="/users/auth/oidc"]', count: 1
+        end
       end
     end
   end

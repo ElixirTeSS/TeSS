@@ -1,0 +1,25 @@
+{
+  "name": "python-novice-inflammation",
+  "full_name": "swcarpentry/python-novice-inflammation",
+  "owner": {
+    "login": "swcarpentry"
+  },
+  "html_url": "https://github.com/swcarpentry/python-novice-inflammation",
+  "description": "This is not going to be read",
+  "homepage": "https://swcarpentry.github.io/python-novice-inflammation/",
+  "topics": [
+    "key",
+    "words",
+    "in topics"
+  ],
+  "license": {
+    "key": "apache-2.0",
+    "name": "Apache License 2.0",
+    "spdx_id": "Apache-2.0"
+  },
+  "archived": false,
+  "created_at": "2025-09-29T14:38:38Z",
+  "updated_at": "2025-09-30T14:38:38Z",
+  "pushed_at": "2025-09-28T14:38:38Z",
+  "contributors_url": "https://api.github.com/repos/swcarpentry/python-novice-inflammation/contributors"
+}

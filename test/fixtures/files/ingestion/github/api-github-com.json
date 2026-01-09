@@ -1,0 +1,25 @@
+{
+  "name": "cpluspluscourse",
+  "full_name": "hsf-training/cpluspluscourse",
+  "owner": {
+    "login": "hsf-training"
+  },
+  "html_url": "https://github.com/hsf-training/cpluspluscourse",
+  "description": "C++ Course Taught at CERN",
+  "homepage": "",
+  "topics": [
+    "those",
+    "are",
+    "keywords"
+  ],
+  "license": {
+    "key": "apache-2.0",
+    "name": "Apache License 2.0",
+    "spdx_id": "Apache-2.0"
+  },
+  "archived": true,
+  "created_at": "2025-09-29T14:38:38Z",
+  "updated_at": "2025-09-30T14:38:38Z",
+  "pushed_at": "2025-09-28T14:38:38Z",
+  "contributors_url": "https://api.github.com/repos/hsf-training/cpluspluscourse/contributors"
+}

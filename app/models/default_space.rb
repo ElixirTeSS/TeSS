@@ -56,4 +56,8 @@ class DefaultSpace
   def default?
     true
   end
+
+  def administrators
+    User.with_role('admin')
+  end
 end

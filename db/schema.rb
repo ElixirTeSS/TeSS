@@ -492,7 +492,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_09_112056) do
     t.integer "approval_status"
     t.datetime "updated_at"
     t.string "default_language"
+    t.bigint "space_id"
     t.index ["content_provider_id"], name: "index_sources_on_content_provider_id"
+    t.index ["space_id"], name: "index_sources_on_space_id"
     t.index ["user_id"], name: "index_sources_on_user_id"
   end
 
@@ -678,6 +680,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_09_112056) do
   add_foreign_key "nodes", "users"
   add_foreign_key "source_filters", "sources"
   add_foreign_key "sources", "content_providers"
+  add_foreign_key "sources", "spaces"
   add_foreign_key "sources", "users"
   add_foreign_key "space_roles", "spaces"
   add_foreign_key "space_roles", "users"
