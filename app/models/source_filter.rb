@@ -38,7 +38,7 @@ class SourceFilter < ApplicationRecord
 
     # string match
     if %w[title url doi description license difficulty_level subtitle city country timezone].include?(filter_by)
-      val.to_s.casecmp(filter_value).zero?
+      val.to_s.casecmp?(filter_value)
     # prefix string match
     elsif %w[url_prefix].include?(filter_by)
       val.to_s.downcase.start_with?(filter_value.downcase)
