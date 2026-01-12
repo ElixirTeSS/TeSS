@@ -157,7 +157,7 @@
   <!-- Fields: that need to be check for enabled/disabled -->
 
   <!-- Nodes: check feature enabled -->
-  <% if TeSS::Config.feature['nodes'] %>
+  <% if feature_enabled?('nodes') %>
     <%= f.dropdown :node_ids, options: format_for_dropdown(Node.order(:name).all), label: 'Nodes',
                    errors: @event.errors[:node_ids] %>
   <% end %>

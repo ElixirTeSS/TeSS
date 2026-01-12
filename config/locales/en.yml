@@ -1,5 +1,6 @@
 en:
   features:
+    enabled: Features enabled
     about:
       short: About
       long: About

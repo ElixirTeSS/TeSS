@@ -1,6 +1,6 @@
 # The controller for actions related to the Materials model
 class MaterialsController < ApplicationController
-  before_action :feature_enabled?
+  before_action :ensure_feature_enabled
   before_action :set_material, only: %i[show edit update destroy update_collections clone
                                         add_term reject_term add_data reject_data]
   before_action :set_breadcrumbs
@@ -17,7 +17,7 @@ class MaterialsController < ApplicationController
   # GET /materials.json?q=queryparam
 
   def index
-    elearning = @facet_params[:resource_type] == 'e-learning' && TeSS::Config.feature['elearning_materials']
+    elearning = @facet_params[:resource_type] == 'e-learning' && feature_enabled?('elearning_materials')
     @bioschemas = @materials.flat_map(&:to_bioschemas)
     respond_to do |format|
       format.html { render elearning ? 'elearning_materials/index' : 'index' }

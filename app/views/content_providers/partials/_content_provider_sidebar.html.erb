@@ -10,7 +10,7 @@
     <%= content_provider.keywords.join(', ') %>
   </div>
 <% end %>
-<% unless content_provider.node.blank? || !TeSS::Config.feature['nodes'] %>
+<% unless content_provider.node.blank? || !feature_enabled?('nodes') %>
   <h4 class="nav-heading">ELIXIR node</h4>
   <div class="nav-block">
     <p>
