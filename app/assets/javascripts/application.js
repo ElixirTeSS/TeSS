@@ -17,7 +17,6 @@
 //= require bootstrap-tab-history
 //= require cytoscape
 //= require cytoscape-panzoom
-//= require jscolor
 //= require jquery.simplecolorpicker.js
 //= require split
 //= require handlebars.runtime
