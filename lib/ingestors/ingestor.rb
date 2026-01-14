@@ -40,8 +40,8 @@ module Ingestors
       @materials = @materials.select { |m| source.passes_filter? m }
       @events = @events.select { |e| source.passes_filter? e }
 
-      @messages << "#{@materials.length} of #{material_count} materials match filters" if @materials.length != material_count
-      @messages << "#{@events.length} of #{event_count} events match filters" if @events.length != event_count
+      @messages << "#{@materials.length} of #{material_count} materials passed the filters" if @materials.length != material_count
+      @messages << "#{@events.length} of #{event_count} events passed the filters" if @events.length != event_count
     end
 
     def write(user, provider, source: nil)
