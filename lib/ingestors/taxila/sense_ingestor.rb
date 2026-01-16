@@ -62,7 +62,6 @@ module Ingestors
             event.source = 'Sense'
             event.timezone = 'Amsterdam'
             event.set_default_times
-            event.target_audience = parse_audience(event.description)
 
             add_event(event)
           rescue Exception => e
