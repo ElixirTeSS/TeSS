@@ -8,6 +8,10 @@
     <%= render :partial => "common/field_lock_info" %>
   </div>
   <div class="col-md-8 col-md-pull-4">
+    <% unless policy(@material).approve? %>
+      <div class="alert alert-info"><%= t('materials.info.approval_notice') %></div><br/>
+    <% end %>
+
     <%= render :partial => 'form' %>
   </div>
 </div>

@@ -23,6 +23,14 @@ class Material < ApplicationRecord
   include InSpace
   include HasPeople
 
+  APPROVAL_STATUS = {
+    0 => :not_approved,
+    1 => :requested,
+    2 => :approved
+  }.freeze
+
+  APPROVAL_STATUS_CODES = APPROVAL_STATUS.invert.freeze
+
   if TeSS::Config.solr_enabled
     # :nocov:
     searchable do
@@ -94,6 +102,9 @@ class Material < ApplicationRecord
       string :status do
         MaterialStatusDictionary.instance.lookup_value(status, 'title')
       end
+      string :approval_status do
+        I18n.t("materials.approval_status.#{approval_status}")
+      end
     end
     # :nocov:
   end
@@ -125,6 +136,11 @@ class Material < ApplicationRecord
   validates :keywords, length: { maximum: 20 }
   validates :origin_uri, url: { allow_blank: true }
 
+  validates :approval_status, inclusion: { in: APPROVAL_STATUS.values }
+  before_create :set_approval_status
+  before_update :log_approval_status_change
+  before_update :reset_approval_status
+
   clean_array_fields(:keywords, :fields,
                      :target_audience, :resource_type, :subsets)
 
@@ -147,7 +163,7 @@ class Material < ApplicationRecord
   def self.facet_fields
     field_list = %w[scientific_topics operations tools standard_database_or_policy content_provider keywords
                     difficulty_level fields licence target_audience authors contributors resource_type
-                    related_resources user node collections status]
+                    related_resources user node collections status approval_status]
 
     field_list.delete('operations') if TeSS::Config.feature['disabled'].include? 'operations'
     field_list.delete('scientific_topics') if TeSS::Config.feature['disabled'].include? 'topics'
@@ -257,5 +273,73 @@ class Material < ApplicationRecord
       xml.tag!('dc:relation', content_provider.url) if content_provider&.url
     end
     xml.target!
+  end
+
+  def self.approved
+    where(approval_status: APPROVAL_STATUS_CODES[:approved])
+  end
+
+  def self.approval_requested
+    where(approval_status: APPROVAL_STATUS_CODES[:requested])
+  end
+
+  def approval_status
+    APPROVAL_STATUS[super.to_i] || APPROVAL_STATUS[0]
+  end
+
+  def approval_status=(key)
+    super(APPROVAL_STATUS_CODES[key.to_sym])
+  end
+
+  def not_approved?
+    approval_status == :not_approved
+  end
+
+  def approved?
+    approval_status == :approved
+  end
+
+  def approval_requested?
+    approval_status == :requested
+  end
+
+  def request_approval
+    self.approval_status = :requested
+    save!
+    # CurationMailer.materials_require_approval(self, User.current_user).deliver_later
+  end
+
+  def self.approval_required?
+    TeSS::Config.feature['material_under_admin_approval'] && !User.current_user&.is_admin? ## CHANGE IT 
+  end
+
+  private
+
+  def set_approval_status
+    if self.class.approval_required?
+      self.approval_status = :not_approved
+    else
+      self.approval_status = :approved
+    end
+  end
+
+  def reset_approval_status
+    if self.class.approval_required?
+      if url_changed?
+        self.approval_status = :not_approved
+      end
+    end
+  end
+
+  def log_approval_status_change
+    if approval_status_changed?
+      old = (APPROVAL_STATUS[approval_status_before_last_save.to_i] || APPROVAL_STATUS[0]).to_s
+      new = approval_status.to_s
+      create_activity(:approval_status_changed, owner: User.current_user, parameters: { old: old, new: new })
+    end
+  end
+
+  def loggable_changes
+    super - %w[approval_status]
   end
 end

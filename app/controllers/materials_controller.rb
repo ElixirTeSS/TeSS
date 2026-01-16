@@ -1,7 +1,7 @@
 # The controller for actions related to the Materials model
 class MaterialsController < ApplicationController
   before_action :ensure_feature_enabled
-  before_action :set_material, only: %i[show edit update destroy update_collections clone
+  before_action :set_material, only: %i[show edit update destroy update_collections request_approval clone
                                         add_term reject_term add_data reject_data]
   before_action :set_breadcrumbs
   before_action :set_learning_path_navigation, only: :show
@@ -154,6 +154,24 @@ class MaterialsController < ApplicationController
     end
     flash[:notice] = "Material has been included in #{pluralize(collections.count, 'collection')}"
     redirect_to @material
+  end
+
+  # POST /materials/1/request_approval
+  def request_approval
+    authorize @material
+
+    if @material.approval_requested?
+      flash[:error] = 'Approval request has already been submitted.'
+    elsif @material.approved?
+      flash[:error] = 'Already approved.'
+    elsif @material.not_approved?
+      @material.request_approval
+      flash[:notice] = 'Approval request was sent successfully.'
+    end
+
+    respond_to do |format|
+      format.html { redirect_to @material }
+    end
   end
 
   private

@@ -13,7 +13,11 @@ class SourcePolicy < ScrapedResourcePolicy
   end
 
   def create?
-    administration?
+    if TeSS::Config.feature['user_source_creation']
+      super
+    else
+      administration?
+    end
   end
 
   def approve?

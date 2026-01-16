@@ -113,6 +113,7 @@ Rails.application.routes.draw do
       post :reject_data
       post :add_term
       post :add_data
+      post :request_approval
       get :clone
     end
     collection do

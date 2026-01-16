@@ -169,6 +169,7 @@ default: &default
     collection_curation: true
     auto_parse_vars: [] # available features to auto parse from description: ['keywords', 'target_audience']
     controlled_vocabulary_vars: [] # available features: ['target_audience']
+    material_under_admin_approval: false # this is the material curation, if true, a material needs to be approved by an admin to be online, if false, all manually registered materials are automatically public
 
     # User login
     invitation: false

@@ -731,6 +731,12 @@ en:
         A specific iteration or release of the training material document, labeled to track updates 
         (for example, v1.0, v2.1).
       visible: 'Whether this material should be shown or hidden from the materials page.'
+    info:
+      approval_notice: This material will need to be approved by an administrator before being public.
+    approval_status:
+      not_approved: Not approved
+      requested: Approval requested
+      approved: Approved
   learning_paths:
     hints:
       authors: >
@@ -965,6 +971,8 @@ en:
         hide_disabled: 'Hide disabled %{resource}'
         show_archived: 'Show archived %{resource}'
         hide_archived: 'Hide archived %{resource}'
+        show_unapproved: 'Show unapproved %{resource}'
+        hide_unapproved: 'Hide unapproved %{resource}'
         show_broken_links: 'Show %{resource} with broken links'
         hide_broken_links: 'Hide %{resource} with broken links'
         show_cross_space: 'Show %{resource} from all spaces'
