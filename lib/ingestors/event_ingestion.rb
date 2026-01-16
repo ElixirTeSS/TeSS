@@ -22,6 +22,37 @@ module Ingestors
       input
     end
 
+    def parse_audience(description)
+      audience_mapping = {
+        'post-docs': 'researchers',
+        "PhD's candidate": 'researchers',
+        'PhD student': 'researchers',
+        'principal investigator': 'researchers',
+        'professor': 'researchers',
+        'scientist': 'researchers',
+        'library staff': 'research support staff',
+        'research librarian': 'research support staff',
+        'information specialist': 'research support staff',
+        'archivist': 'research support staff',
+        'repository manager': 'research support staff',
+        'data steward': 'research support staff',
+        'data manager': 'research support staff',
+        'data professional': 'research support staff',
+        'data engineer': 'research support staff',
+        'software engineer': 'research support staff',
+        'data librarian': 'research support staff',
+        'bachelor': 'students',
+        'master': 'students',
+        'teacher': 'trainers',
+        'coaches': 'trainers',
+        'educator': 'trainers',
+      }
+      audience_mapping
+        .select{ |key, val| description.downcase.include?(key.to_s.downcase) }
+        .values
+        .uniq
+    end
+
     def parse_dates(input, timezone = nil)
       Time.use_zone(timezone) do
         # try to split on obvious interval markers

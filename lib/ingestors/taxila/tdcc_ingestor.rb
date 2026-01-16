@@ -59,6 +59,7 @@ module Ingestors
             event.start += 1.year
             event.end += 1.year
           end
+          event.target_audience = parse_audience(event.description)
 
           add_event(event)
         rescue Exception => e

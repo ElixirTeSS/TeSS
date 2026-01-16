@@ -58,6 +58,7 @@ module Ingestors
             event.timezone = 'Europe/Amsterdam' # how to get this from Icalendar Event object?
 
             event.source = 'Maastricht University'
+            event.target_audience = parse_audience(event.description)
 
             add_event(event)
           rescue Exception => e

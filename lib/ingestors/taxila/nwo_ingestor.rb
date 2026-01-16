@@ -47,6 +47,7 @@ module Ingestors
             event.url = "https://www.nwo.nl#{event_data.css('h3.card__title > a').attribute('href').value}"
 
             event.source = 'NWO'
+            event.target_audience = parse_audience(event.description)
 
             add_event(event)
           rescue Exception => e
