@@ -65,6 +65,7 @@ module Ingestors
               event.source = 'OSCI'
               event.timezone = 'Amsterdam'
               event.set_default_times
+              event.target_audience = parse_audience(event.description)
 
               add_event(event)
             end
