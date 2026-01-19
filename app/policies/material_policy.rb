@@ -1,19 +1,19 @@
 class MaterialPolicy < ScrapedResourcePolicy
   def show?
-    user_management? || administration? || approval_status_approved?
-  end
-
-  def show?
-    super && shown?
+    (super && shown?) || user_management? || administration? || approval_status_approved?
   end
 
   def clone?
     manage?
   end
 
+  def show?
+    user_management? || administration? || approval_status_approved?
+  end
+
   alias_method :orig_manage?, :manage?
   def manage?
-    (user_management? && !@record.approval_requested?) || administration?
+    user_management? || administration?
   end
 
   def index?

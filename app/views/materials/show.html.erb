@@ -38,24 +38,24 @@
             <% end %>
           </div>
           <% if @material.persisted? %>
-            <% if policy(@material).update? && TeSS::Config.feature['material_under_admin_approval'] %>
-              <p>
-                <strong>Approval status:</strong>
-                <%= material_approval_badge(@material.approval_status) %>
-              </p>
-
-              <% if policy(@material).update? && !@material.approval_requested? && !@material.approved? %>
-                <%= link_to 'Request Approval', request_approval_material_path(@material),
-                            data: { confirm: 'Are you sure you wish to submit this material for approval? You will not be able to modify it afterwards.'},
-                            method: :post, class: 'btn btn-primary' %>
-              <% end %>
-
-            <% if policy(@material).approve? && !@material.approved? %>
-              <%= link_to 'Approve', material_path(@material, material: { approval_status: 'approved' }),
-                          method: :put, class: 'btn btn-success' %>
-            <% end %>
-            <% end %>
             <div class="content-manager-actions">
+              <% if policy(@material).update? && TeSS::Config.feature['material_under_admin_approval'] %>
+                <p>
+                  <strong>Approval status:</strong>
+                  <%= material_approval_badge(@material.approval_status) %>
+                </p>
+
+                <% if !@material.approval_requested? && !@material.approved? && !policy(@material).approve? %>
+                  <%= link_to 'Request Approval', request_approval_material_path(@material),
+                              data: { confirm: 'Are you sure you wish to submit this material for approval? You will not be able to modify it afterwards.'},
+                              method: :post, class: 'btn btn-primary' %>
+                <% end %>
+
+                <% if policy(@material).approve? && !@material.approved? %>
+                  <%= link_to 'Approve', material_path(@material, material: { approval_status: 'approved' }),
+                              method: :put, class: 'btn btn-success' %>
+                <% end %>
+              <% end %>
               <% if policy(@material).update? %>
                 <%= link_to 'Clone', clone_material_path(@material), class: 'btn btn-default' %>
                 <%= edit_button(@material) %>
