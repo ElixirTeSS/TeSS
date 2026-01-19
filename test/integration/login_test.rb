@@ -47,6 +47,29 @@ class LoginTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'clears legacy cookie (without domain) on login' do
+    user = users(:regular_user)
+    post '/users/sign_in', params: { 'user[login]' => user.username, 'user[password]' => 'hello' }
+    cookies = response.headers['Set-Cookie'].split("\n")
+    assert cookies.any? do |cookie|
+      parts = cookie.split(';').map(&:strip)
+      parts.any? { |p| p == 'Max-Age=0' } &&
+        parts.none? { |p| p.include?('domain') }
+    end
+  end
+
+  test 'clears legacy cookie on logout' do
+    user = users(:regular_user)
+    login_user(user.username, user.username, 'hello')
+    logout_user
+    cookies = response.headers['Set-Cookie'].split("\n")
+    assert cookies.any? do |cookie|
+      parts = cookie.split(';').map(&:strip)
+      parts.any? { |p| p == 'Max-Age=0' } &&
+        parts.none? { |p| p.include?('domain') }
+    end
+  end
+
   private
 
   def login_user(username, identifier, password)
