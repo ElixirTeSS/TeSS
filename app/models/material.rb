@@ -316,10 +316,9 @@ class Material < ApplicationRecord
   private
 
   def set_approval_status
+    # sets to `:requested` by default, otherwise admin chooses
     if self.class.approval_required?
-      self.approval_status = :not_approved
-    else
-      self.approval_status = :approved
+      self.approval_status = :requested
     end
   end
 

@@ -31,6 +31,8 @@ module ApplicationHelper
     check: { icon: 'fa-check', message: 'This resource is enabled' },
     cross: { icon: 'fa-times', message: 'This resource has been disabled' },
     exchanged: { icon: 'fa-exchange', message: 'This resource originated from another TeSS registry' },
+    approval_requested: { icon: 'fa-eye', message: 'This resource has been requested an approval' },
+    not_approved: { icon: 'fa-ban', message: 'This resource has been rejected by an admin' }
   }.freeze
 
   # Countries that have priority in the country selection menu. Using ISO 3166-1 Alpha2 code.
@@ -84,6 +86,18 @@ module ApplicationHelper
     return unless record.edit_suggestion
 
     "<span class='fresh-icon pull-right'>#{icon_for(:suggestion, size)}</span>".html_safe
+  end
+
+  def approval_requested_icon(record, size = nil)
+    return unless record.approval_requested?
+
+    "<span class='fresh-icon pull-right'>#{icon_for(:approval_requested, size)}</span>".html_safe
+  end
+
+  def not_approved_icon(record, size = nil)
+    return unless record.not_approved?
+
+    "<span class='fresh-icon pull-right'>#{icon_for(:not_approved, size)}</span>".html_safe
   end
 
   def event_status_icon(event, size = nil)

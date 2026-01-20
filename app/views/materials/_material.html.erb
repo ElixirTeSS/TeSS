@@ -7,7 +7,7 @@
   end
 %>
 
-<% if policy(material).update? && TeSS::Config.feature['material_under_admin_approval'] %>
+<% if policy(material).show? && TeSS::Config.feature['material_under_admin_approval'] %>
   <li class="masonry-brick media-item long">
     <%= space_tag(material) %>
     <%= link_to material_path(material, **link_params), class: 'link-overlay' do %>
@@ -20,6 +20,8 @@
             <%= scrape_status_icon(material) %>
             <%= suggestion_icon(material) %>
           <% end %>
+          <%= approval_requested_icon(material) %>
+          <%= not_approved_icon(material) %>
         </div>
         <div class="sub-heading">
           <%= display_attribute_no_label(material, :resource_type) { |values| values.join(', ') } %>
