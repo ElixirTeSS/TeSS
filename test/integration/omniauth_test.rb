@@ -399,4 +399,64 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
+  test 'authentication redirects users back to origin space on subdomain' do
+    space = spaces(:astro)
+    space.update!(host: 'space.example.com')
+
+    OmniAuth.config.mock_auth[:oidc] = OmniAuth::AuthHash.new(
+      {
+        provider: 'oidc',
+        uid: '0123456789abcdcef',
+        info: {
+          email: 'aai@example.com',
+          nickname: 'aaf_user',
+          first_name: 'AAF',
+          last_name: 'User'
+        }
+      })
+
+    post user_oidc_omniauth_authorize_url(space_id: space.id)
+    follow_redirect! # OmniAuth redirect
+    assert_equal "http://space.example.com/users/aaf_user/edit", response.headers['Location']
+    end
+
+  test 'authentication does not redirect user to entirely different domain' do
+    space = spaces(:astro)
+    space.update!(host: 'my-cool-space-host.com')
+
+    OmniAuth.config.mock_auth[:oidc] = OmniAuth::AuthHash.new(
+      {
+        provider: 'oidc',
+        uid: '0123456789abcdcef',
+        info: {
+          email: 'aai@example.com',
+          nickname: 'aaf_user',
+          first_name: 'AAF',
+          last_name: 'User'
+        }
+      })
+
+    post user_oidc_omniauth_authorize_url(space_id: space.id)
+    follow_redirect! # OmniAuth redirect
+    assert_equal "http://www.example.com/users/aaf_user/edit", response.headers['Location']
+  end
+
+  test 'invalid space is ignored when redirecting' do
+    OmniAuth.config.mock_auth[:oidc] = OmniAuth::AuthHash.new(
+      {
+        provider: 'oidc',
+        uid: '0123456789abcdcef',
+        info: {
+          email: 'aai@example.com',
+          nickname: 'aaf_user',
+          first_name: 'AAF',
+          last_name: 'User'
+        }
+      })
+
+    post user_oidc_omniauth_authorize_url(space_id: 'ufhgfsdkhgskdjfhsdkjfhsdkjfhsd')
+    follow_redirect! # OmniAuth redirect
+    assert_equal "http://www.example.com/users/aaf_user/edit", response.headers['Location']
+  end
+
 end

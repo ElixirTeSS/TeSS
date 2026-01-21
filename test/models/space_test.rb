@@ -128,4 +128,12 @@ class SpaceTest < ActiveSupport::TestCase
     @space.enabled_features = Space::FEATURES
     assert_equal [], @space.disabled_features
   end
+
+  test 'check subdomain of' do
+    assert @space.is_subdomain?('mytess.training')
+    refute @space.is_subdomain?('amytess.training')
+    refute @space.is_subdomain?('mytess.com')
+    refute @space.is_subdomain?('mytess.training.com')
+    refute @space.is_subdomain?('space.mytess.training')
+  end
 end
