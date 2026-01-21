@@ -27,4 +27,8 @@ class ConfigTest < ActiveSupport::TestCase
           end
     assert_equal exp, TeSS::Config.redis_url
   end
+
+  test 'base_uri' do
+    assert_equal 'example.com', TeSS::Config.base_uri.domain
+  end
 end
