@@ -65,6 +65,10 @@ class Space < ApplicationRecord
     (FEATURES - disabled_features)
   end
 
+  def is_subdomain?(domain)
+    (host == domain || host.ends_with?(".#{domain}"))
+  end
+
   private
 
   def disabled_features_valid?
