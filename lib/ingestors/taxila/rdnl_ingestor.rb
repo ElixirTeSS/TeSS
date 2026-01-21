@@ -54,6 +54,7 @@ module Ingestors
 
           event.venue = event_data.css('dl.meta-list > div > dd')[1].text.strip
           event.source = 'RDNL'
+          event.host_institutions = ['RDNL']
           event.timezone = 'Amsterdam'
           event.set_default_times
           event.target_audience = parse_audience(event.description)
