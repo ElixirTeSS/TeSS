@@ -21,7 +21,7 @@ New events:
 
 Stale events:
 <% if @stale_events.count.positive? %>
-  These events have not been updated/found by the taxila recently.<br/>
+  These events have not been updated/found by the <%= TeSS::Config.site['title_short'] %> recently.<br/>
   If all events for <%= @provider.title %> are stale, the source might have changed, breaking the <%= TeSS::Config.site['title_short'] %> scraper.<br/>
   If another duplicate of this event was made, maybe the address to the event page was changed.<br/>
 
