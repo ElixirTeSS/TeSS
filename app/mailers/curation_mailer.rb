@@ -29,7 +29,8 @@ class CurationMailer < ApplicationMailer
     return unless @provider.content_curation_email.present?
 
     # @events = @provider.events.where { |e| e.lmm_processed > cut_off_time }
-    @events = @provider.events.filter { |e| e.created_at > cut_off_time }
+    @new_events = @provider.events.filter { |e| e.created_at > cut_off_time }
+    @stale_events = @provider.events.filter { |e| e.stale? }
     subject = t('mailer.events_require_approval.subject')
     mail(subject:, to: @provider.content_curation_email) do |format|
       format.html

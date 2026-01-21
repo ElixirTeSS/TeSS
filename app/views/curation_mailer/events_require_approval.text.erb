@@ -1,10 +1,12 @@
 You are receiving this automated email because you are a curator of <%= @provider.title %> on <%= TeSS::Config.site['title_short'] %>.
-<% if @events.count.positive? %>
+
+New events:
+<% if @new_events.count.positive? %>
   If any of these events are incorrect or should not be shown, please follow the link to change them.
   If an event should not be shown, disable it on the edit page instead of deleting it to prevent rescraping.
   If an event needs changes, lock the changed fields to prevent your changes from being overwritten by the scraper.
 
-  <% @events.each do |event| %>
+  <% @new_events.each do |event| %>
     <%= event.title %> (<%= url_for(event) %>)
     description: <%= event.description %>
     start: <%= event.start %>
@@ -17,4 +19,21 @@ You are receiving this automated email because you are a curator of <%= @provide
   There were no new events this week.
 <% end %>
 
+Stale events:
+<% if @stale_events.count.positive? %>
+  These events have not been updated/found by the <%= TeSS::Config.site['title_short'] %> recently.<br/>
+  If all events for <%= @provider.title %> are stale, the source might have changed, breaking the <%= TeSS::Config.site['title_short'] %> scraper.<br/>
+  If another duplicate of this event was made, maybe the address to the event page was changed.<br/>
 
+  <% @stale_events.each do |event| %>
+    <%= event.title %> (<%= url_for(event) %>)
+    description: <%= event.description %>
+    start: <%= event.start %>
+    end: <%= event.end %>
+    venue: <%= event.venue %>
+    show: <%= event.visible %>
+
+  <% end %>
+<% else %>
+  There were no stale events this week.
+<% end %>
