@@ -65,7 +65,7 @@ class Space < ApplicationRecord
     (FEATURES - disabled_features)
   end
 
-  def is_subdomain?(domain)
+  def is_subdomain?(domain = TeSS::Config.base_uri.domain)
     (host == domain || host.ends_with?(".#{domain}"))
   end
 

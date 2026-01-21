@@ -45,7 +45,7 @@ class CallbacksController < Devise::OmniauthCallbacksController
   private
 
   def redirect_to_space(path, space)
-    if space && space.is_subdomain?(request.domain)
+    if space&.is_subdomain?
       port_part = ''
       port_part = ":#{request.port}" if (request.protocol == "http://" && request.port != 80) ||
                                         (request.protocol == "https://" && request.port != 443)
