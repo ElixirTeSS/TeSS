@@ -65,7 +65,7 @@ module Ingestors
     def open_url(url, raise: false, token: nil)
       options = {
         redirect: false, # We're doing redirects manually below, since open-uri can't handle http -> https redirection
-        read_timeout: 5
+        read_timeout: 30 # 5
       }
       options[:ssl_verify_mode] = config[:ssl_verify_mode] if config.key?(:ssl_verify_mode)
       redirect_attempts = 5
