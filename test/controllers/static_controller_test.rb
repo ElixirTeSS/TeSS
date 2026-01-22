@@ -725,4 +725,18 @@ class StaticControllerTest < ActionController::TestCase
     assert_select '.resource-counter a[href=?]', materials_path, count: 0
     assert_select '.resource-counter a[href=?]', events_path, count: 1
   end
+
+  test 'can disable spaces index from directory, but it still shows up in the footer' do
+    space = spaces(:plants)
+    space.disabled_features = ['spaces']
+    space.save!
+
+    with_settings(feature: { 'events': false }) do
+      with_host('plants.mytess.training') do
+        get :home
+        assert_select 'ul.nav.navbar-nav li a[href=?]', spaces_path, count: 0
+        assert_select '.footer-item a[href=?]', spaces_path, count: 1
+      end
+    end
+  end
 end
