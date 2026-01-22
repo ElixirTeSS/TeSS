@@ -2,30 +2,18 @@
 module MaterialsHelper
   def materials_info
     I18n.t('info.materials.description',
-           link: link_to(I18n.t('info.materials.link'),
-                         registering_resources_path(anchor: 'automatic')))
+           link: I18n.t('info.materials.link'),
+           url: registering_resources_path(anchor: 'automatic'))
   end
 
   def elearning_materials_info
     I18n.t('info.elearning_materials.description',
-           link: link_to(I18n.t('info.elearning_materials.link'),
-                         registering_resources_path(anchor: 'automatic')))
+           link: I18n.t('info.elearning_materials.link'),
+           url: registering_resources_path(anchor: 'automatic'))
   end
 
   def topics_info
     I18n.t('info.topics.description')
-  end
-
-  def learning_paths_info
-    I18n.t('info.learning_paths.description',
-           link: link_to(I18n.t('info.learning_paths.link'),
-                         registering_learning_paths_path(anchor: 'register_paths')))
-  end
-
-  def learning_path_topics_info
-    I18n.t('info.learning_path_topics.description',
-           link: link_to(I18n.t('info.learning_path_topics.link'),
-                         registering_learning_paths_path(anchor: 'topics')))
   end
 
   # Returns an array of two-element arrays of licences ready to be used in options_for_select() for generating option/select tags

@@ -5,8 +5,8 @@ require 'rss'
 module EventsHelper
   def events_info
     I18n.t('info.events.description',
-           link: link_to(I18n.t('info.events.link'),
-                         registering_resources_path(anchor: 'automatic')))
+           link: I18n.t('info.events.link'),
+           url: registering_resources_path(anchor: 'automatic'))
   end
 
   def google_calendar_export_url(event)
