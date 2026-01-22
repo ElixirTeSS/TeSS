@@ -10,8 +10,7 @@ module Ingestors
         Ingestors::MaterialCsvIngestor,
         Ingestors::TessEventIngestor,
         Ingestors::ZenodoIngestor,
-        Ingestors::OaiPmhIngestor,
-        Ingestors::OaiPmhBioschemasIngestor
+        Ingestors::OaiPmhIngestor
       ] + taxila_ingestors + llm_ingestors
     end
 
