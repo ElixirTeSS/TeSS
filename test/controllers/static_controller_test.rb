@@ -712,4 +712,17 @@ class StaticControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test 'disabled features do not show as counters on space front page' do
+    space = spaces(:plants)
+    space.disabled_features = ['materials']
+    space.save!
+
+    with_host('plants.mytess.training') do
+      get :home
+    end
+
+    assert_select '.resource-counter a[href=?]', materials_path, count: 0
+    assert_select '.resource-counter a[href=?]', events_path, count: 1
+  end
 end
