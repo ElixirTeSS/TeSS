@@ -1,6 +1,8 @@
 name: CI
 
-on: [push, pull_request]
+on: [pull_request]
+permissions: 
+  contents: read
 
 jobs:
   test:
@@ -41,17 +43,118 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install imagemagick
-      - name: Check out code
+      - name: Check out code on current branch
         uses: actions/checkout@v4
-      - name: Install Ruby & gems
+      - name: Install Ruby & gems on current branch
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-      - name: Configure and initialize database
+      - name: Configure and initialize database on current branch
         run: |
           cp test/config/test_tess.yml config/tess.yml
           cp config/secrets.github.yml config/secrets.yml
           cp config/ingestion.example.yml config/ingestion.yml
           bundle exec rake db:test:prepare
-      - run: bundle exec rails test
-        name: Run tests
+      - name: Get all changed rb files
+        id: changed-rb-files
+        uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
+        with:
+          files_ignore: 'test/**'
+          files: '**.rb'
+      - name: List all changed files rb files on current branch
+        if: steps.changed-rb-files.outputs.any_changed == 'true'
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-rb-files.outputs.all_changed_files }}
+        run: |
+          echo "List of changed .rb files:"
+          for file in ${ALL_CHANGED_FILES}; do
+            echo "- $file"
+          done
+          echo "ALL_CHANGED_FILES=${ALL_CHANGED_FILES}" >> $GITHUB_ENV
+      # CURRENT branch tests
+      - name: Run tests and extract current coverage on current branch
+        id: current_coverage
+        run: |
+          bundle install
+          bundle exec rails test
+
+          if [ -f coverage/.last_run.json ]; then
+            CURRENT_COVERAGE=$(cat coverage/.last_run.json | jq -r '.result.line')
+          else
+            CURRENT_COVERAGE="0.0"
+          fi
+          TABLE=$(echo -e "| File | Current coverage (%) |\n|------|--------------|")
+
+          echo "********** CODE COVERAGE **********"
+          echo "*** Current coverage (branch: $(git rev-parse --abbrev-ref HEAD)): $CURRENT_COVERAGE%"
+
+          for file in ${{ env.ALL_CHANGED_FILES }}; do
+            COV=$(cat coverage/index.html| grep "\"$file\"" -A 1 | grep t-file__coverage | awk -F '>|%' '{print $2}')
+            TABLE=$(echo -e "$TABLE\n| $file | $COV |")
+          done
+          echo "CURRENT_COV=$CURRENT_COVERAGE" >> $GITHUB_ENV
+          echo "CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
+          {
+            echo "TABLE<<EOF"
+            echo -e "$TABLE"
+            echo "EOF"
+          } >> "$GITHUB_ENV"
+      # BASE branch tests (usually master, but can be something else)
+      - name: Checkout base branch
+        uses: actions/checkout@v4
+        if: steps.changed-rb-files.outputs.any_changed == 'true'
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
+          path: base_branch
+      - name: Install Ruby & gems on base
+        uses: ruby/setup-ruby@v1
+        if: steps.changed-rb-files.outputs.any_changed == 'true'
+        with:
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Configure and initialize database on base
+        working-directory: base_branch
+        if: steps.changed-rb-files.outputs.any_changed == 'true'
+        run: |
+          cp test/config/test_tess.yml config/tess.yml
+          cp config/secrets.github.yml config/secrets.yml
+          cp config/ingestion.example.yml config/ingestion.yml
+          bundle install
+          bundle exec rake db:test:prepare
+      - name: Run tests and extract current coverage on base
+        id: base_coverage
+        working-directory: base_branch
+        if: steps.changed-rb-files.outputs.any_changed == 'true'
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-rb-files.outputs.all_changed_files }}
+        run: |
+          bundle install
+          bundle exec rails test
+
+          if [ -f coverage/.last_run.json ]; then
+            BASE_COVERAGE=$(cat coverage/.last_run.json | jq -r '.result.line')
+          else
+            BASE_COVERAGE="0.0"
+          fi
+
+          echo "********** CODE COVERAGE **********"
+          echo "*** Base coverage (branch: $(git rev-parse --abbrev-ref HEAD)): $BASE_COVERAGE%"
+
+          echo "BASE_COV=$BASE_COVERAGE" >> $GITHUB_ENV
+          echo "BASE_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
+      # Compare coverages
+      - name: Compare coverage
+        id: compare
+        if: steps.changed-rb-files.outputs.any_changed == 'true'
+        run: |
+          DIFF=$(echo "$CURRENT_COV - $BASE_COV" | bc)
+          echo "DIFF=$DIFF" >> $GITHUB_ENV
+
+          echo "Current ($CURRENT_BRANCH)= $CURRENT_COV%"
+          echo "Base ($BASE_BRANCH)= $BASE_COV%"
+          if (( $(echo "$CURRENT_COV < $BASE_COV" | bc -l) )); then
+            echo "❌ Coverage decreased by $DIFF%"
+            echo "RESULT=0" >> $GITHUB_ENV
+          else
+            echo "✅ Coverage maintained or improved by $DIFF%"
+            echo "RESULT=1" >> $GITHUB_ENV
+          fi
