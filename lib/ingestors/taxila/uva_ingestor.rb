@@ -57,6 +57,7 @@ module Ingestors
           event.keywords = attr.fetch('taxonomy', []).map(&:values).flatten
 
           event.event_types = attr.fetch('eventType', []).map { |t| convert_event_types(t) }
+          event.target_audience = parse_audience(event.description)
 
           # add event to events array
           add_event(event)

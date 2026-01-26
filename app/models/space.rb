@@ -1,5 +1,5 @@
 class Space < ApplicationRecord
-  FEATURES = %w[events materials elearning_materials learning_paths workflows collections trainers content_providers nodes].freeze
+  FEATURES = %w[events materials elearning_materials learning_paths workflows collections trainers content_providers nodes spaces].freeze
 
   include PublicActivity::Common
   include LogParameterChanges
