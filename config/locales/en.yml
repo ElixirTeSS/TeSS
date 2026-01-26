@@ -971,8 +971,6 @@ en:
         hide_disabled: 'Hide disabled %{resource}'
         show_archived: 'Show archived %{resource}'
         hide_archived: 'Hide archived %{resource}'
-        show_unapproved: 'Show unapproved %{resource}'
-        hide_unapproved: 'Hide unapproved %{resource}'
         show_broken_links: 'Show %{resource} with broken links'
         hide_broken_links: 'Hide %{resource} with broken links'
         show_cross_space: 'Show %{resource} from all spaces'

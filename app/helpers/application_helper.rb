@@ -3,6 +3,7 @@ require 'i18n_data'
 # The core application helper
 module ApplicationHelper
   IGNORED_FILTERS = %w[user].freeze
+  CURATION_FILTERS = %w[approval_status].freeze # add here the attributes shown as filters to be hidden from users but not from admin and curators
 
   # def bootstrap_class_for flash_type
   #   { success: "alert-success", error: "alert-danger", alert: "alert-warning", notice: "alert-info" }[flash_type] || flash_type.to_s
@@ -666,7 +667,16 @@ module ApplicationHelper
       resources.facets.values_at(*indices)
     else
       resources.facets
-    end.select { |f| f.rows.any? && !IGNORED_FILTERS.include?(f.field_name.to_s) }
+    end.select { |f| f.rows.any? && !IGNORED_FILTERS.include?(f.field_name.to_s) && !CURATION_FILTERS.include?(f.field_name.to_s) }
+  end
+
+  def curation_facets(resources)
+    if (selected_facets = TeSS::Config.solr_facets&.fetch(controller_name, nil))
+      indices = selected_facets.map { |name| resources.facets.index { |f| f.field_name.to_s == name } }.compact
+      resources.facets.values_at(*indices)
+    else
+      resources.facets
+    end.select { |f| f.rows.any? && CURATION_FILTERS.include?(f.field_name.to_s) }
   end
 
   def render_language_name(code)
