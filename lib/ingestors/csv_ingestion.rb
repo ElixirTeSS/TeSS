@@ -15,7 +15,11 @@ module Ingestors
     end
 
     def process_array(row, header)
-      row[header].to_s.lstrip.split(/;/).reject(&:empty?).compact unless row[header].nil?
+      # split by: comma or semicolon, optionally surrounded by whitespace
+      # or two or more whitespace characters
+      # any number of newline characters
+      split_regex = /\s*[,;]\s*|\s{2,}|[\r\n]+/x
+      row[header].to_s.lstrip.split(split_regex).reject(&:empty?).compact unless row[header].nil?
     end
 
     def get_column(row, header)
