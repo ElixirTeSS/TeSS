@@ -11,4 +11,8 @@ module SpacesHelper
       [t("features.#{f}.short"), f]
     end
   end
+
+  def space_supports_omniauth?(space = current_space)
+    space.nil? || space.default? || space.is_subdomain?(TeSS::Config.base_uri.domain)
+  end
 end

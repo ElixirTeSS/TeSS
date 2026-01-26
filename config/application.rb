@@ -170,6 +170,10 @@ module TeSS
     def sentry_enabled?
       _sentry_dsn.present? && Rails.env.production?
     end
+
+    def base_uri
+      @base_uri ||= Addressable::URI.parse(base_url)
+    end
   end
 
   Config = TessConfig.new(tess_config)

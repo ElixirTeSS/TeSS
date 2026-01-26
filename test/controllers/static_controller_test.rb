@@ -739,4 +739,26 @@ class StaticControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test 'show omniauth login options when on subdomain space' do
+    space = spaces(:plants)
+    space.update!(host: 'plants.example.com')
+    with_host(space.host) do
+      get :home
+      assert_select 'ul.user-options.nav.navbar-nav.navbar-right' do
+        assert_select "a[href=\"/users/auth/oidc?space_id=#{space.id}\"]", count: 1
+      end
+    end
+  end
+
+  test 'do not show omniauth login options when on non-subdomain space' do
+    space = spaces(:plants)
+    space.update!(host: 'other-host.com')
+    with_host(space.host) do
+      get :home
+      assert_select 'ul.user-options.nav.navbar-nav.navbar-right' do
+        assert_select "a[href=\"/users/auth/oidc?space_id=#{space.id}\"]", count: 0
+      end
+    end
+  end
 end

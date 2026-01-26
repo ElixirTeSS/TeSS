@@ -31,9 +31,10 @@ Rails.application.routes.draw do
   # to happen when precompiling assets in the docker build script.
   unless Rake.try(:application)&.top_level_tasks&.include? 'assets:precompile'
     devise_for :users, :controllers => {
-      :registrations => 'tess_devise/registrations',
-      :invitations => 'tess_devise/invitations',
-      :omniauth_callbacks => 'callbacks'
+      registrations: 'tess_devise/registrations',
+      invitations: 'tess_devise/invitations',
+      sessions: 'tess_devise/sessions',
+      omniauth_callbacks: 'callbacks'
     }
   end
   #Redirect to users index page after devise user account update
