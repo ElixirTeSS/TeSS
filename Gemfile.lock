@@ -825,6 +825,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   activerecord-session_store
+  addressable
   ahoy_matey
   auto_strip_attributes
   better_errors
