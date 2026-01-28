@@ -56,7 +56,7 @@
         <% end %>
       </p>
 
-      <% if TeSS::Config.feature['trainers'] %>
+      <% if feature_enabled?('trainers') %>
         <p>
           <strong>Included in Registry of Trainers:</strong>
           <% if @user.profile.public? %>

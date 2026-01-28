@@ -1,5 +1,5 @@
 class LearningPathTopicsController < ApplicationController
-  before_action -> { feature_enabled?('learning_paths') }
+  before_action -> { ensure_feature_enabled('learning_paths') }
   before_action :set_topic, only: %i[show edit update destroy]
   before_action :set_breadcrumbs
 
