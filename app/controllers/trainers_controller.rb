@@ -24,7 +24,7 @@ class TrainersController < ApplicationController
   # GET /trainers/1.json
 
   def show
-    @bioschemas = registrations.flat_map(&:to_bioschemas)
+    @bioschemas = @trainer.user.registrations.flat_map(&:to_bioschemas)
     respond_to do |format|
       format.html
       format.json
@@ -45,12 +45,5 @@ class TrainersController < ApplicationController
                                     :location, :experience, { :language => [] }, { :expertise_academic => [] },
                                     { :expertise_technical => [] }, { :interest => [] }, { :activity => [] },
                                     { :fields => [] }, { :social_media => [] })
-  end
-
-  # Get trainer's registrations
-  def registrations
-    events = @trainer.user.events.in_current_space
-    materials = @trainer.user.materials.in_current_space
-    events + materials
   end
 end

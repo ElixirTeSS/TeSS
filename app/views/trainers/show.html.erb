@@ -1,8 +1,3 @@
-<% materials_count =  @trainer.user.materials.in_current_space.count %>
-<% events_count = @trainer.user.events.in_current_space.from_verified_users.not_disabled.count %>
-<% workflows_count =  @trainer.user.workflows.in_current_space.visible_by(current_user).count %>
-<% collections_count = @trainer.user.collections.in_current_space.visible_by(current_user).count %>
-<% total = materials_count.to_i + events_count.to_i + workflows_count.to_i + collections_count.to_i %>
 <div class="wrapper collapsing-wrapper-tb">
 
   <div class="collapsing-sidebar" id="sidebar">
@@ -16,10 +11,6 @@
     <h2>
       <%= @trainer.full_name %>
     </h2>
-    <!-- Field: registrations -->
-    <% if total.positive? %>
-      <p>Added a total of <b><%= total %></b> training resources in <%= TeSS::Config.site['title_short'] %>.
-    <% end %>
     <!-- Field: website -->
     <% if @trainer.website.present? %>
       <div class="url-wrap">
@@ -59,8 +50,6 @@
     </div>
 
     <!-- Field: registrations list with Events, Materials, Collections, Workflows -->
-    <% if total.positive? %>
-      <%= render(partial: 'common/registrations_list', locals: { user: @trainer.user }) %>
-    <% end %>
+    <%= render(partial: 'common/registrations_list', locals: { user: @trainer.user }) %>
   </div>
 </div>

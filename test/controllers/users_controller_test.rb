@@ -543,9 +543,13 @@ class UsersControllerTest < ActionController::TestCase
 
     doc = Nokogiri::HTML(response.body)
     jsonld = doc
-      .css('script[type="application/ld+json"]')
-      .map { |s| JSON.parse(s.text) rescue nil }
-      .compact
+             .css('script[type="application/ld+json"]')
+             .map do |s|
+               JSON.parse(s.text)
+             rescue JSON::ParserError
+               nil
+             end
+             .compact
 
     json_material = jsonld.find { |entry| entry['name'] == material.title }
     assert_equal material.title, json_material['name']
@@ -562,6 +566,8 @@ class UsersControllerTest < ActionController::TestCase
     assert_equal event.title, json_event['name']
     assert_equal event.url, json_event['url']
     assert_equal event.scientific_topic_uris.first, json_event['about'].first['@id']
-    assert_equal event.external_resources.first.url, json_event['mentions'].first['url']
+    external_resource = event.external_resources.first
+    assert_not_nil external_resource
+    assert_equal external_resource.url, json_event['mentions'].first['url']
   end
 end

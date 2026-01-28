@@ -16,6 +16,12 @@
   <% collections = user.collections.in_current_space.visible_by(current_user).limit(resource_limit) %>
   <% collections_count = user.collections.in_current_space.visible_by(current_user).count %>
   <% activator = tab_activator %>
+  <% total = materials_count.to_i + events_count.to_i + workflows_count.to_i + collections_count.to_i %>
+
+  <!-- Field: registrations -->
+  <% if total.positive? %>
+    <p>Added a total of <b><%= total %></b> training resources in <%= TeSS::Config.site['title_short'] %>.</p>
+  <% end %>
 
   <ul class="nav nav-tabs">
     <!-- Tab: Events -->
