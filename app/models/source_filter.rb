@@ -1,30 +1,213 @@
+
+module FilterComparisons
+  def self.string_match(content_value, filter_value)
+    content_value.to_s.casecmp?(filter_value)
+  end
+
+  def self.prefix_string_match(content_value, filter_value)
+    content_value.to_s.downcase.start_with?(filter_value.downcase)
+  end
+
+  def self.contains_string_match(content_value, filter_value)
+    content_value.to_s.downcase.include?(filter_Value.downcase)
+  end
+
+  def self.array_string_match(content_value, filter_value)
+    content_value.any? { |i| i.to_s.casecmp?(filter_value) }
+  end
+end
+
+FILTER_DEFINITIONS = {
+  'target_audience' => {
+    enum_value: 'target_audience',
+    comparison: FilterComparisons.method(:array_string_match)
+  },
+  keyword: {
+    enum_value: 'keyword',
+    comparison: FilterComparisons.method(:array_string_match),
+    filter_property: 'keywords'
+  },
+  title: {
+    enum_value: 'title',
+    comparison: FilterComparisons.method(:string_match)
+  },
+  title_contains: {
+    enum_value: 'title_contains',
+    comparison: FilterComparisons.method(:contains_string_match)
+  },
+  description: {
+    enum_value: 'description',
+    comparison: FilterComparisons.method(:string_match)
+  },
+  description_contains: {
+    enum_value: 'description_contains',
+    comparison: FilterComparisons.method(:contains_string_match),
+    filter_property: 'description'
+  },
+  url: {
+    enum_value: 'url',
+    comparison: FilterComparisons.method(:string_match)
+  },
+  url_prefix: {
+    enum_value: 'url_prefix',
+    comparison: FilterComparisons.method(:prefix_string_match),
+    filter_property: 'url'
+  },
+  doi: {
+    enum_value: 'doi',
+    comparison: FilterComparisons.method(:string_match)
+  },
+  license: {
+    enum_value: 'license',
+    comparison: FilterComparisons.method(:string_match),
+    filter_property: 'licence'
+  },
+  difficulty_level: {
+    enum_value: 'difficulty_level',
+    comparison: FilterComparisons.method(:string_match)
+  },
+  resource_type: {
+    enum_value: 'resource_type',
+    comparison: FilterComparisons.method(:array_string_match)
+  },
+  prerequisites_contains: {
+    enum_value: 'prerequisites_contains',
+    comparison: FilterComparisons.method(:contains_string_match),
+    filter_property: 'prerequisites'
+  },
+  learning_objectives_contains: {
+    enum_value: 'learning_objectives_contains',
+    comparison: FilterComparisons.method(:contains_string_match),
+    filter_property: 'learning_objectives'
+  },
+  subtitle: {
+    enum_value: 'subtitle',
+    comparison: FilterComparisons.method(:string_match)
+  },
+  subtitle_contains: {
+    enum_value: 'subtitle_contains',
+    comparison: FilterComparisons.method(:contains_string_match),
+    filter_property: 'subtitle'
+  },
+  city: {
+    enum_value: 'city',
+    comparison: FilterComparisons.method(:string_match)
+  },
+  country: {
+    enum_value: 'country',
+    comparison: FilterComparisons.method(:string_match)
+  },
+  event_type: {
+    enum_value: 'event_type',
+    comparison: FilterComparisons.method(:array_string_match),
+    filter_property: 'event_types'
+  },
+  timezone: {
+    enum_value: 'timezone',
+    comparison: FilterComparisons.method(:string_match)
+  }
+}.freeze
+
+FILTER_DEFINITIONS = {
+  'target_audience' => {
+    comparison: FilterComparisons.method(:array_string_match)
+  },
+
+  'keyword' => {
+    comparison: FilterComparisons.method(:array_string_match),
+    filter_property: 'keywords'
+  },
+
+  'title' => {
+    comparison: FilterComparisons.method(:string_match)
+  },
+
+  'title_contains' => {
+    comparison: FilterComparisons.method(:contains_string_match),
+    filter_property: 'title'
+  },
+
+  'description' => {
+    comparison: FilterComparisons.method(:string_match)
+  },
+
+  'description_contains' => {
+    comparison: FilterComparisons.method(:contains_string_match),
+    filter_property: 'description'
+  },
+
+  'url' => {
+    comparison: FilterComparisons.method(:string_match)
+  },
+
+  'url_prefix' => {
+    comparison: FilterComparisons.method(:prefix_string_match),
+    filter_property: 'url'
+  },
+
+  'doi' => {
+    comparison: FilterComparisons.method(:string_match)
+  },
+
+  'license' => {
+    comparison: FilterComparisons.method(:string_match),
+    filter_property: 'licence'
+  },
+
+  'difficulty_level' => {
+    comparison: FilterComparisons.method(:string_match)
+  },
+
+  'resource_type' => {
+    comparison: FilterComparisons.method(:array_string_match)
+  },
+
+  'prerequisites_contains' => {
+    comparison: FilterComparisons.method(:contains_string_match),
+    filter_property: 'prerequisites'
+  },
+
+  'learning_objectives_contains' => {
+    comparison: FilterComparisons.method(:contains_string_match),
+    filter_property: 'learning_objectives'
+  },
+
+  'subtitle' => {
+    comparison: FilterComparisons.method(:string_match)
+  },
+
+  'subtitle_contains' => {
+    comparison: FilterComparisons.method(:contains_string_match),
+    filter_property: 'subtitle'
+  },
+
+  'city' => {
+    comparison: FilterComparisons.method(:string_match)
+  },
+
+  'country' => {
+    comparison: FilterComparisons.method(:string_match)
+  },
+
+  'event_type' => {
+    comparison: FilterComparisons.method(:array_string_match),
+    filter_property: 'event_types'
+  },
+
+  'timezone' => {
+    comparison: FilterComparisons.method(:string_match)
+  }
+}.freeze
+
+
+
 class SourceFilter < ApplicationRecord
   belongs_to :source
 
   auto_strip_attributes :filter_value
   validates :filter_mode, :filter_by, presence: true
 
-  enum :filter_by, {
-    target_audience: 'target_audience',
-    keyword: 'keyword',
-    title: 'title',
-    description: 'description',
-    description_contains: 'description_contains',
-    url: 'url',
-    url_prefix: 'url_prefix',
-    doi: 'doi',
-    license: 'license',
-    difficulty_level: 'difficulty_level',
-    resource_type: 'resource_type',
-    prerequisites_contains: 'prerequisites_contains',
-    learning_objectives_contains: 'learning_objectives_contains',
-    subtitle: 'subtitle',
-    subtitle_contains: 'subtitle_contains',
-    city: 'city',
-    country: 'country',
-    event_type: 'event_type',
-    timezone: 'timezone'
-  }
+  enum :filter_by, FILTER_DEFINITIONS.keys.index_with(&:itself)
 
   enum :filter_mode, {
     allow: 'allow',
@@ -54,6 +237,7 @@ class SourceFilter < ApplicationRecord
   end
 
   def filter_property
+
     {
       'event_type' => 'event_types',
       'keyword' => 'keywords',
