@@ -9,6 +9,7 @@ module Facets
     start: ->(c) { c.name == 'Event' },
     running_during: ->(c) { c.name == 'Event' },
     include_hidden: ->(c) { c.method_defined?(:user_requires_approval?) },
+    include_broken_links: ->(c) { c.method_defined?(:link_monitor) },
     across_all_spaces: ->(c) { TeSS::Config.feature['spaces'] && c.reflect_on_association(:space) }
   }.with_indifferent_access.freeze
 
@@ -32,7 +33,8 @@ module Facets
                         nil
                       end
                     },
-    include_hidden: ->(value) { value == 'true' }
+    include_hidden: ->(value) { value == 'true' },
+    include_broken_links: ->(value) { value == 'true' }
   }
 
   class << self
@@ -113,6 +115,10 @@ module Facets
       end
     end
 
+    def include_broken_links(scope, value, _)
+      sunspot_scoped(scope) { without(:failing, true) } unless value
+    end
+
     def days_since_scrape(scope, days, _)
       sunspot_scoped(scope) { with(:last_scraped).less_than(days.to_i.days.ago) } if days.present?
     end
@@ -134,7 +140,7 @@ module Facets
 
     def across_all_spaces(scope, value, user)
       sunspot_scoped(scope) do
-        all_spaces = (user&.is_admin? && value)
+        all_spaces = value
         with(:space_id, Space.current_space.id) unless all_spaces
       end
     end

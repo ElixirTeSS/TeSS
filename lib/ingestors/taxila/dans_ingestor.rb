@@ -38,7 +38,11 @@ module Ingestors
             # dates
             dates = event_data.css("div[id='nieuws_image_date_row']").css('p').css('span')
             event.start = Time.zone.parse(dates[0].children.to_s)
-            event.end = Time.zone.parse(dates[1].children.to_s) if dates.length == 2
+            if dates.length == 2
+              event.end = Time.zone.parse(dates[1].children.to_s)
+            else
+              event.end = nil # to prevent recurring events from getting weird values
+            end
             event.set_default_times
 
             data = event_data.css("div[id='nieuws_content_row']").css('div')[0].css('div')[0]
@@ -60,6 +64,7 @@ module Ingestors
 
             event.source = 'DANS'
             event.timezone = 'Amsterdam'
+            event.target_audience = parse_audience(event.description)
 
             add_event(event)
           rescue Exception => e

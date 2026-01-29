@@ -1,21 +1,24 @@
+<% theme_colour = TeSS::Config.themes[space.theme]&.dig('primary') %>
 <% cache(space, expires_in: 6.hours) do %>
   <li class="masonry-brick media-item long">
-    <%= link_to space, class: 'link-overlay' do %>
+    <%= link_to space, class: 'link-overlay', style: (theme_colour ? "border-color: #{theme_colour}" : nil) do %>
       <%= image_tag get_image_url_for(space), class: "media-image listing_image pull-right" %>
-      <h4 class="mb-2 mt-3">
+      <h4 class="mb-2 mt-3" style="<%= theme_colour ? "color: #{theme_colour}" : ''-%>">
         <%= space.title %>
       </h4>
 
-      <%# if space.materials.length > 0 %>
-<!--        <div><strong><%#= pluralize(space.materials.length, 'training material') %></strong></div>-->
-      <%# end %>
+      <span class="muted"><%= space.url %></span>
 
-      <%# if space.events.length > 0 %>
-<!--        <div>-->
-<!--          <strong><%#= pluralize(space.events.not_finished.length, 'event') %></strong>-->
-<!--          <em>(<%#= pluralize(space.events.finished.length, 'past event') %>)</em>-->
-<!--        </div>-->
-      <%# end %>
+      <% if space.materials.length > 0 %>
+        <div><strong><%= pluralize(space.materials.length, 'training material') %></strong></div>
+      <% end %>
+
+      <% if space.events.length > 0 %>
+        <div>
+          <strong><%= pluralize(space.events.not_finished.length, 'event') %></strong>
+          <em>(<%= pluralize(space.events.finished.length, 'past event') %>)</em>
+        </div>
+      <% end %>
     <% end %>
   </li>
 <% end %>

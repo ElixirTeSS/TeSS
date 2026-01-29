@@ -56,4 +56,12 @@ class DefaultSpace
   def default?
     true
   end
+
+  def administrators
+    User.with_role('admin')
+  end
+
+  def feature_enabled?(feature)
+    TeSS::Config.feature[feature]
+  end
 end

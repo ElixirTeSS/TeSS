@@ -1,6 +1,6 @@
 # The controller for actions related to the Collection model
 class CollectionsController < ApplicationController
-  before_action :feature_enabled?
+  before_action :ensure_feature_enabled
   before_action :set_collection, only: %i[show edit curate update_curation add_item remove_item update destroy]
   before_action :set_breadcrumbs
 
@@ -114,7 +114,7 @@ class CollectionsController < ApplicationController
     @collection.create_activity :destroy, owner: current_user
     @collection.destroy
     respond_to do |format|
-      format.html { redirect_to collections_url, notice: 'Collection was successfully destroyed.' }
+      format.html { redirect_to collections_path, notice: 'Collection was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

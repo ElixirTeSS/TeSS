@@ -3,7 +3,7 @@
 class ScrapedResourcePolicy < ResourcePolicy
 
   def manage?
-    super || (@user && @user.is_curator?) || is_content_provider_editor?
+    super || (@user&.is_curator?) || is_content_provider_editor?
   end
 
   private

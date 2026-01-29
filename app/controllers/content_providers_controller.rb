@@ -1,6 +1,6 @@
 # The controller for actions related to the Content Providers model
 class ContentProvidersController < ApplicationController
-  before_action -> { feature_enabled?('content_providers') }
+  before_action :ensure_feature_enabled
   before_action :set_content_provider, only: %i[show edit update destroy]
   before_action :set_breadcrumbs
 
@@ -86,7 +86,7 @@ class ContentProvidersController < ApplicationController
     @content_provider.create_activity :destroy, owner: current_user
     @content_provider.destroy
     respond_to do |format|
-      format.html { redirect_to content_providers_url, notice: 'Content Provider was successfully destroyed.' }
+      format.html { redirect_to content_providers_path, notice: 'Content Provider was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

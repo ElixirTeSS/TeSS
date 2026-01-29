@@ -1,6 +1,6 @@
 # The controller for actions related to the Nodes model
 class NodesController < ApplicationController
-  before_action :feature_enabled?
+  before_action :ensure_feature_enabled
   before_action :set_node, only: [:show, :edit, :update, :destroy]
   before_action :set_breadcrumbs
 
@@ -79,7 +79,7 @@ class NodesController < ApplicationController
     @node.create_activity :destroy, owner: current_user
     @node.destroy
     respond_to do |format|
-      format.html { redirect_to nodes_url, notice: 'Node was successfully destroyed.' }
+      format.html { redirect_to nodes_path, notice: 'Node was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

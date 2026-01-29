@@ -1,5 +1,8 @@
 # The concern for searchable index
 module SearchableIndex
+  DEFAULT_PAGE_SIZE = 10
+  PER_PAGE_OPTIONS = [10, 20, 50, 100]
+
   extend ActiveSupport::Concern
 
   included do
@@ -19,7 +22,7 @@ module SearchableIndex
   def fetch_resources
     if TeSS::Config.solr_enabled
       page = page_param.blank? ? 1 : page_param.to_i
-      per_page = per_page_param.blank? ? 10 : per_page_param.to_i
+      per_page = per_page_param.blank? ? DEFAULT_PAGE_SIZE : per_page_param.to_i
 
       @search_results = @model.search_and_filter(current_user, @search_params, @facet_params,
                                     page: page, per_page: per_page, sort_by: @sort_by)

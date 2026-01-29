@@ -1,5 +1,5 @@
 class LearningPathsController < ApplicationController
-  before_action :feature_enabled?
+  before_action :ensure_feature_enabled
   before_action :set_learning_path, only: [:show, :edit, :update, :destroy]
   before_action :set_breadcrumbs
 
@@ -85,7 +85,7 @@ class LearningPathsController < ApplicationController
     @learning_path.create_activity :destroy, owner: current_user
     @learning_path.destroy
     respond_to do |format|
-      format.html { redirect_to learning_paths_url, notice: 'Learning path was successfully destroyed.' }
+      format.html { redirect_to learning_paths_path, notice: 'Learning path was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

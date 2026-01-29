@@ -17,7 +17,8 @@ class CurationMailer < ApplicationMailer
     @user = user
     @source = source
     subject = "#{TeSS::Config.site['title_short']} source \"#{@source.title}\" requires approval"
-    mail(subject:, to: User.with_role('admin').map(&:email)) do |format|
+    space = @source.space || Space.default
+    mail(subject:, to: space.administrators.map(&:email)) do |format|
       format.html
       format.text
     end
@@ -53,12 +54,7 @@ class CurationMailer < ApplicationMailer
 
     source_names = TeSS::Config.ingestion[:sources].filter { |s| s[:enabled] }.map { |s| s[:provider] }.uniq
     source_names += Source.includes(:content_provider).enabled.approved.map{ |s| s.content_provider.title}
-    @providers = ContentProvider
-                  .left_joins(%i[events materials])
-                  .where(title: source_names)
-                  .where('events.updated_at < ?', cut_off_time)
-                  .where('materials.updated_at < ?', cut_off_time)
-                  .distinct
+    @providers = ContentProvider.with_broken_scrapers(source_names, cut_off_time)
     subject = t('mailer.check_broken_scrapers.subject')
     mail(subject:, to: user.email) do |format|
       format.html

@@ -13,6 +13,7 @@ default: &default
   announcement_message:
   prevent_robot_indexing: false
   require_cookie_consent: true
+  login_expires_after: # in seconds, sets the login session duration, after this, users must login again, leave blank to disable.
   blocked_domains:
     - !ruby/regexp '/bad-domain\.example/'
   blocked_countries: # Block registration from the following ISO 3166-1 alpha-2 codes
@@ -125,7 +126,7 @@ default: &default
     # The order in which the tabs appear (if feature enabled)
     tab_order: ['about', 'events', 'materials', 'elearning_materials', 'workflows', 'collections', 'trainers', 'content_providers', 'nodes']
     # The tabs that should be collapsed under the "Directory" tab. Can be left blank to hide it.
-    directory_tabs: ['trainers', 'content_providers', 'nodes']
+    directory_tabs: ['trainers', 'content_providers', 'nodes', 'spaces']
     # The order in with the 'about us' tabs appear
     about_us_tab_order: ['tess_club', 'contact', 'team', 'funding', 'acknowledgements', 'cite']
     n_provider_ids: 5
@@ -147,13 +148,11 @@ default: &default
   feature:
     elearning_materials: false
     events: true
-    invitation: false
     materials: true
     nodes: false
     collections: true
     content_providers: true
     subscription: true
-    registration: true
     trainers: false
     workflows: true
     sources: false
@@ -171,6 +170,9 @@ default: &default
     learning_paths: false
     collection_curation: true
     spaces: false
+    invitation: false
+    registration: true
+    login_through_oidc_only: false # when true, only the first oidc authentication will be available in TeSS, useful when you have your org SSO. Be careful! invitation and registration must be false when using this feature.
   restrict_content_provider_selection: false
   user_ingestion_methods: ['bioschemas']
   placeholder:
@@ -262,7 +264,7 @@ default: &default
       primary: '#047eaa' # Blue by default
       secondary: '#f47d21' # Orange by default
     green:
-      primary: '529d00'
+      primary: '#529d00'
       secondary: '#829d30'
     blue:
       primary: '#024552'

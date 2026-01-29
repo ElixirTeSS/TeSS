@@ -192,9 +192,9 @@ var Workflows = {
             $('#node-modal-form-title').val(data.name);
             $('#node-modal-form-description').val(data.description);
             if (data.color) {
-                $('#node-modal-form-colour')[0].jscolor.fromString(data.color);
+                $('#node-modal-form-colour').val(data.color);
             } else if (data.parent) {
-                $('#node-modal-form-colour')[0].jscolor.fromString(cy.$('#' + data.parent).data('color'));
+                $('#node-modal-form-colour').val(cy.$('#' + data.parent).data('color'));
             }
             $('#node-modal-form-parent-id').val(data.parent);
             $('#node-modal-form-x').val(position.x);
@@ -211,7 +211,7 @@ var Workflows = {
                     description: $('#node-modal-form-description').val(),
                     html_description: MarkdownIt.render($('#node-modal-form-description').val()),
                     color: $('#node-modal-form-colour').val(),
-                    font_color: $('#node-modal-form-colour').css("color"),
+                    font_color: Workflows.getTextColor($('#node-modal-form-colour').val()),
                     parent: $('#node-modal-form-parent-id').val(),
                     associatedResources: Workflows.associatedResources.fetch(),
                     ontologyTerms: Workflows.ontologyTerms.fetch()
@@ -470,6 +470,21 @@ var Workflows = {
                 );
             }
         }
+    },
+    getTextColor: function (hex) {
+        // Remove the leading '#', if present
+        hex = hex.replace('#', '');
+
+        // Parse r, g, b values
+        const r = parseInt(hex.substring(0, 2), 16);
+        const g = parseInt(hex.substring(2, 4), 16);
+        const b = parseInt(hex.substring(4, 6), 16);
+
+        // Calculate perceived brightness (luminance)
+        const brightness = (0.299 * r) + (0.587 * g) + (0.114 * b);
+
+        // Threshold of ~186 is a common practical cutoff
+        return brightness > 186 ? '#000000' : '#FFFFFF';
     }
 };
 
@@ -621,7 +636,6 @@ document.addEventListener("turbolinks:load", function() {
             // Initialize
             Workflows.cancelState();
             Workflows.history.initialize();
-            jscolor.installByClassName('jscolor');
         } else {
             // Hiding/revealing of child nodes
             if(hideChildNodes) {

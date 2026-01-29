@@ -50,11 +50,14 @@
         <% if @user.profile.orcid.blank? %>
           <span class="empty">None specified</span>
         <% else %>
-          <%= link_to @user.profile.orcid, @user.profile.orcid, rel: 'nofollow', target: '_blank' %>
+          <%= orcid_link(@user.profile) %>
+          <% if current_user == @user && !@user.profile.orcid_authenticated? %>
+            <%= button_to t('orcid.authenticate'), authenticate_orcid_path, class: 'btn btn-default' %>
+          <% end %>
         <% end %>
       </p>
 
-      <% if TeSS::Config.feature['trainers'] %>
+      <% if feature_enabled?('trainers') %>
         <p>
           <strong>Included in Registry of Trainers:</strong>
           <% if @user.profile.public? %>
@@ -142,28 +145,28 @@
 
       <ul class="nav nav-tabs">
         <!-- Tab: Events -->
-        <% if TeSS::Config.feature['events'] %>
+        <% if feature_enabled?('events') %>
           <%= tab('Events', icon_class_for_model('events'), 'events', activator: activator,
                   disabled: { check: events_count.zero?, message: 'No associated events' },
                   count: not_finished_events_count.zero? && events_count.positive? ? '0*' : not_finished_events_count) %>
         <% end %>
 
         <!-- Tab: Materials -->
-        <% if TeSS::Config.feature['materials'] %>
+        <% if feature_enabled?('materials') %>
           <%= tab('Materials', icon_class_for_model('materials'), 'materials', activator: activator,
                   disabled: { check: materials.none?, message: 'No registered training materials' },
                   count: materials_count) %>
         <% end %>
 
         <!-- Tab: Collections -->
-        <% if TeSS::Config.feature['collections'] %>
+        <% if feature_enabled?('collections') %>
           <%= tab('Collections', icon_class_for_model('collections'), 'collections', activator: activator,
                   disabled: { check: collections.none?, message: 'No registered collections' },
                   count: collections_count) %>
         <% end %>
 
         <!-- Tab: Workflows -->
-        <% if TeSS::Config.feature['workflows'] %>
+        <% if feature_enabled?('workflows') %>
           <%= tab('Workflows', icon_class_for_model('workflows'), 'workflows', activator: activator,
                   disabled: { check: workflows.none?, message: 'No workflows' },
                   count: workflows_count) %>
@@ -172,7 +175,7 @@
 
       <div class="tab-content">
         <!-- Tab: Events -->
-        <% if TeSS::Config.feature['events'] %>
+        <% if feature_enabled?('events') %>
           <%= render partial: 'common/associated_events',
                      locals: { total_count: upcoming_events.count,
                                past_count: past_events.count,
@@ -184,7 +187,7 @@
         <% end %>
 
         <!-- Tab: Materials -->
-        <% if TeSS::Config.feature['materials'] %>
+        <% if feature_enabled?('materials') %>
           <%= render partial: 'common/associated_resources',
                      locals: { model: Material,
                                total_count: materials_count,
@@ -195,7 +198,7 @@
         <% end %>
 
         <!-- Tab: Collections -->
-        <% if TeSS::Config.feature['collections'] %>
+        <% if feature_enabled?('collections') %>
           <%= render partial: 'common/associated_resources',
                      locals: { model: Collection,
                                total_count: collections_count,
@@ -206,7 +209,7 @@
         <% end %>
 
         <!-- Tab: Workflows -->
-        <% if TeSS::Config.feature['workflows'] %>
+        <% if feature_enabled?('workflows') %>
           <%= render partial: 'common/associated_resources',
                      locals: { model: Workflow,
                                total_count: workflows_count,

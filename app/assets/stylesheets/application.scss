@@ -18,7 +18,32 @@
 @import "font-awesome-sprockets";
 @import "font-awesome";
 @import "mixins/mixins";
-@import "*";
+
+// Local
+@import "about";
+@import "account";
+@import "activities";
+@import "autocomplete";
+@import "bootstrap-tweaks";
+@import "collaborations";
+@import "collection";
+@import "curators";
+@import "events";
+@import "external-resources";
+@import "footer";
+@import "forms";
+@import "headers";
+@import "helpers";
+@import "home";
+@import "icons";
+@import "learning-paths";
+@import "masonry";
+@import "nodes";
+@import "showcase";
+@import "toggle";
+@import "workflows";
+
+// Vendor
 @import "cytoscape-panzoom";
 @import "jquery.simplecolorpicker";
 @import "eonasdan-bootstrap-datetimepicker";
@@ -393,8 +418,19 @@ ul.unstyled {
 }
 
 .search-results-count {
-  margin-right: 5px;
+  margin-right: 1em;
   display: inline-block
+}
+
+.search-results-per-page {
+  display: inline-block;
+
+  select {
+    border: none;
+    padding: 0;
+    background: transparent;
+    border-bottom: 1px dashed $text-color;
+  }
 }
 
 .index-display-options {
@@ -1047,4 +1083,30 @@ td.day .calendar-text {
       top: 0;
     }
   }
+}
+
+.theme-selector {
+  display: flex;
+  gap: 10px;
+}
+
+.theme-select-option {
+  flex-grow: 1;
+  label {
+    border: 5px solid;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: block;
+
+    hr {
+      border-width: 10px;
+    }
+  }
+}
+.btn-oidc-only {
+  font-size: 36px;
+  padding: 4px;
+  margin: 12px 10px;
+  display: flex;
+  justify-content: center;
 }

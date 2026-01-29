@@ -115,7 +115,7 @@ class Event < ApplicationRecord
   has_one :llm_interaction, inverse_of: :event, dependent: :destroy
   accepts_nested_attributes_for :llm_interaction, allow_destroy: true
   has_one :edit_suggestion, as: :suggestible, dependent: :destroy
-  has_one :link_monitor, as: :lcheck, dependent: :destroy
+  has_one :link_monitor, as: :lcheck, dependent: :destroy, inverse_of: :link_checkable
   has_many :collection_items, as: :resource
   has_many :collections, through: :collection_items
   has_many :event_materials, dependent: :destroy
@@ -203,8 +203,8 @@ class Event < ApplicationRecord
     field_list.delete('sponsors') if TeSS::Config.feature['disabled'].include? 'sponsors'
     field_list.delete('tools') if TeSS::Config.feature['disabled'].include? 'biotools'
     field_list.delete('fields') if TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research'
-    field_list.delete('node') unless TeSS::Config.feature['nodes']
-    field_list.delete('collections') unless TeSS::Config.feature['collections']
+    field_list.delete('node') unless Space.current_space.feature_enabled?('nodes')
+    field_list.delete('collections') unless Space.current_space.feature_enabled?('collections')
     field_list.delete('organizer') unless TeSS::Config.feature['organizer']
     field_list.delete('contact') unless TeSS::Config.feature['contact']
 

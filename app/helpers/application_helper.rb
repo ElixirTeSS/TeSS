@@ -698,4 +698,19 @@ module ApplicationHelper
   def theme_path
     "themes/#{params[:theme_preview] || current_space&.theme || TeSS::Config.site['default_theme'] || 'default'}"
   end
+
+  def omniauth_login_link(provider, config)
+    link_to(
+      t('authentication.omniauth.log_in_with',
+        provider: config.options[:label] ||
+                  t("authentication.omniauth.providers.#{provider}", default: provider.to_s.titleize)),
+      omniauth_authorize_path('user', provider),
+      method: :post
+    )
+  end
+
+  def per_page_options_for_select
+    options_for_select(SearchableIndex::PER_PAGE_OPTIONS.map { |k| [k, k] },
+                       params[:per_page].presence || SearchableIndex::DEFAULT_PAGE_SIZE)
+  end
 end

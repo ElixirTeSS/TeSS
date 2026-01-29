@@ -50,13 +50,14 @@ module Ingestors
       summary
     end
 
-    def open_url(url, raise: false)
+    def open_url(url, raise: false, token: nil)
       options = {
         redirect: false, # We're doing redirects manually below, since open-uri can't handle http -> https redirection
         read_timeout: 5
       }
       options[:ssl_verify_mode] = config[:ssl_verify_mode] if config.key?(:ssl_verify_mode)
       redirect_attempts = 5
+      options['Authorization'] = "Bearer #{token}" unless token.nil?
       begin
         URI(url).open(options)
       rescue OpenURI::HTTPRedirect => e
@@ -69,6 +70,34 @@ module Ingestors
         @messages << "Couldn't open URL #{url}: #{e}"
         nil
       end
+    end
+
+    # Some URLs automatically redirects the user to another webpage
+    # This method gets a URL and returns the last redirected URL (as shown by a 30X response or a `meta[http-equiv="Refresh"]` tag)
+    def get_redirected_url(url, limit = 5) # rubocop:disable Metrics/AbcSize
+      raise 'Too many redirects' if limit.zero?
+
+      https_url = to_https(url) # some `homepage` were http
+      response = HTTParty.get(https_url, follow_redirects: true, headers: { 'User-Agent' => config[:user_agent] || 'TeSS Bot' })
+      return https_url unless response.headers['content-type']&.include?('html')
+
+      doc = Nokogiri::HTML(response.body)
+      meta = doc.at('meta[http-equiv="Refresh"]')
+      if meta && meta.to_s =~ /url=(.+)/i
+        content = meta['content']
+        relative_path = content[/url=(.+)/i, 1]
+        base = https_url.end_with?('/') ? https_url : "#{https_url}/"
+        escaped_path = URI::DEFAULT_PARSER.escape(relative_path).to_s
+        new_url = "#{base}#{escaped_path}"
+        return get_redirected_url(new_url, limit - 1)
+      end
+      https_url
+    end
+
+    def to_https(url)
+      uri = URI.parse(url)
+      uri.scheme = 'https'
+      uri.to_s
     end
 
     def convert_description(input)
@@ -135,6 +164,7 @@ module Ingestors
         # check for matched events
         resource.user_id ||= user.id
         resource.content_provider_id ||= provider.id
+        resource.space_id ||= source&.space_id
         existing_resource = find_existing(type, resource)
 
         update = existing_resource

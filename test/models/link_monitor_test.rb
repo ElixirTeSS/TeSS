@@ -120,4 +120,33 @@ class LinkMonitorTest < ActiveSupport::TestCase
     refute @link_monitor.failing?
     refute @link_monitor.status_changed?
   end
+
+  test 'reindex after status changing' do
+    e = events(:one)
+    index = []
+    # I have to do this because `solr_enabled` is disabled when the Event class is loaded,
+    # so it does not get the `solr_index` method even after I toggle it on below,
+    # which prevents me using Minitest's `stub` to stub out `solr_index`.
+    e.define_singleton_method(:solr_index) { index << self }
+    with_settings(solr_enabled: true) do
+      lm = e.create_link_monitor
+      lm.update_column(:fail_count, 3)
+      assert_empty index
+      lm.fail!(404)
+      assert lm.failing?
+      assert_includes index, e
+    end
+  end
+
+  test 'do not try and reindex non-solr resource' do
+    with_settings(solr_enabled: true) do
+      er = external_resources(:biotools)
+      lm = er.create_link_monitor
+      lm.update_column(:fail_count, 3)
+      assert_nothing_raised do
+        lm.fail!(404)
+        assert lm.failing?
+      end
+    end
+  end
 end

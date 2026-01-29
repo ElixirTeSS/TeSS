@@ -203,6 +203,28 @@ class SourcesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'space admin should get edit for source in their space' do
+    sign_in users(:space_admin)
+    source = sources(:unapproved_source)
+    space = spaces(:plants)
+    source.space = space
+    source.save!
+
+    get :edit, params: { id: source }
+    assert_response :success
+  end
+
+  test 'space admin should not get edit for source in another space' do
+    sign_in users(:space_admin)
+    source = sources(:unapproved_source)
+    space = spaces(:astro)
+    source.space = space
+    source.save!
+
+    get :edit, params: { id: source }
+    assert_response :forbidden
+  end
+
   # CREATE Tests
   test 'public should not create source' do
     assert_no_difference 'Source.count' do
@@ -436,9 +458,48 @@ class SourcesControllerTest < ActionController::TestCase
     assert source.reload.approved?
   end
 
-  test 'regular user cannot approve source' do
-    sign_in @user
+  test 'space admin can approve source in their space' do
+    sign_in users(:space_admin)
     source = sources(:unapproved_source)
+    space = spaces(:plants)
+    source.space = space
+    source.save!
+    refute source.approved?
+
+    patch :update, params: { id: source, source: { approval_status: 'approved' } }
+
+    assert_redirected_to source_path(assigns(:source))
+    assert source.reload.approved?
+  end
+
+  test 'space admin cannot approve source in other space' do
+    sign_in users(:space_admin)
+    source = sources(:unapproved_source)
+    space = spaces(:astro)
+    source.space = space
+    source.save!
+    refute source.approved?
+
+    patch :update, params: { id: source, source: { approval_status: 'approved' } }
+
+    assert_response :forbidden
+    refute source.reload.approved?
+  end
+
+  test 'regular user cannot approve source' do
+    sign_in users(:another_regular_user)
+    source = sources(:unapproved_source)
+    refute source.approved?
+
+    patch :update, params: { id: source, source: { approval_status: 'approved' } }
+
+    assert_response :forbidden
+    refute source.reload.approved?
+  end
+
+  test 'source owner cannot approve source' do
+    source = sources(:unapproved_source)
+    sign_in source.user
     refute source.approved?
 
     patch :update, params: { id: source, source: { approval_status: 'approved' } }

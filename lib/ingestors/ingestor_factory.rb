@@ -6,11 +6,13 @@ module Ingestors
         Ingestors::EventbriteIngestor,
         Ingestors::EventCsvIngestor,
         Ingestors::IcalIngestor,
+        Ingestors::IndicoIngestor,
         Ingestors::LibcalIngestor,
         Ingestors::MaterialCsvIngestor,
         Ingestors::TessEventIngestor,
         Ingestors::ZenodoIngestor,
-        Ingestors::OaiPmhIngestor
+        Ingestors::OaiPmhIngestor,
+        Ingestors::GithubIngestor,
       ] + taxila_ingestors + llm_ingestors
     end
 
@@ -36,7 +38,9 @@ module Ingestors
         Ingestors::Taxila::OsciIngestor,
         Ingestors::Taxila::DccIngestor,
         Ingestors::Taxila::SenseIngestor,
-        Ingestors::Taxila::VuMaterialIngestor
+        Ingestors::Taxila::VuMaterialIngestor,
+        Ingestors::Taxila::RdnlIngestor,
+        Ingestors::Taxila::HanIngestor
       ]
     end
 

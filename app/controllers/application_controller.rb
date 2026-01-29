@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
     status_code = status_code.to_i
     @message = message
     respond_to do |format|
-      format.html  { render 'static/error', status: status_code }
+      format.html { render 'static/error', status: status_code }
       format.json { render json: { error: { message: message, code: status_code } }, status: status_code }
       format.json_api { render json: { error: { message: message, code: status_code } }, status: status_code }
       format.any { head status_code }
@@ -96,7 +96,13 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def feature_enabled?(feature = controller_name)
+  def feature_enabled?(feature)
+    Space.current_space.feature_enabled?(feature)
+  end
+
+  helper_method :feature_enabled?
+
+  def ensure_feature_enabled(feature = controller_name)
     if TeSS::Config.feature.key?(feature) && !TeSS::Config.feature[feature]
       raise ActionController::RoutingError.new('Feature not enabled')
     end

@@ -7,7 +7,7 @@
 
   <%= f.input :description, as: :markdown_area, input_html: { rows: '10' } %>
 
-  <%= f.input :theme, collection: TeSS::Config.themes.keys, selected: @space.theme || 'default' %>
+  <%= render partial: 'theme_selector', locals: { form: f } %>
 
   <div class="form-group">
     <%= render partial: 'common/image_form', locals: { form: f } %>
@@ -18,6 +18,10 @@
                       label_field: :name,
                       id_field: :id,
                       existing_items_method: :administrators %>
+
+  <div>
+    <%= f.input :enabled_features, label: t('features.enabled'), collection: space_feature_options, as: :check_boxes %>
+  </div>
 
   <div class="form-group">
     <%= f.submit(class: 'btn btn-primary') %>

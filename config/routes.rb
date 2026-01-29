@@ -179,6 +179,9 @@ Rails.application.routes.draw do
 
   match 'oai-pmh', to: "oai#index", via: [:get, :post]
 
+  post 'orcid/authenticate' => 'orcid#authenticate', as: :authenticate_orcid
+  get 'orcid/callback' => 'orcid#callback', as: :orcid_callback
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
