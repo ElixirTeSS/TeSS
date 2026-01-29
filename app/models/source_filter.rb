@@ -13,6 +13,7 @@ module FilterComparisons
   end
 
   def self.array_string_match(content_value, filter_value)
+    return false if content_value.nil?
     content_value.any? { |i| i.to_s.casecmp?(filter_value) }
   end
 end
@@ -124,10 +125,9 @@ class SourceFilter < ApplicationRecord
   }
 
   def match(item)
-    return false unless item.respond_to?(filter_property)
-
-    val = item.send(filter_property)
-    filter_definition.call(val, filter_value)
+    val = nil
+    val = item.send(filter_property) if item.respond_to?(filter_property)
+    filter_definition[:comparison].call(val, filter_value.to_s)
   end
 
   def filter_definition 
