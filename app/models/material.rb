@@ -322,10 +322,11 @@ class Material < ApplicationRecord
     end
   end
 
+  # kept for legacy purposes
   def reset_approval_status
     if self.class.approval_required?
       if url_changed?
-        self.approval_status = :not_approved
+        self.approval_status = :requested
       end
     end
   end

@@ -45,7 +45,7 @@
                   <%= material_approval_badge(@material.approval_status) %>
                 </p>
 
-                <% if !@material.approval_requested? && !@material.approved? && !policy(@material).approve? %>
+                <% if !@material.not_approved? && !@material.approval_requested? && !@material.approved? && !policy(@material).approve? %>
                   <%= link_to 'Request Approval', request_approval_material_path(@material),
                               data: { confirm: 'Are you sure you wish to submit this material for approval? You will not be able to modify it afterwards.'},
                               method: :post, class: 'btn btn-primary' %>

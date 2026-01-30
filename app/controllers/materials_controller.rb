@@ -18,7 +18,8 @@ class MaterialsController < ApplicationController
 
   def index
     elearning = @facet_params[:resource_type] == 'e-learning' && feature_enabled?('elearning_materials')
-    @bioschemas = @materials.flat_map(&:to_bioschemas)
+    approved_materials = @materials.select(&:approved?)
+    @bioschemas = approved_materials.flat_map(&:to_bioschemas)
     respond_to do |format|
       format.html { render elearning ? 'elearning_materials/index' : 'index' }
       format.json
