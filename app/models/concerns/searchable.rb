@@ -86,20 +86,40 @@ module Searchable
 
         if sort_by && sort_by != 'default'
           case sort_by
-          when 'early'   then order_by(:start, :asc)
-          when 'late'    then order_by(:start, :desc)
-          when 'rel'     then nil
-          when 'mod'     then order_by(:updated_at, :desc)
-          when 'new'     then order_by(:created_at, :desc)
-          when 'finished' then order_by(:finished_at, :desc)
-          else                order_by(:sort_title, sort_by.to_sym)
+          when 'early'
+              # Sort by start date asc
+              order_by(:start, :asc)
+            when 'late'
+              # Sort by start date desc
+              order_by(:start, :desc)
+            when 'rel'
+              # Sort by relevance
+            when 'mod'
+              # Sort by last modified
+              order_by(:updated_at, :desc)
+            when 'new'
+              # Sort by newest
+              order_by(:created_at, :desc)
+            when 'finished'
+              # Sort by last finished
+              order_by(:finished_at, :desc)
+            else
+              order_by(:sort_title, sort_by.to_sym)
           end
         else
           case name
-          when 'Event'           then order_by(:start, :asc)
-          when 'ContentProvider' then order_by(:count, :desc)
-          when 'Material'        then order_by(:created_at, :desc)
-          else                        order_by(:sort_title, :asc)
+            when 'Event'
+              order_by(:start, :asc)
+            when 'ContentProvider'
+              order_by(:count, :desc)
+            when 'Material'
+              if TeSS::Config.feature['material_under_admin_approval']
+                order_by(:approval_status, :asc)
+              else
+                order_by(:created_at, :desc)
+              end
+            else
+              order_by(:sort_title, :asc)
           end
         end
 

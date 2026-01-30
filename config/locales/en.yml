@@ -735,7 +735,7 @@ en:
       approval_notice: This material will need to be approved by an administrator before being public.
     approval_status:
       not_approved: Not approved
-      requested: Approval requested
+      requested: Requested
       approved: Approved
   learning_paths:
     hints:
