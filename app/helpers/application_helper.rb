@@ -708,4 +708,9 @@ module ApplicationHelper
       method: :post
     )
   end
+
+  def per_page_options_for_select
+    options_for_select(SearchableIndex::PER_PAGE_OPTIONS.map { |k| [k, k] },
+                       params[:per_page].presence || SearchableIndex::DEFAULT_PAGE_SIZE)
+  end
 end

@@ -6,7 +6,9 @@ plants:
 astro:
   title: TeSS Space Community
   host: space.mytess.training
+  user: astro_owner
 
 other:
   title: Other TeSS Community
   host: other.mytess.training
+  user: other_owner

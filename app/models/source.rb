@@ -76,8 +76,8 @@ class Source < ApplicationRecord
   end
 
   def self.facet_fields
-    field_list = %w[content_provider node method enabled approval_status]
-    field_list.delete('node') unless TeSS::Config.feature['nodes']
+    field_list = %w( content_provider node method enabled approval_status )
+    field_list.delete('node') unless Space.current_space.feature_enabled?('nodes')
     field_list
   end
 

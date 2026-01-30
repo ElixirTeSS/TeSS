@@ -25,3 +25,10 @@
 #main-container.showcase-container {
   max-width: 1720px;
 }
+
+.icon-grid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 1em;
+}

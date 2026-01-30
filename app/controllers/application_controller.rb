@@ -96,7 +96,13 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def feature_enabled?(feature = controller_name)
+  def feature_enabled?(feature)
+    Space.current_space.feature_enabled?(feature)
+  end
+
+  helper_method :feature_enabled?
+
+  def ensure_feature_enabled(feature = controller_name)
     if TeSS::Config.feature.key?(feature) && !TeSS::Config.feature[feature]
       raise ActionController::RoutingError.new('Feature not enabled')
     end

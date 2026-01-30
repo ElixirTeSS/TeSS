@@ -15,48 +15,52 @@
 
   <div class="icons">
     <h1>Icons</h1>
-    <i class="icon icon-h3 api-icon"></i>
-    <i class="icon icon-h3 star-icon"></i>
-    <i class="icon icon-h3 star-fill"></i>
-    <i class="icon icon-h3 star-primary"></i>
-    <i class="icon icon-h3 star-primary"></i>
-    <i class="icon icon-h3 search-icon"></i>
-    <i class="icon icon-h3 arrow-right"></i>
-    <i class="icon icon-h3 arrow-top"></i>
-    <i class="icon icon-h3 arrow-top"></i>
-    <i class="icon icon-h3 chevron-left"></i>
-    <i class="icon icon-h3 chevron-right"></i>
-    <i class="icon icon-h3 circle-xmark"></i>
-    <i class="icon icon-h3 class-icon"></i>
-    <i class="icon icon-h3 clear-filters"></i>
-    <i class="icon icon-h3 community-icon"></i>
-    <i class="icon icon-h3 cross-icon"></i>
-    <i class="icon icon-h3 developer-icon"></i>
-    <i class="icon icon-h3 double-left"></i>
-    <i class="icon icon-h3 double-right"></i>
-    <i class="icon icon-h3 events-icon"></i>
-    <i class="icon icon-h3 filter-icon"></i>
-    <i class="icon icon-h3 hourglass-icon"></i>
-    <i class="icon icon-h3 hybrid-event"></i>
-    <i class="icon icon-h3 materials-icon"></i>
-    <i class="icon icon-h3 microscope-icon"></i>
-    <i class="icon icon-h3 minus-icon"></i>
-    <i class="icon icon-h3 nonprofit-icon"></i>
-    <i class="icon icon-h3 onsite-event"></i>
-    <i class="icon icon-h3 plus-icon"></i>
-    <i class="icon icon-h3 search-icon"></i>
-    <i class="icon icon-h3 sort-icon"></i>
-    <i class="icon icon-h3 source-code"></i>
-    <i class="icon icon-h3 star-icon"></i>
-    <i class="icon icon-h3 sustainable-icon"></i>
-    <i class="icon icon-h3 trainers-icon"></i>
-    <i class="icon icon-h3 online-event"></i>
-    <i class="icon icon-h3 workflows-icon"></i>
-    <i class="icon icon-h3 expand-icon"></i>
-    <i class="icon icon-h3 collapse-icon"></i>
-    <i class="icon icon-h3 information-icon"></i>
 
-    <div>
+    <div class="icon-grid">
+      <i class="icon icon-h3 api-icon"></i>
+      <i class="icon icon-h3 star-icon"></i>
+      <i class="icon icon-h3 star-fill-icon"></i>
+      <i class="icon icon-h3 star-primary-icon"></i>
+      <i class="icon icon-h3 star-primary-fill-icon"></i>
+      <i class="icon icon-h3 search-icon"></i>
+      <i class="icon icon-h3 arrow-right-icon"></i>
+      <i class="icon icon-h3 arrow-top-right-icon"></i>
+      <i class="icon icon-h3 arrow-top-right-white-icon"></i>
+      <i class="icon icon-h3 chevron-left-icon"></i>
+      <i class="icon icon-h3 chevron-right-icon"></i>
+      <i class="icon icon-h3 circle-xmark-icon"></i>
+      <i class="icon icon-h3 class-icon"></i>
+      <i class="icon icon-h3 clear-filters-icon"></i>
+      <i class="icon icon-h3 community-icon"></i>
+      <i class="icon icon-h3 cross-icon"></i>
+      <i class="icon icon-h3 developer-icon"></i>
+      <i class="icon icon-h3 double-left-icon"></i>
+      <i class="icon icon-h3 double-right-icon"></i>
+      <i class="icon icon-h3 events-icon"></i>
+      <i class="icon icon-h3 filter-icon"></i>
+      <i class="icon icon-h3 hourglass-icon"></i>
+      <i class="icon icon-h3 hybrid-event-icon"></i>
+      <i class="icon icon-h3 materials-icon"></i>
+      <i class="icon icon-h3 microscope-icon"></i>
+      <i class="icon icon-h3 minus-icon"></i>
+      <i class="icon icon-h3 nonprofit-icon"></i>
+      <i class="icon icon-h3 onsite-event-icon"></i>
+      <i class="icon icon-h3 plus-icon"></i>
+      <i class="icon icon-h3 search-icon"></i>
+      <i class="icon icon-h3 search-icon-blue"></i>
+      <i class="icon icon-h3 sort-icon"></i>
+      <i class="icon icon-h3 source-code-icon"></i>
+      <i class="icon icon-h3 star-icon"></i>
+      <i class="icon icon-h3 sustainable-icon"></i>
+      <i class="icon icon-h3 trainers-icon"></i>
+      <i class="icon icon-h3 online-event-icon"></i>
+      <i class="icon icon-h3 workflows-icon"></i>
+      <i class="icon icon-h3 expand-icon"></i>
+      <i class="icon icon-h3 collapse-icon"></i>
+      <i class="icon icon-h3 information-icon"></i>
+    </div>
+
+    <div class="icon-grid">
       <% ['events', 'materials', 'workflows', 'learning_paths', 'trainers'].each do |feature| %>
         <%= image_tag("#{theme_path}/icons/#{feature.dasherize}-icon.svg", alt: feature.titleize) %>
       <% end %>

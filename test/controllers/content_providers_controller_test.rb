@@ -608,4 +608,27 @@ class ContentProvidersControllerTest < ActionController::TestCase
       assert_select '.masonry-brick-heading h4', text: 'Learn about plants'
     end
   end
+
+  test 'user should see new source button for their content provider' do
+    sign_in users(:regular_user)
+    get :show, params: { id: @content_provider }
+    assert_response :success
+    assert_select 'a.btn[href=?]', new_content_provider_source_path(@content_provider), text: 'Add source'
+  end
+
+  test 'user should not see new source button if user creation feature disabled' do
+    with_settings(feature: { user_source_creation: false }) do
+      sign_in users(:regular_user)
+      get :show, params: { id: @content_provider }
+      assert_response :success
+      assert_select 'a.btn[href=?]', new_content_provider_source_path(@content_provider), text: 'Add source', count: 0
+    end
+  end
+
+  test 'unaffiliated user should not see new source button' do
+    sign_in users(:another_regular_user)
+    get :show, params: { id: @content_provider }
+    assert_response :success
+    assert_select 'a.btn[href=?]', new_content_provider_source_path(@content_provider), text: 'Add source', count: 0
+  end
 end
