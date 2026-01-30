@@ -157,7 +157,7 @@ class SourcesController < ApplicationController
     permitted << :approval_status if policy(@source || Source).approve?
     permitted << :content_provider_id if policy(Source).index?
 
-    params.require(:source).permit(permitted, source_filters_attributes: %i[id filter_mode filter_by filter_value _destroy])
+    params.require(:source).permit(permitted, source_filters_attributes: %i[id mode property value _destroy])
   end
 
   def set_breadcrumbs

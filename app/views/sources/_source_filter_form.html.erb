@@ -1,9 +1,9 @@
 <div class="form-inline source-filter-form" data-id-in-filter-list="<%= f.options[:child_index] %>">
-  <%= f.input :filter_by, collection: SourceFilter.filter_bies.keys.map { |t| [t.humanize, t] }, include_blank: false, required: false %>
+  <%= f.input :property, collection: SourceFilter.properties.keys.map { |t| [t.humanize, t] }, include_blank: false, required: false %>
 
-  <%= f.input :filter_value %>
+  <%= f.input :value %>
 
-  <%= f.input :filter_mode, collection: SourceFilter.filter_modes.keys.map { |m| [m.humanize, m] }, include_blank: false, as: :hidden %>
+  <%= f.input :mode, collection: SourceFilter.modes.keys.map { |m| [m.humanize, m] }, include_blank: false, as: :hidden %>
 
   <%= f.input :_destroy, as: :hidden %>
 

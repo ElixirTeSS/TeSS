@@ -9,7 +9,7 @@ module FilterComparisons
   end
 
   def self.contains_string_match(content_value, filter_value)
-    content_value.to_s.downcase.include?(filter_Value.downcase)
+    content_value.to_s.downcase.include?(filter_value.downcase)
   end
 
   def self.array_string_match(content_value, filter_value)
@@ -114,12 +114,12 @@ FILTER_DEFINITIONS = {
 class SourceFilter < ApplicationRecord
   belongs_to :source
 
-  auto_strip_attributes :filter_value
-  validates :filter_mode, :filter_by, presence: true
+  auto_strip_attributes :value
+  validates :mode, :property, presence: true
 
-  enum :filter_by, FILTER_DEFINITIONS.keys.index_with(&:itself)
+  enum :property, FILTER_DEFINITIONS.keys.index_with(&:itself)
 
-  enum :filter_mode, {
+  enum :mode, {
     allow: 'allow',
     block: 'block'
   }
@@ -127,14 +127,14 @@ class SourceFilter < ApplicationRecord
   def match(item)
     val = nil
     val = item.send(filter_property) if item.respond_to?(filter_property)
-    filter_definition[:comparison].call(val, filter_value.to_s)
+    filter_definition[:comparison].call(val, value.to_s)
   end
 
   def filter_definition 
-    FILTER_DEFINITIONS[filter_by]
+    FILTER_DEFINITIONS[property]
   end
 
   def filter_property
-    filter_definition[:filter_property] || filter_by
+    filter_definition[:filter_property] || property
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_09_112056) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_29_164644) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -466,9 +466,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_09_112056) do
 
   create_table "source_filters", force: :cascade do |t|
     t.bigint "source_id", null: false
-    t.string "filter_mode"
-    t.string "filter_by"
-    t.string "filter_value"
+    t.string "mode"
+    t.string "property"
+    t.string "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["source_id"], name: "index_source_filters_on_source_id"
@@ -521,6 +521,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_09_112056) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "image_url"
+    t.string "disabled_features", default: [], array: true
     t.index ["host"], name: "index_spaces_on_host", unique: true
     t.index ["user_id"], name: "index_spaces_on_user_id"
   end

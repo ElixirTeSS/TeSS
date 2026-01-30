@@ -144,8 +144,8 @@ class IngestorTest < ActiveSupport::TestCase
       source_filters(:source_filter_learning_objectives_contains)
     ].each do |filter|
       filtered_ingestor = run_filter(filter)
-      assert_includes(filtered_ingestor.instance_variable_get(:@materials), materials(:passing_import_filters_material), "Filter_by: #{filter.filter_by}")
-      refute_includes(filtered_ingestor.instance_variable_get(:@materials), materials(:failing_import_filters_material), "Filter_by: #{filter.filter_by}")
+      assert_includes(filtered_ingestor.instance_variable_get(:@materials), materials(:passing_import_filters_material), "property: #{filter.property}")
+      refute_includes(filtered_ingestor.instance_variable_get(:@materials), materials(:failing_import_filters_material), "property: #{filter.property}")
     end
   end
 
@@ -158,8 +158,8 @@ class IngestorTest < ActiveSupport::TestCase
       source_filters(:source_filter_timezone)
     ].each do |filter|
       filtered_ingestor = run_filter(filter)
-      assert_includes(filtered_ingestor.instance_variable_get(:@events), events(:passing_import_filters_event), "Filter_by: #{filter.filter_by}")
-      refute_includes(filtered_ingestor.instance_variable_get(:@events), events(:failing_import_filters_event), "Filter_by: #{filter.filter_by}")
+      assert_includes(filtered_ingestor.instance_variable_get(:@events), events(:passing_import_filters_event), "property: #{filter.property}")
+      refute_includes(filtered_ingestor.instance_variable_get(:@events), events(:failing_import_filters_event), "property: #{filter.property}")
     end
   end
 
@@ -171,14 +171,14 @@ class IngestorTest < ActiveSupport::TestCase
       source_filters(:source_filter_learning_objectives_contains)
     ].each do |filter|
       filtered_ingestor = run_filter(filter)
-      assert_includes(filtered_ingestor.instance_variable_get(:@materials), materials(:passing_contains_import_filters_material), "Filter_by: #{filter.filter_by}")
+      assert_includes(filtered_ingestor.instance_variable_get(:@materials), materials(:passing_contains_import_filters_material), "property: #{filter.property}")
     end
 
     [
       source_filters(:source_filter_subtitle_contains)
     ].each do |filter|
       filtered_ingestor = run_filter(filter)
-      assert_includes(filtered_ingestor.instance_variable_get(:@events), events(:passing_contains_import_filters_event), "Filter_by: #{filter.filter_by}")
+      assert_includes(filtered_ingestor.instance_variable_get(:@events), events(:passing_contains_import_filters_event), "property: #{filter.property}")
     end
   end
 

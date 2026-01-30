@@ -80,7 +80,7 @@
   </div>
 
   <template id="source-filter-template">
-    <%= f.simple_fields_for :source_filters, SourceFilter.new(filter_mode: 'allow'), child_index: "REPLACE_ME" do |ff| %>
+    <%= f.simple_fields_for :source_filters, SourceFilter.new(mode: 'allow'), child_index: "REPLACE_ME" do |ff| %>
       <%= render partial: 'source_filter_form', locals: { f: ff } %>
     <% end %>
   </template>
