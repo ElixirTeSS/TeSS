@@ -132,6 +132,7 @@ class IngestorTest < ActiveSupport::TestCase
       source_filters(:source_filter_target_audience),
       source_filters(:source_filter_keyword),
       source_filters(:source_filter_title),
+      source_filters(:source_filter_title_contains),
       source_filters(:source_filter_description),
       source_filters(:source_filter_description_contains),
       source_filters(:source_filter_url),
@@ -166,6 +167,7 @@ class IngestorTest < ActiveSupport::TestCase
   test 'does respect contains filter conditions' do
     [
       source_filters(:source_filter_url_prefix),
+      source_filters(:source_filter_title_contains),
       source_filters(:source_filter_description_contains),
       source_filters(:source_filter_prerequisites_contains),
       source_filters(:source_filter_learning_objectives_contains)
@@ -182,11 +184,40 @@ class IngestorTest < ActiveSupport::TestCase
     end
   end
 
+  test 'every condition must be met in allowlist' do
+    source = Source.create!(url: 'https://somewhere.com/stuff', method: 'bioschemas',
+                            enabled: true, approval_status: 'approved',
+                            content_provider: content_providers(:portal_provider), user: users(:admin),
+                            source_filters: [source_filters(:source_filter_keyword), source_filters(:source_filter_allow_shared_keyword)])
+    ingestor = Ingestors::Ingestor.new
+    ingestor.instance_variable_set(:@materials,
+                                   [materials(:passing_import_filters_material), materials(:failing_import_filters_material)])
+    ingestor.filter(source)
+    
+    assert_includes(ingestor.instance_variable_get(:@materials), materials(:passing_import_filters_material))
+    refute_includes(ingestor.instance_variable_get(:@materials), materials(:failing_import_filters_material))
+  end
+
+  test 'any filter sufficient in block list' do
+    source = Source.create!(url: 'https://somewhere.com/stuff', method: 'bioschemas',
+                            enabled: true, approval_status: 'approved',
+                            content_provider: content_providers(:portal_provider), user: users(:admin),
+                            source_filters: [source_filters(:source_filter_keyword_block), source_filters(:source_filter_block_unused_keyword)])
+    ingestor = Ingestors::Ingestor.new
+    ingestor.instance_variable_set(:@materials,
+                                   [materials(:passing_import_filters_material), materials(:failing_import_filters_material)])
+    ingestor.filter(source)
+    
+    refute_includes(ingestor.instance_variable_get(:@materials), materials(:passing_import_filters_material))
+    assert_includes(ingestor.instance_variable_get(:@materials), materials(:failing_import_filters_material))
+  end
+
   test 'does respect block list filter' do
     filtered_ingestor = run_filter(source_filters(:source_filter_keyword_block))
     refute_includes(filtered_ingestor.instance_variable_get(:@materials), materials(:passing_import_filters_material))
     assert_includes(filtered_ingestor.instance_variable_get(:@materials), materials(:failing_import_filters_material))
   end
+
   test 'open_url returns content when URL is valid' do
     ingestor = DummyIngestor.new
     stub_request(:get, 'https://example.com').to_return(body: 'ok', status: 200)

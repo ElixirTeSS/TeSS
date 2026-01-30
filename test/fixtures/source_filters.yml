@@ -24,6 +24,23 @@ source_filter_title:
   property: title
   value: does_match
 
+source_filter_empty_title:
+  source: filtered_source
+  mode: allow
+  property: title
+  value: ""
+
+source_filter_no_title:
+  source: filtered_source
+  mode: allow
+  property: title
+
+source_filter_title_contains:
+  source: filtered_source
+  mode: allow
+  property: title_contains
+  value: does_match
+
 source_filter_description:
   source: filtered_source
   mode: allow
@@ -119,3 +136,21 @@ source_filter_timezone:
   mode: allow
   property: timezone
   value: does_match
+
+source_filter_allow_shared_keyword:
+  source: filtered_source
+  mode: allow
+  property: keyword
+  value: shared_keyword
+
+source_filter_block_shared_keyword:
+  source: filtered_source
+  mode: block
+  property: keyword
+  value: shared_keyword
+
+source_filter_block_unused_keyword:
+  source: filtered_source
+  mode: block
+  property: keyword
+  value: this_keyword_is_used_no_where_else
