@@ -137,19 +137,15 @@ class Source < ApplicationRecord
   end
 
   def passes_filter?(item)
-    passes = false
-    allow_all = true
-
     source_filters.each do |filter|
       if filter.allow?
-        allow_all = false
-        passes ||= filter.match(item)
-      elsif filter.block? && filter.match(item)
-        return false
+        return false unless filter.match(item)
+      elsif filter.block?
+        return false if filter.match(item)
       end
     end
 
-    passes || allow_all
+    true
   end
 
   private
