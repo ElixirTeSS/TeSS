@@ -3,8 +3,6 @@ require 'tess_rdf_extractors'
 
 module Ingestors
   class OaiPmhIngestor < Ingestor
-    DUMMY_URL = 'https://example.com'
-
     attr_reader :verbose
 
     def self.config
@@ -24,7 +22,7 @@ module Ingestors
         false
       end
 
-      read_oai_default(client) unless found_bioschemas
+      read_oai_dublin_core(client) unless found_bioschemas
     end
 
     def ns
@@ -34,27 +32,25 @@ module Ingestors
       }
     end
 
-    def read_oai_default(client)
+    def read_oai_dublin_core(client)
       count = 0
       client.list_records.full.each do |record|
-        read_dublin_core(record.metadata.to_s)
+        xml_string = record.metadata.to_s
+        doc = Nokogiri::XML(xml_string)
+
+        types = doc.xpath('//dc:type', ns).map(&:text)
+        # this event detection heuristic captures in particular
+        # - http://purl.org/dc/dcmitype/Event (the standard way of typing an event in dublin core)
+        # - https://schema.org/Event
+        if types.any? { |t| t.downcase.include? 'event' }
+          read_dublin_core_event(doc)
+        else
+          read_dublin_core_material(doc)
+        end
+
         count += 1
       end
       @messages << "found #{count} records"
-    end
-
-    def read_dublin_core(xml_string)
-      doc = Nokogiri::XML(xml_string)
-
-      types = doc.xpath('//dc:type', ns).map(&:text)
-      # this event detection heuristic captures in particular
-      # - http://purl.org/dc/dcmitype/Event (the standard way of typing an event in dublin core)
-      # - https://schema.org/Event
-      if types.any? { |t| t.downcase.include? 'event' }
-        read_dublin_core_event(doc)
-      else
-        read_dublin_core_material(doc)
-      end
     end
 
     def read_dublin_core_material(xml_doc)
@@ -205,6 +201,7 @@ module Ingestors
     end
 
     # ---- This is copied unchanged from bioschemas_ingestor.rb and needs to be refactored. ----
+    # note that also attr_reader :verbose is probably related to this
 
     # If duplicate resources have been extracted, prefer ones with the most metadata.
     def deduplicate(resources)
