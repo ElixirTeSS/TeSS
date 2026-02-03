@@ -47,7 +47,10 @@ module Ingestors
       doc = Nokogiri::XML(xml_string)
 
       types = doc.xpath('//dc:type', ns).map(&:text)
-      if types.include?('http://purl.org/dc/dcmitype/Event')
+      # this event detection heuristic captures in particular
+      # - http://purl.org/dc/dcmitype/Event (the standard way of typing an event in dublin core)
+      # - https://schema.org/Event
+      if types.any? { |t| t.downcase.include? 'event' }
         read_dublin_core_event(doc)
       else
         read_dublin_core_material(doc)
@@ -74,7 +77,7 @@ module Ingestors
       material.date_modified = parsed_dates.last if parsed_dates.size > 1
 
       identifiers = xml_doc.xpath('//dc:identifier', ns).map(&:text)
-      doi = identifiers.find { |id| id.start_with?('10.') || id.include?('doi.org') }
+      doi = identifiers.find { |id| id.start_with?('10.') || id.start_with?('https://doi.org/') || id.start_with?('http://doi.org/') }
       if doi
         doi = doi&.sub(%r{https?://doi\.org/}, '')
         material.doi = "https://doi.org/#{doi}"
