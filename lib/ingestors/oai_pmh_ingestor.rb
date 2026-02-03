@@ -101,7 +101,7 @@ module Ingestors
       event.contact     = doc.at_xpath('//dc:publisher', ns)&.text
       event.organizer   = doc.at_xpath('//dc:creator', ns)&.text
       event.keywords = doc.xpath('//dc:subject', ns).map(&:text)
-      event.event_types = types
+      event.event_types = doc.xpath('//dc:type', ns).map(&:text)
 
       dates = doc.xpath('//dc:date', ns).map(&:text)
       parsed_dates = dates.map do |d|
