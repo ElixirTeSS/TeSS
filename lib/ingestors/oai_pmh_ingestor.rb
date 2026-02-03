@@ -3,8 +3,6 @@ require 'tess_rdf_extractors'
 
 module Ingestors
   class OaiPmhIngestor < Ingestor
-    attr_reader :verbose
-
     def self.config
       {
         key: 'oai_pmh',
@@ -12,6 +10,13 @@ module Ingestors
         user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0',
         mail: Rails.configuration.tess['contact_email']
       }
+    end
+
+    def initialize
+      super
+
+      # to use some helper functions that are instance level methods of BioschemasIngestor
+      @bioschemas_manager = BioschemasIngestor.new
     end
 
     def read(source_url)
@@ -136,11 +141,11 @@ module Ingestors
         @messages << bioschemas_summary
       end
 
-      deduplicate(provider_events).each do |event_params|
+      @bioschemas_manager.deduplicate(provider_events).each do |event_params|
         add_event(event_params)
       end
 
-      deduplicate(provider_materials).each do |material_params|
+      @bioschemas_manager.deduplicate(provider_materials).each do |material_params|
         add_material(material_params)
       end
 
@@ -160,27 +165,27 @@ module Ingestors
 
       begin
         events = Tess::Rdf::EventExtractor.new(content, :rdfxml).extract do |p|
-          convert_params(p)
+          @bioschemas_manager.convert_params(p)
         end
         courses = Tess::Rdf::CourseExtractor.new(content, :rdfxml).extract do |p|
-          convert_params(p)
+          @bioschemas_manager.convert_params(p)
         end
         course_instances = Tess::Rdf::CourseInstanceExtractor.new(content, :rdfxml).extract do |p|
-          convert_params(p)
+          @bioschemas_manager.convert_params(p)
         end
         learning_resources = Tess::Rdf::LearningResourceExtractor.new(content, :rdfxml).extract do |p|
-          convert_params(p)
+          @bioschemas_manager.convert_params(p)
         end
         output[:totals]['Events'] += events.count
         output[:totals]['Courses'] += courses.count
         output[:totals]['CourseInstances'] += course_instances.count
         output[:totals]['LearningResources'] += learning_resources.count
 
-        deduplicate(events + courses + course_instances).each do |event|
+        @bioschemas_manager.deduplicate(events + courses + course_instances).each do |event|
           output[:resources][:events] << event
         end
 
-        deduplicate(learning_resources).each do |material|
+        @bioschemas_manager.deduplicate(learning_resources).each do |material|
           output[:resources][:materials] << material
         end
       rescue StandardError => e
@@ -198,56 +203,6 @@ module Ingestors
       end
 
       output
-    end
-
-    # ---- This is copied unchanged from bioschemas_ingestor.rb and needs to be refactored. ----
-    # note that also attr_reader :verbose is probably related to this
-
-    # If duplicate resources have been extracted, prefer ones with the most metadata.
-    def deduplicate(resources)
-      return [] unless resources.any?
-
-      puts "De-duplicating #{resources.count} resources" if verbose
-      hash = {}
-      scores = {}
-      resources.each do |resource|
-        resource_url = resource[:url]
-        puts "  Considering: #{resource_url}" if verbose
-        if hash[resource_url]
-          score = metadata_score(resource)
-          # Replace the resource if this resource has a higher metadata score
-          puts "    Duplicate! Comparing #{score} vs. #{scores[resource_url]}" if verbose
-          if score > scores[resource_url]
-            puts '    Replacing resource' if verbose
-            hash[resource_url] = resource
-            scores[resource_url] = score
-          end
-        else
-          puts '    Not present, adding' if verbose
-          hash[resource_url] = resource
-          scores[resource_url] = metadata_score(resource)
-        end
-      end
-
-      puts "#{hash.values.count} resources after de-duplication" if verbose
-
-      hash.values
-    end
-
-    # Score based on number of metadata fields available
-    def metadata_score(resource)
-      score = 0
-      resource.each_value do |value|
-        score += 1 unless value.nil? || value == {} || value == [] || (value.is_a?(String) && value.strip == '')
-      end
-
-      score
-    end
-
-    def convert_params(params)
-      params[:description] = convert_description(params[:description]) if params.key?(:description)
-
-      params
     end
   end
 end
