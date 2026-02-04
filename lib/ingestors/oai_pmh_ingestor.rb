@@ -61,7 +61,6 @@ module Ingestors
     def read_dublin_core_material(xml_doc)
       material = OpenStruct.new
       material.title = xml_doc.at_xpath('//dc:title', ns)&.text
-      puts xml_doc.at_xpath('//dc:description', ns)&.text
       material.description  = convert_description(xml_doc.at_xpath('//dc:description', ns)&.text)
       material.authors      = xml_doc.xpath('//dc:creator', ns).map(&:text)
       material.contributors = xml_doc.xpath('//dc:contributor', ns).map(&:text)

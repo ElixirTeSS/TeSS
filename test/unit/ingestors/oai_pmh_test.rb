@@ -161,7 +161,6 @@ class OaiPmhTest < ActiveSupport::TestCase
   end
 
   test 'should read bioschemas' do
-    # TODO: add event and maybe course and course instance
     material = <<~METADATA
       <metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sdo="http://schema.org/" xmlns:dc="http://purl.org/dc/terms/">
         <sdo:LearningResource rdf:about="https://pan-training.eu/materials/python-laser-image-visualization">
@@ -171,11 +170,21 @@ class OaiPmhTest < ActiveSupport::TestCase
           </dc:conformsTo>
           <sdo:name>bioschemas title</sdo:name>
           <sdo:url rdf:resource="https://example.org/bioschemas/material"/>
+          <sdo:license rdf:resource="https://opensource.org/licenses/MIT"/>
         </sdo:LearningResource>
       </rdf:RDF></metadata>
     METADATA
 
-    OAI::Client.stub(:new, FakeClient.new([material, material], [])) do
+    event = <<~METADATA
+      <metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sdo="http://schema.org/" xmlns:dc="http://purl.org/dc/terms/">
+        <sdo:Event rdf:about="https://pan-training.eu/materials/python-laser-image-visualization">
+          <sdo:name>bioschemas title2</sdo:name>
+          <sdo:url rdf:resource="https://example.org/bioschemas/event"/>
+        </sdo:Event>
+      </rdf:RDF></metadata>
+    METADATA
+
+    OAI::Client.stub(:new, FakeClient.new([material, material, event], [])) do
       @ingestor.read('https://example.org')
     end
 
@@ -183,5 +192,11 @@ class OaiPmhTest < ActiveSupport::TestCase
     result = @ingestor.materials.first
     assert_equal 'bioschemas title', result.title
     assert_equal 'https://example.org/bioschemas/material', result.url
+    assert_equal 'https://opensource.org/licenses/MIT', result.licence
+
+    assert_equal 1, @ingestor.events.length
+    result = @ingestor.events.first
+    assert_equal 'bioschemas title2', result.title
+    assert_equal 'https://example.org/bioschemas/event', result.url
   end
 end
