@@ -36,6 +36,7 @@ module Ingestors
           parent = el.parent
           material.url = parent.css('.wp-block-buttons > .wp-block-button > a').first.get_attribute('href')
           material.description = rst_recursive_description_func(parent.css('p'))
+          material.target_audience = parse_audience(material.description)
           add_material(material)
         rescue Exception => e
           @messages << "Extract event fields failed with: #{e.message}"

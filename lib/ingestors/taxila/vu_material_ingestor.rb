@@ -63,6 +63,7 @@ module Ingestors
           material.title = val['Title']
           material.url = "https://vu.nl#{val['Url']}"
           material.description = val['IntroText']
+          material.target_audience = parse_audience(material.description)
           add_material(material)
         rescue Exception => e
           @messages << "Extract event fields failed with: #{e.message}"
