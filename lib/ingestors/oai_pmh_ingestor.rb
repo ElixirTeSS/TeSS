@@ -60,7 +60,8 @@ module Ingestors
 
     def read_dublin_core_material(xml_doc)
       material = OpenStruct.new
-      material.title        = xml_doc.at_xpath('//dc:title', ns)&.text
+      material.title = xml_doc.at_xpath('//dc:title', ns)&.text
+      puts xml_doc.at_xpath('//dc:description', ns)&.text
       material.description  = convert_description(xml_doc.at_xpath('//dc:description', ns)&.text)
       material.authors      = xml_doc.xpath('//dc:creator', ns).map(&:text)
       material.contributors = xml_doc.xpath('//dc:contributor', ns).map(&:text)
@@ -92,18 +93,18 @@ module Ingestors
       add_material material
     end
 
-    def read_dublin_core_event(_xml_doc)
+    def read_dublin_core_event(xml_doc)
       event = OpenStruct.new
 
-      event.title       = doc.at_xpath('//dc:title', ns)&.text
-      event.description = convert_description(doc.at_xpath('//dc:description', ns)&.text)
-      event.url         = doc.xpath('//dc:identifier', ns).map(&:text).find { |id| id.start_with?('http://', 'https://') }
-      event.contact     = doc.at_xpath('//dc:publisher', ns)&.text
-      event.organizer   = doc.at_xpath('//dc:creator', ns)&.text
-      event.keywords = doc.xpath('//dc:subject', ns).map(&:text)
-      event.event_types = doc.xpath('//dc:type', ns).map(&:text)
+      event.title       = xml_doc.at_xpath('//dc:title', ns)&.text
+      event.description = convert_description(xml_doc.at_xpath('//dc:description', ns)&.text)
+      event.url         = xml_doc.xpath('//dc:identifier', ns).map(&:text).find { |id| id.start_with?('http://', 'https://') }
+      event.contact     = xml_doc.at_xpath('//dc:publisher', ns)&.text
+      event.organizer   = xml_doc.at_xpath('//dc:creator', ns)&.text
+      event.keywords = xml_doc.xpath('//dc:subject', ns).map(&:text)
+      event.event_types = xml_doc.xpath('//dc:type', ns).map(&:text)
 
-      dates = doc.xpath('//dc:date', ns).map(&:text)
+      dates = xml_doc.xpath('//dc:date', ns).map(&:text)
       parsed_dates = dates.map do |d|
         Date.parse(d)
       rescue StandardError
