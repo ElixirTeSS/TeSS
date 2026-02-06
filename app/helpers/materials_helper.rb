@@ -97,6 +97,7 @@ module MaterialsHelper
     end
     string = "<p class=\"#{attribute}#{show_label ? ' no-spacing' : ''}\">"
     unless value.blank? || value.try(:strip) == 'License Not Specified'
+      title ||= I18n.t("activerecord.attributes.#{resource.class.name.underscore}.#{attribute}", default: nil)
       string << "<strong class='text-primary'> #{title || resource.class.human_attribute_name(attribute)}: </strong>" if show_label
       if list
         string << '<ul>'
