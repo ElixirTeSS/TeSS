@@ -83,7 +83,6 @@ module Ingestors
             # does TeSS support that?
 
             event.source = 'Universiteit Leiden'
-            event.target_audience = parse_audience(event.description)
 
             add_event(event)
           rescue Exception => e

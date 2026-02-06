@@ -57,7 +57,6 @@ module Ingestors
             end
             if div&.next_sibling&.next_sibling.nil? || (div&.next_sibling&.next_sibling&.name == 'h1')
               event.set_default_times
-              event.target_audience = parse_audience(event.description)
               add_event(event)
             end
           end
