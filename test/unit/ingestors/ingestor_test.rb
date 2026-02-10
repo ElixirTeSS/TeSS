@@ -8,7 +8,7 @@ class IngestorTest < ActiveSupport::TestCase
     expected = input
     assert_equal expected, ingestor.convert_description(input)
 
-    input = "<h1>Title</h1><ul><li>Item 1</li><li>Item 2</li>"
+    input = '<h1>Title</h1><ul><li>Item 1</li><li>Item 2</li>'
     expected = "# Title\n\n- Item 1\n- Item 2"
     assert_equal expected, ingestor.convert_description(input)
   end
@@ -30,7 +30,7 @@ class IngestorTest < ActiveSupport::TestCase
                                    [OpenStruct.new(url: 'https://some-course.ca',
                                                    title: 'Some course',
                                                    start: '2021-01-31 13:00:00',
-                                                   end:'2021-01-31 14:00:00')])
+                                                   end: '2021-01-31 14:00:00')])
     assert_difference('provider.events.count', 1) do
       ingestor.write(user, provider, source: @source)
     end
@@ -55,7 +55,7 @@ class IngestorTest < ActiveSupport::TestCase
                                    [OpenStruct.new(url: 'https://some-course.de',
                                                    title: 'Some german course',
                                                    start: '2021-01-31 13:00:00',
-                                                   end:'2021-01-31 14:00:00',
+                                                   end: '2021-01-31 14:00:00',
                                                    language: 'de')])
     assert_difference('provider.events.count', 1) do
       ingestor.write(user, provider, source: @source)
@@ -80,7 +80,7 @@ class IngestorTest < ActiveSupport::TestCase
                                    [OpenStruct.new(url: 'https://some-course.org',
                                                    title: 'Some other course',
                                                    start: '2021-01-31 13:00:00',
-                                                   end:'2021-01-31 14:00:00',
+                                                   end: '2021-01-31 14:00:00',
                                                    language: 'de')])
     assert_difference('provider.events.count', 1) do
       ingestor.write(user, provider, source: @source)
@@ -105,12 +105,117 @@ class IngestorTest < ActiveSupport::TestCase
                                    [OpenStruct.new(url: 'https://some-course.net',
                                                    title: 'Yet another course',
                                                    start: '2021-01-31 13:00:00',
-                                                   end:'2021-01-31 14:00:00')])
+                                                   end: '2021-01-31 14:00:00')])
     assert_difference('provider.events.count', 1) do
       ingestor.write(user, provider, source: @source)
     end
     event = Event.find_by(title: 'Yet another course')
     assert_nil(event.language)
+  end
+
+  def run_filter(source_filter)
+    source = Source.create!(url: 'https://somewhere.com/stuff', method: 'bioschemas',
+                            enabled: true, approval_status: 'approved',
+                            content_provider: content_providers(:portal_provider), user: users(:admin),
+                            source_filters: [source_filter])
+    ingestor = Ingestors::Ingestor.new
+    ingestor.instance_variable_set(:@events,
+                                   [events(:passing_import_filters_event), events(:passing_contains_import_filters_event), events(:failing_import_filters_event)])
+    ingestor.instance_variable_set(:@materials,
+                                   [materials(:passing_import_filters_material), materials(:passing_contains_import_filters_material), materials(:failing_import_filters_material)])
+    ingestor.filter(source)
+    ingestor
+  end
+
+  test 'does respect material filter conditions' do
+    [
+      source_filters(:source_filter_target_audience),
+      source_filters(:source_filter_keyword),
+      source_filters(:source_filter_title),
+      source_filters(:source_filter_title_contains),
+      source_filters(:source_filter_description),
+      source_filters(:source_filter_description_contains),
+      source_filters(:source_filter_url),
+      source_filters(:source_filter_url_prefix),
+      source_filters(:source_filter_doi),
+      source_filters(:source_filter_license),
+      source_filters(:source_filter_difficulty_level),
+      source_filters(:source_filter_resource_type),
+      source_filters(:source_filter_prerequisites_contains),
+      source_filters(:source_filter_learning_objectives_contains)
+    ].each do |filter|
+      filtered_ingestor = run_filter(filter)
+      assert_includes(filtered_ingestor.instance_variable_get(:@materials), materials(:passing_import_filters_material), "property: #{filter.property}")
+      refute_includes(filtered_ingestor.instance_variable_get(:@materials), materials(:failing_import_filters_material), "property: #{filter.property}")
+    end
+  end
+
+  test 'does respect event only filter conditions' do
+    [
+      source_filters(:source_filter_subtitle_contains),
+      source_filters(:source_filter_city),
+      source_filters(:source_filter_country),
+      source_filters(:source_filter_event_type),
+      source_filters(:source_filter_timezone)
+    ].each do |filter|
+      filtered_ingestor = run_filter(filter)
+      assert_includes(filtered_ingestor.instance_variable_get(:@events), events(:passing_import_filters_event), "property: #{filter.property}")
+      refute_includes(filtered_ingestor.instance_variable_get(:@events), events(:failing_import_filters_event), "property: #{filter.property}")
+    end
+  end
+
+  test 'does respect contains filter conditions' do
+    [
+      source_filters(:source_filter_url_prefix),
+      source_filters(:source_filter_title_contains),
+      source_filters(:source_filter_description_contains),
+      source_filters(:source_filter_prerequisites_contains),
+      source_filters(:source_filter_learning_objectives_contains)
+    ].each do |filter|
+      filtered_ingestor = run_filter(filter)
+      assert_includes(filtered_ingestor.instance_variable_get(:@materials), materials(:passing_contains_import_filters_material), "property: #{filter.property}")
+    end
+
+    [
+      source_filters(:source_filter_subtitle_contains)
+    ].each do |filter|
+      filtered_ingestor = run_filter(filter)
+      assert_includes(filtered_ingestor.instance_variable_get(:@events), events(:passing_contains_import_filters_event), "property: #{filter.property}")
+    end
+  end
+
+  test 'every condition must be met in allowlist' do
+    source = Source.create!(url: 'https://somewhere.com/stuff', method: 'bioschemas',
+                            enabled: true, approval_status: 'approved',
+                            content_provider: content_providers(:portal_provider), user: users(:admin),
+                            source_filters: [source_filters(:source_filter_keyword), source_filters(:source_filter_allow_shared_keyword)])
+    ingestor = Ingestors::Ingestor.new
+    ingestor.instance_variable_set(:@materials,
+                                   [materials(:passing_import_filters_material), materials(:failing_import_filters_material)])
+    ingestor.filter(source)
+    
+    assert_includes(ingestor.instance_variable_get(:@materials), materials(:passing_import_filters_material))
+    refute_includes(ingestor.instance_variable_get(:@materials), materials(:failing_import_filters_material))
+  end
+
+  test 'any filter sufficient in block list' do
+    source = Source.create!(url: 'https://somewhere.com/stuff', method: 'bioschemas',
+                            enabled: true, approval_status: 'approved',
+                            content_provider: content_providers(:portal_provider), user: users(:admin),
+                            source_filters: [source_filters(:source_filter_keyword_block), source_filters(:source_filter_block_unused_keyword)])
+    ingestor = Ingestors::Ingestor.new
+    ingestor.instance_variable_set(:@materials,
+                                   [materials(:passing_import_filters_material), materials(:failing_import_filters_material)])
+    ingestor.filter(source)
+    
+    refute_includes(ingestor.instance_variable_get(:@materials), materials(:passing_import_filters_material))
+    assert_includes(ingestor.instance_variable_get(:@materials), materials(:failing_import_filters_material))
+  end
+
+  test 'does respect block list filter' do
+    filtered_ingestor = run_filter(source_filters(:source_filter_keyword_block))
+    refute_includes(filtered_ingestor.instance_variable_get(:@materials), materials(:passing_import_filters_material))
+    assert_includes(filtered_ingestor.instance_variable_get(:@materials), materials(:failing_import_filters_material))
   end
 
   test 'open_url returns content when URL is valid' do

@@ -9,6 +9,7 @@ class SourceTestWorker
   def perform(source_id)
     source = Source.find_by_id(source_id)
     return unless source
+
     results = {
       events: [],
       materials: [],
@@ -20,13 +21,14 @@ class SourceTestWorker
       ingestor = Ingestors::IngestorFactory.get_ingestor(source.method)
       ingestor.token = source.token
       ingestor.read(source.url)
+      ingestor.filter(source)
       results = {
         events: ingestor.events,
         materials: ingestor.materials,
-        messages: ingestor.messages,
+        messages: ingestor.messages
       }
     rescue StandardError => e
-      results[:messages] << "Ingestor encountered an unexpected error"
+      results[:messages] << 'Ingestor encountered an unexpected error'
       exception = e
     end
 

@@ -5,7 +5,7 @@ require 'test_helper'
 class ScraperTest < ActiveSupport::TestCase
   setup do
     mock_ingestions
-    Source.delete_all
+    Source.destroy_all # use destroy_all instead of delete_all to delete related objects correctly
   end
 
   def run
@@ -337,14 +337,14 @@ class ScraperTest < ActiveSupport::TestCase
     freeze_time(2019) do
       set_up_event_check
       with_settings({ scraper_event_check: { enabled: true, stale_threshold: 0.3 } }) do
-        assert_not @scraper.scraper_event_check({config: [@source]})
+        assert_not @scraper.scraper_event_check({ config: [@source] })
         @source.content_provider.events.each do |event|
           event.last_scraped = 10.days.freeze.ago
           event.timezone = 'Amsterdam'
           event.save!
           event.reload
         end
-        assert @scraper.scraper_event_check({config: [@source]})
+        assert @scraper.scraper_event_check({ config: [@source] })
       end
     end
   end
@@ -352,12 +352,12 @@ class ScraperTest < ActiveSupport::TestCase
   test 'event_check_rejected' do
     set_up_event_check
     with_settings({ scraper_event_check: { enabled: true, rejected_threshold: 0.3 } }) do
-      assert_not @scraper.scraper_event_check({config: [@source]})
+      assert_not @scraper.scraper_event_check({ config: [@source] })
       @source.records_written = 10
       @source.resources_rejected = 90
       @source.save!
       @source.reload
-      assert @scraper.scraper_event_check({config: [@source]})
+      assert @scraper.scraper_event_check({ config: [@source] })
     end
   end
 

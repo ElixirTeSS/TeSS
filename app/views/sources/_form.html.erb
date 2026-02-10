@@ -36,10 +36,53 @@
                 include_blank: false %>
   <% end %>
 
+  <h3 style="margin-top: 1em; margin-bottom: .5em;"><%= t('sources.headings.filters') %></h3>
+
+  <h4><%= t('sources.headings.allow_list') %></h4>
+  <span class="help-block"><%= t('sources.hints.allow_list') %></span>
+  <div class="form-group" id="source-filters">
+    <div id="source-filter-list">
+      <% f.object.source_filters.allow.each do |filter| %>
+        <%= f.simple_fields_for :source_filters, filter, child_index: filter.id do |ff| %>
+          <%= render partial: 'source_filter_form', locals: { f: ff } %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <a href="#" id="add-source-filter-btn" class="btn btn-icon">
+      <i class="icon icon-h4 plus-icon"></i>
+    </a>
+    <span id="add-source-filter-btn-label" class="help-inline-block help-block"><%= t('sources.hints.add_filter') %></span>
+  </div>
+
+  <h4><%= t('sources.headings.block_list') %></h4>
+  <span class="help-block"><%= t('sources.hints.block_list') %></span>
+  <div class="form-group" id="source-block-filters">
+    <div id="source-block-list">
+      <% f.object.source_filters.block.each do |filter| %>
+        <%= f.simple_fields_for :source_filters, filter, child_index: filter.id do |ff| %>
+          <%= render partial: 'source_filter_form', locals: { f: ff } %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <a href="#" id="add-source-block-filter-btn" class="btn btn-icon">
+      <i class="icon icon-h4 plus-icon"></i>
+    </a>
+    <span id="add-source-block-filter-btn-label" class="help-inline-block help-block"><%= t('sources.hints.add_filter') %></span>
+  </div>
+
+
   <div class="form-group actions">
     <%= f.submit(class: 'btn btn-primary') %>
     <%= link_to t('.cancel', default: t("helpers.links.cancel")),
                 sources_path, class: 'btn btn-default' %>
   </div>
+
+  <template id="source-filter-template">
+    <%= f.simple_fields_for :source_filters, SourceFilter.new(mode: 'allow'), child_index: "REPLACE_ME" do |ff| %>
+      <%= render partial: 'source_filter_form', locals: { f: ff } %>
+    <% end %>
+  </template>
 
 <% end %>

@@ -102,3 +102,12 @@ disabled_source:
   enabled: false
   user: regular_user
   approval_status: 2
+
+filtered_source:
+  content_provider: portal_provider
+  url: 'https://website.org'
+  method: bioschemas
+  enabled: false
+  user: regular_user
+  approval_status: 2
+
