@@ -1,0 +1,102 @@
+<% resource_limit = UsersHelper.user_profile_resource_limit %>
+<h3>
+  List of registrations in <%= TeSS::Config.site['title_short'] %>
+</h3>
+<div class="my-3">
+  <% materials = user.materials.in_current_space.limit(resource_limit) %>
+  <% materials_count =  user.materials.in_current_space.count %>
+  <% upcoming_events = user.events.in_current_space.not_finished %>
+  <% past_events = user.events.in_current_space.finished %>
+  <% events = upcoming_events.limit(resource_limit) %>
+  <% e = user.events.in_current_space.from_verified_users.not_disabled %>
+  <% events_count = e.count %>
+  <% not_finished_events_count = e.not_finished.count %>
+  <% workflows = user.workflows.in_current_space.visible_by(current_user).limit(resource_limit) %>
+  <% workflows_count =  user.workflows.in_current_space.visible_by(current_user).count %>
+  <% collections = user.collections.in_current_space.visible_by(current_user).limit(resource_limit) %>
+  <% collections_count = user.collections.in_current_space.visible_by(current_user).count %>
+  <% activator = tab_activator %>
+  <% total = materials_count.to_i + events_count.to_i + workflows_count.to_i + collections_count.to_i %>
+
+  <!-- Field: registrations -->
+  <% if total.positive? %>
+    <p>Added a total of <b><%= total %></b> training resources in <%= TeSS::Config.site['title_short'] %>.</p>
+  <% end %>
+
+  <ul class="nav nav-tabs">
+    <!-- Tab: Events -->
+    <% if TeSS::Config.feature['events'] %>
+      <%= tab('Events', icon_class_for_model('events'), 'events', activator: activator,
+              disabled: { check: events_count.zero?, message: 'No associated events' },
+              count: not_finished_events_count.zero? && events_count.positive? ? '0*' : not_finished_events_count) %>
+    <% end %>
+
+    <!-- Tab: Materials -->
+    <% if TeSS::Config.feature['materials'] %>
+      <%= tab('Materials', icon_class_for_model('materials'), 'materials', activator: activator,
+              disabled: { check: materials.none?, message: 'No registered training materials' },
+              count: materials_count) %>
+    <% end %>
+
+    <!-- Tab: Collections -->
+    <% if TeSS::Config.feature['collections'] %>
+      <%= tab('Collections', icon_class_for_model('collections'), 'collections', activator: activator,
+              disabled: { check: collections.none?, message: 'No registered collections' },
+              count: collections_count) %>
+    <% end %>
+
+    <!-- Tab: Workflows -->
+    <% if TeSS::Config.feature['workflows'] %>
+      <%= tab('Workflows', icon_class_for_model('workflows'), 'workflows', activator: activator,
+              disabled: { check: workflows.none?, message: 'No workflows' },
+              count: workflows_count) %>
+    <% end %>
+  </ul>
+
+  <div class="tab-content">
+    <!-- Tab: Events -->
+    <% if TeSS::Config.feature['events'] %>
+      <%= render partial: 'common/associated_events',
+                  locals: { total_count: upcoming_events.count,
+                            past_count: past_events.count,
+                            limit: resource_limit,
+                            resources: events,
+                            activator: activator,
+                            view_all_link: events_path(user: user.username),
+                            inc_expired_link: events_path(user: user.username, include_expired: true) } %>
+    <% end %>
+
+    <!-- Tab: Materials -->
+    <% if TeSS::Config.feature['materials'] %>
+      <%= render partial: 'common/associated_resources',
+                  locals: { model: Material,
+                            total_count: materials_count,
+                            limit: resource_limit,
+                            resources: materials,
+                            activator: activator,
+                            view_all_link: materials_path(user: user.username) } %>
+    <% end %>
+
+    <!-- Tab: Collections -->
+    <% if TeSS::Config.feature['collections'] %>
+      <%= render partial: 'common/associated_resources',
+                  locals: { model: Collection,
+                            total_count: collections_count,
+                            limit: resource_limit,
+                            resources: collections,
+                            activator: activator,
+                            view_all_link: collections_path(user: user.username) } %>
+    <% end %>
+
+    <!-- Tab: Workflows -->
+    <% if TeSS::Config.feature['workflows'] %>
+      <%= render partial: 'common/associated_resources',
+                  locals: { model: Workflow,
+                            total_count: workflows_count,
+                            limit: resource_limit,
+                            resources: workflows,
+                            activator: activator,
+                            view_all_link: workflows_path(user: user.username) } %>
+    <% end %>
+  </div> <!-- end tab-content -->
+</div>

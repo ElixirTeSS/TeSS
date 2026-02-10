@@ -24,10 +24,11 @@ class TrainersController < ApplicationController
   # GET /trainers/1.json
 
   def show
+    @bioschemas = @trainer.user.registrations.flat_map(&:to_bioschemas)
     respond_to do |format|
+      format.html
       format.json
       format.json_api { render json: @trainer }
-      format.html
     end
   end
 
@@ -45,5 +46,4 @@ class TrainersController < ApplicationController
                                     { :expertise_technical => [] }, { :interest => [] }, { :activity => [] },
                                     { :fields => [] }, { :social_media => [] })
   end
-
 end
