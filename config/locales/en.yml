@@ -1058,19 +1058,19 @@ en:
       description: |
         An event in %{site_name} is a link to a single training event sourced by a provider along with description and other meta information (e.g. date, location, audience, ontological categorization, keywords, etc.).<br>
         Training events can be added manually or automatically harvested from a provider's website.<br>
-        If your website contains training events that you wish to include in %{site_name}, %{link}.
-      link : see here for details on automatic registration
+        If your website contains training events that you wish to include in %{site_name}, [%{link}](%{url}).
+      link: see here for details on automatic registration
     materials:
       description: |
         In the context of %{site_name}, a training material is a link to a single online training material sourced by a content provider (such as a text on a Web page, presentation, video, etc.).<br>
         Materials can be added manually or automatically harvested from a provider's website.<br>
-        If your website contains training materials that you wish to include in %{site_name}, %{link}.
-      link : see here for details on automatic registration
+        If your website contains training materials that you wish to include in %{site_name}, [%{link}](%{url}).
+      link: see here for details on automatic registration
     elearning_materials:
       description: |
         e-Learning materials are curated materials focused on e-Learning.
-        If your website contains e-Learning materials that you wish to include in %{site_name}, %{link}.
-      link : see here for details on automatic registration
+        If your website contains e-Learning materials that you wish to include in %{site_name}, [%{link}](%{url}).
+      link: see here for details on automatic registration
     topics:
       description: |
         %{site_name} generates a scientific topic suggestion for each resource registered. It does this by passing the description and title of the resource to the Bioportal Annotator Web service.
@@ -1084,8 +1084,8 @@ en:
         1. Register training materials.
         2. Create a learning path topic and add materials to it (repeat for each topic).
         3. Register a learning path and add learning path topics to it.<br>
-        %{link}.
-      link : See here for details on learning paths
+        [%{link}](%{url}).
+      link: See here for details on learning paths
     learning_path_topics:
       description: |
         A learning path topic is an ordered list of training materials.
@@ -1094,8 +1094,8 @@ en:
         1. Register training materials.
         2. Create a learning path topic and add materials to it (repeat for each topic).
         3. Register a learning path and add learning path topics to it.<br>
-        %{link}
-      link : See here for details on learning path topics
+        [%{link}](%{url})
+      link: See here for details on learning path topics
     trainers:
       description: |
         %{site_name} provides a facility that allows registered users to provide information about their training experience and make this publicly available via the Trainers Register.
