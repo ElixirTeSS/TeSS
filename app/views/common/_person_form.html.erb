@@ -7,19 +7,19 @@
   <%= hidden_field_tag("#{field_name_prefix}[role]", role) %>
 
   <div class="form-group">
-    <%= text_field_tag "#{field_name_prefix}[person_attributes][full_name]", person&.full_name, :class => 'form-control person-full-name', :placeholder => 'Full Name' %>
+    <%= text_field_tag "#{field_name_prefix}[full_name]", person&.full_name, :class => 'form-control person-full-name', :placeholder => 'Full Name' %>
   </div>
 
   <div class="form-group">
-    <%= text_field_tag "#{field_name_prefix}[person_attributes][given_name]", person&.given_name, :class => 'form-control person-given-name', :placeholder => 'Given Name (optional)' %>
+    <%= text_field_tag "#{field_name_prefix}[given_name]", person&.given_name, :class => 'form-control person-given-name', :placeholder => 'Given Name (optional)' %>
   </div>
 
   <div class="form-group">
-    <%= text_field_tag "#{field_name_prefix}[person_attributes][family_name]", person&.family_name, :class => 'form-control person-family-name', :placeholder => 'Family Name (optional)' %>
+    <%= text_field_tag "#{field_name_prefix}[family_name]", person&.family_name, :class => 'form-control person-family-name', :placeholder => 'Family Name (optional)' %>
   </div>
 
   <div class="form-group">
-    <%= text_field_tag "#{field_name_prefix}[person_attributes][orcid]", person&.orcid, :class => 'form-control person-orcid', :placeholder => 'ORCID (optional)' %>
+    <%= text_field_tag "#{field_name_prefix}[orcid]", person&.orcid, :class => 'form-control person-orcid', :placeholder => 'ORCID (optional)' %>
   </div>
 
   <label class="ml-2 delete-person-btn">
