@@ -2,7 +2,9 @@ class Person < ApplicationRecord
   include HasOrcid
 
   belongs_to :profile, optional: true
-  has_many :person_links, dependent: :destroy
+  belongs_to :resource, polymorphic: true
+
+  validates :resource, :role, presence: true
 
   # Validate that at least a full_name OR both given_name and family_name are present
   validate :name_presence

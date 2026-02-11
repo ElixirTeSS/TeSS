@@ -9,9 +9,9 @@ class MaterialTest < ActiveSupport::TestCase
                                  description: 'short desc',
                                  url: 'http://goog.e.com',
                                  user: @user,
-                                 person_links_attributes: [
-                                   { role: 'author', person_attributes: { full_name: 'Horace Smith', given_name: 'Horace', family_name: 'Smith' } },
-                                   { role: 'author', person_attributes: { full_name: 'Flo Johnson', given_name: 'Flo', family_name: 'Johnson' } }
+                                 people_attributes: [
+                                   { role: 'author', full_name: 'Horace Smith', given_name: 'Horace', family_name: 'Smith' },
+                                   { role: 'author', full_name: 'Flo Johnson', given_name: 'Flo', family_name: 'Johnson' }
                                  ],
                                  doi: 'https://doi.org/10.1011/RSE.2019.55',
                                  licence: 'CC-BY-NC-SA-4.0',
@@ -79,9 +79,8 @@ class MaterialTest < ActiveSupport::TestCase
     m.date_modified = '2021-06-13'
     m.date_published = '2021-06-14'
     m.subsets = []
-    m.person_links.where(role: 'author').destroy_all
-    person = Person.create!(full_name: 'Nikolai Tesla', given_name: 'Nikolai', family_name: 'Tesla')
-    m.person_links.create!(person: person, role: 'author')
+    m.people.where(role: 'author').destroy_all
+    m.people.create!(full_name: 'Nikolai Tesla', given_name: 'Nikolai', family_name: 'Tesla', role: 'author')
     m.contributors = ['Prof. Stephen Hawking']
     m.prerequisites = 'Bring your enthusiasm'
     m.syllabus = "1. Overview\  2. The main part\  3. Summary"
@@ -147,9 +146,9 @@ class MaterialTest < ActiveSupport::TestCase
 
   test 'should add authors via nested attributes' do
     assert_equal 2, @material.authors.size
-    assert @material.update(person_links_attributes: [
-      { role: 'author', person_attributes: { full_name: 'John Doe', given_name: 'John', family_name: 'Doe' } },
-      { role: 'author', person_attributes: { full_name: 'Jane Smith', given_name: 'Jane', family_name: 'Smith', orcid: '0000-0002-1234-5678' } }
+    assert @material.update(people_attributes: [
+      { role: 'author', full_name: 'John Doe', given_name: 'John', family_name: 'Doe' },
+      { role: 'author', full_name: 'Jane Smith', given_name: 'Jane', family_name: 'Smith', orcid: '0000-0002-1234-5678' }
     ])
     @material.reload
     assert_equal 4, @material.authors.size
@@ -161,9 +160,9 @@ class MaterialTest < ActiveSupport::TestCase
 
   test 'should remove authors via nested attributes' do
     assert_equal 2, @material.authors.size
-    person_link_to_remove = @material.person_links.where(role: 'author').first
-    assert @material.update(person_links_attributes: [
-      { id: person_link_to_remove.id, _destroy: '1' }
+    person_to_remove = @material.people.where(role: 'author').first
+    assert @material.update(people_attributes: [
+      { id: person_to_remove.id, _destroy: '1' }
     ])
     @material.reload
     assert_equal 1, @material.authors.size
@@ -199,8 +198,8 @@ class MaterialTest < ActiveSupport::TestCase
   end
 
   test 'should set authors from array of Person objects' do
-    person1 = Person.create!(full_name: 'Alice Wonder', given_name: 'Alice', family_name: 'Wonder')
-    person2 = Person.create!(full_name: 'Bob Builder', given_name: 'Bob', family_name: 'Builder')
+    person1 = @material.people.build(role: 'author', full_name: 'Alice Wonder', given_name: 'Alice', family_name: 'Wonder')
+    person2 = @material.people.build(role: nil, full_name: 'Bob Builder', given_name: 'Bob', family_name: 'Builder') # Should work with or without role
 
     @material.authors = [person1, person2]
     @material.save!
@@ -209,6 +208,23 @@ class MaterialTest < ActiveSupport::TestCase
     assert_equal 2, @material.authors.size
     assert @material.authors.include?(person1)
     assert @material.authors.include?(person2)
+  end
+
+  test 'should re-assign roles when setting authors from Person objects' do
+    material = materials(:biojs)
+
+    person1 = material.contributors.create(full_name: 'Alice Wonder', given_name: 'Alice', family_name: 'Wonder')
+    person2 = material.contributors.create(full_name: 'Bob Builder', given_name: 'Bob', family_name: 'Builder')
+
+    assert_equal [person1, person2], material.contributors.to_a
+    assert_equal [], material.authors.to_a
+
+    material.authors = [person1, person2]
+    material.save!
+    material.reload
+
+    assert_equal [], material.contributors.to_a
+    assert_equal [person1, person2], material.authors.to_a
   end
 
   test 'should handle single name in legacy author string' do
@@ -248,8 +264,8 @@ class MaterialTest < ActiveSupport::TestCase
   end
 
   test 'should set contributors from array of Person objects' do
-    person1 = Person.create!(full_name: 'Alice Wonder', given_name: 'Alice', family_name: 'Wonder')
-    person2 = Person.create!(full_name: 'Bob Builder', given_name: 'Bob', family_name: 'Builder')
+    person1 = @material.people.build(full_name: 'Alice Wonder', given_name: 'Alice', family_name: 'Wonder')
+    person2 = @material.people.build(full_name: 'Bob Builder', given_name: 'Bob', family_name: 'Builder')
 
     @material.contributors = [person1, person2]
     @material.save!

@@ -73,9 +73,9 @@
     <%= f.field_lock :authors %>
 
     <div id="person-author-list">
-      <% @material.person_links.where(role: 'author').each_with_index do |person_link, index| %>
+      <% @material.people.where(role: 'author').each_with_index do |person, index| %>
         <%= render partial: 'common/person_form',
-                   locals: { form_name: 'material', index: index, person_link: person_link, role: 'author' } %>
+                   locals: { form_name: 'material', index: index, person: person, role: 'author' } %>
       <% end %>
     </div>
 
@@ -91,9 +91,9 @@
     <%= f.field_lock :contributors %>
 
     <div id="person-contributor-list">
-      <% @material.person_links.where(role: 'contributor').each_with_index do |person_link, index| %>
+      <% @material.people.where(role: 'contributor').each_with_index do |person, index| %>
         <%= render partial: 'common/person_form',
-                   locals: { form_name: 'material', index: "contributor_#{index}", person_link: person_link, role: 'contributor' } %>
+                   locals: { form_name: 'material', index: "contributor_#{index}", person: person, role: 'contributor' } %>
       <% end %>
     </div>
 
@@ -225,12 +225,12 @@
 
 <div id="person-author-template" style="display: none">
   <%= render partial: 'common/person_form',
-             locals: { form_name: 'material', person_link: nil, role: 'author' } %>
+             locals: { form_name: 'material', person: nil, role: 'author' } %>
 </div>
 
 <div id="person-contributor-template" style="display: none">
   <%= render partial: 'common/person_form',
-             locals: { form_name: 'material', person_link: nil, role: 'contributor' } %>
+             locals: { form_name: 'material', person: nil, role: 'contributor' } %>
 </div>
 
 <script type="text/javascript">

@@ -77,7 +77,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
                   'Nadia Goué',
                   'Nicola Soranzo',
                   'Olha Nahorna',
-                  'Saskia Hiltemann'], sample.authors
+                  'Saskia Hiltemann'], sample.authors.map(&:full_name).sort
     assert_equal ['Andrea Bagnacani',
                   'Anne Fouilloux',
                   'Anne Pajon',
@@ -89,7 +89,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
                   'Nadia Goué',
                   'Nicola Soranzo',
                   'Olha Nahorna',
-                  'Saskia Hiltemann'], sample.contributors
+                  'Saskia Hiltemann'], sample.contributors.map(&:full_name).sort
     assert_equal 'CC-BY-4.0', sample.licence
     assert_equal ['slides'], sample.resource_type
     assert_equal @content_provider, sample.content_provider
