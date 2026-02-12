@@ -366,7 +366,7 @@ $(document).on('click', '.tess-expandable-btn', function (event) {
     event.preventDefault();
     let div = this.previousElementSibling;
 
-    if (!div.classList.contains('tess-expandable')) {
+    if (!div || !div.classList.contains('tess-expandable')) {
         div = this.parentElement.querySelector('.tess-expandable');
     }
 
