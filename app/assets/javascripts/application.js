@@ -286,16 +286,17 @@ document.addEventListener("turbolinks:load", function(e) {
             this.dataset.origHeight = this.clientHeight;
             this.style.maxHeight = '' + limit + 'px';
             this.classList.add('tess-expandable-closed');
-            var btn = $('<a href="#" class="tess-expandable-btn">Show more</a>');
+            const btn = $('<a href="#" class="tess-expandable-btn">Show more</a>');
+            btn[0].expandableTarget = this;
             btn.insertAfter($(this));
         }
     });
 
     $(document).on('click', '.tess-expandable-btn', function (event) {
         event.preventDefault();
-        var div = this.parentElement.querySelector('.tess-expandable');
-        var maxHeight = parseInt(div.dataset.origHeight) + 80;
-        var limit = parseInt(div.dataset.heightLimit || "300");
+        const div = this.expandableTarget;
+        const maxHeight = parseInt(div.dataset.origHeight) + 80;
+        const limit = parseInt(div.dataset.heightLimit || "300");
 
         if (div.classList.contains('tess-expandable-closed')) {
             div.classList.add('tess-expandable-open');
