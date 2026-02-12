@@ -31,5 +31,9 @@ class ApplicationSerializer < ActiveModel::Serializer
     object.send(type).map { |t| { preferred_label: t.preferred_label, uri: t.uri } }
   end
 
+  def people(type)
+    object.send(type).map(&:display_name)
+  end
+
   link(:self) { polymorphic_path(object) }
 end

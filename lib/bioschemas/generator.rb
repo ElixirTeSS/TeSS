@@ -166,5 +166,15 @@ module Bioschemas
 
       p.any? ? p : nil
     end
+
+    def self.people(people)
+      people.map do |person|
+        person_hash = { '@type' => 'Person', 'name' => person.display_name }
+        person_hash['givenName'] = person.given_name if person.given_name.present?
+        person_hash['familyName'] = person.family_name if person.family_name.present?
+        person_hash['@id'] = person.orcid_url if person.orcid.present?
+        person_hash
+      end
+    end
   end
 end
