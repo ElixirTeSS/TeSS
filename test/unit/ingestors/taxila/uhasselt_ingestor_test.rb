@@ -18,12 +18,12 @@ class UhasseltIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::Taxila::UhasseltIngestor.new
 
     # check event doesn't
-    new_title = 'Data Management Plan - DMP writing session'
-    new_url = 'http://bibliotheek.uhasselt.be/nl/een-woordje-uitleg-over-onze-opleidingen#DataManagementPlanDMPwritingsession230606CampusDiepenbeekE140'
+    new_title = 'Tidy data part 1: How to structure your data | March 2026'
+    new_url = 'https://www.uhasselt.be/en/university-library/research/research-data-management/training-calendar-rdm/tidy-data-part-1-how-to-structure-your-data-march-2026'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 14 do
+    assert_difference 'Event.count', 10 do
       freeze_time(2023) do
         VCR.use_cassette("ingestors/uhasselt") do
           ingestor.read(source.url)
@@ -32,9 +32,9 @@ class UhasseltIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 14, ingestor.events.count
+    assert_equal 10, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 14, ingestor.stats[:events][:added]
+    assert_equal 10, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -47,9 +47,9 @@ class UhasseltIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'UHasselt', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal Time.zone.parse('Tue, 06 Jun 2023 13:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Tue, 06 Jun 2023 15:00:00.000000000 UTC +00:00'), event.end
-    assert_equal 'Campus Diepenbeek E140', event.venue
+    assert_equal Time.zone.parse('Mon, 16 Mar 2026 09:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Mon, 16 Mar 2026 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal 'campus Diepenbeek', event.venue
     refute event.online?
   end
 end
