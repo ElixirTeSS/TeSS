@@ -28,7 +28,7 @@ class GrayScottIngestorTest < ActiveSupport::TestCase
     assert_equal sample.start, '2026-02-26 09:00:00 +0000'
     assert_equal sample.timezone, 'Paris'
     assert_includes sample.venue, 'teratec.webex.com'
-    assert_includes sample.organizer, 'Someone'
+    assert_equal sample.organizer, 'Someone, SomeoneElse'
   end
 
   private

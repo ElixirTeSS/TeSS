@@ -48,7 +48,7 @@ module Ingestors
           event.timezone = tzid.first.to_s if !tzid.nil? && tzid.size.positive?
         end
         event.venue = clean_html(calevent.location.to_s)
-        event.organizer = html.css('h3:contains("Speakers") + ul li a').text.strip
+        event.organizer = html.css('h3:contains("Speakers") + ul li a')&.map(&:text)&.map(&:strip)&.join(', ') # coma separated if multiple speakers
 
         @events << event
       end
