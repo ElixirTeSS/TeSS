@@ -1,4 +1,5 @@
 class OrcidController < ApplicationController
+  before_action :orcid_auth_enabled
   before_action :authenticate_user!
   before_action :set_oauth_client, only: [:authenticate, :callback]
 
@@ -42,5 +43,11 @@ class OrcidController < ApplicationController
       token_endpoint: '/oauth/token',
       host: config[:host].presence || (Rails.env.production? ? 'orcid.org' : 'sandbox.orcid.org')
     )
+  end
+
+  def orcid_auth_enabled
+    unless TeSS::Config.orcid_authentication_enabled?
+      raise ActionController::RoutingError.new('Feature not enabled')
+    end
   end
 end

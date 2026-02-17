@@ -20,6 +20,7 @@ class OrcidControllerTest < ActionController::TestCase
   test 'handle callback and assign orcid if free' do
     mock_images
     user = users(:regular_user)
+    assert user.profile.orcid.blank?
     sign_in user
 
     VCR.use_cassette('orcid/get_token_free_orcid') do
@@ -120,5 +121,31 @@ class OrcidControllerTest < ActionController::TestCase
     profile = user.profile.reload
     assert profile.orcid.blank?
     refute profile.orcid_authenticated?
+  end
+
+  test 'do not authenticate orcid if feature not enabled' do
+    Rails.application.config.secrets.stub(:orcid, nil) do
+      sign_in users(:regular_user)
+
+      assert_raises(ActionController::RoutingError) do
+        post :authenticate
+      end
+    end
+  end
+
+  test 'do not handle orcid callback if feature not enabled' do
+    Rails.application.config.secrets.stub(:orcid, nil) do
+      mock_images
+      user = users(:regular_user)
+      sign_in user
+
+      VCR.use_cassette('orcid/get_token_unauth_orcid') do
+        assert_raises(ActionController::RoutingError) do
+          get :callback, params: { code: '123xyz' }
+          profile = user.profile.reload
+          refute profile.orcid_authenticated?
+        end
+      end
+    end
   end
 end
