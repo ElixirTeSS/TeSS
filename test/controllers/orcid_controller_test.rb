@@ -142,9 +142,9 @@ class OrcidControllerTest < ActionController::TestCase
       VCR.use_cassette('orcid/get_token_unauth_orcid') do
         assert_raises(ActionController::RoutingError) do
           get :callback, params: { code: '123xyz' }
-          profile = user.profile.reload
-          refute profile.orcid_authenticated?
         end
+        profile = user.profile.reload
+        refute profile.orcid_authenticated?
       end
     end
   end
