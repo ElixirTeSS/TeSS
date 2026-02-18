@@ -50,9 +50,9 @@
           <span class="empty">None specified</span>
         <% else %>
           <%= orcid_link(@user.profile) %>
-          <% if current_user == @user && !@user.profile.orcid_authenticated? %>
-            <%= button_to t('orcid.authenticate'), authenticate_orcid_path, class: 'btn btn-default' %>
-          <% end %>
+        <% end %>
+        <% if TeSS::Config.orcid_authentication_enabled? && current_user == @user && !@user.profile.orcid_authenticated? %>
+          <%= button_to t(@user.profile.orcid.blank? ? 'orcid.link' : 'orcid.authenticate'), authenticate_orcid_path, class: 'btn btn-default' %>
         <% end %>
       </p>
 

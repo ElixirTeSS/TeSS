@@ -1129,6 +1129,7 @@ en:
         Spaces are customizable, community-managed sub-portals within %{site_name}, each with their own catalogue of training content.
   orcid:
     error: 'An error occurred whilst trying to authenticate your ORCID.'
+    link: 'Link your ORCID'
     authenticate: 'Authenticate your ORCID'
     authentication_success: 'You have successfully authenticated your ORCID.'
     authentication_failure: 'Failed to authenticate your ORCID.'

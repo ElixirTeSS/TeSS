@@ -170,6 +170,12 @@ module TeSS
     def sentry_enabled?
       _sentry_dsn.present? && Rails.env.production?
     end
+
+    def orcid_authentication_enabled?
+      Rails.application.config.secrets.orcid.present? &&
+        Rails.application.config.secrets.orcid[:client_id].present? &&
+        Rails.application.config.secrets.orcid[:secret].present?
+    end
   end
 
   Config = TessConfig.new(tess_config)
