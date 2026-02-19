@@ -39,7 +39,8 @@ module Ingestors
         Ingestors::Taxila::SenseIngestor,
         Ingestors::Taxila::VuMaterialIngestor,
         Ingestors::Taxila::RdnlIngestor,
-        Ingestors::Taxila::HanIngestor
+        Ingestors::Taxila::HanIngestor,
+        Ingestors::Taxila::CitizenScienceIngestor
       ]
     end
 
