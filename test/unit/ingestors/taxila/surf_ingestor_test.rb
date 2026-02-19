@@ -14,7 +14,7 @@ class SurfIngestorTest < ActiveSupport::TestCase
 
   test 'can ingest events from surf' do
     source = @content_provider.sources.build(
-      url: 'https://www.surf.nl/sitemap.xml',
+      url: 'https://www.surf.nl/agenda',
       method: 'surf',
       enabled: true
     )
@@ -22,12 +22,12 @@ class SurfIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::Taxila::SurfIngestor.new
 
     # check event doesn't
-    new_title = 'Master class Privacy Assessment Framework'
-    new_url = 'https://www.surf.nl/en/agenda/masterclass-review-framework-privacy-apr-1'
+    new_title = 'SURF Onderwijsdagen 2026'
+    new_url = 'https://www.surf.nl/agenda#surf_onderwijsdagen_2026'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 52 do
+    assert_difference 'Event.count', 20 do
       freeze_time(2019) do
         VCR.use_cassette('ingestors/surf') do
           ingestor.read(source.url)
@@ -36,9 +36,9 @@ class SurfIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 52, ingestor.events.count
+    assert_equal 20, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 52, ingestor.stats[:events][:added]
+    assert_equal 20, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -51,8 +51,9 @@ class SurfIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'SURF', event.source
-    assert event.online?
-    assert_equal Time.zone.parse('Thu, 25 Apr 2024 12:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Thu, 25 Apr 2024 12:00:00.000000000 UTC +00:00'), event.end
+    refute event.online?
+    assert_equal Time.zone.parse('Wed, 10 Nov 2026 09:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Thu, 11 Nov 2026 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal "Amare, Spuiplein 150, 2511 DG Den Haag", event.venue
   end
 end
