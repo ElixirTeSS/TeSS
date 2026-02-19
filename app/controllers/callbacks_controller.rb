@@ -1,5 +1,6 @@
 # The controller for callback actions
 class CallbacksController < Devise::OmniauthCallbacksController
+  include SpaceRedirect
 
   Devise.omniauth_configs.each do |provider, config|
     define_method(provider) do
@@ -41,18 +42,4 @@ class CallbacksController < Devise::OmniauthCallbacksController
       redirect_to_space(after_sign_in_path_for(@user), space)
     end
   end
-
-  private
-
-  def redirect_to_space(path, space)
-    if space&.is_subdomain?
-      port_part = ''
-      port_part = ":#{request.port}" if (request.protocol == "http://" && request.port != 80) ||
-                                        (request.protocol == "https://" && request.port != 443)
-      redirect_to URI.join("#{request.protocol}#{space.host}#{port_part}", path).to_s, allow_other_host: true
-    else
-      redirect_to path
-    end
-  end
-
 end

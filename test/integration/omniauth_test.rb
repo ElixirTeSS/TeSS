@@ -418,7 +418,7 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     post user_oidc_omniauth_authorize_url(space_id: space.id)
     follow_redirect! # OmniAuth redirect
     assert_equal "http://space.example.com/users/aaf_user/edit", response.headers['Location']
-    end
+  end
 
   test 'authentication does not redirect user to entirely different domain' do
     space = spaces(:astro)
