@@ -2,7 +2,7 @@
 <% cache(space, expires_in: 6.hours) do %>
   <li class="masonry-brick media-item long">
     <%= link_to space, class: 'link-overlay', style: (theme_colour ? "border-color: #{theme_colour}" : nil) do %>
-      <%= image_tag get_image_url_for(space), class: "media-image listing_image pull-right" %>
+      <%= image_tag get_image_url_for(space), class: "media-image listing_image space-logo pull-right", style: (theme_colour ? "background-color: #{theme_colour}" : nil)  %>
       <h4 class="mb-2 mt-3" style="<%= theme_colour ? "color: #{theme_colour}" : ''-%>">
         <%= space.title %>
       </h4>
