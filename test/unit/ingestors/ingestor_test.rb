@@ -89,6 +89,41 @@ class IngestorTest < ActiveSupport::TestCase
     assert_equal(event.language, 'de')
   end
 
+  ['enabled', 'disabled'].each do |enabled|
+    test "auto parse if #{enabled}" do
+      if enabled == 'enabled'
+        auto_parse_vars = ['target_audience', 'keywords']
+      else
+        auto_parse_vars = []
+      end
+      user = users(:scraper_user)
+      provider = content_providers(:portal_provider)
+      @source = Source.create!(url: 'https://somewhere.com/stuff', method: 'bioschemas',
+                              enabled: true, approval_status: 'approved',
+                              content_provider: provider, user: users(:admin))
+      ingestor = Ingestors::Ingestor.new
+      new_event = OpenStruct.new(url: 'https://some-course.net',
+                                  title: 'Yet another course',
+                                  start: '2021-01-31 13:00:00',
+                                  end:'2021-01-31 14:00:00',
+                                  description: 'professor, tool criticism and software citation in text')
+      with_settings({ feature: { auto_parse_vars: auto_parse_vars } }) do
+        ingestor.add_event(new_event)
+        assert_difference('provider.events.count', 1) do
+          ingestor.write(user, provider, source: @source)
+        end
+      end
+      event = Event.find_by(title: 'Yet another course')
+      if enabled == 'enabled'
+        assert_equal(['researchers'], event.target_audience)
+        assert_equal(['Research software management', 'Data infrastructure'], event.keywords)
+      else
+        assert_equal([], event.target_audience)
+        assert_equal([], event.keywords)
+      end
+    end
+  end
+
   test 'does not set event language when language and source default language missing' do
     user = users(:scraper_user)
     provider = content_providers(:portal_provider)
