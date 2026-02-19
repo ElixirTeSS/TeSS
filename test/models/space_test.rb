@@ -5,6 +5,42 @@ class SpaceTest < ActiveSupport::TestCase
     @space = spaces(:plants)
   end
 
+  test 'validate' do
+    space = Space.new
+    refute space.valid?
+    assert space.errors.added?(:title, :blank)
+    assert space.errors.added?(:user, :blank)
+
+    user = users(:curator)
+
+    no_host = Space.new(user: user, title: 'hello')
+    refute no_host.valid?
+    assert no_host.errors.added?(:host, :blank)
+
+    duplicate_host = Space.create(user: user, title: 'hello', host: spaces(:plants).host)
+    refute duplicate_host.valid?
+    assert duplicate_host.errors.added?(:host, :taken, value: spaces(:plants).host)
+
+    invalid_host = Space.create(user: user, title: 'hello', host: '...')
+    refute invalid_host.valid?
+    assert invalid_host.errors.added?(:host, :invalid, value: '...')
+
+    invalid_host2 = Space.create(user: user, title: 'hello', host: 'hello world')
+    refute invalid_host2.valid?
+    assert invalid_host2.errors.added?(:host, :invalid, value: 'hello world')
+
+    invalid_host3 = Space.create(user: user, title: 'hello', host: 'website,com')
+    refute invalid_host3.valid?
+    assert invalid_host3.errors.added?(:host, :invalid, value: 'website,com')
+
+    invalid_theme = Space.create(user: user, title: 'hello', host: 'space.host', theme: 'disco')
+    refute invalid_theme.valid?
+    assert invalid_theme.errors.added?(:theme, :inclusion, value: 'disco')
+
+    valid = Space.new(user: user, title: 'hello', host: 'space.host')
+    assert valid.valid?
+  end
+
   test 'get administrators' do
     admins = @space.administrators
     assert_equal 1, admins.length
