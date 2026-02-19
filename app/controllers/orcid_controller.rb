@@ -19,7 +19,7 @@ class OrcidController < ApplicationController
     @oauth2_client.authorization_code = params[:code]
     token = Rack::OAuth2::AccessToken::Bearer.new(access_token: @oauth2_client.access_token!)
     if params[:state].present?
-      m = params[:state].match(/space_id:(\d*)/)
+      m = params[:state].match(/space_id:(\d+)/)
       space = Space.find_by_id(m[1]) if m
     end
     orcid = token.access_token&.raw_attributes['orcid']
