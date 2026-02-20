@@ -11,16 +11,10 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal 'John Doe', person.display_name
   end
 
-  test 'should create person with given and family name' do
-    person = @material.people.create(role: 'author', given_name: 'John', family_name: 'Doe')
-    assert person.valid?
-    assert_equal 'John Doe', person.display_name
-  end
-
-  test 'should require either full_name or both given and family name' do
+  test 'should require full_name' do
     person = Person.new
     refute person.valid?
-    assert_includes person.errors[:base], "Either full_name or both given_name and family_name must be present"
+    assert person.errors.added?(:full_name, :blank)
   end
 
   test 'should allow optional orcid' do
@@ -30,13 +24,8 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   test 'display_name should return full_name if present' do
-    person = Person.new(full_name: 'Dr. Jane Marie Smith', given_name: 'Jane', family_name: 'Smith')
+    person = Person.new(full_name: 'Dr. Jane Marie Smith')
     assert_equal 'Dr. Jane Marie Smith', person.display_name
-  end
-
-  test 'display_name should construct from given and family name if full_name is blank' do
-    person = Person.new(given_name: 'Jane', family_name: 'Smith')
-    assert_equal 'Jane Smith', person.display_name
   end
 
   test 'should link back to resource' do

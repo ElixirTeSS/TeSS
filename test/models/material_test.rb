@@ -10,8 +10,8 @@ class MaterialTest < ActiveSupport::TestCase
                                  url: 'http://goog.e.com',
                                  user: @user,
                                  people_attributes: [
-                                   { role: 'author', full_name: 'Horace Smith', given_name: 'Horace', family_name: 'Smith' },
-                                   { role: 'author', full_name: 'Flo Johnson', given_name: 'Flo', family_name: 'Johnson' }
+                                   { role: 'author', full_name: 'Horace Smith' },
+                                   { role: 'author', full_name: 'Flo Johnson' }
                                  ],
                                  doi: 'https://doi.org/10.1011/RSE.2019.55',
                                  licence: 'CC-BY-NC-SA-4.0',
@@ -80,7 +80,7 @@ class MaterialTest < ActiveSupport::TestCase
     m.date_published = '2021-06-14'
     m.subsets = []
     m.people.where(role: 'author').destroy_all
-    m.people.create!(full_name: 'Nikolai Tesla', given_name: 'Nikolai', family_name: 'Tesla', role: 'author')
+    m.people.create!(full_name: 'Nikolai Tesla', role: 'author')
     m.contributors = ['Prof. Stephen Hawking']
     m.prerequisites = 'Bring your enthusiasm'
     m.syllabus = "1. Overview\  2. The main part\  3. Summary"
@@ -147,12 +147,12 @@ class MaterialTest < ActiveSupport::TestCase
   test 'should add authors via nested attributes' do
     assert_equal 2, @material.authors.size
     assert @material.update(people_attributes: [
-      { role: 'author', full_name: 'John Doe', given_name: 'John', family_name: 'Doe' },
-      { role: 'author', full_name: 'Jane Smith', given_name: 'Jane', family_name: 'Smith', orcid: '0000-0002-1234-5678' }
+      { role: 'author', full_name: 'John Doe' },
+      { role: 'author', full_name: 'Jane Smith', orcid: '0000-0002-1234-5678' }
     ])
     @material.reload
     assert_equal 4, @material.authors.size
-    jane = @material.authors.find { |a| a.given_name == 'Jane' }
+    jane = @material.authors.find { |a| a.full_name == 'Jane Smith' }
     assert_not_nil jane
     assert_equal 'Jane Smith', jane.display_name
     assert_equal '0000-0002-1234-5678', jane.orcid
@@ -185,21 +185,21 @@ class MaterialTest < ActiveSupport::TestCase
 
   test 'should set authors from array of hashes' do
     @material.authors = [
-      { given_name: 'John', family_name: 'Doe', orcid: '0000-0001-1234-5678' },
+      { full_name: 'John Doe', orcid: '0000-0001-1234-5678' },
       { full_name: 'Jane Smith' }
     ]
     @material.save!
     @material.reload
 
     assert_equal 2, @material.authors.size
-    john = @material.authors.find { |a| a.family_name == 'Doe' }
+    john = @material.authors.find { |a| a.full_name == 'John Doe' }
     assert_not_nil john
     assert_equal '0000-0001-1234-5678', john.orcid
   end
 
   test 'should set authors from array of Person objects' do
-    person1 = @material.people.build(role: 'author', full_name: 'Alice Wonder', given_name: 'Alice', family_name: 'Wonder')
-    person2 = @material.people.build(role: nil, full_name: 'Bob Builder', given_name: 'Bob', family_name: 'Builder') # Should work with or without role
+    person1 = @material.people.build(role: 'author', full_name: 'Alice Wonder')
+    person2 = @material.people.build(role: nil, full_name: 'Bob Builder') # Should work with or without role
 
     @material.authors = [person1, person2]
     @material.save!
@@ -213,8 +213,8 @@ class MaterialTest < ActiveSupport::TestCase
   test 'should re-assign roles when setting authors from Person objects' do
     material = materials(:biojs)
 
-    person1 = material.contributors.create(full_name: 'Alice Wonder', given_name: 'Alice', family_name: 'Wonder')
-    person2 = material.contributors.create(full_name: 'Bob Builder', given_name: 'Bob', family_name: 'Builder')
+    person1 = material.contributors.create(full_name: 'Alice Wonder')
+    person2 = material.contributors.create(full_name: 'Bob Builder')
 
     assert_equal [person1, person2], material.contributors.to_a
     assert_equal [], material.authors.to_a
@@ -251,21 +251,21 @@ class MaterialTest < ActiveSupport::TestCase
 
   test 'should set contributors from array of hashes' do
     @material.contributors = [
-      { given_name: 'John', family_name: 'Doe', orcid: '0000-0001-1234-5678' },
+      { full_name: 'John Doe', orcid: '0000-0001-1234-5678' },
       { full_name: 'Jane Smith' }
     ]
     @material.save!
     @material.reload
 
     assert_equal 2, @material.contributors.size
-    john = @material.contributors.find { |c| c.family_name == 'Doe' }
+    john = @material.contributors.find { |c| c.full_name == 'John Doe' }
     assert_not_nil john
     assert_equal '0000-0001-1234-5678', john.orcid
   end
 
   test 'should set contributors from array of Person objects' do
-    person1 = @material.people.build(full_name: 'Alice Wonder', given_name: 'Alice', family_name: 'Wonder')
-    person2 = @material.people.build(full_name: 'Bob Builder', given_name: 'Bob', family_name: 'Builder')
+    person1 = @material.people.build(full_name: 'Alice Wonder')
+    person2 = @material.people.build(full_name: 'Bob Builder')
 
     @material.contributors = [person1, person2]
     @material.save!

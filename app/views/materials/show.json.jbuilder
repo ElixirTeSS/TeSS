@@ -21,8 +21,8 @@ json.nodes @material.associated_nodes.collect { |x| { name: x[:name], node_id: x
 json.collections @material.collections.collect { |x| { title: x[:title], id: x[:id] } }
 json.events @material.events.collect { |x| { title: x[:title], id: x[:id] } }
 
-json.authors @material.authors.collect { |a| { id: a.id, given_name: a.given_name, family_name: a.family_name, full_name: a.full_name, name: a.display_name, orcid: a.orcid, profile_id: a.profile_id } }
-json.contributors @material.contributors.collect { |c| { id: c.id, given_name: c.given_name, family_name: c.family_name, full_name: c.full_name, name: c.display_name, orcid: c.orcid, profile_id: c.profile_id } }
+json.authors @material.authors.collect { |a| { id: a.id, name: a.display_name, orcid: a.orcid, profile_id: a.profile_id } }
+json.contributors @material.contributors.collect { |c| { id: c.id, name: c.display_name, orcid: c.orcid, profile_id: c.profile_id } }
 
 json.external_resources do
   @material.external_resources.each do |external_resource|

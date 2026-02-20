@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_02_11_143944) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_20_151255) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -430,8 +430,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_11_143944) do
   end
 
   create_table "people", force: :cascade do |t|
-    t.string "given_name"
-    t.string "family_name"
     t.string "full_name"
     t.string "orcid"
     t.string "role", null: false
@@ -696,8 +694,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_11_143944) do
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"
   add_foreign_key "nodes", "users"
-  add_foreign_key "source_filters", "sources"
   add_foreign_key "people", "profiles"
+  add_foreign_key "source_filters", "sources"
   add_foreign_key "sources", "content_providers"
   add_foreign_key "sources", "spaces"
   add_foreign_key "sources", "users"

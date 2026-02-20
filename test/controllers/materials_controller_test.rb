@@ -253,7 +253,7 @@ class MaterialsControllerTest < ActionController::TestCase
           date_published: test_material.date_published,
           doi: test_material.doi,
           subsets: test_material.subsets,
-          people_attributes: test_material.people.map { |person| { role: person.role, given_name: person.given_name, family_name: person.family_name, full_name: person.full_name, orcid: person.orcid } },
+          people_attributes: test_material.people.map { |person| { role: person.role, full_name: person.full_name, orcid: person.orcid } },
           prerequisites: test_material.prerequisites,
           syllabus: test_material.syllabus,
           learning_objectives: test_material.learning_objectives
@@ -290,15 +290,14 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal test_material.other_types, JSON.parse(response.body)['other_types'], 'other_types not matched'
     #assert_equal test_material.events, JSON.parse(response.body)['events'], 'events not matched'
     assert_equal test_material.target_audience, JSON.parse(response.body)['target_audience'], 'target audience not matched'
-    # Authors is now an array of objects with id, given_name, family_name, full_name, name, orcid
+    # Authors is now an array of objects with id, name, orcid
     response_authors = JSON.parse(response.body)['authors']
     assert_equal test_material.authors.size, response_authors.size, 'authors count not matched'
     response_authors.each_with_index do |author_json, i|
       expected_author = test_material.authors[i]
       assert_equal expected_author.display_name, author_json['name'], "author #{i} name not matched"
-      assert_equal expected_author.full_name, author_json['full_name'], "author #{i} full_name not matched"
     end
-    # Contributors is now an array of objects with id, given_name, family_name, full_name, name, orcid
+    # Contributors is now an array of objects with id, name, orcid
     response_contributors = JSON.parse(response.body)['contributors']
     assert_equal test_material.contributors.size, response_contributors.size, 'contributors count not matched'
     response_contributors.each_with_index do |contributor_json, i|
