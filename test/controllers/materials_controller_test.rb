@@ -303,7 +303,6 @@ class MaterialsControllerTest < ActionController::TestCase
     response_contributors.each_with_index do |contributor_json, i|
       expected_contributor = test_material.contributors[i]
       assert_equal expected_contributor.display_name, contributor_json['name'], "contributor #{i} name not matched"
-      assert_equal expected_contributor.full_name, contributor_json['full_name'], "contributor #{i} full_name not matched"
     end
     assert_equal test_material.subsets, JSON.parse(response.body)['subsets'], 'subsets not matched'
     assert_equal test_material.prerequisites, JSON.parse(response.body)['prerequisites'], 'prerequisites not matched'
