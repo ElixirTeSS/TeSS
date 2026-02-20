@@ -40,10 +40,10 @@ module Ingestors
         event.url = gs_url
         event.description = html.css('.paragraphStyle').text.strip || calevent.description.to_s
 
-        event.end = calevent.dtend&.to_time
+        event.end = calevent.dtend&.to_time&.utc
         unless calevent.dtstart.nil?
           dtstart = calevent.dtstart
-          event.start = dtstart&.to_time
+          event.start = dtstart&.to_time&.utc
           tzid = dtstart.ical_params['tzid']
           event.timezone = tzid.first.to_s if !tzid.nil? && tzid.size.positive?
         end
