@@ -19,7 +19,7 @@ module Ingestors
     end
 
     def read(source_url)
-      client = OAI::Client.new source_url, headers: { 'From' => config[:mail] }
+      client = OAI::Client.new source_url, headers: { 'From' => config[:mail], 'User-Agent' => config[:user_agent] }
       found_bioschemas = begin
         read_oai_rdf(client)
       rescue OAI::ArgumentException
