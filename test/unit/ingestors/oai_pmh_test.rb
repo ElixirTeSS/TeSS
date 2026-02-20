@@ -25,7 +25,7 @@ class FakeClient
   def list_records(metadata_prefix: nil)
     if metadata_prefix == 'rdf'
       @rdf_response
-    else
+    elsif metadata_prefix == 'oai_dc'
       @dc_response
     end
   end
