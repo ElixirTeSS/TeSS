@@ -73,7 +73,6 @@ class PersonTest < ActiveSupport::TestCase
     assert_nil person.profile
   end
 
-
   test 'changing orcid should update profile link' do
     profile1 = profiles(:trainer_one_profile)
     profile2 = profiles(:admin_trainer_profile)
@@ -83,5 +82,35 @@ class PersonTest < ActiveSupport::TestCase
 
     assert person.update(orcid: profile1.orcid)
     assert_equal profile1, person.profile
+  end
+
+  test 'extract attributes from string' do
+    p = Person.attr_from_string('Joe Bloggs')
+    assert_equal 'Joe Bloggs', p[:full_name]
+    assert_nil p[:orcid]
+
+    p = Person.attr_from_string('  Joe')
+    assert_equal 'Joe', p[:full_name]
+    assert_nil p[:orcid]
+
+    p = Person.attr_from_string('Bloggs, Billy-Joe')
+    assert_equal 'Bloggs, Billy-Joe', p[:full_name]
+    assert_nil p[:orcid]
+
+    p = Person.attr_from_string('Bloggs, Billy-Joe (orcid: 0000-0002-1825-0097)')
+    assert_equal 'Bloggs, Billy-Joe', p[:full_name]
+    assert_equal '0000-0002-1825-0097', p[:orcid]
+
+    p = Person.attr_from_string('Bloggs, Billy-Joe (https://orcid.org/0000-0002-1825-0097)')
+    assert_equal 'Bloggs, Billy-Joe', p[:full_name]
+    assert_equal '0000-0002-1825-0097', p[:orcid]
+
+    p = Person.attr_from_string('Bloggs, Billy-Joe 0000-0002-1825-0097')
+    assert_equal 'Bloggs, Billy-Joe', p[:full_name]
+    assert_equal '0000-0002-1825-0097', p[:orcid]
+
+    p = Person.attr_from_string('Bloggs, Billy-Joe (0000-0002-1825-0097)')
+    assert_equal 'Bloggs, Billy-Joe', p[:full_name]
+    assert_equal '0000-0002-1825-0097', p[:orcid]
   end
 end

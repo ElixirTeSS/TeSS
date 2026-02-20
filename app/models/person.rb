@@ -14,6 +14,16 @@ class Person < ApplicationRecord
     full_name
   end
 
+  # Extract person attributes from a string containing a person's name and possibly an ORCID.
+  def self.attr_from_string(person_string)
+    orcid = nil
+    name = person_string.gsub(/\s*\(?(orcid: )?(https?:\/\/orcid\.org\/)?(\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d[\dxX])[ \)]*/) do |_|
+      orcid = $3
+      ''
+    end.strip
+    { full_name: name, orcid: orcid }
+  end
+
   private
 
   # Automatically link to a Profile if one exists with a matching ORCID
