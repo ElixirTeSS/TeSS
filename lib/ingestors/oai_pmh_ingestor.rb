@@ -39,7 +39,7 @@ module Ingestors
 
     def read_oai_dublin_core(client)
       count = 0
-      client.list_records.full.each do |record|
+      client.list_records(metadata_prefix: 'oai_dc').full.each do |record|
         xml_string = record.metadata.to_s
         doc = Nokogiri::XML(xml_string)
 
