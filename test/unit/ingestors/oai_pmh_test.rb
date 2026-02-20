@@ -42,8 +42,8 @@ class OaiPmhTest < ActiveSupport::TestCase
     OAI::Client.stub(:new, FakeClient.new([], [])) do
       @ingestor.read('https://example.org')
     end
-    assert_equal @ingestor.materials, []
-    assert_equal @ingestor.events, []
+    assert_equal [], @ingestor.materials
+    assert_equal [], @ingestor.events
   end
 
   test 'should read dublin core material' do
