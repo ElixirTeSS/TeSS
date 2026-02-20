@@ -21,6 +21,7 @@ class Material < ApplicationRecord
   include HasDifficultyLevel
   include HasEdamTerms
   include InSpace
+  include HasPeople
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -30,8 +31,12 @@ class Material < ApplicationRecord
       text :description
       text :contact
       text :doi
-      text :authors
-      text :contributors
+      text :authors do
+        authors.map(&:display_name)
+      end
+      text :contributors do
+        contributors.map(&:display_name)
+      end
       text :target_audience
       text :keywords
       text :resource_type
@@ -51,7 +56,9 @@ class Material < ApplicationRecord
       end
       # other fields
       string :title
-      string :authors, multiple: true
+      string :authors, multiple: true do
+        authors.map(&:display_name)
+      end
       string :scientific_topics, multiple: true do
         scientific_topics_and_synonyms
       end
@@ -62,7 +69,9 @@ class Material < ApplicationRecord
       string :keywords, multiple: true
       string :fields, multiple: true
       string :resource_type, multiple: true
-      string :contributors, multiple: true
+      string :contributors, multiple: true do
+        contributors.map(&:display_name)
+      end
       string :content_provider do
         content_provider.try(:title)
       end
@@ -102,6 +111,10 @@ class Material < ApplicationRecord
 
   has_many :stars, as: :resource, dependent: :destroy
 
+  # Use HasPeople concern for authors and contributors
+  has_person_role :authors, role_key: 'author'
+  has_person_role :contributors, role_key: 'contributor'
+
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
   auto_strip_attributes :title, :description, :url, squish: false
@@ -111,10 +124,10 @@ class Material < ApplicationRecord
   validates :other_types, presence: true, if: proc { |m| m.resource_type.include?('other') }
   validates :keywords, length: { maximum: 20 }
 
-  clean_array_fields(:keywords, :fields, :contributors, :authors,
+  clean_array_fields(:keywords, :fields,
                      :target_audience, :resource_type, :subsets)
 
-  update_suggestions(:keywords, :contributors, :authors, :target_audience,
+  update_suggestions(:keywords, :target_audience,
                      :resource_type)
 
   def description=(desc)
@@ -212,8 +225,8 @@ class Material < ApplicationRecord
              'xsi:schemaLocation' => 'http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd') do
       xml.tag!('dc:title', title)
       xml.tag!('dc:description', description)
-      authors.each { |a| xml.tag!('dc:creator', a) }
-      contributors.each { |a| xml.tag!('dc:contributor', a) }
+      authors.each { |a| xml.tag!('dc:creator', a.display_name) }
+      contributors.each { |c| xml.tag!('dc:contributor', c.display_name) }
       xml.tag!('dc:publisher', content_provider.title) if content_provider
 
       xml.tag!('dc:format', 'text/html')

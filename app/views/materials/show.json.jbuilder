@@ -6,7 +6,7 @@ json.extract! @material, :id, :title, :url, :description,
 
               :doi, :licence, :version, :status,
 
-              :contact, :contributors, :authors,
+              :contact,
 
               :difficulty_level, :target_audience, :prerequisites, :syllabus, :learning_objectives, :subsets,
 
@@ -20,6 +20,9 @@ json.partial! 'common/ontology_terms', type: 'operations', resource: @material
 json.nodes @material.associated_nodes.collect { |x| { name: x[:name], node_id: x[:id] } }
 json.collections @material.collections.collect { |x| { title: x[:title], id: x[:id] } }
 json.events @material.events.collect { |x| { title: x[:title], id: x[:id] } }
+
+json.authors @material.authors.collect { |a| { id: a.id, name: a.display_name, orcid: a.orcid, profile_id: a.profile_id } }
+json.contributors @material.contributors.collect { |c| { id: c.id, name: c.display_name, orcid: c.orcid, profile_id: c.profile_id } }
 
 json.external_resources do
   @material.external_resources.each do |external_resource|

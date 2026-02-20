@@ -36,7 +36,17 @@ label.required abbr {
   margin-top: 0;
 }
 
-.delete-external-resource-btn {
+.nested-resource-form {
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+
+  &.deleted {
+    color: $brand-danger;
+    text-decoration: line-through;
+  }
+}
+
+.delete-nested-resource-btn {
   @include delete-cross;
 
   cursor: pointer;

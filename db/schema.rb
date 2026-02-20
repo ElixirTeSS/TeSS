@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_29_164644) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_20_152727) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -429,6 +429,21 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_29_164644) do
     t.index ["term_uri"], name: "index_ontology_term_links_on_term_uri"
   end
 
+  create_table "people", force: :cascade do |t|
+    t.string "full_name"
+    t.string "orcid"
+    t.string "role", null: false
+    t.string "resource_type", null: false
+    t.bigint "resource_id", null: false
+    t.bigint "profile_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["orcid"], name: "index_people_on_orcid"
+    t.index ["profile_id"], name: "index_people_on_profile_id"
+    t.index ["resource_type", "resource_id", "role"], name: "index_people_on_resource_type_and_resource_id_and_role"
+    t.index ["resource_type", "resource_id"], name: "index_people_on_resource"
+  end
+
   create_table "profiles", force: :cascade do |t|
     t.text "firstname"
     t.text "surname"
@@ -679,6 +694,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_29_164644) do
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"
   add_foreign_key "nodes", "users"
+  add_foreign_key "people", "profiles"
   add_foreign_key "source_filters", "sources"
   add_foreign_key "sources", "content_providers"
   add_foreign_key "sources", "spaces"
