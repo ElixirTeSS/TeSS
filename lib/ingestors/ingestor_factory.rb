@@ -12,7 +12,7 @@ module Ingestors
         Ingestors::TessEventIngestor,
         Ingestors::ZenodoIngestor,
         Ingestors::GithubIngestor,
-      ] + taxila_ingestors + llm_ingestors
+      ] + taxila_ingestors + llm_ingestors + heptraining_ingestors
     end
 
     def self.taxila_ingestors
@@ -46,6 +46,12 @@ module Ingestors
     def self.llm_ingestors
       [
         Ingestors::Taxila::FourtuLlmIngestor
+      ]
+    end
+
+    def self.heptraining_ingestors
+      [
+        Ingestors::Heptraining::GrayScottIngestor
       ]
     end
 
