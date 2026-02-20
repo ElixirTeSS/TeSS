@@ -6,6 +6,7 @@ gem 'rails', '7.2.2.2'
 
 gem 'active_model_serializers'
 gem 'activerecord-session_store'
+gem 'addressable'
 gem 'ahoy_matey'
 gem 'auto_strip_attributes'
 gem 'bootsnap', require: false

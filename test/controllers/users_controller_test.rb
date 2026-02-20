@@ -531,6 +531,7 @@ class UsersControllerTest < ActionController::TestCase
 
       assert_response :success
       assert_select '#sidebar button', text: 'Authenticate your ORCID', count: 0
+      assert_select '#sidebar button', text: 'Link your ORCID', count: 0
     end
   end
 
@@ -543,6 +544,7 @@ class UsersControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_select '#sidebar button', text: 'Authenticate your ORCID', count: 0
+    assert_select '#sidebar button', text: 'Link your ORCID', count: 0
   end
 
   test 'should not show authenticate orcid button if already authenticated' do
@@ -554,6 +556,7 @@ class UsersControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_select '#sidebar button', text: 'Authenticate your ORCID', count: 0
+    assert_select '#sidebar button', text: 'Link your ORCID', count: 0
   end
 
   test 'should show material and event in trainer page as bioschemas JSON-LD' do
@@ -599,5 +602,40 @@ class UsersControllerTest < ActionController::TestCase
     external_resource = event.external_resources.first
     assert_not_nil external_resource
     assert_equal external_resource.url, json_event['mentions'].first['url']
+  end
+
+  test 'should show authenticate orcid button on subdomain space' do
+    space = spaces(:astro)
+    space.update!(host: 'space.example.com')
+    with_host(space.host) do
+      user = users(:private_user)
+      assert user.profile.orcid.present?
+      refute user.profile.orcid_authenticated?
+
+      sign_in user
+
+      get :show, params: { id: user }
+
+      assert_response :success
+      assert_select '#sidebar button', text: 'Authenticate your ORCID'
+    end
+  end
+
+  test 'should not show authenticate orcid button on non-subdomain space' do
+    space = spaces(:astro)
+    space.update!(host: 'space.golf.com')
+    with_host(space.host) do
+      user = users(:private_user)
+      assert user.profile.orcid.present?
+      refute user.profile.orcid_authenticated?
+
+      sign_in user
+
+      get :show, params: { id: user }
+
+      assert_response :success
+      assert_select '#sidebar button', text: 'Authenticate your ORCID', count: 0
+      assert_select '#sidebar button', text: 'Link your ORCID', count: 0
+    end
   end
 end
