@@ -176,7 +176,7 @@ class MaterialsController < ApplicationController
                                      { scientific_topic_names: [] }, { scientific_topic_uris: [] },
                                      { operation_names: [] }, { operation_uris: [] },
                                      { node_ids: [] }, { node_names: [] }, { fields: [] },
-                                     people_attributes: %i[id role _destroy full_name first_name last_name orcid],
+                                     people_attributes: %i[id role _destroy full_name orcid],
                                      external_resources_attributes: %i[id url title _destroy],
                                      external_resources: %i[url title],
                                      event_ids: [], locked_fields: [])

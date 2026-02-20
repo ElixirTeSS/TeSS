@@ -71,6 +71,8 @@ en:
         language: 'Language of instruction'
       source:
         default_language: 'Default language'
+      person:
+        full_name: 'Name'
   about:
     headings:
       events: Events
