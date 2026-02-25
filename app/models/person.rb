@@ -31,7 +31,7 @@ class Person < ApplicationRecord
     if orcid.blank?
       self.profile = nil
     else
-      matching_profile = Profile.find_by(orcid: orcid)
+      matching_profile = Profile.find_by(orcid: orcid, orcid_authenticated: true)
       self.profile = matching_profile if matching_profile.present?
     end
   end
