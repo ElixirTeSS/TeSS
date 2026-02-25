@@ -26,13 +26,12 @@ class Person < ApplicationRecord
 
   private
 
-  # Automatically link to a Profile if one exists with a matching ORCID
+  # Automatically link to a Profile if one exists with a matching ORCID, or unlink if no match.
   def link_to_profile_by_orcid
     if orcid.blank?
       self.profile = nil
     else
-      matching_profile = Profile.find_by(orcid: orcid, orcid_authenticated: true)
-      self.profile = matching_profile if matching_profile.present?
+      self.profile = Profile.find_by(orcid: orcid, orcid_authenticated: true)
     end
   end
 end

@@ -62,7 +62,7 @@ class PersonTest < ActiveSupport::TestCase
     assert_nil person.profile
   end
 
-  test 'should should break profile link if orcid removed' do
+  test 'should should break profile link if orcid removed from person' do
     profile = profiles(:trainer_one_profile)
     # The trainer_one_profile has orcid: https://orcid.org/0000-0002-1825-0097
     person = @material.people.create(role: 'author', full_name: 'Josiah Carberry', orcid: '0000-0002-1825-0097', profile: profile)
@@ -70,6 +70,19 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal profile, person.profile
 
     person.update(orcid: nil)
+    assert_nil person.profile
+  end
+
+  test 'should should break profile link if orcid removed from profile' do
+    profile = profiles(:trainer_one_profile)
+    # The trainer_one_profile has orcid: https://orcid.org/0000-0002-1825-0097
+    person = @material.people.create(role: 'author', full_name: 'Josiah Carberry', orcid: '0000-0002-1825-0097', profile: profile)
+    assert person.valid?
+    assert_equal profile, person.profile
+
+    profile.update_column(:orcid, nil)
+
+    person.save!
     assert_nil person.profile
   end
 
