@@ -46,6 +46,7 @@ class Profile < ApplicationRecord
   end
 
   def authenticate_orcid(orcid)
+    old_orcid = self.orcid
     existing = Profile.where(orcid: orcid, orcid_authenticated: true)
     self.orcid = orcid
     self.orcid_authenticated = true
@@ -56,6 +57,7 @@ class Profile < ApplicationRecord
         next if profile == self
         profile.update_column(:orcid_authenticated, false)
       end
+      PersonLinkWorker.perform_async([old_orcid, orcid].compact_blank)
     end
 
     out
