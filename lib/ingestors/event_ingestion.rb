@@ -7,6 +7,10 @@ module Ingestors
         c.send(:event_params)
         event = OpenStruct.new(c.send(:event_params))
       end
+      TeSS::Config.feature['auto_parse_vars'].each do |var|
+        new_val = auto_parse(var, event.description)
+        event.send("#{var}=", new_val)
+      end
       @events << event unless event.nil?
     end
 
@@ -22,35 +26,17 @@ module Ingestors
       input
     end
 
-    def parse_audience(description)
-      audience_mapping = {
-        'post-docs': 'researchers',
-        "PhD's candidate": 'researchers',
-        'PhD student': 'researchers',
-        'principal investigator': 'researchers',
-        'professor': 'researchers',
-        'scientist': 'researchers',
-        'library staff': 'research support staff',
-        'research librarian': 'research support staff',
-        'information specialist': 'research support staff',
-        'archivist': 'research support staff',
-        'repository manager': 'research support staff',
-        'data steward': 'research support staff',
-        'data manager': 'research support staff',
-        'data professional': 'research support staff',
-        'data engineer': 'research support staff',
-        'software engineer': 'research support staff',
-        'data librarian': 'research support staff',
-        'bachelor': 'students',
-        'master': 'students',
-        'teacher': 'trainers',
-        'coaches': 'trainers',
-        'educator': 'trainers',
-      }
-      audience_mapping
-        .select{ |key, val| description.downcase.include?(key.to_s.downcase) }
-        .values
-        .uniq
+    def auto_parse(var, description)
+      json_path = File.join(Rails.root, 'lib', 'ingestors', 'auto_parser_mappings', "#{var.to_s}.json")
+      res = nil
+      if File.exist?(json_path)
+        mapping = JSON.parse(File.read(json_path))
+        res = mapping
+          .select{ |key, val| description.downcase.include?(key.to_s.downcase) }
+          .values
+          .uniq
+      end
+      res
     end
 
     def parse_dates(input, timezone = nil)
