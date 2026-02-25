@@ -103,6 +103,21 @@ module MaterialsHelper
     string.html_safe
   end
 
+  def display_people(resource, attribute)
+    display_attribute(resource, attribute) do |values|
+      values.map do |person|
+        if person.profile
+          link_to(person.profile.full_name, person.profile)
+        elsif person.orcid.present?
+          image_tag('ORCID-iD_icon_vector.svg', size: 16) + ' ' +
+          external_link(person.display_name, person.orcid_url)
+        else
+          person.display_name
+        end
+      end.join(', ').html_safe
+    end
+  end
+
   def display_attribute_no_label(resource, attribute, markdown: false, &block) # resource e.g. <#Material> & symbol e.g. :target_audience
     display_attribute(resource, attribute, markdown:, show_label: false, &block)
   end

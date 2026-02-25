@@ -1615,4 +1615,25 @@ class MaterialsControllerTest < ActionController::TestCase
       assert_equal plant_space, assigns(:material).space
     end
   end
+
+  test 'should display material authors/contributors appropriately' do
+    assert @material.update(people_attributes: [
+      { role: 'author', full_name: 'John Doe' },
+      { role: 'author', full_name: 'Jane Smith', orcid: '0000-0002-1234-5678' },
+      { role: 'contributor', full_name: 'Jos Ca', orcid: '0000-0002-1825-0097' },
+    ])
+
+    get :show, params: { id: @material.id }
+
+    assert_select '.authors', text: 'Authors: John Doe, Jane Smith'
+    assert_select '.authors a', count: 1 do
+      assert_select '[href=?]', 'https://orcid.org/0000-0002-1234-5678'
+    end
+
+    assert_select '.contributors', { text: 'Contributors: Josiah Carberry' },
+                  "Should use name from person's profile, if linked"
+    assert_select '.contributors a', count: 1 do
+      assert_select '[href=?]', trainer_path(profiles(:trainer_one_profile))
+    end
+  end
 end

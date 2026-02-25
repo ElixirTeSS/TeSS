@@ -8,7 +8,7 @@ module HasOrcid
 
   def orcid_url
     return nil if orcid.blank?
-    "#{OrcidValidator::ORCID_PREFIX}#{orcid}"
+    OrcidValidator.orcid_url(orcid)
   end
 
   def normalize_orcid
