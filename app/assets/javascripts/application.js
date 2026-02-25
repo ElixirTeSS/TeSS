@@ -276,6 +276,8 @@ document.addEventListener("turbolinks:load", function(e) {
 
     LearningPaths.init();
 
+    People.init();
+
     $('.tess-expandable').each(function () {
         var limit = this.dataset.heightLimit || 300;
 

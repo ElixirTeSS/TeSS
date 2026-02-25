@@ -1,0 +1,31 @@
+<% label ||= f.object.class.human_attribute_name(field_name) %>
+<% model_name ||= f.object.class.model_name.param_key %>
+<% required ||= false   # is a value required %>
+<% id ||= "#{model_name}_#{field_name}" %>
+
+<div class="form-group" id="<%= id -%>" data-role="people-form">
+  <% if required %>
+    <label class="control-label string required">
+      <abbr title="required">*</abbr>
+    </label>
+  <% end %>
+
+  <%= f.label field_name.to_sym, label, class: 'control-label' %>
+  <%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
+
+  <div data-role="people-form-list">
+    <% f.object.people.where(role: role).each_with_index do |person, index| %>
+      <%= render partial: 'common/person_form',
+                 locals: { form_name: model_name, index: person.id, person: person, role: role } %>
+    <% end %>
+  </div>
+
+  <%= link_to('#', data: { role: 'people-form-add' }, class: 'btn btn-icon') do %>
+    <i class="icon icon-h4 plus-icon"></i>
+  <% end %>
+  <span class="help-inline-block help-block"><%= t('people.add', role: role) %></span>
+
+  <template data-role="people-form-template">
+    <%= render partial: 'common/person_form', locals: { form_name: model_name, person: nil, role: role } %>
+  </template>
+</div>

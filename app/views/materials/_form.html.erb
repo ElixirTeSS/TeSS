@@ -68,40 +68,10 @@
               visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Authors -->
-  <div class="form-group" id="person-author">
-    <%= f.label :authors %>
-    <%= f.field_lock :authors %>
-
-    <div id="person-author-list">
-      <% @material.people.where(role: 'author').each_with_index do |person, index| %>
-        <%= render partial: 'common/person_form',
-                   locals: { form_name: 'material', index: person.id, person: person, role: 'author' } %>
-      <% end %>
-    </div>
-
-    <a href="#" id="add-person-author" data-role="author" class="btn btn-icon">
-      <i class="icon icon-h4 plus-icon"></i>
-    </a>
-    <span class="help-inline-block help-block">Add author information</span>
-  </div>
+  <%= render partial: "common/people_form", locals: { f: f, field_name: 'authors', role: 'author' } %>
 
   <!-- Field: Contributors -->
-  <div class="form-group" id="person-contributor">
-    <%= f.label :contributors %>
-    <%= f.field_lock :contributors %>
-
-    <div id="person-contributor-list">
-      <% @material.people.where(role: 'contributor').each_with_index do |person, index| %>
-        <%= render partial: 'common/person_form',
-                   locals: { form_name: 'material', index: person.id, person: person, role: 'contributor' } %>
-      <% end %>
-    </div>
-
-    <a href="#" id="add-person-contributor" data-role="contributor" class="btn btn-icon">
-      <i class="icon icon-h4 plus-icon"></i>
-    </a>
-    <span class="help-inline-block help-block">Add contributor information</span>
-  </div>
+  <%= render partial: "common/people_form", locals: { f: f, field_name: 'contributors', role: 'contributor' } %>
 
   <!-- Field: Target Audience -->
   <%= f.multi_input :target_audience, label: 'Target audiences', errors: @material.errors[:target_audience],
@@ -221,16 +191,6 @@
 <div id="external-resource-template" style="display: none">
   <%= render partial: 'common/external_resource_form',
              locals: { form_name: 'material', external_resource: ExternalResource.new } %>
-</div>
-
-<div id="person-author-template" style="display: none">
-  <%= render partial: 'common/person_form',
-             locals: { form_name: 'material', person: nil, role: 'author' } %>
-</div>
-
-<div id="person-contributor-template" style="display: none">
-  <%= render partial: 'common/person_form',
-             locals: { form_name: 'material', person: nil, role: 'contributor' } %>
 </div>
 
 <script type="text/javascript">

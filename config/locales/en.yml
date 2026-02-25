@@ -1134,3 +1134,5 @@ en:
     authenticate: 'Authenticate your ORCID'
     authentication_success: 'You have successfully authenticated your ORCID.'
     authentication_failure: 'Failed to authenticate your ORCID.'
+  people:
+    add: Add %{role}
