@@ -94,8 +94,9 @@ class MaterialCsvIngestorTest < ActiveSupport::TestCase
     # contributors
     refute material.contributors.nil?, 'material contributors is nil'
     assert_equal 1, material.contributors.size, 'material contributors count not matched.'
-    assert material.contributors.include?('Sam Smiths'), 'material contributor[Sam Smiths] missing.'
-    refute material.contributors.include?('Wily Coyote'), 'material contributor[Wily Coyote] exists.'
+    contributor_names = material.contributors.map(&:display_name)
+    assert contributor_names.include?('Sam Smiths'), 'material contributor[Sam Smiths] missing.'
+    refute contributor_names.include?('Wily Coyote'), 'material contributor[Wily Coyote] exists.'
     # fields
     refute material.fields.nil?, 'material fields is nil'
     refute_empty material.fields, 'material fields is empty'
@@ -195,8 +196,9 @@ class MaterialCsvIngestorTest < ActiveSupport::TestCase
     assert_equal 2, updated.keywords.size, 'Updated keywords count not matched!'
     assert updated.keywords.include?('book'), 'Updated keywords missing value!'
     assert_equal 2, updated.authors.size, "Updated authors count not matched! ... #{updated.authors.inspect}"
-    assert updated.authors.include?('Steven Smith'), 'Updated authors[Steven Smith] missing!'
-    assert updated.authors.include?('Sam Harpic'), 'Updated authors[Sam Harpic] missing!'
+    author_names = updated.authors.map(&:display_name)
+    assert author_names.include?('Steven Smith'), 'Updated authors[Steven Smith] missing!'
+    assert author_names.include?('Sam Harpic'), 'Updated authors[Sam Harpic] missing!'
     assert_equal 0, updated.contributors.size, 'Updated contributors count not matched!'
 
     # check locked fields not updated

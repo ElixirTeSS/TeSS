@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'sidekiq/testing'
 
 class ProfileTest < ActiveSupport::TestCase
   setup do
@@ -94,7 +95,9 @@ class ProfileTest < ActiveSupport::TestCase
     refute profile.orcid.present?
     refute profile.orcid_authenticated
 
-    assert profile.authenticate_orcid('0009-0006-0987-5702')
+    assert_difference('PersonLinkWorker.jobs.size', 1) do
+      assert profile.authenticate_orcid('0009-0006-0987-5702')
+    end
 
     assert_empty profile.errors
     assert_equal '0009-0006-0987-5702', profile.orcid
@@ -110,7 +113,9 @@ class ProfileTest < ActiveSupport::TestCase
     refute profile.orcid_authenticated
     existing_orcid = existing_profile.orcid
 
-    profile.authenticate_orcid(existing_orcid)
+    assert_difference('PersonLinkWorker.jobs.size', 1) do
+      profile.authenticate_orcid(existing_orcid)
+    end
 
     assert_empty profile.errors
     assert_equal existing_orcid, profile.orcid
@@ -128,7 +133,9 @@ class ProfileTest < ActiveSupport::TestCase
     refute profile.orcid.present?
     refute profile.orcid_authenticated
 
-    profile.authenticate_orcid(existing_profile.orcid)
+    assert_difference('PersonLinkWorker.jobs.size', 1) do
+      profile.authenticate_orcid(existing_profile.orcid)
+    end
 
     assert_empty profile.errors
     assert existing_profile.orcid.present?
@@ -141,5 +148,11 @@ class ProfileTest < ActiveSupport::TestCase
     assert_nil Profile.new.orcid_url
     assert_nil Profile.new(orcid: '').orcid_url
     assert_equal 'https://orcid.org/0009-0006-0987-5702', Profile.new(orcid: '0009-0006-0987-5702').orcid_url
+  end
+
+  test 'does not queue person link refresh job if no ORCID change' do
+    assert_no_difference('PersonLinkWorker.jobs.size') do
+      refute Profile.new.authenticate_orcid('0009-0006-0987-5702')
+    end
   end
 end

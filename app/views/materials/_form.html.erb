@@ -68,12 +68,10 @@
               visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 
   <!-- Field: Authors -->
-  <%= f.multi_input :authors, suggestions_url: people_autocomplete_suggestions_path, title: t('materials.hints.authors'),
-                    visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
+  <%= render partial: "common/people_form", locals: { f: f, field_name: 'authors', role: 'author' } %>
 
   <!-- Field: Contributors -->
-  <%= f.multi_input :contributors, suggestions_url: people_autocomplete_suggestions_path, title: t('materials.hints.contributors'),
-                    visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
+  <%= render partial: "common/people_form", locals: { f: f, field_name: 'contributors', role: 'contributor' } %>
 
   <!-- Field: Target Audience -->
   <%= f.multi_input :target_audience, label: 'Target audiences', errors: @material.errors[:target_audience],
@@ -194,7 +192,6 @@
   <%= render partial: 'common/external_resource_form',
              locals: { form_name: 'material', external_resource: ExternalResource.new } %>
 </div>
-
 
 <script type="text/javascript">
     function removeSuggestion(suggestion) {

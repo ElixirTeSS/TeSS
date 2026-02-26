@@ -15,8 +15,8 @@ module Bioschemas
     property :version, :version
     property :description, :description
     property :keywords, :keywords
-    property :author, -> (material) { material.authors.map { |p| person(p) } }
-    property :contributor, -> (material) { material.contributors.map { |p| person(p) } }
+    property :author, -> (material) { people(material.authors) }
+    property :contributor, -> (material) { people(material.contributors) }
     property :provider, -> (material) { provider(material) }
     property :audience, -> (material) {
       material.target_audience.map { |audience| { '@type' => 'Audience', 'audienceType' => audience } }

@@ -71,6 +71,8 @@ en:
         language: 'Language of instruction'
       source:
         default_language: 'Default language'
+      person:
+        full_name: 'Name'
   about:
     headings:
       events: Events
@@ -1133,3 +1135,5 @@ en:
     authenticate: 'Authenticate your ORCID'
     authentication_success: 'You have successfully authenticated your ORCID.'
     authentication_failure: 'Failed to authenticate your ORCID.'
+  people:
+    add: Add %{role}

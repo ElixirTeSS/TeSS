@@ -48,21 +48,21 @@ class ZenodoIngestorTest < ActiveSupport::TestCase
     assert_equal 'CC-BY-4.0', material.licence, 'material licence not matched'
     assert_equal 'active', material.status, 'material status not matched'
     assert_equal 1, material.authors.size, 'material authors count not matched.'
-    assert material.authors.include?('Australian Research Data Commons')
+    assert material.authors.any? { |a| a.display_name == 'Australian Research Data Commons' }, 'author not found'
     assert_equal '10.5281/zenodo.10656276', material.doi, 'material.doi not matched.'
 
     # check material with contributors
     material = get_zenodo_id(10525947, 'HASS and Indigenous Research Data Commons co-design framework', 'Portal Provider')
     assert !material.description.nil?, 'material description is nil!'
-    assert !material.contributors.nil?, 'material keywords is nil'
+    assert !material.contributors.nil?, 'material contributors is nil'
     assert_equal 3, material.contributors.size, 'material contributors count not matched!'
-    assert material.contributors.include?('Burton, Nichola (type: Producer)'), 'material contributors[0] missing.'
-    assert material.contributors.include?('Fewster, Jennifer (type: ProjectLeader)'), 'material contributors[2] missing.'
+    assert material.contributors.any? { |c| c.display_name == 'Burton, Nichola' }, 'material contributors[0] missing.'
+    assert material.contributors.any? { |c| c.display_name == 'Fewster, Jennifer' }, 'material contributors[2] missing.'
     assert_equal '10.5281/zenodo.10525947', material.doi, 'material.doi not matched.'
 
     # check material from page 2
     material = get_zenodo_id(10052012, 'Privacy focused health data storage and access control through personal online datastores', 'Portal Provider')
-    assert material.authors.include?('Vidanage, Anushka (orcid: 0000-0002-5386-5871)'), 'material contributors[0] missing.'
+    assert material.authors.any? { |a| a.display_name == 'Vidanage, Anushka' && a.orcid == '0000-0002-5386-5871' }, 'author with ORCID not found'
   end
 
   private
