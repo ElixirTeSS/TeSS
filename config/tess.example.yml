@@ -146,33 +146,45 @@ default: &default
       focused: 13
   header_notice: # HTML to display above the header
   feature:
-    elearning_materials: false
+    # TeSS main resources
     events: true
     materials: true
-    nodes: false
-    collections: true
-    content_providers: true
-    subscription: true
-    trainers: false
+    elearning_materials: false
     workflows: true
+    collections: true
+    learning_paths: false
+    content_providers: true
     sources: false
-    user_source_creation: true
-    edit_suggestions: false
+    nodes: false
+    spaces: false
+
+    # Resources' features
+    subscription: true
     geocoding: false
-    sticky_navbar: false # when true, allows navbar (and header_notice if enabled) to stick to the top of the window and shrink when scrolling
-    # Possible features to disable:
-    #  biotools, topics, operations, sponsors, fairshare, county, ardc_fields_of_research,
-    #  other_types, subsets, syllabus, approved_editors, address_finder
-    disabled: ['ardc_fields_of_research', 'other_types', 'subsets', 'syllabus', 'approved_editors']
     materials_disabled: []
     content_providers_disabled: []
     bioschemas_testing: false
-    learning_paths: false
     collection_curation: true
-    spaces: false
+    topics: true
+
+    # User login
     invitation: false
     registration: true
-    login_through_oidc_only: false # when true, only the first oidc authentication will be available in TeSS, useful when you have your org SSO. Be careful! invitation and registration must be false when using this feature.
+    login_through_oidc_only: false # when true, only the first oidc authentication will be available in TeSS, useful when you have your org SSO. Caution! invitation and registration must be false when using this feature.
+
+    # User rights
+    user_source_creation: true
+    trainers: false
+    edit_suggestions: false
+
+    # UI
+    sticky_navbar: false # when true, allows navbar (and header_notice if enabled) to stick to the top of the window and shrink when scrolling
+
+    # Possible features to disable:
+    #  biotools, topics, operations, sponsors, fairshare, county, ardc_fields_of_research,
+    #  other_types, subsets, syllabus, approved_editors address_finder, 
+    #  visibility (if included, material or event can be hidden from the materials/events list)
+    disabled: ['ardc_fields_of_research', 'other_types', 'subsets', 'syllabus', 'approved_editors']
   restrict_content_provider_selection: false
   user_ingestion_methods: ['bioschemas']
   placeholder:
