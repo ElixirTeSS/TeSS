@@ -28,41 +28,35 @@ module Ingestors
       private
 
       def process_surf(url)
-        Hash.from_xml(Nokogiri::XML(open_url(url, raise: true)).to_s)['urlset']['url'].each do |event_page|
-          next unless event_page['loc'].include?('/en/agenda/')
+        ical_surf_url = "https://www.surf.nl/ical/surf-agenda.ics"
+        ical_events = Icalendar::Event.parse(open_url(ical_surf_url, raise: true).set_encoding('utf-8'))
+        events = {}
+        ical_events.each do |ical_event|
+          title = ical_event.summary.to_s
+          events[title] ||= OpenStruct.new
+          events[title].title = title
+          events[title].url = "https://www.surf.nl/agenda##{title.parameterize(separator: '_')}"
+          events[title].description ||= ical_event.description.to_s
+          my_start = Time.zone.parse(ical_event.dtstart.strftime('%a, %d %b %Y %H:%M:%S'))
+          my_end = Time.zone.parse(ical_event.dtend.strftime('%a, %d %b %Y %H:%M:%S'))
+          events[title].start ||= my_start
+          events[title].end ||= my_end
+          events[title].set_default_times
+          events[title].venue ||= ical_event.location
+          events[title].source ||= 'SURF'
+          events[title].timezone ||= 'Amsterdam'
 
-          sleep(1) unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/surf.yml')
-          data_json = Nokogiri::HTML5.parse(open_url(event_page['loc'], raise: false))&.css('script[type="application/ld+json"]')
-          next unless data_json.present? && data_json.length > 0
-
-          data = JSON.parse(data_json.first.text)
-          begin
-            # create new event
-            event = OpenStruct.new
-
-            # extract event details from
-            attr = data['@graph'].first
-            event.title = convert_title attr['name']
-            event.url = attr['url']&.strip
-            event.description = convert_description attr['description']
-            event.start = attr['startDate']
-            event.end = attr['endDate']
-            event.set_default_times
-            event.venue = if attr['location'].is_a?(Array)
-                            attr['location'].join(' - ')
-                          else
-                            attr['location']
-                          end
-            event.source = 'SURF'
-            event.online = true
-            event.timezone = 'Amsterdam'
-            event.target_audience = parse_audience(event.description)
-
-            # add event to events array
-            add_event(event)
-          rescue Exception => e
-            @messages << "Extract event fields failed with: #{e.message}"
-          end
+          events[title].start = [my_start, events[title].start].min
+          events[title].end = [my_end, events[title].end].max
+        rescue Exception => e
+          puts e
+          @messages << "Extract event fields failed with: #{e.message}"
+        end
+        events.values.each do |event|
+          add_event(event)
+        rescue Exception => e
+          puts e
+          @messages << "Extract event fields failed with: #{e.message}"
         end
       end
     end
