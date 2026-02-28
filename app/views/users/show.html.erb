@@ -51,7 +51,10 @@
         <% else %>
           <%= orcid_link(@user.profile) %>
         <% end %>
-        <% if TeSS::Config.orcid_authentication_enabled? && current_user == @user && !@user.profile.orcid_authenticated? %>
+        <% if TeSS::Config.orcid_authentication_enabled? &&
+            current_user == @user &&
+            !@user.profile.orcid_authenticated? &&
+            space_supports_omniauth? %>
           <%= button_to t(@user.profile.orcid.blank? ? 'orcid.link' : 'orcid.authenticate'), authenticate_orcid_path, class: 'btn btn-default' %>
         <% end %>
       </p>
