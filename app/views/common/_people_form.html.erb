@@ -3,7 +3,7 @@
 <% required ||= false   # is a value required %>
 <% id ||= "#{model_name}_#{field_name}" %>
 
-<div class="form-group" id="<%= id -%>" data-role="people-form">
+<div class="form-group" id="<%= id -%>" data-role="people-form" data-autocomplete-url="<%= people_autocomplete_suggestions_path -%>">
   <% if required %>
     <label class="control-label string required">
       <abbr title="required">*</abbr>

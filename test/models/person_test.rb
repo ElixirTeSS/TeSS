@@ -126,4 +126,23 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal 'Bloggs, Billy-Joe', p[:full_name]
     assert_equal '0000-0002-1825-0097', p[:orcid]
   end
+
+  test 'lookup for autocomplete' do
+    @material.people.create!(role: 'author', full_name: 'John Doe', orcid: '0000-0002-1825-0097')
+    @material.people.create!(role: 'author', full_name: 'jane Doe')
+    @material.people.create!(role: 'author', full_name: 'Fred Bloggs')
+    materials(:bad_material).people.create!(role: 'author', full_name: 'John Doe')
+    materials(:youtube_video_material).people.create!(role: 'author', full_name: 'John Doe')
+    materials(:youtube_video_material).people.create!(role: 'author', full_name: 'John Doe', orcid: '0000-0002-1825-0097')
+    materials(:youtube_video_material).people.create!(role: 'author', full_name: 'John Doe', orcid: '0000-0002-1694-233X')
+
+    # Should select distinct full_name/ORCID pairs
+    johns = Person.query('jo').to_a
+    assert_equal 3, johns.length, "Should be 3 - 2 with ORCIDs and 1 without. Should not include duplicates."
+
+    # Other tests
+    assert ['John Doe', 'Jane Doe'], Person.query('j').map(&:full_name).uniq
+    assert ['Fred Bloggs'], Person.query('FRED').map(&:full_name).uniq
+    assert [], Person.query('x').map(&:full_name).uniq
+  end
 end

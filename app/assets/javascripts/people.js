@@ -13,6 +13,30 @@ const People = {
         // Replace the placeholder index with the actual index
         newForm = $(newForm.replace(/replace-me/g, index + 1));
         newForm.appendTo(list);
+        const nameInput = newForm.find('.person-full-name');
+        const orcidInput = newForm.find('.person-orcid');
+        const opts = {
+            orientation: 'top',
+            triggerSelectOnValidInput: false,
+            onSelect: function (suggestion) {
+                orcidInput.val(suggestion.data.orcid);
+            },
+            transformResult: function(response) {
+                return {
+                    suggestions: $.map(response.suggestions, function(item) {
+                        item.data.hint = item.data.orcid;
+                        return item;
+                    })
+                };
+            },
+            formatResult: Autocompleters.formatResultWithHint
+        }
+
+        opts.serviceUrl = list.parents('[data-role="people-form"]').data('autocompleteUrl');
+        opts.dataType = 'json';
+        opts.deferRequestBy = 100;
+
+        nameInput.autocomplete(opts);
 
         return newForm;
     },

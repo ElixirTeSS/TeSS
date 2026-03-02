@@ -7,7 +7,15 @@ class AutocompleteController < ApplicationController
   end
 
   def people_suggestions
-    suggestions = AutocompleteSuggestion.people.query(params[:query])
+    people = Person.query(params[:query])
+    suggestions = people.map do |p|
+      { value: p.full_name,
+        data: {
+          orcid: p.orcid,
+          profile_id: p.profile_id
+        }
+      }
+    end
     respond_with({ suggestions: suggestions })
   end
 end

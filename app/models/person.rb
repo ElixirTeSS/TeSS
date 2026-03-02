@@ -24,6 +24,17 @@ class Person < ApplicationRecord
     { full_name: name, orcid: orcid }
   end
 
+  # For autocomplete
+  def self.starting_with(query)
+    where('lower(full_name) LIKE ?', "#{query.downcase}%")
+  end
+
+  def self.query(query, limit = nil)
+    q = select(:full_name, :orcid, :profile_id).starting_with(query).distinct
+    q = q.limit(limit) if limit
+    q.order(full_name: :asc)
+  end
+
   private
 
   # Automatically link to a Profile if one exists with a matching ORCID, or unlink if no match.
