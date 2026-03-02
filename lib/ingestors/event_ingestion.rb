@@ -1,5 +1,7 @@
 module Ingestors
   module EventIngestion
+    include AutoParsing
+
     def add_event(event)
       if event.is_a?(Hash)
         c = EventsController.new
@@ -9,7 +11,12 @@ module Ingestors
       end
       TeSS::Config.feature['auto_parse_vars'].each do |var|
         new_val = auto_parse(var, event.description)
-        event.send("#{var}=", new_val)
+        next if new_val.blank? 
+
+        current_val = event.send(var) if event.respond_to?(var)
+        if !event.respond_to?(var) || current_val.blank?
+          event.send("#{var}=", new_val)
+        end
       end
       @events << event unless event.nil?
     end
@@ -24,19 +31,6 @@ module Ingestors
 
     def convert_location(input)
       input
-    end
-
-    def auto_parse(var, description)
-      json_path = File.join(Rails.root, 'lib', 'ingestors', 'auto_parser_mappings', "#{var.to_s}.json")
-      res = nil
-      if File.exist?(json_path)
-        mapping = JSON.parse(File.read(json_path))
-        res = mapping
-          .select{ |key, val| description.downcase.include?(key.to_s.downcase) }
-          .values
-          .uniq
-      end
-      res
     end
 
     def parse_dates(input, timezone = nil)
