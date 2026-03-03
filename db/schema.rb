@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_03_163452) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_03_190436) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -307,8 +307,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_03_163452) do
     t.text "description"
     t.string "doi"
     t.string "target_audience", default: [], array: true
-    t.string "authors", default: [], array: true
-    t.string "contributors", default: [], array: true
+    t.string "deprecated_authors", default: [], array: true
+    t.string "deprecated_contributors", default: [], array: true
     t.string "licence", default: "notspecified"
     t.string "difficulty_level", default: "notspecified"
     t.string "slug"
@@ -363,8 +363,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_03_163452) do
     t.datetime "updated_at", null: false
     t.text "description"
     t.string "target_audience", default: [], array: true
-    t.string "authors", default: [], array: true
-    t.string "contributors", default: [], array: true
+    t.string "deprecated_authors", default: [], array: true
+    t.string "deprecated_contributors", default: [], array: true
     t.string "licence", default: "notspecified"
     t.string "difficulty_level", default: "notspecified"
     t.integer "content_provider_id"
@@ -657,8 +657,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_03_163452) do
     t.string "slug"
     t.string "target_audience", default: [], array: true
     t.string "keywords", default: [], array: true
-    t.string "authors", default: [], array: true
-    t.string "contributors", default: [], array: true
+    t.string "deprecated_authors", default: [], array: true
+    t.string "deprecated_contributors", default: [], array: true
     t.string "licence", default: "notspecified"
     t.string "difficulty_level", default: "notspecified"
     t.string "doi"
