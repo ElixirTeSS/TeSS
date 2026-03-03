@@ -104,6 +104,7 @@ class LearningPathsController < ApplicationController
                                           :content_provider_id, :difficulty_level, :status,
                                           :prerequisites, :syllabus, :learning_objectives,
                                           { contributors: [] }, { authors: [] }, { target_audience: [] },
+                                          { people_attributes: %i[id role _destroy full_name orcid] },
                                           { keywords: [] },
                                           { scientific_topic_names: [] }, { scientific_topic_uris: [] },
                                           { node_ids: [] }, { node_names: [] },

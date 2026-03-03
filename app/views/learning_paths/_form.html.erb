@@ -40,12 +40,16 @@
               visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
 
   <!-- Field: Authors -->
-  <%= f.multi_input :authors, suggestions_url: people_autocomplete_suggestions_path, title: t('learning_paths.hints.authors'),
-                    visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
+  <%= render partial: "common/people_form", locals: { f: f, field_name: 'authors', role: 'author',
+                                                      hint: t('learning_paths.hints.authors'),
+                                                      visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] }
+  %>
 
   <!-- Field: Contributors -->
-  <%= f.multi_input :contributors, suggestions_url: people_autocomplete_suggestions_path, title: t('learning_paths.hints.contributors'),
-                    visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] %>
+  <%= render partial: "common/people_form", locals: { f: f, field_name: 'contributors', role: 'contributor',
+                                                      hint: t('learning_paths.hints.contributors'),
+                                                      visibility_toggle: TeSS::Config.feature['learning_paths_disabled'] }
+  %>
 
   <!-- Field: Target Audience -->
   <%= f.multi_input :target_audience, label: 'Target audiences', errors: @learning_path.errors[:target_audience],

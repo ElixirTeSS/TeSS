@@ -2,8 +2,11 @@
 <% model_name ||= f.object.class.model_name.param_key %>
 <% required ||= false   # is a value required %>
 <% id ||= "#{model_name}_#{field_name}" %>
+<% hint ||= false %>
+<% visibility_toggle ||= nil %>
+<% hidden = visibility_toggle && hidden?(field_name, visibility_toggle) %>
 
-<div class="form-group" id="<%= id -%>" data-role="people-form" data-autocomplete-url="<%= people_autocomplete_suggestions_path -%>">
+<div class="form-group<%= ' hidden' if hidden -%>" id="<%= id -%>" data-role="people-form" data-autocomplete-url="<%= people_autocomplete_suggestions_path -%>">
   <% if required %>
     <label class="control-label string required">
       <abbr title="required">*</abbr>
@@ -28,4 +31,6 @@
   <template data-role="people-form-template">
     <%= render partial: 'common/person_form', locals: { form_name: model_name, person: nil, role: role } %>
   </template>
+
+  <%= content_tag(:p, hint, class: 'help-block') if hint %>
 </div>

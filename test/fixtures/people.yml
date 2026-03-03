@@ -35,3 +35,23 @@ munazah_andrabi:
   orcid: null
   resource: youtube_video_material (Material)
   role: contributor
+
+learning_path_author_1:
+  full_name: Firstname Lastname
+  resource: two (LearningPath)
+  role: author
+
+learning_path_author_2:
+  full_name: Someone Else
+  resource: two (LearningPath)
+  role: author
+
+learning_path_contributor_1:
+  full_name: Contri Butor
+  resource: two (LearningPath)
+  role: contributor
+
+learning_path_contributor_2:
+  full_name: Person Two
+  resource: two (LearningPath)
+  role: contributor

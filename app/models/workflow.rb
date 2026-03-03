@@ -12,6 +12,7 @@ class Workflow < ApplicationRecord
   include HasDifficultyLevel
   include HasEdamTerms
   include InSpace
+  include HasPeople
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -29,11 +30,18 @@ class Workflow < ApplicationRecord
       text :node_descriptions do
         node_index('description')
       end
-      text :authors
+      text :authors do
+        authors.map(&:display_name)
+      end
+      text :contributors do
+        contributors.map(&:display_name)
+      end
       text :scientific_topics do
         scientific_topics_and_synonyms
       end
-      string :authors, :multiple => true
+      string :authors, multiple: true do
+        authors.map(&:display_name)
+      end
       string :scientific_topics, :multiple => true do
         scientific_topics_and_synonyms
       end
@@ -41,8 +49,9 @@ class Workflow < ApplicationRecord
       string :target_audience, :multiple => true
       text :keywords
       string :keywords, :multiple => true
-      text :contributors
-      string :contributors, :multiple => true
+      string :contributors, multiple: true do
+        contributors.map(&:display_name)
+      end
 
       integer :user_id
       boolean :public
@@ -65,11 +74,14 @@ class Workflow < ApplicationRecord
   validates :title, presence: true
   validates :keywords, length: { maximum: 20 }
 
-  clean_array_fields(:keywords, :contributors, :authors, :target_audience)
+  clean_array_fields(:keywords, :target_audience)
 
-  update_suggestions(:keywords, :contributors, :authors, :target_audience)
+  update_suggestions(:keywords, :target_audience)
 
   after_update :log_diagram_modification
+
+  has_person_role :authors, role_key: 'author'
+  has_person_role :contributors, role_key: 'contributor'
 
   def self.facet_fields
     %w(scientific_topics target_audience keywords licence difficulty_level authors contributors)

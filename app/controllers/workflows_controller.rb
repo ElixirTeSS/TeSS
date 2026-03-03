@@ -118,6 +118,7 @@ class WorkflowsController < ApplicationController
                                      :remote_created_date,  :remote_updated_date, { keywords: [] },
                                      { scientific_topic_names: [] }, { scientific_topic_uris: [] }, :licence,
                                      :difficulty_level, { contributors: [] }, { authors: [] }, { target_audience: [] },
+                                     { people_attributes: %i[id role _destroy full_name orcid] },
                                      :hide_child_nodes, :public)
   end
 
