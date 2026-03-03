@@ -105,7 +105,7 @@ module MaterialsHelper
 
   def display_people(resource, attribute)
     display_attribute(resource, attribute) do |values|
-      values.map do |person|
+      html = values.map do |person|
         if person.profile
           link_to(person.profile.full_name, person.profile)
         elsif person.orcid.present?
@@ -114,7 +114,8 @@ module MaterialsHelper
         else
           person.display_name
         end
-      end.join(', ').html_safe
+      end
+      safe_join(html, ', ')
     end
   end
 
