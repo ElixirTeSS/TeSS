@@ -198,16 +198,18 @@ class MaterialTest < ActiveSupport::TestCase
   end
 
   test 'should set authors from array of Person objects' do
-    person1 = @material.people.build(role: 'author', full_name: 'Alice Wonder')
-    person2 = @material.people.build(role: nil, full_name: 'Bob Builder') # Should work with or without role
+    person1 = Person.new(role: 'author', full_name: 'Alice Wonder')
+    person2 = Person.new(role: nil, full_name: 'Bob Builder') # Should work with or without role
+
+    assert_not_includes @material.authors.map(&:full_name), person1.full_name
 
     @material.authors = [person1, person2]
     @material.save!
     @material.reload
 
     assert_equal 2, @material.authors.size
-    assert @material.authors.include?(person1)
-    assert @material.authors.include?(person2)
+    assert_includes @material.authors.map(&:full_name), person1.full_name
+    assert_includes @material.authors.map(&:full_name), person2.full_name
   end
 
   test 'should re-assign roles when setting authors from Person objects' do
@@ -264,16 +266,19 @@ class MaterialTest < ActiveSupport::TestCase
   end
 
   test 'should set contributors from array of Person objects' do
-    person1 = @material.people.build(full_name: 'Alice Wonder')
-    person2 = @material.people.build(full_name: 'Bob Builder')
+    person1 = Person.new(resource: @material, full_name: 'Alice Wonder')
+    person2 = Person.new(resource: @material, full_name: 'Bob Builder')
+
+
+    assert_not_includes @material.contributors.map(&:full_name), person1.full_name
 
     @material.contributors = [person1, person2]
     @material.save!
     @material.reload
 
     assert_equal 2, @material.contributors.size
-    assert @material.contributors.include?(person1)
-    assert @material.contributors.include?(person2)
+    assert_includes @material.contributors.map(&:full_name), person1.full_name
+    assert_includes @material.contributors.map(&:full_name), person2.full_name
   end
 
   test 'should delete material when content provider deleted' do

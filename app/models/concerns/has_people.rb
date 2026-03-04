@@ -17,6 +17,7 @@ module HasPeople
 
       # Define custom setter that accepts strings (legacy), hashes, or Person objects
       define_method("#{role_name}=") do |value|
+        send(role_name).reset
         super(set_people_for_role(value, role_key))
       end
     end
@@ -44,7 +45,13 @@ module HasPeople
         match.assign_attributes(**attrs, role: role_key)
         to_keep << match
       else
-        to_keep << people.build(**attrs, role: role_key)
+        if person_data.is_a?(Person)
+          person = person_data
+          person.role = role_key
+        else
+          person = people.build(**attrs, role: role_key)
+        end
+        to_keep << person
       end
     end
 
