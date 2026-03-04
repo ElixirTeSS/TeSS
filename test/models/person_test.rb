@@ -145,4 +145,47 @@ class PersonTest < ActiveSupport::TestCase
     assert ['Fred Bloggs'], Person.query('FRED').map(&:full_name).uniq
     assert [], Person.query('x').map(&:full_name).uniq
   end
+
+  test 'does not needlessly destroy and recreate associations' do
+    assert_difference('Person.count', 1) do
+      @material.authors = ['Fred Bloggs']
+      assert @material.save
+    end
+
+    fred = @material.authors.first
+
+    assert_no_difference('Person.count') do
+      @material.authors = ['Fred Bloggs']
+      assert @material.save
+    end
+    assert_equal fred.id, @material.authors.first.id
+    assert_equal 'Fred Bloggs', @material.authors.first.full_name
+    assert_nil @material.authors.first.orcid
+
+    assert_no_difference('Person.count') do
+      @material.authors = [{ full_name: 'Fred Bloggs', orcid: '0000-0002-1825-0097' }]
+      assert @material.save!
+    end
+    assert_equal fred.id, @material.authors.first.id
+    assert_equal 'Fred Bloggs', @material.authors.first.full_name
+    assert_equal '0000-0002-1825-0097', @material.authors.first.orcid
+
+    assert_no_difference('Person.count') do
+      @material.authors = [Person.new(full_name: 'Freddy Bloggs', orcid: '0000-0002-1825-0097')]
+      assert @material.save
+    end
+    assert_equal fred.id, @material.reload.authors.first.id
+    assert_equal 'Freddy Bloggs', @material.authors.first.full_name
+    assert_equal '0000-0002-1825-0097', @material.authors.first.orcid
+
+    # This should replace the person since their name has changed and no ORCID match
+    assert_no_difference('Person.count') do
+      @material.authors = ['Fred Blobs']
+      assert @material.save
+    end
+    assert_nil Person.find_by_id(fred.id)
+    assert_not_equal fred.id, @material.reload.authors.first.id
+    assert_equal 'Fred Blobs', @material.authors.first.full_name
+    assert_nil @material.authors.first.orcid
+  end
 end
