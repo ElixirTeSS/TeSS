@@ -72,7 +72,7 @@ en:
       source:
         default_language: 'Default language'
       person:
-        full_name: 'Name'
+        name: 'Name'
   about:
     headings:
       events: Events

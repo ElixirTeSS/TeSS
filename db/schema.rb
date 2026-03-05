@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_03_190436) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_05_104021) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -430,7 +430,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_03_190436) do
   end
 
   create_table "people", force: :cascade do |t|
-    t.string "full_name"
+    t.string "name"
     t.string "orcid"
     t.string "role", null: false
     t.string "resource_type", null: false

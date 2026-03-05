@@ -253,7 +253,7 @@ class MaterialsControllerTest < ActionController::TestCase
           date_published: test_material.date_published,
           doi: test_material.doi,
           subsets: test_material.subsets,
-          people_attributes: test_material.people.map { |person| { role: person.role, full_name: person.full_name, orcid: person.orcid } },
+          people_attributes: test_material.people.map { |person| { role: person.role, name: person.name, orcid: person.orcid } },
           prerequisites: test_material.prerequisites,
           syllabus: test_material.syllabus,
           learning_objectives: test_material.learning_objectives
@@ -1618,9 +1618,9 @@ class MaterialsControllerTest < ActionController::TestCase
 
   test 'should display material authors/contributors appropriately' do
     assert @material.update(people_attributes: [
-      { role: 'author', full_name: 'John Doe' },
-      { role: 'author', full_name: 'Jane Smith', orcid: '0000-0002-1234-5678' },
-      { role: 'contributor', full_name: 'Jos Ca', orcid: '0000-0002-1825-0097' },
+      { role: 'author', name: 'John Doe' },
+      { role: 'author', name: 'Jane Smith', orcid: '0000-0002-1234-5678' },
+      { role: 'contributor', name: 'Jos Ca', orcid: '0000-0002-1825-0097' },
     ])
 
     get :show, params: { id: @material.id }

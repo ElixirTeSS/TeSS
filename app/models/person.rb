@@ -4,14 +4,14 @@ class Person < ApplicationRecord
   belongs_to :profile, optional: true
   belongs_to :resource, polymorphic: true
 
-  validates :resource, :role, :full_name, presence: true
+  validates :resource, :role, :name, presence: true
 
   # Automatically link to profile based on ORCID on save
   before_save :link_to_profile_by_orcid
 
-  # Return the display name - currently just the full_name
+  # Return the display name - currently just the full name
   def display_name
-    full_name
+    name
   end
 
   # Extract person attributes from a string containing a person's name and possibly an ORCID.
@@ -21,18 +21,18 @@ class Person < ApplicationRecord
       orcid = $3
       ''
     end.strip
-    { full_name: name, orcid: orcid }
+    { name: name, orcid: orcid }
   end
 
   # For autocomplete
   def self.starting_with(query)
-    where('lower(full_name) LIKE ?', "#{query.downcase}%")
+    where('lower(name) LIKE ?', "#{query.downcase}%")
   end
 
   def self.query(query, limit = nil)
-    q = select(:full_name, :orcid, :profile_id).starting_with(query).distinct
+    q = select(:name, :orcid, :profile_id).starting_with(query).distinct
     q = q.limit(limit) if limit
-    q.order(full_name: :asc)
+    q.order(name: :asc)
   end
 
   private

@@ -34,18 +34,18 @@ class AutocompleteControllerTest < ActionController::TestCase
 
   test 'should get people suggestions' do
     material = materials(:good_material)
-    material.people.create!(role: 'author', full_name: 'John Doe', orcid: '0000-0002-1825-0097')
-    material.people.create!(role: 'author', full_name: 'jane Doe')
-    material.people.create!(role: 'author', full_name: 'Fred Bloggs')
-    materials(:bad_material).people.create!(role: 'author', full_name: 'John Doe')
+    material.people.create!(role: 'author', name: 'John Doe', orcid: '0000-0002-1825-0097')
+    material.people.create!(role: 'author', name: 'jane Doe')
+    material.people.create!(role: 'author', name: 'Fred Bloggs')
+    materials(:bad_material).people.create!(role: 'author', name: 'John Doe')
     material2 = materials(:youtube_video_material)
-    material2.people.create!(role: 'author', full_name: 'John Doe')
-    material2.people.create!(role: 'author', full_name: 'John Doe', orcid: '0000-0002-1825-0097')
-    material2.people.create!(role: 'author', full_name: 'John Doe', orcid: '0000-0002-1694-233X')
+    material2.people.create!(role: 'author', name: 'John Doe')
+    material2.people.create!(role: 'author', name: 'John Doe', orcid: '0000-0002-1825-0097')
+    material2.people.create!(role: 'author', name: 'John Doe', orcid: '0000-0002-1694-233X')
 
     sign_in users(:regular_user)
 
-    # Should select distinct full_name/ORCID pairs
+    # Should select distinct name/ORCID pairs
     get :people_suggestions, params: { query: 'jo' }, format: :json
     assert_response :success
     res = JSON.parse(response.body)

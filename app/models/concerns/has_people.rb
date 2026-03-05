@@ -1,5 +1,5 @@
 module HasPeople
-  VALID_ATTRS = [:full_name, :orcid, :profile_id].freeze
+  VALID_ATTRS = [:name, :orcid, :profile_id].freeze
   extend ActiveSupport::Concern
 
   included do
@@ -31,15 +31,16 @@ module HasPeople
     to_keep = []
 
     Array(value).reject(&:blank?).map do |person_data|
+      person_data = person_data.to_h if person_data.is_a?(ActionController::Parameters)
       if person_data.is_a?(String)
-        attrs = { full_name: person_data.strip }
+        attrs = { name: person_data.strip }
       elsif person_data.is_a?(Hash)
         attrs = person_data.with_indifferent_access.slice(*VALID_ATTRS)
       elsif person_data.is_a?(Person)
         attrs = person_data.attributes.with_indifferent_access.slice(*VALID_ATTRS)
       end
 
-      idx = current_people.index { |p| p.orcid == attrs[:orcid] || p.full_name == attrs[:full_name] }
+      idx = current_people.index { |p| p.orcid == attrs[:orcid] || p.name == attrs[:name] }
       if idx
         match = current_people.delete_at(idx)
         match.assign_attributes(**attrs, role: role_key)

@@ -10,8 +10,8 @@ class MaterialTest < ActiveSupport::TestCase
                                  url: 'http://goog.e.com',
                                  user: @user,
                                  people_attributes: [
-                                   { role: 'author', full_name: 'Horace Smith' },
-                                   { role: 'author', full_name: 'Flo Johnson' }
+                                   { role: 'author', name: 'Horace Smith' },
+                                   { role: 'author', name: 'Flo Johnson' }
                                  ],
                                  doi: 'https://doi.org/10.1011/RSE.2019.55',
                                  licence: 'CC-BY-NC-SA-4.0',
@@ -80,7 +80,7 @@ class MaterialTest < ActiveSupport::TestCase
     m.date_published = '2021-06-14'
     m.subsets = []
     m.people.where(role: 'author').destroy_all
-    m.people.create!(full_name: 'Nikolai Tesla', role: 'author')
+    m.people.create!(name: 'Nikolai Tesla', role: 'author')
     m.contributors = ['Prof. Stephen Hawking']
     m.prerequisites = 'Bring your enthusiasm'
     m.syllabus = "1. Overview\  2. The main part\  3. Summary"
@@ -147,12 +147,12 @@ class MaterialTest < ActiveSupport::TestCase
   test 'should add authors via nested attributes' do
     assert_equal 2, @material.authors.size
     assert @material.update(people_attributes: [
-      { role: 'author', full_name: 'John Doe' },
-      { role: 'author', full_name: 'Jane Smith', orcid: '0000-0002-1234-5678' }
+      { role: 'author', name: 'John Doe' },
+      { role: 'author', name: 'Jane Smith', orcid: '0000-0002-1234-5678' }
     ])
     @material.reload
     assert_equal 4, @material.authors.size
-    jane = @material.authors.find { |a| a.full_name == 'Jane Smith' }
+    jane = @material.authors.find { |a| a.name == 'Jane Smith' }
     assert_not_nil jane
     assert_equal 'Jane Smith', jane.display_name
     assert_equal '0000-0002-1234-5678', jane.orcid
@@ -176,47 +176,47 @@ class MaterialTest < ActiveSupport::TestCase
     assert_equal 2, @material.authors.size
     john = @material.authors.find { |a| a.display_name == 'John Doe' }
     assert_not_nil john
-    assert_equal 'John Doe', john.full_name
+    assert_equal 'John Doe', john.name
 
     jane = @material.authors.find { |a| a.display_name == 'Jane Smith' }
     assert_not_nil jane
-    assert_equal 'Jane Smith', jane.full_name
+    assert_equal 'Jane Smith', jane.name
   end
 
   test 'should set authors from array of hashes' do
     @material.authors = [
-      { full_name: 'John Doe', orcid: '0000-0001-1234-5678' },
-      { full_name: 'Jane Smith' }
+      { name: 'John Doe', orcid: '0000-0001-1234-5678' },
+      { name: 'Jane Smith' }
     ]
     @material.save!
     @material.reload
 
     assert_equal 2, @material.authors.size
-    john = @material.authors.find { |a| a.full_name == 'John Doe' }
+    john = @material.authors.find { |a| a.name == 'John Doe' }
     assert_not_nil john
     assert_equal '0000-0001-1234-5678', john.orcid
   end
 
   test 'should set authors from array of Person objects' do
-    person1 = Person.new(role: 'author', full_name: 'Alice Wonder')
-    person2 = Person.new(role: nil, full_name: 'Bob Builder') # Should work with or without role
+    person1 = Person.new(role: 'author', name: 'Alice Wonder')
+    person2 = Person.new(role: nil, name: 'Bob Builder') # Should work with or without role
 
-    assert_not_includes @material.authors.map(&:full_name), person1.full_name
+    assert_not_includes @material.authors.map(&:name), person1.name
 
     @material.authors = [person1, person2]
     @material.save!
     @material.reload
 
     assert_equal 2, @material.authors.size
-    assert_includes @material.authors.map(&:full_name), person1.full_name
-    assert_includes @material.authors.map(&:full_name), person2.full_name
+    assert_includes @material.authors.map(&:name), person1.name
+    assert_includes @material.authors.map(&:name), person2.name
   end
 
   test 'should re-assign roles when setting authors from Person objects' do
     material = materials(:biojs)
 
-    person1 = material.contributors.create(full_name: 'Alice Wonder')
-    person2 = material.contributors.create(full_name: 'Bob Builder')
+    person1 = material.contributors.create(name: 'Alice Wonder')
+    person2 = material.contributors.create(name: 'Bob Builder')
 
     assert_equal [person1, person2], material.contributors.to_a
     assert_equal [], material.authors.to_a
@@ -235,7 +235,7 @@ class MaterialTest < ActiveSupport::TestCase
     @material.reload
 
     assert_equal 2, @material.authors.size
-    madonna = @material.authors.find { |a| a.full_name == 'Madonna' }
+    madonna = @material.authors.find { |a| a.name == 'Madonna' }
     assert_not_nil madonna
     assert_equal 'Madonna', madonna.display_name
   end
@@ -248,37 +248,37 @@ class MaterialTest < ActiveSupport::TestCase
     assert_equal 2, @material.contributors.size
     john = @material.contributors.find { |c| c.display_name == 'John Doe' }
     assert_not_nil john
-    assert_equal 'John Doe', john.full_name
+    assert_equal 'John Doe', john.name
   end
 
   test 'should set contributors from array of hashes' do
     @material.contributors = [
-      { full_name: 'John Doe', orcid: '0000-0001-1234-5678' },
-      { full_name: 'Jane Smith' }
+      { name: 'John Doe', orcid: '0000-0001-1234-5678' },
+      { name: 'Jane Smith' }
     ]
     @material.save!
     @material.reload
 
     assert_equal 2, @material.contributors.size
-    john = @material.contributors.find { |c| c.full_name == 'John Doe' }
+    john = @material.contributors.find { |c| c.name == 'John Doe' }
     assert_not_nil john
     assert_equal '0000-0001-1234-5678', john.orcid
   end
 
   test 'should set contributors from array of Person objects' do
-    person1 = Person.new(resource: @material, full_name: 'Alice Wonder')
-    person2 = Person.new(resource: @material, full_name: 'Bob Builder')
+    person1 = Person.new(resource: @material, name: 'Alice Wonder')
+    person2 = Person.new(resource: @material, name: 'Bob Builder')
 
 
-    assert_not_includes @material.contributors.map(&:full_name), person1.full_name
+    assert_not_includes @material.contributors.map(&:name), person1.name
 
     @material.contributors = [person1, person2]
     @material.save!
     @material.reload
 
     assert_equal 2, @material.contributors.size
-    assert_includes @material.contributors.map(&:full_name), person1.full_name
-    assert_includes @material.contributors.map(&:full_name), person2.full_name
+    assert_includes @material.contributors.map(&:name), person1.name
+    assert_includes @material.contributors.map(&:name), person2.name
   end
 
   test 'should delete material when content provider deleted' do

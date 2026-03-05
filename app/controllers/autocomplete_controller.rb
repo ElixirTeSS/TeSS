@@ -9,7 +9,7 @@ class AutocompleteController < ApplicationController
   def people_suggestions
     people = Person.query(params[:query])
     suggestions = people.map do |p|
-      { value: p.full_name,
+      { value: p.name,
         data: {
           orcid: p.orcid,
           profile_id: p.profile_id

@@ -13,7 +13,7 @@ const People = {
         // Replace the placeholder index with the actual index
         newForm = $(newForm.replace(/replace-me/g, index + 1));
         newForm.appendTo(list);
-        const nameInput = newForm.find('.person-full-name');
+        const nameInput = newForm.find('.person-name');
         const orcidInput = newForm.find('.person-orcid');
         const opts = {
             orientation: 'top',

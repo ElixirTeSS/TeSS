@@ -13,7 +13,7 @@ class PersonLinkWorkerTest < ActiveSupport::TestCase
 
     material = materials(:good_material)
     orcid = '0000-0002-1694-233X'
-    author = material.authors.create!(orcid: orcid, full_name: 'Guy Dudeson')
+    author = material.authors.create!(orcid: orcid, name: 'Guy Dudeson')
     assert_nil author.profile
 
     # Auth ORCID
@@ -35,7 +35,7 @@ class PersonLinkWorkerTest < ActiveSupport::TestCase
     new_person = users(:regular_user).profile
 
     material = materials(:good_material)
-    author = material.authors.create!(orcid: orcid, full_name: 'Orcid Haver')
+    author = material.authors.create!(orcid: orcid, name: 'Orcid Haver')
     assert_equal person_with_orcid, author.profile
 
     # Switch ORCID
@@ -55,13 +55,13 @@ class PersonLinkWorkerTest < ActiveSupport::TestCase
     person_with_orcid.authenticate_orcid(orcid)
 
     material = materials(:good_material)
-    author = material.authors.create!(orcid: orcid, full_name: 'Orcid Haver')
+    author = material.authors.create!(orcid: orcid, name: 'Orcid Haver')
     assert_equal person_with_orcid, author.profile
 
     new_orcid = '0000-0001-5109-3700'
 
     material = materials(:biojs)
-    author2 = material.authors.create!(orcid: new_orcid, full_name: 'No Profile')
+    author2 = material.authors.create!(orcid: new_orcid, name: 'No Profile')
     assert_nil author2.profile
 
     # Switch ORCID

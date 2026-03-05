@@ -60,7 +60,8 @@ module Ingestors
         material = OpenStruct.new
         material.status = 'active'
         material.doi = input['doi'] unless metadata['doi'].nil?
-        material.people_attributes = []
+        material.authors = []
+        material.contributors = []
         unless metadata.nil?
           material.title = metadata['title'] unless metadata['title'].nil?
           material.description = process_description metadata['description']
@@ -69,9 +70,8 @@ module Ingestors
           unless metadata['creators'].nil?
             metadata['creators'].each do |c|
               # Store the full name directly without trying to parse it
-              material.people_attributes << {
-                role: 'author',
-                full_name: c['name'].to_s.strip,
+              material.authors << {
+                name: c['name'].to_s.strip,
                 orcid: c['orcid']
               }
             end
@@ -79,9 +79,8 @@ module Ingestors
           unless metadata['contributors'].nil?
             metadata['contributors'].each do |c|
               # Store the full name directly without trying to parse it
-              material.people_attributes << {
-                role: 'contributor',
-                full_name: c['name'].to_s.strip,
+              material.contributors << {
+                name: c['name'].to_s.strip,
                 orcid: c['orcid']
               }
             end

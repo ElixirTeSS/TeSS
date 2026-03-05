@@ -7,9 +7,9 @@
   <%= hidden_field_tag("#{field_name_prefix}[role]", role) %>
 
   <div class="form-group">
-    <%= text_field_tag "#{field_name_prefix}[full_name]", person&.full_name, size: 32,
-                       class: 'form-control person-full-name',
-                       placeholder: Person.human_attribute_name(:full_name) %>
+    <%= text_field_tag "#{field_name_prefix}[name]", person&.name, size: 32,
+                       class: 'form-control person-name',
+                       placeholder: Person.human_attribute_name(:name) %>
   </div>
 
   <div class="form-group">
