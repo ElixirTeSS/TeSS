@@ -56,7 +56,6 @@ module Ingestors
             event.source = 'SURF'
             event.online = true
             event.timezone = 'Amsterdam'
-            event.target_audience = parse_audience(event.description)
 
             # add event to events array
             add_event(event)

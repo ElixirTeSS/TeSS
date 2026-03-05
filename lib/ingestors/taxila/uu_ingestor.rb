@@ -106,7 +106,6 @@ module Ingestors
             event.timezone = 'Amsterdam'
             # UU wants opt-in instead of opt-out for this scraper
             event.visible = false
-            event.target_audience = parse_audience(event.description)
 
             # the below code allows fetching the long description, at the cost of a
             # page load per event.
