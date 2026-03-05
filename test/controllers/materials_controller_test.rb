@@ -374,6 +374,8 @@ class MaterialsControllerTest < ActionController::TestCase
 
   test 'should show material as json' do
     @material.scientific_topic_uris = ['http://edamontology.org/topic_0654']
+    @material.authors = [{ name: 'Josiah Carberry', orcid: 'https://orcid.org/0000-0002-1825-0097' }, { name: 'Lara Croft' }]
+    @material.contributors = [{ name: 'Contri Butor', orcid: '0000-0002-1694-233X' }]
     @material.events << events(:one)
     @material.collections << collections(:one)
     @material.save!
