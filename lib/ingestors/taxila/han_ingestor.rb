@@ -50,7 +50,6 @@ module Ingestors
           event.venue = "#{venue_super_css.text} #{venue_sub_css.text}"
           event.source = "HAN"
           event.timezone = 'Amsterdam'
-          event.target_audience = parse_audience(event.description)
 
           add_event(event)
         rescue Exception => e

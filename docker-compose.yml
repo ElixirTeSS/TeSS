@@ -61,10 +61,6 @@ services:
       - redis-data:/data
   sidekiq:
     container_name: ${PREFIX}-sidekiq
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: development
     image: ${PREFIX}-app
     depends_on:
       - app
