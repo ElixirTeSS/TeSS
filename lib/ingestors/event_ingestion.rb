@@ -1,11 +1,22 @@
 module Ingestors
   module EventIngestion
+    include AutoParsing
+
     def add_event(event)
       if event.is_a?(Hash)
         c = EventsController.new
         c.params = { event: event }
         c.send(:event_params)
         event = OpenStruct.new(c.send(:event_params))
+      end
+      TeSS::Config.feature['auto_parse_vars'].each do |var|
+        new_val = auto_parse(var, event.description)
+        next if new_val.blank? 
+
+        current_val = event.send(var) if event.respond_to?(var)
+        if !event.respond_to?(var) || current_val.blank?
+          event.send("#{var}=", new_val)
+        end
       end
       @events << event unless event.nil?
     end
@@ -20,37 +31,6 @@ module Ingestors
 
     def convert_location(input)
       input
-    end
-
-    def parse_audience(description)
-      audience_mapping = {
-        'post-docs': 'researchers',
-        "PhD's candidate": 'researchers',
-        'PhD student': 'researchers',
-        'principal investigator': 'researchers',
-        'professor': 'researchers',
-        'scientist': 'researchers',
-        'library staff': 'research support staff',
-        'research librarian': 'research support staff',
-        'information specialist': 'research support staff',
-        'archivist': 'research support staff',
-        'repository manager': 'research support staff',
-        'data steward': 'research support staff',
-        'data manager': 'research support staff',
-        'data professional': 'research support staff',
-        'data engineer': 'research support staff',
-        'software engineer': 'research support staff',
-        'data librarian': 'research support staff',
-        'bachelor': 'students',
-        'master': 'students',
-        'teacher': 'trainers',
-        'coaches': 'trainers',
-        'educator': 'trainers',
-      }
-      audience_mapping
-        .select{ |key, val| description.downcase.include?(key.to_s.downcase) }
-        .values
-        .uniq
     end
 
     def parse_dates(input, timezone = nil)

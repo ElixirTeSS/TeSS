@@ -504,6 +504,36 @@ class UsersControllerTest < ActionController::TestCase
     assert_select '#sidebar button', text: 'Authenticate your ORCID'
   end
 
+  test 'should show link orcid button if own profile and orcid currently blank' do
+    user = users(:private_user)
+    user.profile.update_column(:orcid, nil)
+
+    refute user.profile.orcid.present?
+    refute user.profile.orcid_authenticated?
+
+    sign_in user
+
+    get :show, params: { id: user }
+
+    assert_response :success
+    assert_select '#sidebar button', text: 'Link your ORCID'
+  end
+
+  test 'should not show authenticate orcid button if feature disabled' do
+    Rails.application.config.secrets.stub(:orcid, nil) do
+      user = users(:private_user)
+      assert user.profile.orcid.present?
+      refute user.profile.orcid_authenticated?
+
+      sign_in user
+
+      get :show, params: { id: user }
+
+      assert_response :success
+      assert_select '#sidebar button', text: 'Authenticate your ORCID', count: 0
+    end
+  end
+
   test 'should not show authenticate orcid button if not own profile' do
     user = users(:private_user)
     assert user.profile.orcid.present?

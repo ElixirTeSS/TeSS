@@ -69,10 +69,6 @@ services:
       - redis-data:/data
   sidekiq:
     container_name: ${PREFIX}-sidekiq
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: production
     image: ${PREFIX}-app
     restart: always
     depends_on:

@@ -279,6 +279,9 @@ document.addEventListener("turbolinks:load", function(e) {
     People.init();
 
     $('.tess-expandable').each(function () {
+        if (this.dataset.origHeight) {
+            return;
+        }
         var limit = this.dataset.heightLimit || 300;
 
         if (this.clientHeight > limit) {
@@ -288,30 +291,9 @@ document.addEventListener("turbolinks:load", function(e) {
             this.dataset.origHeight = this.clientHeight;
             this.style.maxHeight = '' + limit + 'px';
             this.classList.add('tess-expandable-closed');
-            var btn = $('<a href="#" class="tess-expandable-btn">Show more</a>');
+            const btn = $('<a href="#" class="tess-expandable-btn">Show more</a>');
             btn.insertAfter($(this));
         }
-    });
-
-    $(document).on('click', '.tess-expandable-btn', function (event) {
-        event.preventDefault();
-        var div = this.parentElement.querySelector('.tess-expandable');
-        var maxHeight = parseInt(div.dataset.origHeight) + 80;
-        var limit = parseInt(div.dataset.heightLimit || "300");
-
-        if (div.classList.contains('tess-expandable-closed')) {
-            div.classList.add('tess-expandable-open');
-            div.classList.remove('tess-expandable-closed');
-            div.style.maxHeight = '' + maxHeight + 'px';
-            this.innerHTML = 'Show less';
-        } else {
-            div.classList.remove('tess-expandable-open');
-            div.classList.add('tess-expandable-closed');
-            div.style.maxHeight = '' + limit + 'px';
-            this.innerHTML = 'Show more';
-        }
-
-        return false;
     });
 
     $('.faq .question dt').click(function () {
@@ -377,6 +359,36 @@ $(document).on('click', '[href="#activity_log"]', function () {
         } else {
             $(this).find('.collapse-icon').addClass('expand-icon').removeClass('collapse-icon');
         }
+    }
+
+    return false;
+});
+
+$(document).on('click', '.tess-expandable-btn', function (event) {
+    event.preventDefault();
+    let div = this.previousElementSibling;
+
+    if (!div || !div.classList.contains('tess-expandable')) {
+        div = this.parentElement.querySelector('.tess-expandable');
+    }
+
+    if (!div) {
+        return false;
+    }
+
+    const maxHeight = parseInt(div.dataset.origHeight) + 80;
+    const limit = parseInt(div.dataset.heightLimit || "300");
+
+    if (div.classList.contains('tess-expandable-closed')) {
+        div.classList.add('tess-expandable-open');
+        div.classList.remove('tess-expandable-closed');
+        div.style.maxHeight = '' + maxHeight + 'px';
+        this.innerHTML = 'Show less';
+    } else {
+        div.classList.remove('tess-expandable-open');
+        div.classList.add('tess-expandable-closed');
+        div.style.maxHeight = '' + limit + 'px';
+        this.innerHTML = 'Show more';
     }
 
     return false;
