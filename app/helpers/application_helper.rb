@@ -713,4 +713,27 @@ module ApplicationHelper
     options_for_select(SearchableIndex::PER_PAGE_OPTIONS.map { |k| [k, k] },
                        params[:per_page].presence || SearchableIndex::DEFAULT_PAGE_SIZE)
   end
+
+  def attributes_to_hidden_fields(param_key, attrs)
+    flatten_params(param_key, attrs).map do |name, value|
+      hidden_field_tag(name, value)
+    end.join.html_safe
+  end
+
+  private
+
+  def flatten_params(prefix, value)
+    case value
+    when Hash
+      value.flat_map do |k, v|
+        flatten_params("#{prefix}[#{k}]", v)
+      end
+    when Array
+      value.flat_map do |v|
+        flatten_params("#{prefix}[]", v)
+      end
+    else
+      [[prefix, value]]
+    end
+  end
 end
