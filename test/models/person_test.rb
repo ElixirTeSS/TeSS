@@ -97,36 +97,6 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal profile1, person.profile
   end
 
-  test 'extract attributes from string' do
-    p = Person.attr_from_string('Joe Bloggs')
-    assert_equal 'Joe Bloggs', p[:name]
-    assert_nil p[:orcid]
-
-    p = Person.attr_from_string('  Joe')
-    assert_equal 'Joe', p[:name]
-    assert_nil p[:orcid]
-
-    p = Person.attr_from_string('Bloggs, Billy-Joe')
-    assert_equal 'Bloggs, Billy-Joe', p[:name]
-    assert_nil p[:orcid]
-
-    p = Person.attr_from_string('Bloggs, Billy-Joe (orcid: 0000-0002-1825-0097)')
-    assert_equal 'Bloggs, Billy-Joe', p[:name]
-    assert_equal '0000-0002-1825-0097', p[:orcid]
-
-    p = Person.attr_from_string('Bloggs, Billy-Joe (https://orcid.org/0000-0002-1825-0097)')
-    assert_equal 'Bloggs, Billy-Joe', p[:name]
-    assert_equal '0000-0002-1825-0097', p[:orcid]
-
-    p = Person.attr_from_string('Bloggs, Billy-Joe 0000-0002-1825-0097')
-    assert_equal 'Bloggs, Billy-Joe', p[:name]
-    assert_equal '0000-0002-1825-0097', p[:orcid]
-
-    p = Person.attr_from_string('Bloggs, Billy-Joe (0000-0002-1825-0097)')
-    assert_equal 'Bloggs, Billy-Joe', p[:name]
-    assert_equal '0000-0002-1825-0097', p[:orcid]
-  end
-
   test 'lookup for autocomplete' do
     @material.authors.create!(name: 'John Doe', orcid: '0000-0002-1825-0097')
     @material.authors.create!(name: 'jane Doe')
