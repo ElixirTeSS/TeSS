@@ -1636,4 +1636,26 @@ class MaterialsControllerTest < ActionController::TestCase
       assert_select '[href=?]', trainer_path(profiles(:trainer_one_profile))
     end
   end
+
+  test 'should update material authors using structured authors' do
+    sign_in @material.user
+    update = @updated_material.merge(authors: [
+      { name: 'Joe', orcid: '0000-0002-1825-0097' }
+    ])
+    patch :update, params: { id: @material, material: update }
+    mat = assigns(:material)
+    assert_redirected_to material_path(mat)
+    assert_equal update[:authors].first[:name], mat.authors.first[:name]
+    assert_equal update[:authors].first[:orcid], mat.authors.first[:orcid]
+  end
+
+  test 'should update material authors using string array of authors' do
+    sign_in @material.user
+    update = @updated_material.merge(authors: ['Joe'])
+    patch :update, params: { id: @material, material: update }
+    mat = assigns(:material)
+    assert_redirected_to material_path(mat)
+    assert_equal 'Joe', mat.authors.first[:name]
+    assert_nil mat.authors.first[:orcid]
+  end
 end
