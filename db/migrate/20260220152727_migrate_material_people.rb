@@ -46,7 +46,7 @@ class MigrateMaterialPeople < ActiveRecord::Migration[7.2]
   def people_to_array(resource, column_name, role)
     arr = Person.where(resource: resource, role: role).map do |person|
       name = person.full_name
-      name += "(#{person.orcid})" if person.orcid
+      name += " (#{person.orcid})" if person.orcid
       name
     end
 
