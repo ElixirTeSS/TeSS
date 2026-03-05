@@ -36,7 +36,7 @@ module HasPeople
         attrs = person_data.attributes.with_indifferent_access.slice(*VALID_ATTRS)
       end
 
-      idx = current_people.index { |p| p.orcid == attrs[:orcid] || p.name == attrs[:name] }
+      idx = current_people.index { |p| (p.orcid.present? && p.orcid == attrs[:orcid]) || p.name == attrs[:name] }
       if idx
         match = current_people.delete_at(idx)
         match.assign_attributes(**attrs, role: role_key)

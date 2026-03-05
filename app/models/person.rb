@@ -32,7 +32,7 @@ class Person < ApplicationRecord
   def self.query(query, limit = nil)
     q = select(:name, :orcid, :profile_id).starting_with(query).distinct
     q = q.limit(limit) if limit
-    q.order(name: :asc)
+    q.order(name: :asc, orcid: :asc)
   end
 
   private

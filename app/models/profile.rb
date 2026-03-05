@@ -6,7 +6,6 @@ class Profile < ApplicationRecord
   auto_strip_attributes :firstname, :surname, :website, squish: false
   belongs_to :user, inverse_of: :profile
 
-  before_validation :normalize_orcid
   validates :firstname, :surname, :description, presence: true, if: :public?
   validates :website, url: true, http_url: { allow_inaccessible: true }, allow_blank: true
   validates :orcid, orcid: true, allow_blank: true

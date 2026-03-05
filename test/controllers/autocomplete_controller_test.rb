@@ -58,19 +58,19 @@ class AutocompleteControllerTest < ActionController::TestCase
     assert_response :success
     res = JSON.parse(response.body)
     suggestions = res['suggestions']
-    assert ['John Doe', 'Jane Doe'], suggestions.map { |s| s['value'] }
+    assert_equal ['jane Doe', 'John Doe', 'John Doe', 'John Doe'], suggestions.map { |s| s['value'] }
 
     get :people_suggestions, params: { query: 'FRED' }, format: :json
     assert_response :success
     res = JSON.parse(response.body)
     suggestions = res['suggestions']
-    assert ['Fred Bloggs'], suggestions.map { |s| s['value'] }
+    assert_equal ['Fred Bloggs'], suggestions.map { |s| s['value'] }
 
     get :people_suggestions, params: { query: 'x' }, format: :json
     assert_response :success
     res = JSON.parse(response.body)
     suggestions = res['suggestions']
-    assert [], suggestions
+    assert_equal [], suggestions
   end
 
   test 'should not get suggestions if not logged in' do

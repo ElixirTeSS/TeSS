@@ -62,7 +62,7 @@ class PersonTest < ActiveSupport::TestCase
     assert_nil person.profile
   end
 
-  test 'should should break profile link if orcid removed from person' do
+  test 'should break profile link if orcid removed from person' do
     profile = profiles(:trainer_one_profile)
     # The trainer_one_profile has orcid: https://orcid.org/0000-0002-1825-0097
     person = @material.authors.create(name: 'Josiah Carberry', orcid: '0000-0002-1825-0097', profile: profile)
@@ -73,7 +73,7 @@ class PersonTest < ActiveSupport::TestCase
     assert_nil person.profile
   end
 
-  test 'should should break profile link if orcid removed from profile' do
+  test 'should break profile link if orcid removed from profile' do
     profile = profiles(:trainer_one_profile)
     # The trainer_one_profile has orcid: https://orcid.org/0000-0002-1825-0097
     person = @material.authors.create(name: 'Josiah Carberry', orcid: '0000-0002-1825-0097', profile: profile)
@@ -141,9 +141,9 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal 3, johns.length, "Should be 3 - 2 with ORCIDs and 1 without. Should not include duplicates."
 
     # Other tests
-    assert ['John Doe', 'Jane Doe'], Person.query('j').map(&:name).uniq
-    assert ['Fred Bloggs'], Person.query('FRED').map(&:name).uniq
-    assert [], Person.query('x').map(&:name).uniq
+    assert_equal ['jane Doe', 'John Doe'], Person.query('j').map(&:name).uniq
+    assert_equal ['Fred Bloggs'], Person.query('FRED').map(&:name).uniq
+    assert_equal [], Person.query('x').map(&:name).uniq
   end
 
   test 'does not needlessly destroy and recreate associations' do
