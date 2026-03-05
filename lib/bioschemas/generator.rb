@@ -80,10 +80,16 @@ module Bioschemas
     end
 
     def self.person(person)
-      {
+      p = {
         "@type" => "Person",
-        "name" => person
+        "name" => person.name
       }
+
+      if person.orcid.present?
+        p['@id'] = p['identifier'] = person.orcid_url
+      end
+
+      p
     end
 
     def self.address(event)
@@ -165,14 +171,6 @@ module Bioschemas
       p.uniq! { |o| o['name'].downcase.strip }
 
       p.any? ? p : nil
-    end
-
-    def self.people(people)
-      people.map do |person|
-        person_hash = { '@type' => 'Person', 'name' => person.display_name }
-        person_hash['@id'] = person.orcid_url if person.orcid.present?
-        person_hash
-      end
     end
   end
 end
