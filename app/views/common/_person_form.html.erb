@@ -1,6 +1,6 @@
 <% index ||= 'replace-me' %> <%# This is so we can render a blank version of this sub-form in the page, %>
                              <%# which can be dynamically cloned using JavaScript to add more People to the main form %>
-<% field_name_prefix = "#{form_name}[people_attributes][#{index}]" %> <%# This format is dictated by "accepts_nested_attributes_for" %>
+<% field_name_prefix = "#{field_prefix}[#{index}]" %> <%# This format is dictated by "accepts_nested_attributes_for" %>
 
 <div class="form-inline person-form nested-resource-form" data-index="<%= index -%>" data-role="<%= role -%>">
   <%= hidden_field_tag("#{field_name_prefix}[id]", person&.id) %>

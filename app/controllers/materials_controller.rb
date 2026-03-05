@@ -178,7 +178,6 @@ class MaterialsController < ApplicationController
                                      { node_ids: [] }, { node_names: [] }, { fields: [] },
                                      { authors: [:name, :orcid] }, { contributors: [:name, :orcid] }, # Structured
                                      { authors: [] }, { contributors: [] }, # as strings
-                                     people_attributes: %i[id role _destroy name orcid],
                                      external_resources_attributes: %i[id url title _destroy],
                                      external_resources: %i[url title],
                                      event_ids: [], locked_fields: [])

@@ -2,23 +2,18 @@ module HasPeople
   VALID_ATTRS = [:name, :orcid, :profile_id].freeze
   extend ActiveSupport::Concern
 
-  included do
-    has_many :people, as: :resource, dependent: :destroy, inverse_of: :resource
-    accepts_nested_attributes_for :people, allow_destroy: true, reject_if: :all_blank
-  end
-
   class_methods do
     # Define a person role association (e.g., :authors, :contributors)
     # This creates the association and a custom setter that accepts strings, hashes, or Person objects
-    def has_person_role(role_name, role_key: role_name.to_s.singularize)
+    def has_person_role(role_name)
+      role_key = role_name.to_s.singularize
       # Define the association
       has_many role_name, -> { where(role: role_key) }, class_name: 'Person', as: :resource, inverse_of: :resource,
                autosave: true, dependent: :destroy
 
       # Define custom setter that accepts strings (legacy), hashes, or Person objects
       define_method("#{role_name}=") do |value|
-        send(role_name).reset
-        super(set_people_for_role(value, role_key))
+        super(set_people_for_role(value, role_name, role_key))
       end
     end
   end
@@ -26,8 +21,9 @@ module HasPeople
   private
 
   # Set people for a specific role, accepting various input formats
-  def set_people_for_role(value, role_key)
-    current_people = people.where(role: role_key).to_a
+  def set_people_for_role(value, role_name, role_key)
+    send(role_name).reset
+    current_people = send(role_name).to_a
     to_keep = []
 
     Array(value).reject(&:blank?).map do |person_data|
@@ -50,7 +46,7 @@ module HasPeople
           person = person_data
           person.role = role_key
         else
-          person = people.build(**attrs, role: role_key)
+          person = send(role_name).build(**attrs)
         end
         to_keep << person
       end

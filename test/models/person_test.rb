@@ -6,7 +6,7 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   test 'should create person with name' do
-    person = @material.people.create(role: 'author', name: 'John Doe')
+    person = @material.authors.create(name: 'John Doe')
     assert person.valid?
     assert_equal 'John Doe', person.display_name
   end
@@ -18,7 +18,7 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   test 'should allow optional orcid' do
-    person = @material.people.create(role: 'author', name: 'John Doe', orcid: '0000-0001-2345-6789')
+    person = @material.authors.create(name: 'John Doe', orcid: '0000-0001-2345-6789')
     assert person.valid?
     assert_equal '0000-0001-2345-6789', person.orcid
   end
@@ -35,7 +35,7 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   test 'should allow optional profile association' do
-    person = @material.people.create(role: 'author', name: 'John Doe')
+    person = @material.authors.create(name: 'John Doe')
     assert person.valid?
     assert_nil person.profile
   end
@@ -43,7 +43,7 @@ class PersonTest < ActiveSupport::TestCase
   test 'should automatically link to profile by orcid on save' do
     profile = profiles(:trainer_one_profile)
     # The trainer_one_profile has orcid: https://orcid.org/0000-0002-1825-0097
-    person = @material.people.create(role: 'author', name: 'Josiah Carberry', orcid: 'https://orcid.org/0000-0002-1825-0097')
+    person = @material.authors.create(name: 'Josiah Carberry', orcid: 'https://orcid.org/0000-0002-1825-0097')
     assert person.valid?
     assert_equal profile, person.profile
   end
@@ -51,13 +51,13 @@ class PersonTest < ActiveSupport::TestCase
   test 'should automatically link to profile using short orcid format' do
     profile = profiles(:trainer_one_profile)
     # The trainer_one_profile has orcid: https://orcid.org/0000-0002-1825-0097
-    person = @material.people.create(role: 'author', name: 'Josiah Carberry', orcid: '0000-0002-1825-0097')
+    person = @material.authors.create(name: 'Josiah Carberry', orcid: '0000-0002-1825-0097')
     assert person.valid?
     assert_equal profile, person.profile
   end
 
   test 'should not link to profile if no matching orcid' do
-    person = @material.people.create(role: 'author', name: 'John Doe', orcid: '0000-0001-9999-9999')
+    person = @material.authors.create(name: 'John Doe', orcid: '0000-0001-9999-9999')
     assert person.valid?
     assert_nil person.profile
   end
@@ -65,7 +65,7 @@ class PersonTest < ActiveSupport::TestCase
   test 'should should break profile link if orcid removed from person' do
     profile = profiles(:trainer_one_profile)
     # The trainer_one_profile has orcid: https://orcid.org/0000-0002-1825-0097
-    person = @material.people.create(role: 'author', name: 'Josiah Carberry', orcid: '0000-0002-1825-0097', profile: profile)
+    person = @material.authors.create(name: 'Josiah Carberry', orcid: '0000-0002-1825-0097', profile: profile)
     assert person.valid?
     assert_equal profile, person.profile
 
@@ -76,7 +76,7 @@ class PersonTest < ActiveSupport::TestCase
   test 'should should break profile link if orcid removed from profile' do
     profile = profiles(:trainer_one_profile)
     # The trainer_one_profile has orcid: https://orcid.org/0000-0002-1825-0097
-    person = @material.people.create(role: 'author', name: 'Josiah Carberry', orcid: '0000-0002-1825-0097', profile: profile)
+    person = @material.authors.create(name: 'Josiah Carberry', orcid: '0000-0002-1825-0097', profile: profile)
     assert person.valid?
     assert_equal profile, person.profile
 
@@ -90,7 +90,7 @@ class PersonTest < ActiveSupport::TestCase
     profile1 = profiles(:trainer_one_profile)
     profile2 = profiles(:admin_trainer_profile)
 
-    person = @material.people.build(role: 'author', name: 'John Doe', profile: profile2)
+    person = @material.authors.build(name: 'John Doe', profile: profile2)
     assert_equal profile2, person.profile
 
     assert person.update(orcid: profile1.orcid)
@@ -128,13 +128,13 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   test 'lookup for autocomplete' do
-    @material.people.create!(role: 'author', name: 'John Doe', orcid: '0000-0002-1825-0097')
-    @material.people.create!(role: 'author', name: 'jane Doe')
-    @material.people.create!(role: 'author', name: 'Fred Bloggs')
-    materials(:bad_material).people.create!(role: 'author', name: 'John Doe')
-    materials(:youtube_video_material).people.create!(role: 'author', name: 'John Doe')
-    materials(:youtube_video_material).people.create!(role: 'author', name: 'John Doe', orcid: '0000-0002-1825-0097')
-    materials(:youtube_video_material).people.create!(role: 'author', name: 'John Doe', orcid: '0000-0002-1694-233X')
+    @material.authors.create!(name: 'John Doe', orcid: '0000-0002-1825-0097')
+    @material.authors.create!(name: 'jane Doe')
+    @material.authors.create!(name: 'Fred Bloggs')
+    materials(:bad_material).authors.create!(name: 'John Doe')
+    materials(:youtube_video_material).authors.create!(name: 'John Doe')
+    materials(:youtube_video_material).authors.create!(name: 'John Doe', orcid: '0000-0002-1825-0097')
+    materials(:youtube_video_material).authors.create!(name: 'John Doe', orcid: '0000-0002-1694-233X')
 
     # Should select distinct name/ORCID pairs
     johns = Person.query('jo').to_a

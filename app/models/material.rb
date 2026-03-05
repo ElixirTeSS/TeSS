@@ -112,8 +112,8 @@ class Material < ApplicationRecord
   has_many :stars, as: :resource, dependent: :destroy
 
   # Use HasPeople concern for authors and contributors
-  has_person_role :authors, role_key: 'author'
-  has_person_role :contributors, role_key: 'contributor'
+  has_person_role :authors
+  has_person_role :contributors
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"

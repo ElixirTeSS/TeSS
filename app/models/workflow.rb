@@ -80,8 +80,8 @@ class Workflow < ApplicationRecord
 
   after_update :log_diagram_modification
 
-  has_person_role :authors, role_key: 'author'
-  has_person_role :contributors, role_key: 'contributor'
+  has_person_role :authors
+  has_person_role :contributors
 
   def self.facet_fields
     %w(scientific_topics target_audience keywords licence difficulty_level authors contributors)

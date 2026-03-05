@@ -92,8 +92,8 @@ class LearningPath < ApplicationRecord
 
   accepts_nested_attributes_for :topic_links, allow_destroy: true
 
-  has_person_role :authors, role_key: 'author'
-  has_person_role :contributors, role_key: 'contributor'
+  has_person_role :authors
+  has_person_role :contributors
 
   def description= desc
     super(Rails::Html::FullSanitizer.new.sanitize(desc))

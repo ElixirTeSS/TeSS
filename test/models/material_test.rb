@@ -9,10 +9,7 @@ class MaterialTest < ActiveSupport::TestCase
                                  description: 'short desc',
                                  url: 'http://goog.e.com',
                                  user: @user,
-                                 people_attributes: [
-                                   { role: 'author', name: 'Horace Smith' },
-                                   { role: 'author', name: 'Flo Johnson' }
-                                 ],
+                                 authors: [{ name: 'Horace Smith' },  {name: 'Flo Johnson' }],
                                  doi: 'https://doi.org/10.1011/RSE.2019.55',
                                  licence: 'CC-BY-NC-SA-4.0',
                                  keywords: ['goblet'],
@@ -79,8 +76,8 @@ class MaterialTest < ActiveSupport::TestCase
     m.date_modified = '2021-06-13'
     m.date_published = '2021-06-14'
     m.subsets = []
-    m.people.where(role: 'author').destroy_all
-    m.people.create!(name: 'Nikolai Tesla', role: 'author')
+    m.authors.destroy_all
+    m.authors.create!(name: 'Nikolai Tesla')
     m.contributors = ['Prof. Stephen Hawking']
     m.prerequisites = 'Bring your enthusiasm'
     m.syllabus = "1. Overview\  2. The main part\  3. Summary"
@@ -144,30 +141,6 @@ class MaterialTest < ActiveSupport::TestCase
     assert_equal 'default_user', material.user.role.name
   end
 
-  test 'should add authors via nested attributes' do
-    assert_equal 2, @material.authors.size
-    assert @material.update(people_attributes: [
-      { role: 'author', name: 'John Doe' },
-      { role: 'author', name: 'Jane Smith', orcid: '0000-0002-1234-5678' }
-    ])
-    @material.reload
-    assert_equal 4, @material.authors.size
-    jane = @material.authors.find { |a| a.name == 'Jane Smith' }
-    assert_not_nil jane
-    assert_equal 'Jane Smith', jane.display_name
-    assert_equal '0000-0002-1234-5678', jane.orcid
-  end
-
-  test 'should remove authors via nested attributes' do
-    assert_equal 2, @material.authors.size
-    person_to_remove = @material.people.where(role: 'author').first
-    assert @material.update(people_attributes: [
-      { id: person_to_remove.id, _destroy: '1' }
-    ])
-    @material.reload
-    assert_equal 1, @material.authors.size
-  end
-
   test 'should set authors from array of strings (legacy API support)' do
     @material.authors = ['John Doe', 'Jane Smith']
     @material.save!
@@ -212,13 +185,28 @@ class MaterialTest < ActiveSupport::TestCase
     assert_includes @material.authors.map(&:name), person2.name
   end
 
+  test 'should set authors from mixed array' do
+    @material.authors = []
+    @material.save!
+
+    @material.authors = [Person.new(name: 'Alice Wonder'), 'Bob Builder', { name: 'Joey Jo-jo' }]
+    @material.save!
+    @material.reload
+
+    assert_equal 3, @material.authors.size
+    names = @material.authors.map(&:name)
+    assert_includes names, 'Alice Wonder'
+    assert_includes names, 'Bob Builder'
+    assert_includes names, 'Joey Jo-jo'
+  end
+
   test 'should re-assign roles when setting authors from Person objects' do
     material = materials(:biojs)
 
     person1 = material.contributors.create(name: 'Alice Wonder')
     person2 = material.contributors.create(name: 'Bob Builder')
 
-    assert_equal [person1, person2], material.contributors.to_a
+    assert_equal [person1, person2], material.contributors.order(:name).to_a
     assert_equal [], material.authors.to_a
 
     material.authors = [person1, person2]

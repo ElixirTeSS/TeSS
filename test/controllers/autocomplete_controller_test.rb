@@ -34,14 +34,14 @@ class AutocompleteControllerTest < ActionController::TestCase
 
   test 'should get people suggestions' do
     material = materials(:good_material)
-    material.people.create!(role: 'author', name: 'John Doe', orcid: '0000-0002-1825-0097')
-    material.people.create!(role: 'author', name: 'jane Doe')
-    material.people.create!(role: 'author', name: 'Fred Bloggs')
-    materials(:bad_material).people.create!(role: 'author', name: 'John Doe')
+    material.authors.create!(name: 'John Doe', orcid: '0000-0002-1825-0097')
+    material.authors.create!(name: 'jane Doe')
+    material.authors.create!(name: 'Fred Bloggs')
+    materials(:bad_material).authors.create!(name: 'John Doe')
     material2 = materials(:youtube_video_material)
-    material2.people.create!(role: 'author', name: 'John Doe')
-    material2.people.create!(role: 'author', name: 'John Doe', orcid: '0000-0002-1825-0097')
-    material2.people.create!(role: 'author', name: 'John Doe', orcid: '0000-0002-1694-233X')
+    material2.authors.create!(name: 'John Doe')
+    material2.authors.create!(name: 'John Doe', orcid: '0000-0002-1825-0097')
+    material2.authors.create!(name: 'John Doe', orcid: '0000-0002-1694-233X')
 
     sign_in users(:regular_user)
 
