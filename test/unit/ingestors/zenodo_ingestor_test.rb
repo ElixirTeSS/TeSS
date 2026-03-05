@@ -28,7 +28,6 @@ class ZenodoIngestorTest < ActiveSupport::TestCase
     assert_difference('Material.count', 50) do
       freeze_time(2019) do
         ingestor.read(source.url)
-        pp ingestor.materials.map(&:errors)
         ingestor.write(@user, @content_provider)
       end
     end

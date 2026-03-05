@@ -313,4 +313,26 @@ class WorkflowsControllerTest < ActionController::TestCase
     get :show, params: { id: workflow }
     assert_response :success
   end
+
+  test 'should update workflow authors using structured authors' do
+    sign_in @workflow.user
+    update = { authors: [
+      { name: 'Joe', orcid: '0000-0002-1825-0097' }
+    ] }
+    patch :update, params: { id: @workflow, workflow: update }
+    wf = assigns(:workflow)
+    assert_redirected_to workflow_path(wf)
+    assert_equal update[:authors].first[:name], wf.authors.first[:name]
+    assert_equal update[:authors].first[:orcid], wf.authors.first[:orcid]
+  end
+
+  test 'should update workflow authors using string array of authors' do
+    sign_in @workflow.user
+    update = { authors: ['Joe'] }
+    patch :update, params: { id: @workflow, workflow: update }
+    wf = assigns(:workflow)
+    assert_redirected_to workflow_path(wf)
+    assert_equal 'Joe', wf.authors.first[:name]
+    assert_nil wf.authors.first[:orcid]
+  end
 end

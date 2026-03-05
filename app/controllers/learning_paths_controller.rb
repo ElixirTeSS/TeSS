@@ -103,12 +103,15 @@ class LearningPathsController < ApplicationController
     params.require(:learning_path).permit(:id, :title, :description, :licence, :doi,
                                           :content_provider_id, :difficulty_level, :status,
                                           :prerequisites, :syllabus, :learning_objectives,
-                                          { authors: [:name, :orcid] }, { contributors: [:name, :orcid] }, { target_audience: [] },
+                                          { target_audience: [] },
                                           { people_attributes: %i[id role _destroy name orcid] },
                                           { keywords: [] },
                                           { scientific_topic_names: [] }, { scientific_topic_uris: [] },
                                           { node_ids: [] }, { node_names: [] },
-                                          { topic_links_attributes: [:id, :topic_id, :order, :_destroy] }, :public)
+                                          { topic_links_attributes: [:id, :topic_id, :order, :_destroy] }, :public,
+                                          { authors: [:name, :orcid] }, { contributors: [:name, :orcid] }, # Structured
+                                          { authors: [] }, { contributors: [] } # as strings
+                                          )
   end
 
 end

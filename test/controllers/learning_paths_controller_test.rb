@@ -538,4 +538,26 @@ class LearningPathsControllerTest < ActionController::TestCase
       assert_select 'h4', text: 'Deleted resource'
     end
   end
+
+  test 'should update learning path authors using structured authors' do
+    sign_in @learning_path.user
+    update = @updated_learning_path.merge(authors: [
+      { name: 'Joe', orcid: '0000-0002-1825-0097' }
+    ])
+    patch :update, params: { id: @learning_path, learning_path: update }
+    lp = assigns(:learning_path)
+    assert_redirected_to learning_path_path(lp)
+    assert_equal update[:authors].first[:name], lp.authors.first[:name]
+    assert_equal update[:authors].first[:orcid], lp.authors.first[:orcid]
+  end
+
+  test 'should update learning path authors using string array of authors' do
+    sign_in @learning_path.user
+    update = @updated_learning_path.merge(authors: ['Joe'])
+    patch :update, params: { id: @learning_path, learning_path: update }
+    lp = assigns(:learning_path)
+    assert_redirected_to learning_path_path(lp)
+    assert_equal 'Joe', lp.authors.first[:name]
+    assert_nil lp.authors.first[:orcid]
+  end
 end
