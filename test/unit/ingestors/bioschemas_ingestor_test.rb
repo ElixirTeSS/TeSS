@@ -66,30 +66,22 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_equal 'https://training.galaxyproject.org/training-material/topics/introduction/slides/introduction.html', sample.url
     assert_equal 'Slides for Introduction to Galaxy Analyses', sample.description
     assert_equal ['Students'], sample.target_audience
-    assert_equal ['Andrea Bagnacani',
-                  'Anne Fouilloux',
-                  'Anne Pajon',
-                  'Bérénice Batut',
-                  'Christopher Barnett',
-                  'Dave Clements',
-                  'Helena Rasche',
-                  'Michele Maroni',
-                  'Nadia Goué',
-                  'Nicola Soranzo',
-                  'Olha Nahorna',
-                  'Saskia Hiltemann'], sample.authors.map(&:name).sort
-    assert_equal ['Andrea Bagnacani',
-                  'Anne Fouilloux',
-                  'Anne Pajon',
-                  'Bérénice Batut',
-                  'Christopher Barnett',
-                  'Dave Clements',
-                  'Helena Rasche',
-                  'Michele Maroni',
-                  'Nadia Goué',
-                  'Nicola Soranzo',
-                  'Olha Nahorna',
-                  'Saskia Hiltemann'], sample.contributors.map(&:name).sort
+    expected_people = [
+      { name: 'Andrea Bagnacani', orcid: nil },
+      { name: 'Anne Fouilloux', orcid: nil },
+      { name: 'Anne Pajon', orcid: nil },
+      { name: 'Bérénice Batut', orcid: '0000-0001-9852-1987' },
+      { name: 'Christopher Barnett', orcid: nil },
+      { name: 'Dave Clements', orcid: nil },
+      { name: 'Helena Rasche', orcid: '0000-0001-9760-8992' },
+      { name: 'Michele Maroni', orcid: nil },
+      { name: 'Nadia Goué', orcid: '0000-0003-2750-1473' },
+      { name: 'Nicola Soranzo', orcid: '0000-0003-3627-5340' },
+      { name: 'Olha Nahorna', orcid: nil },
+      { name: 'Saskia Hiltemann', orcid: '0000-0003-3803-468X' }
+    ]
+    assert_equal expected_people, sample.authors.sort_by { |a| a.name }.map { |a| { name: a.name, orcid: a.orcid } }
+    assert_equal expected_people, sample.contributors.sort_by { |a| a.name }.map { |a| { name: a.name, orcid: a.orcid } }
     assert_equal 'CC-BY-4.0', sample.licence
     assert_equal ['slides'], sample.resource_type
     assert_equal @content_provider, sample.content_provider
