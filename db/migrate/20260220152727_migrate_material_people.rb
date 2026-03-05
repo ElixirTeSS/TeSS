@@ -1,16 +1,5 @@
 class MigrateMaterialPeople < ActiveRecord::Migration[7.2]
-  unless defined?(Person)
-    class Person < ActiveRecord::Base
-      def self.attr_from_string(person_string)
-        orcid = nil
-        name = person_string.gsub(/\s*\(?(orcid: )?(https?:\/\/orcid\.org\/)?(\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d[\dxX])[ \)]*/) do |_|
-          orcid = $3
-          ''
-        end.strip
-        { full_name: name, orcid: orcid }
-      end
-    end
-  end
+  class Person < ActiveRecord::Base; end unless defined?(Person)
 
   def up
     # Migrate existing authors from array to Person model
@@ -24,11 +13,14 @@ class MigrateMaterialPeople < ActiveRecord::Migration[7.2]
   end
 
   def down
-    # Restore arrays from Person model - Unused because the data is still intact at this point.
-    # Material.find_each do |material|
-    #   people_to_array(material, 'authors', 'author')
-    #   people_to_array(material, 'contributors', 'contributor')
-    # end
+    # Restore arrays from Person model
+    puts "Updating #{Material.count} materials:"
+    Material.find_each do |material|
+      people_to_array(material, 'authors', 'author')
+      people_to_array(material, 'contributors', 'contributor')
+      print '.'
+    end
+    puts
   end
 
   private
@@ -41,9 +33,13 @@ class MigrateMaterialPeople < ActiveRecord::Migration[7.2]
 
     people_array.each do |person_name|
       next if person_name.blank?
+      orcid = nil
+      name = person_name.gsub(/\s*\(?(orcid: )?(https?:\/\/orcid\.org\/)?(\d\d\d\d-\d\d\d\d-\d\d\d\d-\d\d\d[\dxX])[ \)]*/) do |_|
+        orcid = $3
+        ''
+      end.strip
 
-      attr = Person.attr_from_string(person_name).merge(resource: resource, role: role)
-      Person.find_or_create_by!(attr)
+      Person.find_or_create_by!(full_name: name, orcid: orcid, resource: resource, role: role)
     end
   end
 
@@ -57,4 +53,3 @@ class MigrateMaterialPeople < ActiveRecord::Migration[7.2]
     resource.update_column(column_name, arr)
   end
 end
-
