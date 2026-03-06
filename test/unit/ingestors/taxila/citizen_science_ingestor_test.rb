@@ -17,7 +17,7 @@ class CitizenScienceIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::CitizenScienceIngestor.new
 
-    # check event doesn't
+    # check event doesn't exist yet
     new_title = 'High-Level Policy Event on the Sustainability of Citizen Science'
     new_url = 'https://events.teams.microsoft.com/event/47581424-c548-4f07-928a-9fed358df416@659b3608-37a1-406b-9e1a-02c011decd3c'
     refute Event.where(title: new_title, url: new_url).any?
@@ -61,7 +61,7 @@ class CitizenScienceIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::CitizenScienceIngestor.new
 
-    # check event doesn't
+    # check material doesn't exist yet
     new_title = 'Naar een vaste plek voor burgerwetenschap in het netwerk van openbare bibliotheken'
     new_url = 'https://www.citizenscience.nl/resource/475'
     refute Material.where(title: new_title, url: new_url).any?

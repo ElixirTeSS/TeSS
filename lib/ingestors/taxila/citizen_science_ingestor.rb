@@ -37,6 +37,8 @@ module Ingestors
                                        &.css('.row')&.first
                                        &.css('.card')
 
+        return if overview_page.nil?
+
         overview_page.each_with_index do |el, _idx|
           event = OpenStruct.new
           event.url = el.css('a.btn').first['href']
@@ -80,18 +82,18 @@ module Ingestors
           end
         end
       end
+
+      def citizen_science_month_mapping(str)
+        mapping = [
+          %w[Mrt Mar],
+          %w[Mei May],
+          %w[Okt Oct]
+        ]
+        mapping.each do |dutch, english|
+          str = str.gsub(dutch, english)
+        end
+        str
+      end
     end
   end
-end
-
-def citizen_science_month_mapping(str)
-  mapping = [
-    %w[Mrt Mar],
-    %w[Mei May],
-    %w[Okt Oct]
-  ]
-  mapping.each do |dutch, english|
-    str = str.gsub(dutch, english)
-  end
-  str
 end
