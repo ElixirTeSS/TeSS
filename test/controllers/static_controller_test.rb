@@ -712,7 +712,7 @@ class StaticControllerTest < ActionController::TestCase
       end
     end
   end
-
+        
   test 'disabled features do not show as counters on space front page' do
     space = spaces(:plants)
     space.disabled_features = ['materials']
@@ -736,6 +736,28 @@ class StaticControllerTest < ActionController::TestCase
         get :home
         assert_select 'ul.nav.navbar-nav li a[href=?]', spaces_path, count: 0
         assert_select '.footer-item a[href=?]', spaces_path, count: 1
+      end
+    end
+  end
+
+  test 'show omniauth login options when on subdomain space' do
+    space = spaces(:plants)
+    space.update!(host: 'plants.example.com')
+    with_host(space.host) do
+      get :home
+      assert_select 'ul.user-options.nav.navbar-nav.navbar-right' do
+        assert_select "a[href=\"/users/auth/oidc?space_id=#{space.id}\"]", count: 1
+      end
+    end
+  end
+
+  test 'do not show omniauth login options when on non-subdomain space' do
+    space = spaces(:plants)
+    space.update!(host: 'other-host.com')
+    with_host(space.host) do
+      get :home
+      assert_select 'ul.user-options.nav.navbar-nav.navbar-right' do
+        assert_select "a[href=\"/users/auth/oidc?space_id=#{space.id}\"]", count: 0
       end
     end
   end

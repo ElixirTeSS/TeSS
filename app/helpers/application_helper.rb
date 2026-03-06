@@ -700,11 +700,12 @@ module ApplicationHelper
   end
 
   def omniauth_login_link(provider, config)
+    params = Space.current_space&.default? ? {} : { space_id: Space.current_space.id }
     link_to(
       t('authentication.omniauth.log_in_with',
         provider: config.options[:label] ||
                   t("authentication.omniauth.providers.#{provider}", default: provider.to_s.titleize)),
-      omniauth_authorize_path('user', provider),
+      omniauth_authorize_path('user', provider, **params),
       method: :post
     )
   end
