@@ -10,7 +10,8 @@ module Ingestors
         {
           key: 'gray_scott_event',
           title: 'Gray Scott Events API',
-          category: :events
+          category: :events,
+          user_agent: 'TeSS Gray Scott ingestor'
         }
       end
 
@@ -33,12 +34,13 @@ module Ingestors
       def process_calevent(calevent, url)
         # puts "calevent: #{calevent.inspect}"
         gs_url = calevent.custom_properties.find { |key, _| key.include?('http') }&.last&.first&.strip&.gsub(%r{^[/\s]+|[/\s]+$}, '')&.prepend('https://')
-        html = get_html_from_url(get_redirected_url(gs_url))
+        html = get_html_from_url(get_gray_scott_redirection(gs_url))
 
         event = OpenStruct.new
         event.title = calevent.summary.to_s
         event.url = gs_url
-        event.description = html.css('.paragraphStyle').text.strip || calevent.description.to_s
+        html_description = html.css('.paragraphStyle').text.to_s.strip
+        event.description = html_description.empty? ? calevent.description.to_s : html_description
 
         event.end = calevent.dtend&.to_time&.utc
         unless calevent.dtstart.nil?
@@ -53,7 +55,7 @@ module Ingestors
         @events << event
       end
 
-      def get_redirected_url(url)
+      def get_gray_scott_redirection(url)
         uri = URI.parse(url)
         label = CGI.parse(uri.query)['label']&.first
 
@@ -63,6 +65,7 @@ module Ingestors
 
         dict = JSON.parse(dict_match[1])
         matched_value = dict[label]
+        return url unless matched_value
 
         "#{uri.scheme}://#{uri.host}#{uri.path.sub(%r{/[^/]+$}, '')}/#{matched_value}"
       end
