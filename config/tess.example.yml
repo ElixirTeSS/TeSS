@@ -182,7 +182,7 @@ default: &default
 
     # Possible features to disable:
     #  biotools, topics, operations, sponsors, fairshare, county, ardc_fields_of_research,
-    #  other_types, subsets, syllabus, approved_editors address_finder, 
+    #  other_types, subsets, syllabus, approved_editors, address_finder, 
     #  visibility (if included, material or event can be hidden from the materials/events list)
     disabled: ['ardc_fields_of_research', 'other_types', 'subsets', 'syllabus', 'approved_editors']
   restrict_content_provider_selection: false
