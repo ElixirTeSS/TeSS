@@ -48,5 +48,8 @@
       <!-- Other metadata -->
       <%= render partial: 'trainers/partials/twitter_card', locals: { trainer: @trainer } %>
     </div>
+
+    <!-- Field: registrations list with Events, Materials, Collections, Workflows -->
+    <%= render(partial: 'common/registrations_list', locals: { user: @trainer.user }) %>
   </div>
 </div>

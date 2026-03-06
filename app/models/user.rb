@@ -385,6 +385,13 @@ class User < ApplicationRecord
     space_roles.where(key: role).any?
   end
 
+  # Get user's registrations
+  def registrations
+    n_events = events.in_current_space
+    n_materials = materials.in_current_space
+    n_events + n_materials
+  end
+
   protected
 
   def reassign_resources(new_owner = User.get_default_user)

@@ -1,0 +1,156 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+source_filter_target_audience:
+  source: filtered_source
+  mode: allow
+  property: target_audience
+  value: does_match
+
+source_filter_keyword:
+  source: filtered_source
+  mode: allow
+  property: keyword
+  value: does_match
+
+source_filter_keyword_block:
+  source: filtered_source
+  mode: block
+  property: keyword
+  value: does_match
+
+source_filter_title:
+  source: filtered_source
+  mode: allow
+  property: title
+  value: does_match
+
+source_filter_empty_title:
+  source: filtered_source
+  mode: allow
+  property: title
+  value: ""
+
+source_filter_no_title:
+  source: filtered_source
+  mode: allow
+  property: title
+
+source_filter_title_contains:
+  source: filtered_source
+  mode: allow
+  property: title_contains
+  value: does_match
+
+source_filter_description:
+  source: filtered_source
+  mode: allow
+  property: description
+  value: does_match
+
+source_filter_description_contains:
+  source: filtered_source
+  mode: allow
+  property: description_contains
+  value: does_match
+
+source_filter_url:
+  source: filtered_source
+  mode: allow
+  property: url
+  value: does_match
+
+source_filter_url_prefix:
+  source: filtered_source
+  mode: allow
+  property: url_prefix
+  value: does_match
+
+source_filter_doi:
+  source: filtered_source
+  mode: allow
+  property: doi
+  value: does_match
+
+source_filter_license:
+  source: filtered_source
+  mode: allow
+  property: license
+  value: does_match
+
+source_filter_difficulty_level:
+  source: filtered_source
+  mode: allow
+  property: difficulty_level
+  value: does_match
+
+source_filter_resource_type:
+  source: filtered_source
+  mode: allow
+  property: resource_type
+  value: does_match
+
+source_filter_prerequisites_contains:
+  source: filtered_source
+  mode: allow
+  property: prerequisites_contains
+  value: does_match
+
+source_filter_learning_objectives_contains:
+  source: filtered_source
+  mode: allow
+  property: learning_objectives_contains
+  value: does_match
+
+source_filter_learning_subtitle:
+  source: filtered_source
+  mode: allow
+  property: subtitle
+  value: does_match
+
+source_filter_subtitle_contains:
+  source: filtered_source
+  mode: allow
+  property: subtitle_contains
+  value: does_match
+
+source_filter_city:
+  source: filtered_source
+  mode: allow
+  property: city
+  value: does_match
+
+source_filter_country:
+  source: filtered_source
+  mode: allow
+  property: country
+  value: does_match
+
+source_filter_event_type:
+  source: filtered_source
+  mode: allow
+  property: event_type
+  value: does_match
+
+source_filter_timezone:
+  source: filtered_source
+  mode: allow
+  property: timezone
+  value: does_match
+
+source_filter_allow_shared_keyword:
+  source: filtered_source
+  mode: allow
+  property: keyword
+  value: shared_keyword
+
+source_filter_block_shared_keyword:
+  source: filtered_source
+  mode: block
+  property: keyword
+  value: shared_keyword
+
+source_filter_block_unused_keyword:
+  source: filtered_source
+  mode: block
+  property: keyword
+  value: this_keyword_is_used_no_where_else

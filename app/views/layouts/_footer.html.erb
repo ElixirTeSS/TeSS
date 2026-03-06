@@ -27,6 +27,11 @@
         <div class="footer-item">
           <%= link_to t('footer.about', title: TeSS::Config.site['title_short']), about_path %>
         </div>
+        <% if TeSS::Config.feature['spaces'] %>
+          <div class="footer-item">
+            <%= link_to t('footer.browse_spaces'), spaces_path %>
+          </div>
+        <% end %>
         <div class="footer-item">
           <%= link_to t('footer.funding'), us_path(anchor: 'funding') %>
         </div>

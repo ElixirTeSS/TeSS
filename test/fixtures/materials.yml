@@ -190,3 +190,53 @@ plant_space_material:
   content_provider: goblet
   status: active
   space: plants
+
+passing_import_filters_material:
+  user: regular_user
+  title: does_match
+  url: does_match
+  doi: does_match
+  description: does_match
+  licence: does_match
+  difficulty_level: does_match
+  prerequisites: does_match
+  learning_objectives: does_match
+  target_audience:
+    - other
+    - does_match
+  keywords:
+    - other
+    - does_match
+    - shared_keyword
+  resource_type:
+    - other
+    - does_match
+
+passing_contains_import_filters_material:
+  user: regular_user
+  title: prefix does_match suffix
+  url: does_match suffix
+  description: prefix does_match suffix
+  prerequisites: prefix does_match suffix
+  learning_objectives: prefix does_match suffix
+
+failing_import_filters_material:
+  user: regular_user
+  title: does_not_match
+  url: does_not_match
+  doi: does_not_match
+  description: does_not_match
+  licence: does_not_match
+  difficulty_level: does_not_match
+  prerequisites: does_not_match
+  learning_objectives: does_not_match
+  target_audience:
+    - other
+    - does_not_match
+  keywords:
+    - other
+    - does_not_match
+    - shared_keyword
+  resource_type:
+    - other
+    - does_not_match

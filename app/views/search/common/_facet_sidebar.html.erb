@@ -37,6 +37,10 @@ Variable that should be available
     </h4>
   </li>
 
+  <% if TeSS::Config.facets_max_age_list.include?(resource_type.name) %>
+    <%= render partial: 'search/common/facet_sidebar_max_age' %>
+  <% end %>
+
   <% boolean_facets, regular_facets = available_facets(resources).partition { |f| f.field_name == :online } %>
 
   <% if resource_type.name == 'Event' %>
@@ -53,11 +57,13 @@ Variable that should be available
   <% end %>
 
   <% resource_name = resource_type.model_name.human.downcase.pluralize %>
-  <%= render partial: 'search/common/facet_sidebar_boolean_filter',
-             locals: { facet_field: 'across_all_spaces',
-                       count: '-',
-                       enable_text: t('sidebar.filter.values.show_cross_space', resource: resource_name),
-                       disable_text: t('sidebar.filter.values.hide_cross_space', resource: resource_name) } %>
+  <% if TeSS::Config.feature['spaces'] %>
+    <%= render partial: 'search/common/facet_sidebar_boolean_filter',
+              locals: { facet_field: 'across_all_spaces',
+                        count: '-',
+                        enable_text: t('sidebar.filter.values.show_cross_space', resource: resource_name),
+                        disable_text: t('sidebar.filter.values.hide_cross_space', resource: resource_name) } %>
+  <% end %>
 
   <% if resource_type.name == 'Event' %>
     <%= render partial: 'search/common/facet_sidebar_boolean_filter',
@@ -65,24 +71,29 @@ Variable that should be available
         count: '-',
         enable_text: t('sidebar.filter.values.show_past_events'),
         disable_text: t('sidebar.filter.values.hide_past_events') } %>
-    <%= render partial: 'search/common/facet_sidebar_boolean_filter',
-        locals: { facet_field: 'include_disabled',
-        count: '-',
-        enable_text: t('sidebar.filter.values.show_disabled_events'),
-        disable_text: t('sidebar.filter.values.hide_disabled_events') } %>
+      <% unless TeSS::Config.feature['disabled'].include?('visibility') %>
+        <%= render partial: 'search/common/facet_sidebar_boolean_filter',
+            locals: { facet_field: 'include_disabled',
+            count: '-',
+            enable_text: t('sidebar.filter.values.show_disabled_events'),
+            disable_text: t('sidebar.filter.values.hide_disabled_events') } %>
+      <% end %>
     <%= render partial: 'search/common/facet_sidebar_boolean_filter',
         locals: { facet_field: 'include_broken_links',
         count: '-',
         enable_text: t('sidebar.filter.values.show_broken_links', resource: resource_type.model_name.human.downcase.pluralize),
         disable_text: t('sidebar.filter.values.hide_broken_links', resource: resource_type.model_name.human.downcase.pluralize) } %>
+
   <% elsif resource_type.name == 'Material' || resource_type.name == 'LearningPath' %>
     <% resource_name = resource_type.model_name.human.downcase.pluralize %>
     <% if resource_type.name == 'Material' %>
-      <%= render partial: 'search/common/facet_sidebar_boolean_filter',
-          locals: { facet_field: 'include_disabled',
-          count: '-',
-          enable_text: t('sidebar.filter.values.show_disabled', resource: resource_name),
-          disable_text: t('sidebar.filter.values.hide_disabled', resource: resource_name) } %>
+      <% unless TeSS::Config.feature['disabled'].include?('visibility') %>
+        <%= render partial: 'search/common/facet_sidebar_boolean_filter',
+            locals: { facet_field: 'include_disabled',
+            count: '-',
+            enable_text: t('sidebar.filter.values.show_disabled', resource: resource_name),
+            disable_text: t('sidebar.filter.values.hide_disabled', resource: resource_name) } %>
+    <% end %>
       <%= render partial: 'search/common/facet_sidebar_boolean_filter',
           locals: { facet_field: 'include_broken_links',
           count: '-',
@@ -94,10 +105,6 @@ Variable that should be available
         count: '-',
         enable_text: t('sidebar.filter.values.show_archived', resource: resource_name),
         disable_text: t('sidebar.filter.values.hide_archived', resource: resource_name) } %>
-  <% end %>
-
-  <% if TeSS::Config.facets_max_age_list.include?(resource_type.name) %>
-    <%= render partial: 'search/common/facet_sidebar_max_age' %>
   <% end %>
 </ul>
 
