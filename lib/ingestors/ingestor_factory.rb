@@ -11,6 +11,7 @@ module Ingestors
         Ingestors::MaterialCsvIngestor,
         Ingestors::TessEventIngestor,
         Ingestors::ZenodoIngestor,
+        Ingestors::OaiPmhIngestor,
         Ingestors::GithubIngestor,
       ] + taxila_ingestors + llm_ingestors
     end
@@ -39,7 +40,8 @@ module Ingestors
         Ingestors::Taxila::SenseIngestor,
         Ingestors::Taxila::VuMaterialIngestor,
         Ingestors::Taxila::RdnlIngestor,
-        Ingestors::Taxila::HanIngestor
+        Ingestors::Taxila::HanIngestor,
+        Ingestors::Taxila::CitizenScienceIngestor
       ]
     end
 
