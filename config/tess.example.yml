@@ -165,7 +165,6 @@ default: &default
     content_providers_disabled: []
     bioschemas_testing: false
     collection_curation: true
-    topics: true
     auto_parse_vars: [] # available features to auto parse from description: ['keywords', 'target_audience']
 
     # User login
