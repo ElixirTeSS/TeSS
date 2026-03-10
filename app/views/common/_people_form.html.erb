@@ -16,6 +16,9 @@
   <%= f.label field_name.to_sym, label, class: 'control-label' %>
   <%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
 
+  <%# This blank association is needed to trigger the delete when all associations are removed %>
+  <input type="hidden" name="<%= "#{model_name}[#{field_name}][0]" -%>" value=""/>
+
   <div data-role="people-form-list">
     <% f.object.send(field_name).each_with_index do |person, index| %>
       <%= render partial: 'common/person_form',

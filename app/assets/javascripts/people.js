@@ -41,10 +41,10 @@ const People = {
         return newForm;
     },
 
-    // This is just cosmetic. The actual removal is done by rails,
-    //   by virtue of the hidden checkbox being checked when the label is clicked.
     delete: function () {
-        $(this).parents('.person-form').fadeOut();
+        $(this).parents('.person-form').fadeOut('fast', function() {
+            $(this).remove();
+        });
     },
 
     init: function () {

@@ -291,7 +291,6 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal test_material.other_types, JSON.parse(response.body)['other_types'], 'other_types not matched'
     #assert_equal test_material.events, JSON.parse(response.body)['events'], 'events not matched'
     assert_equal test_material.target_audience, JSON.parse(response.body)['target_audience'], 'target audience not matched'
-    # Authors is now an array of objects with id, name, orcid
     response_authors = JSON.parse(response.body)['authors']
     assert_equal test_material.authors.size, response_authors.size, 'authors count not matched'
     response_authors.each_with_index do |author_json, i|

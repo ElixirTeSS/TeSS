@@ -26,7 +26,7 @@ module HasPeople
     current_people = send(role_name).to_a
     to_keep = []
 
-    value = value.values if value.respond_to?(:keys) && value.keys.first.match(/\A\d+\z/)
+    value = value.values if value.respond_to?(:keys) && value.keys.first&.match(/\A\d+\z/)
     Array.wrap(value).reject(&:blank?).map do |person_data|
       person_data = person_data.to_h if person_data.is_a?(ActionController::Parameters)
       if person_data.is_a?(String)
