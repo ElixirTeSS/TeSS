@@ -1,7 +1,8 @@
 <% learning_path_topic_item ||= nil %>
 <% collection_item ||= learning_path_topic_item %>
 <li class="masonry-brick media-item long">
-  <%= link_to event, class: 'link-overlay with-left-icon' do %>
+  <div class="link-overlay with-left-icon">
+    <%= link_to '', event, class: 'link-overlay-main-link' %>
     <%= item_order_badge(collection_item) if collection_item %>
     <div class="with-left-icon">
       <div class="icon-container hidden-xs">
@@ -55,5 +56,5 @@
     </div>
 
     <%= item_comment(collection_item) if collection_item %>
-  <% end %>
+  </div>
 </li>

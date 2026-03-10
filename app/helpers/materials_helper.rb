@@ -71,17 +71,15 @@ module MaterialsHelper
     ].any?
 
     value = resource.send(attribute)
-    if markdown
-      value = render_markdown(value)
-    end
+    value = render_markdown(value) if markdown
     if value.present?
-      if list
-        value = value.map do |v|
-          html_escape(block_given? ? yield(v) : v)
-        end
-      else
-        value = html_escape(block_given? ? yield(value) : value)
-      end
+      value = if list
+                value.map do |v|
+                  html_escape(block_given? ? yield(v) : v)
+                end
+              else
+                html_escape(block_given? ? yield(value) : value)
+              end
     end
     string = "<p class=\"#{attribute}#{show_label ? ' no-spacing' : ''}\">"
     unless value.blank? || value.try(:strip) == 'License Not Specified'
@@ -119,18 +117,26 @@ module MaterialsHelper
   def keywords_and_topics(resource, limit: nil)
     tags = []
 
-    %i[scientific_topic_names operation_names keywords].each do |field|
-      tags |= resource.send(field) if resource.respond_to?(field)
+    if resource.respond_to?(:scientific_topics)
+      tags += resource.scientific_topics.map do |term|
+        link_to(term.preferred_label, term.uri, class: 'label label-info tag-topic link-overlay-link', target: '_blank')
+      end
     end
 
-    limit_exceeded = limit && (tags.length > limit)
+    if resource.respond_to?(:operations)
+      tags += resource.operations.map do |term|
+        link_to(term.preferred_label, term.uri, class: 'label label-info tag-operation link-overlay-link', target: '_blank')
+      end
+    end
+
+    if resource.respond_to?(:keywords)
+      tags += resource.keywords.map do |tag|
+        content_tag(:span, tag, class: 'label label-info tag-keyword')
+      end
+    end
+
     tags = tags.first(limit) if limit
-
-    elements = tags.map do |tag|
-      content_tag(:span, tag, class: 'label label-info')
-    end
-    elements << '&hellip;' if limit_exceeded
-
-    elements.join(' ').html_safe
+    tags << '&hellip;' if limit && (tags.length > limit)
+    safe_join(tags, ' ')
   end
 end

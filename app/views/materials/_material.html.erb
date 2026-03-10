@@ -7,7 +7,8 @@
   end
 %>
 <li class="masonry-brick media-item long">
-  <%= link_to material_path(material, **link_params), class: 'link-overlay' do %>
+  <div class="link-overlay">
+    <%= link_to '', material_path(material, **link_params), class: 'link-overlay-main-link' %>
     <%= item_order_badge(collection_item) if show_order && collection_item %>
 
     <div class="masonry-brick-heading">
@@ -40,5 +41,5 @@
     </div>
 
     <%= item_comment(collection_item) if collection_item %>
-  <% end %>
+  </div>
 </li>
