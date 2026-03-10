@@ -158,7 +158,7 @@ class MaterialTest < ActiveSupport::TestCase
 
   test 'should set authors from array of hashes' do
     @material.authors = [
-      { name: 'John Doe', orcid: '0000-0001-1234-5678' },
+      { name: 'John Doe', orcid: '0000-0002-1825-0097' },
       { name: 'Jane Smith' }
     ]
     @material.save!
@@ -241,7 +241,7 @@ class MaterialTest < ActiveSupport::TestCase
 
   test 'should set contributors from array of hashes' do
     @material.contributors = [
-      { name: 'John Doe', orcid: '0000-0001-1234-5678' },
+      { name: 'John Doe', orcid: '0000-0002-1825-0097' },
       { name: 'Jane Smith' }
     ]
     @material.save!

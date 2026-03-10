@@ -1620,14 +1620,14 @@ class MaterialsControllerTest < ActionController::TestCase
 
   test 'should display material authors/contributors appropriately' do
     assert @material.update(authors: [{ name: 'John Doe' },
-                                      { name: 'Jane Smith', orcid: '0000-0002-1234-5678' }],
+                                      { name: 'Jane Smith', orcid: '0000-0001-9999-9990' }],
                             contributors: [{ name: 'Jos Ca', orcid: '0000-0002-1825-0097' }])
 
     get :show, params: { id: @material.id }
 
     assert_select '.authors', text: 'Authors: John Doe, Jane Smith'
     assert_select '.authors a', count: 1 do
-      assert_select '[href=?]', 'https://orcid.org/0000-0002-1234-5678'
+      assert_select '[href=?]', 'https://orcid.org/0000-0001-9999-9990'
     end
 
     assert_select '.contributors', { text: 'Contributors: Josiah Carberry' },

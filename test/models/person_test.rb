@@ -57,7 +57,7 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   test 'should not link to profile if no matching orcid' do
-    person = @material.authors.create(name: 'John Doe', orcid: '0000-0001-9999-9999')
+    person = @material.authors.create(name: 'John Doe', orcid: '0000-0001-9999-9990')
     assert person.valid?
     assert_nil person.profile
   end
