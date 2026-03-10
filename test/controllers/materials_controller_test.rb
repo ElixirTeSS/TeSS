@@ -1659,4 +1659,17 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_equal 'Joe', mat.authors.first[:name]
     assert_nil mat.authors.first[:orcid]
   end
+
+  test 'should update material authors using param structured authors' do
+    material = materials(:material_with_optionals)
+    sign_in material.user
+    update = { authors: { '1234' => {
+      name: 'Joe', orcid: '0000-0002-1825-0097' } } }
+    patch :update, params: { id: material, material: update }
+    mat = assigns(:material)
+    assert_redirected_to material_path(mat)
+
+    assert_equal 'Joe', mat.authors.first[:name]
+    assert_equal '0000-0002-1825-0097', mat.authors.first[:orcid]
+  end
 end
