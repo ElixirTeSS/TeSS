@@ -135,8 +135,9 @@ module MaterialsHelper
       end
     end
 
+    limit_exceeded = limit && (tags.length > limit)
     tags = tags.first(limit) if limit
-    tags << '&hellip;' if limit && (tags.length > limit)
+    tags << '&hellip;'.html_safe if limit_exceeded
     safe_join(tags, ' ')
   end
 end
