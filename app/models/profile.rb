@@ -8,7 +8,7 @@ class Profile < ApplicationRecord
 
   validates :firstname, :surname, :description, presence: true, if: :public?
   validates :website, url: true, http_url: { allow_inaccessible: true }, allow_blank: true
-  validates :orcid, orcid: true, allow_blank: true
+
   after_validation :check_public
   after_commit :reindex_trainer, on: %i[create update]
   clean_array_fields(:expertise_academic, :expertise_technical, :fields,

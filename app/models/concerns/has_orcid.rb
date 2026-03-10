@@ -4,6 +4,7 @@ module HasOrcid
   included do
     auto_strip_attributes :orcid
     before_validation :normalize_orcid
+    validates :orcid, orcid: true, allow_blank: true
   end
 
   def orcid_url
