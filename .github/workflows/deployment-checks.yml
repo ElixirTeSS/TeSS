@@ -48,6 +48,8 @@ jobs:
           cp config/secrets.github.yml config/secrets.yml
           cp config/ingestion.example.yml config/ingestion.yml
           bundle exec rake db:setup
+      - run: yarn install
+        name: Install JS dependencies
       - run: bundle exec rake assets:precompile
         name: Run asset compilation
       - run: bundle exec whenever --update-crontab --set environment="$ENV"

@@ -4,7 +4,7 @@ This page contains some extra notes about setting up TeSS for production on an U
 
 ## System Dependencies
 
-    sudo apt-get install git postgresql libpq-dev imagemagick nodejs openjdk-11-jdk apache2 gnupg2
+    sudo apt-get install git postgresql libpq-dev imagemagick nodejs npm openjdk-11-jdk apache2 gnupg2
     
 To install a recent version of Redis (6.2+), use the official Redis APT repo:
 
@@ -183,6 +183,16 @@ Create the database structure and load in seed data:
 _Note: Ensure you have started Solr before running this command!_
 
     RAILS_ENV=production bundle exec rake db:setup
+
+## Install yarn & install JS dependencies
+
+Install yarn globally via npm:
+
+    npm install --global yarn
+
+Install JS dependencies:
+
+    yarn install
 
 ## Compile assets
 
