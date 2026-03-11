@@ -74,15 +74,6 @@ gem 'validate_url'
 gem 'whenever', require: false # Work around https://github.com/javan/whenever/issues/831
 gem 'will_paginate'
 
-source 'https://rails-assets.org' do
-  gem 'rails-assets-clipboard', '~> 1.5.12'
-  gem 'rails-assets-devbridge-autocomplete', '~> 1.4.9'
-  gem 'rails-assets-eonasdan-bootstrap-datetimepicker', '~> 4.17.42'
-  gem 'rails-assets-markdown-it', '~> 7.0.1'
-  gem 'rails-assets-moment', '~> 2.30.1'
-  gem 'rails-assets-select2', '~> 4.0.8'
-end
-
 group :development, :test do
   gem 'byebug'
   gem 'pry-byebug'
