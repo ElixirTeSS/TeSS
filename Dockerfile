@@ -12,7 +12,7 @@ RUN apt-get update \
     && apt-get clean
 
 # install yarn to manage JS dependencies
-RUN npm install --global yarn
+RUN npm install --global yarn@1.22.22
 
 # install supercronic - a cron alternative
 ENV SUPERCRONIC_URL=https://github.com/aptible/supercronic/releases/download/v0.1.12/supercronic-linux-amd64 \
@@ -47,7 +47,7 @@ RUN bundle check || bundle install
 COPY package.json yarn.lock ./
 
 # install js dependencies
-RUN yarn install
+RUN yarn install --frozen-lockfile --non-interactive
 
 # copy code
 COPY . .

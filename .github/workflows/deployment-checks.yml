@@ -48,9 +48,14 @@ jobs:
           cp config/secrets.github.yml config/secrets.yml
           cp config/ingestion.example.yml config/ingestion.yml
           bundle exec rake db:setup
-      - run: yarn install
-        name: Install JS dependencies
-      - run: bundle exec rake assets:precompile
-        name: Run asset compilation
-      - run: bundle exec whenever --update-crontab --set environment="$ENV"
-        name: Run whenever update
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'yarn'
+      - name: Install JS dependencies
+        run: yarn install --frozen-lockfile --non-interactive
+      - name: Run asset compilation
+        run: bundle exec rake assets:precompile
+      - name: Run whenever update
+        run: bundle exec whenever --update-crontab --set environment="$ENV"

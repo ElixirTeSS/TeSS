@@ -188,11 +188,11 @@ _Note: Ensure you have started Solr before running this command!_
 
 Install yarn globally via npm:
 
-    npm install --global yarn
+    npm install --global yarn@1.22.22
 
 Install JS dependencies:
 
-    yarn install
+    yarn install --frozen-lockfile --non-interactive
 
 ## Compile assets
 

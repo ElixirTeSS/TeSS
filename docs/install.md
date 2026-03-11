@@ -74,11 +74,11 @@ TeSS uses yarn to manage JS dependencies.
 
 Install it using npm:
 
-    npm install --global yarn
+    npm install --global yarn@1.22.22
 
 and install JS dependencies using (from the app's root directory):
 
-    yarn install
+    yarn install --frozen-lockfile
 
 ## PostgreSQL
 
