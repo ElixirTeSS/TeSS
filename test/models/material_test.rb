@@ -167,7 +167,7 @@ class MaterialTest < ActiveSupport::TestCase
     assert_equal 2, @material.authors.size
     john = @material.authors.find { |a| a.name == 'John Doe' }
     assert_not_nil john
-    assert_equal '0000-0001-1234-5678', john.orcid
+    assert_equal '0000-0002-1825-0097', john.orcid
   end
 
   test 'should set authors from array of Person objects' do
@@ -250,7 +250,7 @@ class MaterialTest < ActiveSupport::TestCase
     assert_equal 2, @material.contributors.size
     john = @material.contributors.find { |c| c.name == 'John Doe' }
     assert_not_nil john
-    assert_equal '0000-0001-1234-5678', john.orcid
+    assert_equal '0000-0002-1825-0097', john.orcid
   end
 
   test 'should set contributors from array of Person objects' do
