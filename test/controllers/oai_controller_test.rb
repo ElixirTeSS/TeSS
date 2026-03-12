@@ -53,6 +53,23 @@ class OaiControllerTest < ActionDispatch::IntegrationTest
     assert_includes identifiers, @material.doi
   end
 
+  test 'OAI-PMH endpoint respects current space' do
+    get '/oai-pmh', params: { verb: 'ListRecords', metadataPrefix: 'oai_dc' }
+    parsed = Nokogiri::XML(@response.body)
+    titles = parsed.xpath('//dc:title', @ns).map(&:text)
+    assert_includes titles, materials(:training_material).title
+    refute_includes titles, materials(:plant_space_material).title
+
+    plant_space = spaces(:plants)
+    with_host(plant_space.host) do
+      get '/oai-pmh', params: { verb: 'ListRecords', metadataPrefix: 'oai_dc' }
+      parsed = Nokogiri::XML(@response.body)
+      titles = parsed.xpath('//dc:title', @ns).map(&:text)
+      refute_includes titles, materials(:training_material).title
+      assert_includes titles, materials(:plant_space_material).title
+    end
+  end
+
   test 'OAI ListRecords returns material in rdf format' do
     get '/oai-pmh', params: { verb: 'ListRecords', metadataPrefix: 'rdf' }
     assert_response :success

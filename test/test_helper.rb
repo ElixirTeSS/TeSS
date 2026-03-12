@@ -96,11 +96,22 @@ class ActiveSupport::TestCase
   end
 
   def with_host(host, &block)
-    original_host = @request.host
-    @request.host = host
+    if respond_to?(:host=)
+      # ActionDispatch::IntegrationTest
+      original_host = self.host
+      self.host = host
+    else
+      # ActionController::TestCase
+      original_host = @request.headers['HOST']
+      @request.headers['HOST'] = host
+    end
     block.call
   ensure
-    @request.host = original_host
+    if respond_to?(:host=)
+      self.host = original_host
+    else
+      @request.headers['HOST'] = original_host
+    end
   end
 
   # reset dictionaries to their default values
