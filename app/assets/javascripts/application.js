@@ -26,8 +26,8 @@
 //= require markdown-it
 //= require URI
 //= require moment
-//= require eonasdan-bootstrap-datetimepicker
-//= require devbridge-autocomplete
+//= require bootstrap-datetimepicker
+//= require jquery.autocomplete
 //= require clipboard
 //= require ardc_vocab_widget_v2
 //= require select2

@@ -9,8 +9,10 @@
     <strong>Log In</strong> <span class="caret"></span>
   </a>
   <ul class="dropdown-menu dropdown-menu-right">
-    <% Devise.omniauth_configs.each do |provider, config| -%>
-      <li class="dropdown-item"><%= omniauth_login_link(provider, config) %></li>
+    <% if space_supports_omniauth? %>
+      <% Devise.omniauth_configs.each do |provider, config| -%>
+        <li class="dropdown-item"><%= omniauth_login_link(provider, config) %></li>
+      <% end %>
     <% end %>
 
     <li class="dropdown-item">

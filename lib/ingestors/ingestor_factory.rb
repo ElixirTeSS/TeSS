@@ -11,8 +11,9 @@ module Ingestors
         Ingestors::MaterialCsvIngestor,
         Ingestors::TessEventIngestor,
         Ingestors::ZenodoIngestor,
+        Ingestors::OaiPmhIngestor,
         Ingestors::GithubIngestor,
-      ] + taxila_ingestors + llm_ingestors
+      ] + taxila_ingestors + llm_ingestors + heptraining_ingestors
     end
 
     def self.taxila_ingestors
@@ -39,13 +40,20 @@ module Ingestors
         Ingestors::Taxila::SenseIngestor,
         Ingestors::Taxila::VuMaterialIngestor,
         Ingestors::Taxila::RdnlIngestor,
-        Ingestors::Taxila::HanIngestor
+        Ingestors::Taxila::HanIngestor,
+        Ingestors::Taxila::CitizenScienceIngestor
       ]
     end
 
     def self.llm_ingestors
       [
         Ingestors::Taxila::FourtuLlmIngestor
+      ]
+    end
+
+    def self.heptraining_ingestors
+      [
+        Ingestors::Heptraining::GrayScottIngestor
       ]
     end
 

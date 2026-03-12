@@ -1,0 +1,12 @@
+{
+  "name": "tess",
+  "private": true,
+  "dependencies": {
+    "clipboard": "^1.5.16",
+    "devbridge-autocomplete": "^1.4.9",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.49",
+    "markdown-it": "^7.0.1",
+    "moment": "^2.30.1",
+    "select2": "^4.0.8"
+  }
+}

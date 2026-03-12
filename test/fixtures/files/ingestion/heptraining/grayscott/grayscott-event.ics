@@ -1,0 +1,23 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//PhoenixTex2Html//gray_scott_2026_webinars/
+BEGIN:VEVENT
+CLASS:PUBLIC
+DTSTAMP:20260212T103600
+UID:TH8WMR_PNR0012_20260212T103600
+DTSTART;TZID=Europe/Paris:20260226T100000
+DTEND;TZID=Europe/Paris:20260226T113000
+SUMMARY:Memory allocation, why and how to profile applications
+
+LOCATION:Registration : <a id="0" href="https://teratec.webex.com/blabla">https://teratec.webex.com/blabla</a>
+
+DESCRIPTION:Memory allocation, why and how to profile applications
+\n
+ https://cta-lapp.pages.in2p3.fr/cours/gray_scott_revolutions/grayscott2026/redirect.html?label=sec_gray_scott_webinar_memory_allocation_memory_profiling\n
+BEGIN:VALARM
+TRIGGER:-PT10M
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+END:VEVENT
+END:VCALENDAR

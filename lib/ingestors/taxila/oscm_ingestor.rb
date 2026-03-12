@@ -57,7 +57,6 @@ module Ingestors
             # it's not really needed since dtstart and dtend contain timezone information
             event.source = 'OSCM'
             event.online = true
-            event.target_audience = parse_audience(event.description)
 
             # add event to events array
             add_event(event)

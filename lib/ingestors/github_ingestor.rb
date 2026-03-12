@@ -104,7 +104,7 @@ module Ingestors
       github_io_homepage = github_io_homepage? repo_data['homepage']
       url = github_io_homepage ? repo_data['homepage'] : repo_data['html_url']
       redirected_url = get_redirected_url(url)
-      html = get_html(redirected_url)
+      html = get_html_from_url(redirected_url)
 
       material = OpenStruct.new
       material.title = repo_data['name'].titleize
@@ -129,11 +129,6 @@ module Ingestors
 
       url = URI(homepage)
       url.host&.downcase&.end_with?('.github.io')
-    end
-
-    def get_html(url)
-      response = HTTParty.get(url, follow_redirects: true, headers: { 'User-Agent' => config[:user_agent] })
-      Nokogiri::HTML(response.body)
     end
 
     # DEFINITION – Opens the GitHub homepage, fetches the 3 first >50 char <p> tags'text

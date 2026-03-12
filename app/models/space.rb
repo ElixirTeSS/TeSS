@@ -1,5 +1,5 @@
 class Space < ApplicationRecord
-  FEATURES = %w[events materials elearning_materials learning_paths workflows collections trainers content_providers nodes].freeze
+  FEATURES = %w[events materials elearning_materials learning_paths workflows collections trainers content_providers nodes spaces].freeze
 
   include PublicActivity::Common
   include LogParameterChanges
@@ -16,6 +16,10 @@ class Space < ApplicationRecord
   has_many :administrator_roles, -> { where(key: :admin) }, class_name: 'SpaceRole'
   has_many :administrators, through: :administrator_roles, source: :user, class_name: 'User'
 
+  auto_strip_attributes :title, :description, :host
+
+  validates :title, presence: true
+  validates :host, presence: true, uniqueness: true, format: /\A[a-zA-Z0-9\-]+(\.[a-zA-Z0-9\-]+)*\z/i
   validates :theme, inclusion: { in: TeSS::Config.themes.keys, allow_blank: true }
   validate :disabled_features_valid?
 
@@ -63,6 +67,10 @@ class Space < ApplicationRecord
 
   def enabled_features
     (FEATURES - disabled_features)
+  end
+
+  def is_subdomain?(domain = TeSS::Config.base_uri.domain)
+    (host == domain || host.ends_with?(".#{domain}"))
   end
 
   private

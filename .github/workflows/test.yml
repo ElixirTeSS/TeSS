@@ -53,5 +53,12 @@ jobs:
           cp config/secrets.github.yml config/secrets.yml
           cp config/ingestion.example.yml config/ingestion.yml
           bundle exec rake db:test:prepare
-      - run: bundle exec rails test
-        name: Run tests
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'yarn'
+      - name: Install JS dependencies
+        run: yarn install --frozen-lockfile --non-interactive
+      - name: Run tests
+        run: bundle exec rails test

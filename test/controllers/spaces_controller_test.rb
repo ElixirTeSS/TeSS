@@ -246,6 +246,7 @@ class SpacesControllerTest < ActionController::TestCase
                  'elearning_materials': false,
                  'learning_paths': false,
                  'workflows': true,
+                 'spaces': true,
                  'collections': false,
                  'content_providers': false,
                  'trainers': false,
@@ -255,7 +256,7 @@ class SpacesControllerTest < ActionController::TestCase
     with_settings(feature: features) do
       get :edit, params: { id: @space }
       assert_response :success
-      assert_select '[name="space[enabled_features][]"]', count: 3 # +1 because of the blank input that allows you to
+      assert_select '[name="space[enabled_features][]"]', count: 4 # +1 because of the blank input that allows you to
                                                                    #  clear the list
       assert_select '#space_enabled_features_events', count: 1
       assert_select '#space_enabled_features_workflows', count: 1
