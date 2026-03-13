@@ -102,15 +102,15 @@ class ActiveSupport::TestCase
       self.host = host
     else
       # ActionController::TestCase
-      original_host = @request.headers['HOST']
-      @request.headers['HOST'] = host
+      original_host = @request.host
+      @request.host = host
     end
     block.call
   ensure
     if respond_to?(:host=)
       self.host = original_host
     else
-      @request.headers['HOST'] = original_host
+      @request.host = original_host
     end
   end
 
