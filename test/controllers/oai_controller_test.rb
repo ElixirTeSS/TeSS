@@ -58,7 +58,7 @@ class OaiControllerTest < ActionDispatch::IntegrationTest
     parsed = Nokogiri::XML(@response.body)
     titles = parsed.xpath('//dc:title', @ns).map(&:text)
     assert_includes titles, materials(:training_material).title
-    refute_includes titles, materials(:plant_space_material).title
+    assert_includes titles, materials(:plant_space_material).title
 
     plant_space = spaces(:plants)
     with_host(plant_space.host) do
