@@ -41,3 +41,4 @@ config/ontologies/*.cache
 tess.crontab
 
 app-secrets*
+node_modules/

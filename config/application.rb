@@ -176,6 +176,10 @@ module TeSS
         Rails.application.config.secrets.orcid[:client_id].present? &&
         Rails.application.config.secrets.orcid[:secret].present?
     end
+
+    def base_uri
+      @base_uri ||= Addressable::URI.parse(base_url)
+    end
   end
 
   Config = TessConfig.new(tess_config)

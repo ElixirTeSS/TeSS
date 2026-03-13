@@ -16,11 +16,12 @@ TeSS requires the following system packages to be installed:
 - ImageMagick
 - A Java runtime
 - A JavaScript runtime
+- npm (and yarn)
 - Redis
 
 To install these under an Ubuntu-like OS using apt:
 
-    sudo apt-get install git postgresql libpq-dev imagemagick nodejs redis-server openjdk-11-jdk
+    sudo apt-get install git postgresql libpq-dev imagemagick nodejs npm redis-server openjdk-11-jdk
 
 For Mac OS X:
 
@@ -66,6 +67,18 @@ Once you have Ruby, RVM and bundler installed, from the root folder of the app d
     bundle install
 
 This will install Rails, as well as any other gem that the TeSS app needs as specified in Gemfile (located in the root folder of the TeSS app).
+
+## JS
+
+TeSS uses yarn to manage JS dependencies.
+
+Install it using npm:
+
+    npm install --global yarn@1.22.22
+
+and install JS dependencies using (from the app's root directory):
+
+    yarn install --frozen-lockfile
 
 ## PostgreSQL
 

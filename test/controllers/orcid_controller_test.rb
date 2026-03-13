@@ -9,6 +9,23 @@ class OrcidControllerTest < ActionController::TestCase
     post :authenticate
 
     assert_redirected_to /https:\/\/sandbox\.orcid\.org\/oauth\/authorize\?.+/
+    params = Rack::Utils.parse_query(URI.parse(response.location).query)
+    assert_equal "#{TeSS::Config.base_url}/orcid/callback", params['redirect_uri']
+    assert_nil params['state']
+  end
+
+  test 'authenticating orcid in space uses root app redirect URI and sets space state' do
+    plant_space = spaces(:plants)
+    with_host(plant_space.host) do
+      sign_in users(:regular_user)
+
+      post :authenticate
+
+      assert_redirected_to /https:\/\/sandbox\.orcid\.org\/oauth\/authorize\?.+/
+      params = Rack::Utils.parse_query(URI.parse(response.location).query)
+      assert_equal "#{TeSS::Config.base_url}/orcid/callback", params['redirect_uri']
+      assert_equal "space_id:#{plant_space.id}", params['state']
+    end
   end
 
   test 'do not authenticate orcid if user not logged-in' do
@@ -147,5 +164,62 @@ class OrcidControllerTest < ActionController::TestCase
         refute profile.orcid_authenticated?
       end
     end
+  end
+
+  test 'redirect to subdomain space in callback' do
+    space = spaces(:astro)
+    space.update!(host: 'space.example.com')
+    mock_images
+    user = users(:regular_user)
+    assert user.profile.orcid.blank?
+    sign_in user
+
+    VCR.use_cassette('orcid/get_token_free_orcid') do
+      get :callback, params: { code: '123xyz', state: "space_id:#{space.id}" }
+    end
+
+    profile = user.profile.reload
+    assert_equal '0009-0006-0987-5702', profile.orcid
+    assert profile.orcid_authenticated?
+    assert_redirected_to user_url(user, host: 'space.example.com')
+    assert response.headers['Location'].starts_with?('http://space.example.com/users/')
+    assert flash[:error].blank?
+  end
+
+  test 'do not redirect to non-subdomain space in callback' do
+    space = spaces(:astro)
+    space.update!(host: 'space.golf.com')
+    mock_images
+    user = users(:regular_user)
+    assert user.profile.orcid.blank?
+    sign_in user
+
+    VCR.use_cassette('orcid/get_token_free_orcid') do
+      get :callback, params: { code: '123xyz', state: "space_id:#{space.id}" }
+    end
+
+    profile = user.profile.reload
+    assert_equal '0009-0006-0987-5702', profile.orcid
+    assert profile.orcid_authenticated?
+    assert_redirected_to user
+    refute response.headers['Location'].starts_with?('http://space.golf.com/users/')
+    assert flash[:error].blank?
+  end
+
+  test 'ignore bad space when redirecting in callback' do
+    mock_images
+    user = users(:regular_user)
+    assert user.profile.orcid.blank?
+    sign_in user
+
+    VCR.use_cassette('orcid/get_token_free_orcid') do
+      get :callback, params: { code: '123xyz', state: "space_id:banana🍌" }
+    end
+
+    profile = user.profile.reload
+    assert_equal '0009-0006-0987-5702', profile.orcid
+    assert profile.orcid_authenticated?
+    assert_redirected_to user
+    assert flash[:error].blank?
   end
 end

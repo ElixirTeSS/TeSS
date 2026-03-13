@@ -84,6 +84,11 @@ module Ingestors
       end
     end
 
+    def get_html_from_url(url)
+      response = HTTParty.get(url, follow_redirects: true, headers: { 'User-Agent' => config[:user_agent] })
+      Nokogiri::HTML(response.body)
+    end
+
     # Some URLs automatically redirects the user to another webpage
     # This method gets a URL and returns the last redirected URL (as shown by a 30X response or a `meta[http-equiv="Refresh"]` tag)
     def get_redirected_url(url, limit = 5) # rubocop:disable Metrics/AbcSize

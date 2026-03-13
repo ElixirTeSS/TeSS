@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<title>Page redirection</title>
+		<link rel="stylesheet" href="dark_style.css" />
+		<script type="text/javascript">
+			function redirectionWithLabelReference(){
+				var parameters = location.search.substring(1).split("?");
+				var tmp = parameters[0].split("=");
+				referenceName = unescape(tmp[1]);
+				var dictReference = {
+					"sec_gray_scott_webinar_memory_allocation_memory_profiling": "1-1-5-1-449.html"
+				};
+				if(referenceName in dictReference){
+					document.location.href=dictReference[referenceName];
+				}else{
+					document.location.href="index.html";
+				}
+			}
+		</script>
+	</head>
+	<body onLoad="setTimeout('redirectionWithLabelReference()', 1000)">
+		<div>Dans 2 secondes vous allez être redirigé vers la page que vous avez demandée... normalement</div>
+	</body>
+</html>
+
