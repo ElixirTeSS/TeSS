@@ -116,8 +116,8 @@ class CuratorControllerTest < ActionController::TestCase
     get :users
 
     assert_response :success
-    assert_select '#recent-user-curation-activity ul li', text: /#{approved.name}\s+was\s+approved\s+by\s+#{admin.username}/
-    assert_select '#recent-user-curation-activity ul li', text: /#{rejected.name}\s+was\s+rejected\s+by\s+#{admin.username}/
+    assert_select '#recent-user-curation-activity ul li', text: /#{approved.name}\s+-\s+approved\s+by\s+#{admin.username}/
+    assert_select '#recent-user-curation-activity ul li', text: /#{rejected.name}\s+-\s+rejected\s+by\s+#{admin.username}/
   end
 
   test 'should show all possible resource types under user' do
