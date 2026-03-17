@@ -7,13 +7,15 @@
     <h2><%= t('curation.users.title') %></h2>
 
     <div class="form-inline">
-      <div class="form-group">
-        <%= label_tag('role_id', t('curation.users.filters.with_role.title')) %>
-        <%= select_tag('role_id', role_options(@role),
-                       onchange: "Curation.applyParam(this, 'role')",
-                       title: t('curation.users.filters.with_role.hint'),
-                       autocomplete: 'off', class: 'form-control') %>
-      </div>
+      <% if current_user.is_admin? %>
+        <div class="form-group">
+          <%= label_tag('role_id', t('curation.users.filters.with_role.title')) %>
+          <%= select_tag('role_id', role_options(@role),
+                         onchange: "Curation.applyParam(this, 'role')",
+                         title: t('curation.users.filters.with_role.hint'),
+                         autocomplete: 'off', class: 'form-control') %>
+        </div>
+      <% end %>
 
       <div class="form-group">
         <%= label_tag('max_age', t('curation.users.filters.max_age.title')) %>
