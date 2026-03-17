@@ -525,7 +525,7 @@ class LearningPathsControllerTest < ActionController::TestCase
     topic_link = @learning_path.topic_links.first
     topic_item = topic_link.topic.items.first
 
-    assert_select '.link-overlay a[href=?]',
+    assert_select '.link-overlay[href=?]',
                   material_path(topic_item.resource, lp: [topic_link, topic_item].map(&:id).join(':'))
   end
 

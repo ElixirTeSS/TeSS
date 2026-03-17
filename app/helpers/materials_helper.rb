@@ -119,13 +119,13 @@ module MaterialsHelper
 
     if resource.respond_to?(:scientific_topics)
       tags += resource.scientific_topics.map do |term|
-        link_to(term.preferred_label, term.uri, class: 'label label-info tag-topic link-overlay-link', target: '_blank')
+        content_tag(:span, term.preferred_label, class: 'label label-info tag-topic')
       end
     end
 
     if resource.respond_to?(:operations)
       tags += resource.operations.map do |term|
-        link_to(term.preferred_label, term.uri, class: 'label label-info tag-operation link-overlay-link', target: '_blank')
+        content_tag(:span, term.preferred_label, class: 'label label-info tag-operation')
       end
     end
 

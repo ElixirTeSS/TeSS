@@ -8,7 +8,7 @@ class MaterialsHelperTest < ActionView::TestCase
     assert_includes topics, 'Metabolomics'
   end
 
-  test 'keywords_and_topics generates clickable links for scientific topics and operations' do
+  test 'keywords_and_topics generates spans with css classes for scientific topics and operations' do
     topic_term = OpenStruct.new(preferred_label: 'Genomics', uri: 'http://edamontology.org/topic_0622')
     operation_term = OpenStruct.new(preferred_label: 'Sequence alignment', uri: 'http://edamontology.org/operation_0292')
     resource = OpenStruct.new(
@@ -18,10 +18,8 @@ class MaterialsHelperTest < ActionView::TestCase
     )
     result = keywords_and_topics(resource)
 
-    assert_includes result, 'href="http://edamontology.org/topic_0622"'
     assert_includes result, 'Genomics'
     assert_includes result, 'tag-topic'
-    assert_includes result, 'href="http://edamontology.org/operation_0292"'
     assert_includes result, 'Sequence alignment'
     assert_includes result, 'tag-operation'
     assert_includes result, 'keyword1'

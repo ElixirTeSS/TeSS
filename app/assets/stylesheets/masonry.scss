@@ -105,7 +105,6 @@
   border-radius: 8px;
   padding: $item-padding-base;
   display: block;
-  position: relative;
   transition: $transition-time;
 
   &:hover, &:focus {
@@ -162,20 +161,6 @@
     float: right;
     margin-left: 10px;
   }
-}
-
-.link-overlay-main-link {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 0;
-}
-
-.link-overlay-link {
-  position: relative;
-  z-index: 1;
 }
 
 li.media-item {
