@@ -93,6 +93,34 @@ class CuratorControllerTest < ActionController::TestCase
     assert_includes assigns(:users), new_user
   end
 
+  test 'should allow filtering users based on registration date' do
+    sign_in users(:admin)
+    old_user = users(:unverified_user)
+    old_user.update_column(:created_at, 1.month.ago)
+    new_user = User.create!(username: 'neWuSer1996', email: 'neWUSer1996@email.com', password: '12345678',
+                            processing_consent: '1', role: roles(:unverified_user))
+
+    get :users, params: { max_age: 'P1Y' }
+
+    assert_response :success
+    assert_includes assigns(:users), old_user
+    assert_includes assigns(:users), new_user
+
+    get :users, params: { max_age: 'P1W' }
+
+    assert_response :success
+    refute_includes assigns(:users), old_user
+    assert_includes assigns(:users), new_user
+
+    assert_nothing_raised do
+      get :users, params: { max_age: "🍌" } # Invalid max age is ignored
+
+      assert_response :success
+      assert_includes assigns(:users), old_user
+      assert_includes assigns(:users), new_user
+    end
+  end
+
   test 'should not get user curation page if regular user' do
     sign_in users(:regular_user)
 
