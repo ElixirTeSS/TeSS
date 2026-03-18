@@ -2,9 +2,9 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '7.2.3'
+gem 'rails', '8.1.2'
 
-gem 'active_model_serializers'
+gem 'active_model_serializers' # Source of: ActiveSupport::Configurable is deprecated without replacement, and will be removed in Rails 8.2.
 gem 'activerecord-session_store'
 gem 'addressable'
 gem 'ahoy_matey'
@@ -61,7 +61,7 @@ gem 'sidekiq'
 gem 'sidekiq-status'
 gem 'simple_calendar', '~> 2.4'
 gem 'simple_form'
-gem 'simple_token_authentication'
+gem "simple_token_authentication", git: 'https://github.com/gonzalo-bulnes/simple_token_authentication.git', ref: 'f1cba4e' # Rails 8 support not yet released on Rubygems
 gem 'sitemap_generator'
 gem 'sitemap-parser'
 gem 'slim'
@@ -94,6 +94,7 @@ end
 group :test do
   gem 'committee'
   gem 'minitest'
+  gem 'minitest-mock'
   gem 'minitest-reporters'
   gem 'rails-controller-testing'
   gem 'vcr'
