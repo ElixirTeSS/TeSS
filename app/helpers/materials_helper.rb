@@ -119,13 +119,17 @@ module MaterialsHelper
 
     if resource.respond_to?(:scientific_topics)
       tags += resource.scientific_topics.map do |term|
-        content_tag(:span, term.preferred_label, class: 'label label-info tag-topic')
+        content_tag(:span, class: 'label label-info tag-topic') do
+          content_tag(:i, '', class: 'fa fa-flask') + ' ' + term.preferred_label
+        end
       end
     end
 
     if resource.respond_to?(:operations)
       tags += resource.operations.map do |term|
-        content_tag(:span, term.preferred_label, class: 'label label-info tag-operation')
+        content_tag(:span, class: 'label label-info tag-operation') do
+          content_tag(:i, '', class: 'fa fa-cogs') + ' ' + term.preferred_label
+        end
       end
     end
 
