@@ -8,7 +8,7 @@ DTEND:20260313T161500Z
 DTSTAMP:20251203T150800Z
 UID:indico-event-1617123@indico.cern.ch
 CONTACT:name.surname@test.com
-DESCRIPTION:speakers and zoom here
+DESCRIPTION:speakers and Zoom here, however it is not hybrid
 LOCATION:CERN
 URL:https://indico.cern.ch/event/1617123/
 END:VEVENT

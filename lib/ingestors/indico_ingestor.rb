@@ -122,9 +122,17 @@ module Ingestors
       location = calevent.location
       return if location.blank?
 
+      description = calevent.description.downcase
+      online = description.include?('zoom')
+      hybrid = description.include?('hybrid') && !description.include?('not hybrid') && !description.include?('not a hybrid')
+
       event.venue = location.to_s
-      event.online = calevent.description.include?('zoom')
-      event.presence = calevent.description.include?('zoom') ? :hybrid : :onsite # can do best, but sufficient for now
+      event.online = online || hybrid
+      event.presence = if hybrid
+                         :hybrid
+                       else
+                         online ? :online : :onsite
+                       end
     end
 
     # Extracts the timezone identifier (TZID) from an iCalendar event's dtstart field.
