@@ -51,6 +51,7 @@ gem 'redis'
 gem 'rest-client'
 gem 'reverse_markdown'
 gem 'rss'
+gem 'ruby-openai'
 gem 'sassc-rails'
 gem 'sass-rails'
 gem 'sentry-rails'
@@ -98,5 +99,3 @@ group :test do
   gem 'vcr'
   gem 'webmock'
 end
-
-gem 'ruby-openai'
