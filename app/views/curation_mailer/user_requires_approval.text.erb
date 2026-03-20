@@ -12,4 +12,4 @@ This user's resources are currently hidden. As a curator, you can decide whether
 "Reject" - Mark this user as a spammer, preventing them from creating further content on <%= TeSS::Config.site['title_short'] %>.
 
 To approve or reject this user, please visit:
-<%= curate_users_url(with_content: true) %>
+<%= curate_users_url(with_content: true, max_age: 1.month.iso8601) %>

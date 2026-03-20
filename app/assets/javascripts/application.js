@@ -201,6 +201,9 @@ document.addEventListener("turbolinks:load", function(e) {
     // Testing section on source page
     Sources.init();
 
+    // Approve/reject user curation buttons
+    Curation.init();
+
     var setStarButtonState = function (button) {
         if (button.data('starred')) {
             button.html("<i class='icon icon-h3 star-fill-icon'> </i>");
