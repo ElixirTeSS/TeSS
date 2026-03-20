@@ -252,7 +252,7 @@ GEM
     jquery-turbolinks (2.1.0)
       railties (>= 3.1.0)
       turbolinks
-    json (2.18.1)
+    json (2.19.2)
     json-canonicalization (1.0.0)
     json-jwt (1.16.6)
       activesupport (>= 4.2)
