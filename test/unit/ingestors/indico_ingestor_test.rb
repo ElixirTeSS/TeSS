@@ -29,14 +29,14 @@ class IndicoIngestorTest < ActiveSupport::TestCase
 
     assert_equal sample.url, 'https://indico.cern.ch/event/1617123/'
     assert_equal sample.title, '14th HEP C++ Course and Hands-on Training - The Essentials'
-    assert_equal sample.description, 'speakers and zoom here'
+    assert_equal sample.description, 'speakers and Zoom here, however it is not hybrid'
     assert_equal sample.keywords, %w[TRAINING EDUCATION]
     assert_equal sample.contact, 'name.surname@test.com'
     assert_equal sample.start, '2026-03-09 08:00:00 +0000'
     assert_equal sample.end, '2026-03-13 16:15:00 +0000'
     assert_equal sample.timezone, 'UTC'
     assert_equal sample.venue, 'CERN'
-    assert_match sample.presence, 'hybrid'
+    assert_match sample.presence, 'online'
   end
 
   test 'should read indico link category' do

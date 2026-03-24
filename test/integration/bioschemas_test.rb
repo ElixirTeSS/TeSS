@@ -279,6 +279,8 @@ class BioschemasTest < ActionDispatch::IntegrationTest
 
   test 'LearningResource bioschemas on show page for material' do
     material = materials(:material_with_optionals)
+    material.authors = [{ name: 'Josiah Carberry', orcid: 'https://orcid.org/0000-0002-1825-0097' }, { name: 'Lara Croft' }]
+    material.contributors = [{ name: 'Contri Butor', orcid: '0000-0002-1694-233X' }]
     material.external_resources.create!({ title: 'Cool website', url: 'https://external-resource.pizza' })
     material.node_names = ['Westeros']
     material.save!
@@ -343,23 +345,33 @@ class BioschemasTest < ActionDispatch::IntegrationTest
     # Authors
     q = RDF::Query.new do
       pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.author, :author_info)
-      pattern RDF::Query::Pattern.new(:author_info, RDF::Vocab::SCHEMA.name, :author)
+      pattern RDF::Query::Pattern.new(:author_info, RDF::Vocab::SCHEMA.name, :name)
+      pattern RDF::Query::Pattern.new(:author_info, RDF::Vocab::SCHEMA.identifier, :identifier, optional: true)
     end
     results = graph.query(q)
     assert_equal 2, results.count
-    authors = results.map(&:author)
-    assert_includes authors, 'Nicolai Tesla'
-    assert_includes authors, 'Thomas Edison'
+    authors = results.map { |r| { name: r.name.to_s,
+                                  id: r.author_info.to_s.start_with?('http') ? r.author_info.to_s : nil,
+                                  identifier: r[:identifier]&.to_s }}
+    assert_includes authors, { name: 'Josiah Carberry',
+                               id: 'https://orcid.org/0000-0002-1825-0097',
+                               identifier: 'https://orcid.org/0000-0002-1825-0097' }
+    assert_includes authors, { name: 'Lara Croft', id: nil, identifier: nil }
 
     # Contributors
     q = RDF::Query.new do
       pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.contributor, :contributor_info)
-      pattern RDF::Query::Pattern.new(:contributor_info, RDF::Vocab::SCHEMA.name, :contributor)
+      pattern RDF::Query::Pattern.new(:contributor_info, RDF::Vocab::SCHEMA.name, :name)
+      pattern RDF::Query::Pattern.new(:contributor_info, RDF::Vocab::SCHEMA.identifier, :identifier, optional: true)
     end
     results = graph.query(q)
     assert_equal 1, results.count
-    authors = results.map(&:contributor)
-    assert_includes authors, 'Dr Dre'
+    contributors = results.map { |r| { name: r.name.to_s,
+                                       id: r.contributor_info.to_s.start_with?('http') ? r.contributor_info.to_s : nil,
+                                       identifier: r[:identifier]&.to_s }}
+    assert_includes contributors, { name: 'Contri Butor',
+                                    id: 'https://orcid.org/0000-0002-1694-233X',
+                                    identifier: 'https://orcid.org/0000-0002-1694-233X' }
 
     # Provider
     q = RDF::Query.new do

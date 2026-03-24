@@ -10,6 +10,7 @@ class LearningPath < ApplicationRecord
   include HasSuggestions
   include Collaboratable
   include InSpace
+  include HasPeople
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -17,8 +18,12 @@ class LearningPath < ApplicationRecord
       # full text search fields
       text :title
       text :description
-      text :authors
-      text :contributors
+      text :authors do
+        authors.map(&:display_name)
+      end
+      text :contributors do
+        contributors.map(&:display_name)
+      end
       text :target_audience
       text :keywords
       text :learning_path_type
@@ -31,13 +36,17 @@ class LearningPath < ApplicationRecord
       end
       # other fields
       string :title
-      string :authors, :multiple => true
+      string :authors, multiple: true do
+        authors.map(&:display_name)
+      end
       string :scientific_topics, :multiple => true do
         self.scientific_topic_names
       end
       string :target_audience, :multiple => true
       string :keywords, :multiple => true
-      string :contributors, :multiple => true
+      string :contributors, multiple: true do
+        contributors.map(&:display_name)
+      end
       string :content_provider do
         self.content_provider.try(:title)
       end
@@ -78,10 +87,13 @@ class LearningPath < ApplicationRecord
   validates :title, :description, presence: true
   validates :keywords, length: { maximum: 20 }
 
-  clean_array_fields(:keywords, :contributors, :authors, :target_audience)
-  update_suggestions(:keywords, :contributors, :authors, :target_audience)
+  clean_array_fields(:keywords, :target_audience)
+  update_suggestions(:keywords, :target_audience)
 
   accepts_nested_attributes_for :topic_links, allow_destroy: true
+
+  has_person_role :authors
+  has_person_role :contributors
 
   def description= desc
     super(Rails::Html::FullSanitizer.new.sanitize(desc))

@@ -8,6 +8,10 @@ class OrcidValidator < ActiveModel::EachValidator
     record.errors.add(attribute, options[:message] || "isn't a valid ORCID identifier")
   end
 
+  def self.orcid_url(orcid)
+    "#{ORCID_PREFIX}#{orcid}"
+  end
+
   private
 
   # checks the structure of the id, and whether is conforms to ISO/IEC 7064:2003

@@ -1,0 +1,57 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+nicolai_tesla:
+  name: Nicolai Tesla
+  orcid: null
+  resource: material_with_optionals (Material)
+  role: author
+
+thomas_edison:
+  name: Thomas Edison
+  orcid: null
+  resource: material_with_optionals (Material)
+  role: author
+
+saskia:
+  name: Saskia Lawson-Tovey
+  orcid: null
+  resource: youtube_video_material (Material)
+  role: author
+
+dr_dre:
+  name: Dr Dre
+  orcid: null
+  resource: material_with_optionals (Material)
+  role: contributor
+
+robert_andrews:
+  name: Robert Andrews
+  orcid: null
+  resource: youtube_video_material (Material)
+  role: contributor
+
+munazah_andrabi:
+  name: Munazah Andrabi
+  orcid: null
+  resource: youtube_video_material (Material)
+  role: contributor
+
+learning_path_author_1:
+  name: Firstname Lastname
+  resource: two (LearningPath)
+  role: author
+
+learning_path_author_2:
+  name: Someone Else
+  resource: two (LearningPath)
+  role: author
+
+learning_path_contributor_1:
+  name: Contri Butor
+  resource: two (LearningPath)
+  role: contributor
+
+learning_path_contributor_2:
+  name: Person Two
+  resource: two (LearningPath)
+  role: contributor

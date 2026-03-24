@@ -58,7 +58,7 @@
     <% end %>
     <% sample.each do |resource_params| %>
       <% resource = Source.get_test_resource(type, resource_params, user: User.get_default_user) %>
-      <%= render partial: 'sources/test_resource', locals: { resource: resource } %>
+      <%= render partial: 'sources/test_resource', locals: { resource: resource, resource_params: resource_params } %>
     <% end %>
   </div>
 <% end %>
