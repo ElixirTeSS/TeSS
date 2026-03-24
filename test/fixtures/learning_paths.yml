@@ -13,8 +13,6 @@ two:
   user: admin
   doi: Text
   target_audience: ['Researchers']
-  authors: ['Firstname Lastname', 'Someone Else']
-  contributors: ['Contri Butor', 'Person Two']
   licence: CC-BY-NC-4.0
   difficulty_level: beginner
   content_provider: iann

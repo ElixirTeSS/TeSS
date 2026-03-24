@@ -22,7 +22,7 @@
     <% end %>
     <%= render partial: 'common/extra_metadata', locals: { resource: resource } %>
     <% if resource.valid? %>
-      <%= render partial: 'bioschemas/preview_button', locals: { resource: resource } %>
+      <%= render partial: 'bioschemas/preview_button', locals: { resource: resource, resource_params: resource_params } %>
     <% else %>
       <div class="alert alert-danger">
         <i class="fa fa-exclamation-circle"></i> Errors: <%= resource.errors.full_messages.join(', ') %>

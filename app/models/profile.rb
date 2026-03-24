@@ -1,13 +1,14 @@
 require 'uri'
 
 class Profile < ApplicationRecord
-  auto_strip_attributes :firstname, :surname, :website, :orcid, squish: false
+  include HasOrcid
+
+  auto_strip_attributes :firstname, :surname, :website, squish: false
   belongs_to :user, inverse_of: :profile
 
-  before_validation :normalize_orcid
   validates :firstname, :surname, :description, presence: true, if: :public?
   validates :website, url: true, http_url: { allow_inaccessible: true }, allow_blank: true
-  validates :orcid, orcid: true, allow_blank: true
+
   after_validation :check_public
   after_commit :reindex_trainer, on: %i[create update]
   clean_array_fields(:expertise_academic, :expertise_technical, :fields,
@@ -23,11 +24,6 @@ class Profile < ApplicationRecord
 
   def full_name
     "#{firstname} #{surname}".strip
-  end
-
-  def orcid_url
-    return nil if orcid.blank?
-    "#{OrcidValidator::ORCID_PREFIX}#{orcid}"
   end
 
   def merge(*others)
@@ -49,6 +45,7 @@ class Profile < ApplicationRecord
   end
 
   def authenticate_orcid(orcid)
+    old_orcid = self.orcid
     existing = Profile.where(orcid: orcid, orcid_authenticated: true)
     self.orcid = orcid
     self.orcid_authenticated = true
@@ -59,17 +56,13 @@ class Profile < ApplicationRecord
         next if profile == self
         profile.update_column(:orcid_authenticated, false)
       end
+      PersonLinkWorker.perform_async([old_orcid, orcid].compact_blank)
     end
 
     out
   end
 
   private
-
-  def normalize_orcid
-    return if orcid.blank?
-    self.orcid = orcid.strip.sub(OrcidValidator::ORCID_DOMAIN_REGEX, '')
-  end
 
   def check_public
     public ? self.type = 'Trainer' : self.type = 'Profile'
