@@ -8,7 +8,7 @@ on:
       - 'db/migrate/**'
 
 jobs:
-  test:
+  migrate:
     runs-on: ubuntu-latest
     env:
       DB_HOST: localhost
