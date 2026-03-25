@@ -18,6 +18,8 @@ jobs:
       SECRET_BASE_KEY: test_key
       RAILS_ENV: test
       REDIS_TEST_URL: redis://localhost:6379/0
+      PREV_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+
     services:
       postgres:
         image: postgres
@@ -59,17 +61,17 @@ jobs:
           cp config/ingestion.example.yml config/ingestion.yml
       - name: Checkout previous schema
         # Checks out previous schema.rb and temporarily renames migrations
-        if: github.event.before != '0000000000000000000000000000000000000000'
+        if: env.PREV_SHA != '0000000000000000000000000000000000000000'
         run: |
-          git fetch origin ${{ github.event.before }}
-          git checkout ${{ github.event.before }} -- db/schema.rb
+          git fetch origin ${{ env.PREV_SHA }}
+          git checkout ${{ env.PREV_SHA }} -- db/schema.rb
           mv db/migrate db/migrate.bkp
-          git checkout ${{ github.event.before }} -- db/migrate
+          git checkout ${{ env.PREV_SHA }} -- db/migrate
       - name: Load previous database schema
         run:  bundle exec rake db:test:prepare
       - name: Restore migrations
         # Restore the renamed migrations
-        if: github.event.before != '0000000000000000000000000000000000000000'
+        if: env.PREV_SHA != '0000000000000000000000000000000000000000'
         run: |
           rm -rf db/migrate
           mv db/migrate.bkp db/migrate
