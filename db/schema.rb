@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_10_163512) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_25_133804) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -388,6 +388,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_10_163512) do
     t.string "fields", default: [], array: true
     t.boolean "visible", default: true
     t.bigint "space_id"
+    t.string "a_good_field"
     t.index ["content_provider_id"], name: "index_materials_on_content_provider_id"
     t.index ["slug"], name: "index_materials_on_slug", unique: true
     t.index ["space_id"], name: "index_materials_on_space_id"
