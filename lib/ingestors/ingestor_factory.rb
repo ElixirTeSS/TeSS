@@ -12,8 +12,8 @@ module Ingestors
         Ingestors::TessEventIngestor,
         Ingestors::ZenodoIngestor,
         Ingestors::OaiPmhIngestor,
-        Ingestors::GithubIngestor,
-      ] + taxila_ingestors + llm_ingestors + heptraining_ingestors
+        Ingestors::GithubIngestor
+      ] + taxila_ingestors + llm_ingestors + heptraining_ingestors + pantraining_ingestors
     end
 
     def self.taxila_ingestors
@@ -54,6 +54,12 @@ module Ingestors
     def self.heptraining_ingestors
       [
         Ingestors::Heptraining::GrayScottIngestor
+      ]
+    end
+
+    def self.pantraining_ingestors
+      [
+        Ingestors::Pantraining::PanIngestorB
       ]
     end
 
