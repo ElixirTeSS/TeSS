@@ -1,8 +1,9 @@
 <div class="col-xs-12">
   <hr/>
   <div class="supporters">
+    <% expected_space = current_space.default? ? 'default' : current_space.host %>
     <%- TeSS::Config&.funders&.reverse&.each do |funder| %>
-      <% unless funder[:only] && funder[:only] != 'footer' %>
+      <% if (funder[:only].blank? || funder[:only] == 'footer') && (funder[:space].blank? || funder[:space] == expected_space) %>
         <%= link_to funder[:url], class: 'footer-logo', target: '_blank', rel: 'noopener' do %>
           <%= image_tag(funder[:logo]) %>
         <% end %>
