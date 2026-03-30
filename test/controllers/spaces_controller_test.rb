@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class SpacesControllerTest < ActionController::TestCase
-
   include Devise::Test::ControllerHelpers
   include ActiveJob::TestHelper
   include ActionMailer::TestHelper
@@ -95,7 +94,7 @@ class SpacesControllerTest < ActionController::TestCase
     get :edit, params: { id: @space }
     assert_response :success
   end
-  
+
   test 'owner should not get edit for other space' do
     sign_in @space.user
     get :edit, params: { id: spaces(:other) }
@@ -250,17 +249,24 @@ class SpacesControllerTest < ActionController::TestCase
                  'collections': false,
                  'content_providers': false,
                  'trainers': false,
-                 'nodes': false
-    }
+                 'nodes': false }
 
     with_settings(feature: features) do
       get :edit, params: { id: @space }
       assert_response :success
       assert_select '[name="space[enabled_features][]"]', count: 4 # +1 because of the blank input that allows you to
-                                                                   #  clear the list
+      #  clear the list
       assert_select '#space_enabled_features_events', count: 1
       assert_select '#space_enabled_features_workflows', count: 1
       assert_select '#space_enabled_features_materials', count: 0
     end
+  end
+
+  test 'space listing adds background-color style for themed space logo' do
+    @space.update!(theme: 'space')
+
+    get :index
+    assert_response :success
+    assert_select 'img.space-logo[style*="background-color"]'
   end
 end
