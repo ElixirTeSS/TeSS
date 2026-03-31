@@ -15,7 +15,7 @@ config/secrets.yml
 config/sunspot.yml
 config/tess.yml
 config/ingestion.yml
-config/initializers/hosts.rb
+config/initializers/local_hosts.rb
 tmp/
 solr/test/
 solr/pids/

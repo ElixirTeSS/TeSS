@@ -18,7 +18,7 @@ This will ensure that if you visit e.g. plants.mytess.training, your browser wil
 (you may need to restart your browser after changing the hosts file).
 
 To ensure your Rails application accepts requests to the hosts provided above, you will also need to create a 
-file `config/initializers/hosts.rb` and add the necessary hosts to Rails' config:
+file `config/initializers/local_hosts.rb` and add the necessary hosts to Rails' config:
 
 ```ruby
 Rails.application.config.hosts << '.mytess.training' if Rails.env.development?
