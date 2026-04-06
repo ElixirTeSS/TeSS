@@ -7,7 +7,7 @@ module Ingestors
       private
 
       # Reads either a sitemap.{xml|txt} or a single URL
-      # Returns a list of URLs from 1 to n URLs
+      # Returns a list of URLs from 0 to n URLs
       def parse_sitemap(source_url)
         case source_url.downcase
         when /sitemap(.*)?\.xml\Z/
@@ -30,7 +30,7 @@ module Ingestors
         urls
       rescue StandardError => e
         @messages << "Extract from sitemap[#{url}] failed with: #{e.message}"
-        nil
+        []
       end
 
       def parse_txt_sitemap(url)
