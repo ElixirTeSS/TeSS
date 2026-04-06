@@ -48,6 +48,7 @@ class ActiveSupport::TestCase
 
   teardown do
     User.current_user = nil
+    Space.current_space = nil
   end
 
   # WARNING: Do not be tempted to include Devise TestHelpers here (e.g. include Devise::TestHelpers)
