@@ -1,0 +1,86 @@
+name: Database migration tests
+on:
+  push:
+    paths:
+      - 'db/migrate/**'
+  pull_request:
+    paths:
+      - 'db/migrate/**'
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    env:
+      DB_HOST: localhost
+      DB_NAME: tess
+      DB_USER: tess
+      DB_PASSWORD: password
+      SECRET_BASE_KEY: test_key
+      RAILS_ENV: test
+      REDIS_TEST_URL: redis://localhost:6379/0
+      PREV_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_DB: ${{ env.DB_NAME }}
+          POSTGRES_USER: ${{ env.DB_USER }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+    steps:
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install imagemagick
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Install Ruby & gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Configure
+        run: |
+          cp test/config/test_tess.yml config/tess.yml
+          cp config/secrets.github.yml config/secrets.yml
+          cp config/ingestion.example.yml config/ingestion.yml
+      - name: Checkout previous schema
+        # Checks out previous schema.rb and temporarily renames migrations
+        if: env.PREV_SHA != '0000000000000000000000000000000000000000'
+        run: |
+          git fetch origin ${{ env.PREV_SHA }}
+          git checkout ${{ env.PREV_SHA }} -- db/schema.rb
+          mv db/migrate db/migrate.bkp
+          git checkout ${{ env.PREV_SHA }} -- db/migrate
+      - name: Load previous database schema
+        run:  bundle exec rake db:test:prepare
+      - name: Restore migrations
+        # Restore the renamed migrations
+        if: env.PREV_SHA != '0000000000000000000000000000000000000000'
+        run: |
+          rm -rf db/migrate
+          mv db/migrate.bkp db/migrate
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'yarn'
+      - name: Install JS dependencies
+        run: yarn install --frozen-lockfile --non-interactive
+      - name: Run migrations
+        run: bundle exec rails db:migrate
