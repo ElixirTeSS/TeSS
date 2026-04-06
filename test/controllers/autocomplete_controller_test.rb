@@ -33,45 +33,44 @@ class AutocompleteControllerTest < ActionController::TestCase
   end
 
   test 'should get people suggestions' do
-    AutocompleteSuggestion.add('contributors', 'andrew anderson', 'zane zebra')
-    AutocompleteSuggestion.add('authors', 'adam eve', 'ruby gems')
+    material = materials(:good_material)
+    material.authors.create!(name: 'John Doe', orcid: '0000-0002-1825-0097')
+    material.authors.create!(name: 'jane Doe')
+    material.authors.create!(name: 'Fred Bloggs')
+    materials(:bad_material).authors.create!(name: 'John Doe')
+    material2 = materials(:youtube_video_material)
+    material2.authors.create!(name: 'John Doe')
+    material2.authors.create!(name: 'John Doe', orcid: '0000-0002-1825-0097')
+    material2.authors.create!(name: 'John Doe', orcid: '0000-0002-1694-233X')
 
     sign_in users(:regular_user)
 
-    get :people_suggestions, params: { query: 'a' }, format: :json
+    # Should select distinct name/ORCID pairs
+    get :people_suggestions, params: { query: 'jo' }, format: :json
     assert_response :success
     res = JSON.parse(response.body)
-    assert_equal ['adam eve', 'andrew anderson'], res['suggestions']
+    suggestions = res['suggestions']
+    assert_equal 3, suggestions.length, "Should be 3 - 2 with ORCIDs and 1 without. Should not include duplicates."
+    assert_equal ['0000-0002-1694-233X', '0000-0002-1825-0097', nil], suggestions.map { |s| s['data']['orcid'] }
+    assert_equal ['John Doe', 'John Doe', 'John Doe'], suggestions.map { |s| s['value'] }
 
-    get :people_suggestions, params: { query: 'A' }, format: :json
+    get :people_suggestions, params: { query: 'j' }, format: :json
     assert_response :success
     res = JSON.parse(response.body)
-    assert_equal ['adam eve', 'andrew anderson'], res['suggestions']
+    suggestions = res['suggestions']
+    assert_equal ['jane Doe', 'John Doe', 'John Doe', 'John Doe'], suggestions.map { |s| s['value'] }
 
-    get :people_suggestions, params: { query: 'ad' }, format: :json
+    get :people_suggestions, params: { query: 'FRED' }, format: :json
     assert_response :success
     res = JSON.parse(response.body)
-    assert_equal ['adam eve'], res['suggestions']
+    suggestions = res['suggestions']
+    assert_equal ['Fred Bloggs'], suggestions.map { |s| s['value'] }
 
-    get :people_suggestions, params: { query: '' }, format: :json
+    get :people_suggestions, params: { query: 'x' }, format: :json
     assert_response :success
     res = JSON.parse(response.body)
-    assert_equal ['adam eve', 'andrew anderson', 'ruby gems', 'zane zebra'], res['suggestions']
-
-    get :people_suggestions, params: { query: 'zane z' }, format: :json
-    assert_response :success
-    res = JSON.parse(response.body)
-    assert_equal ['zane zebra'], res['suggestions']
-
-    get :people_suggestions, params: { query: 'q' }, format: :json
-    assert_response :success
-    res = JSON.parse(response.body)
-    assert_equal [], res['suggestions']
-
-    get :people_suggestions, params: { field: 'cat', query: 'm' }, format: :json
-    assert_response :success
-    res = JSON.parse(response.body)
-    assert_equal [], res['suggestions']
+    suggestions = res['suggestions']
+    assert_equal [], suggestions
   end
 
   test 'should not get suggestions if not logged in' do

@@ -117,8 +117,11 @@ class WorkflowsController < ApplicationController
     params.require(:workflow).permit(:title, :description, :user_id, :workflow_content, :doi,
                                      :remote_created_date,  :remote_updated_date, { keywords: [] },
                                      { scientific_topic_names: [] }, { scientific_topic_uris: [] }, :licence,
-                                     :difficulty_level, { contributors: [] }, { authors: [] }, { target_audience: [] },
-                                     :hide_child_nodes, :public)
+                                     :difficulty_level, { target_audience: [] },
+                                     :hide_child_nodes, :public,
+                                     { authors: [:name, :orcid] }, { contributors: [:name, :orcid] }, # Structured
+                                     { authors: [] }, { contributors: [] } # as strings
+    )
   end
 
 end

@@ -808,6 +808,11 @@ input[type=checkbox].field-lock + label:before,
   margin: 15px;
 }
 
+.masonry-brick .space-logo {
+  padding: .5em;
+  border-radius: 4px;
+}
+
 .list-card {
   @include floating-card;
   border-radius: 8px;
@@ -1110,4 +1115,8 @@ td.day .calendar-text {
   margin: 12px 10px;
   display: flex;
   justify-content: center;
+}
+
+.tag-topic, .tag-operation {
+  text-decoration: none;
 }

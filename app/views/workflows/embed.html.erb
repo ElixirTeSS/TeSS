@@ -13,8 +13,19 @@
 <%= render partial: 'workflows/workflow_diagram', locals: { workflow: @workflow } %>
 
 <%= link_to @workflow, class: 'embed-floating-link', target: '_parent' do %>
-  <%= image_tag TeSS::Config.site['logo'],
-                alt: TeSS::Config.site['title'],
-                title: "View this workflow on #{TeSS::Config.site['title_short']}",
-                style: 'height: 50px;' %>
+    <% if TeSS::Config.site.dig('footer', 'show_space_logo') && current_space&.image? %>
+        <% logo_background = TeSS::Config.themes[current_space.theme]&.dig('primary') %>
+        <%= image_tag current_space.image.url,
+                      alt: current_space.logo_alt,
+                      title: "View this workflow on #{current_space.title}",
+                      class: 'space-logo',
+                      style: "height: 50px;#{ " background-color: #{logo_background};" if logo_background }" %>
+    <% else %>
+        <% logo_background = TeSS::Config.themes[TeSS::Config.site['default_theme']]&.dig('primary') %>
+        <%= image_tag TeSS::Config.site['logo'],
+                      alt: TeSS::Config.site['logo_alt'],
+                      title: "View this workflow on #{TeSS::Config.site['title_short']}",
+                      class: 'space-logo',
+                      style: "height: 50px;#{ " background-color: #{logo_background};" if logo_background }" %>
+    <% end %>
 <% end %>

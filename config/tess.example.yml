@@ -123,6 +123,8 @@ default: &default
 #        - url: https://example.com/
 #          title: Example
 #          location: center # Display link on 'left', 'center' or 'right', defaults to 'center' 
+#          space: # e.g. myspace.tesshub.mydomain.com - if present, show link only in specified space ("default" for default space)
+      show_space_logo: false # Show space logo instead of site logo in footer 
     # The order in which the tabs appear (if feature enabled)
     tab_order: ['about', 'events', 'materials', 'elearning_materials', 'workflows', 'collections', 'trainers', 'content_providers', 'nodes']
     # The tabs that should be collapsed under the "Directory" tab. Can be left blank to hide it.
@@ -236,6 +238,7 @@ default: &default
 #    - url: https://example.org/your-funders-website
 #      logo: foo.png
 #      only: # "footer" or "about" - if pressent, show funder only in specified location
+#      space: # e.g. myspace.tesshub.mydomain.com - if present, show funder only in specified space
   priority_licences:
     - MIT
     - Apache-2.0

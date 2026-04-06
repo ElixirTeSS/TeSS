@@ -1,0 +1,39 @@
+<% label ||= f.object.class.human_attribute_name(field_name) %>
+<% model_name ||= f.object.class.model_name.param_key %>
+<% required ||= false   # is a value required %>
+<% id ||= "#{model_name}_#{field_name}" %>
+<% hint ||= false %>
+<% visibility_toggle ||= nil %>
+<% hidden = visibility_toggle && hidden?(field_name, visibility_toggle) %>
+
+<div class="form-group<%= ' hidden' if hidden -%>" id="<%= id -%>" data-role="people-form" data-autocomplete-url="<%= people_autocomplete_suggestions_path -%>">
+  <% if required %>
+    <label class="control-label string required">
+      <abbr title="required">*</abbr>
+    </label>
+  <% end %>
+
+  <%= f.label field_name.to_sym, label, class: 'control-label' %>
+  <%= f.field_lock(field_name.to_sym) if f.object.respond_to?(:locked_fields) %>
+
+  <%# This blank association is needed to trigger the delete when all associations are removed %>
+  <input type="hidden" name="<%= "#{model_name}[#{field_name}][0]" -%>" value=""/>
+
+  <div data-role="people-form-list">
+    <% f.object.send(field_name).each_with_index do |person, index| %>
+      <%= render partial: 'common/person_form',
+                 locals: { field_prefix: "#{model_name}[#{field_name}]", index: person.id, person: person, role: role } %>
+    <% end %>
+  </div>
+
+  <%= link_to('#', data: { role: 'people-form-add' }, class: 'btn btn-icon') do %>
+    <i class="icon icon-h4 plus-icon"></i>
+  <% end %>
+  <span class="help-inline-block help-block"><%= t('people.add', role: role) %></span>
+
+  <template data-role="people-form-template">
+    <%= render partial: 'common/person_form', locals: { field_prefix: "#{model_name}[#{field_name}]", person: nil, role: role } %>
+  </template>
+
+  <%= content_tag(:p, hint, class: 'help-block') if hint %>
+</div>

@@ -1,13 +1,5 @@
-<%= form_for(resource, url: polymorphic_path([:preview, resource.class])) do |f| %>
-  <% resource.attributes.each do |key, value| %>
-    <%= f.hidden_field(key, multiple: value.is_a?(Array)) %>
-  <% end %>
-  <div style="display: none">
-    <% resource.external_resources.each_with_index do |external_resource, index| %>
-      <%= render partial: 'common/external_resource_form',
-                 locals: { form_name: resource.class.name.downcase, index: index, external_resource: external_resource } %>
-    <% end %>
-  </div>
+<%= form_tag(polymorphic_path([:preview, resource.class])) do |f| %>
+  <%= attributes_to_hidden_fields(resource.class.model_name.param_key, resource_params) %>
 
-  <%= f.submit('Preview', class: 'btn btn-primary', formtarget: '_blank', data: { disable_with: false }) %>
+  <%= submit_tag('Preview', class: 'btn btn-primary', formtarget: '_blank', data: { disable_with: false }) %>
 <% end %>

@@ -80,10 +80,16 @@ module Bioschemas
     end
 
     def self.person(person)
-      {
+      p = {
         "@type" => "Person",
-        "name" => person
+        "name" => person.name
       }
+
+      if person.orcid.present?
+        p['@id'] = p['identifier'] = person.orcid_url
+      end
+
+      p
     end
 
     def self.address(event)

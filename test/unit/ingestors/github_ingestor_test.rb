@@ -177,7 +177,7 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
     assert_equal sample.date_created, Date.new(2025, 9, 29)
     assert_equal sample.date_published, Date.new(2025, 9, 28)
     assert_equal sample.date_modified, Date.new(2025, 9, 30)
-    assert_equal sample.contributors, %w[jane doe]
+    assert_equal sample.contributors.map(&:display_name), %w[jane doe]
     assert_equal sample.resource_type, ['Github Repository'] # when no gh page
     assert_equal sample.prerequisites, '1. Be kind'
   end

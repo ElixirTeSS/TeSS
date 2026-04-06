@@ -12,7 +12,7 @@ class LearningPathsControllerTest < ActionController::TestCase
       description: 'New description'
     }
   end
-  #INDEX TESTS
+  # INDEX TESTS
   test 'should get index' do
     get :index
     assert_response :success
@@ -49,7 +49,7 @@ class LearningPathsControllerTest < ActionController::TestCase
     assert_equal learning_paths_path, body['links']['self']
   end
 
-  #NEW TESTS
+  # NEW TESTS
 
   test 'should get new page for curators and admins only' do
     get :new
@@ -72,14 +72,14 @@ class LearningPathsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  #EDIT TESTS
+  # EDIT TESTS
   test 'should not get edit page for not logged in users' do
-    #Not logged in = Redirect to login
+    # Not logged in = Redirect to login
     get :edit, params: { id: @learning_path }
     assert_redirected_to new_user_session_path
   end
 
-  #logged in but insufficient permissions = ERROR
+  # logged in but insufficient permissions = ERROR
   test 'should get edit for learning_path owner' do
     sign_in @learning_path.user
     get :edit, params: { id: @learning_path }
@@ -93,20 +93,20 @@ class LearningPathsControllerTest < ActionController::TestCase
   end
 
   test 'should get edit for admin' do
-    #Owner of learning_path logged in = SUCCESS
+    # Owner of learning_path logged in = SUCCESS
     sign_in users(:admin)
     get :edit, params: { id: @learning_path }
     assert_response :success
   end
 
   test 'should not get edit page for regular user' do
-    #Administrator = SUCCESS
+    # Administrator = SUCCESS
     sign_in users(:another_regular_user)
     get :edit, params: { id: @learning_path }
     assert :forbidden
   end
 
-  #CREATE TEST
+  # CREATE TEST
   test 'should create learning_path for curator' do
     sign_in users(:curator)
     assert_difference('LearningPath.count') do
@@ -146,7 +146,7 @@ class LearningPathsControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
   end
 
-  #SHOW TEST
+  # SHOW TEST
   test 'should show learning_path' do
     get :show, params: { id: @learning_path }
     assert_response :success
@@ -183,21 +183,22 @@ class LearningPathsControllerTest < ActionController::TestCase
     assert_equal learning_path_path(assigns(:learning_path)), body['data']['links']['self']
   end
 
-  #UPDATE TEST
+  # UPDATE TEST
   test 'should update learning_path' do
     sign_in @learning_path.user
     patch :update, params: { id: @learning_path, learning_path: @updated_learning_path }
     assert_redirected_to learning_path_path(assigns(:learning_path))
   end
 
-  test "should add topics to learning_path" do
+  test 'should add topics to learning_path' do
     sign_in @learning_path.user
     learning_path = learning_paths(:two)
     assert_no_difference('LearningPathTopic.count') do
       assert_difference('LearningPathTopicLink.count', 1) do
         assert_difference('learning_path.topics.count', 1) do
           patch :update, params: { learning_path: {
-            topic_links_attributes: { '1': { topic_id: learning_path_topics(:goblet_things).id, order: 300 } } },
+                                     topic_links_attributes: { '1': { topic_id: learning_path_topics(:goblet_things).id, order: 300 } }
+                                   },
                                    id: learning_path.id }
         end
       end
@@ -211,14 +212,15 @@ class LearningPathsControllerTest < ActionController::TestCase
     assert_equal learning_path_topics(:goblet_things), links[1].topic
   end
 
-  test "should remove topic from learning_path" do
+  test 'should remove topic from learning_path' do
     sign_in @learning_path.user
     learning_path = learning_paths(:two)
     assert_no_difference('LearningPathTopic.count') do
       assert_difference('LearningPathTopicLink.count', -1) do
         assert_difference('learning_path.topics.count', -1) do
           patch :update, params: { learning_path: {
-            topic_links_attributes: { '1': { id: learning_path.topic_link_ids.first, _destroy: '1' } } },
+                                     topic_links_attributes: { '1': { id: learning_path.topic_link_ids.first, _destroy: '1' } }
+                                   },
                                    id: learning_path.id }
         end
       end
@@ -227,7 +229,7 @@ class LearningPathsControllerTest < ActionController::TestCase
     assert_empty assigns(:learning_path).topic_links
   end
 
-  test "should modify items in learning_path" do
+  test 'should modify items in learning_path' do
     sign_in @learning_path.user
 
     l1 = @learning_path.topic_links[0]
@@ -248,7 +250,7 @@ class LearningPathsControllerTest < ActionController::TestCase
     end
   end
 
-  #DESTROY TEST
+  # DESTROY TEST
   test 'should destroy learning_path owned by user' do
     sign_in @learning_path.user
     assert_difference('LearningPath.count', -1) do
@@ -273,9 +275,8 @@ class LearningPathsControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
-
-  #CONTENT TESTS
-  #BREADCRUMBS
+  # CONTENT TESTS
+  # BREADCRUMBS
   test 'breadcrumbs for learning_paths index' do
     get :index
     assert_response :success
@@ -326,7 +327,7 @@ class LearningPathsControllerTest < ActionController::TestCase
     end
   end
 
-  #OTHER CONTENT
+  # OTHER CONTENT
   test 'learning path lists topics' do
     sign_in(users(:regular_user))
 
@@ -344,8 +345,8 @@ class LearningPathsControllerTest < ActionController::TestCase
     get :show, params: { id: @learning_path }
 
     assert_response :success
-    assert_select 'a.btn[href=?]', edit_learning_path_path(@learning_path), count: 0 #No Edit
-    assert_select 'a.btn[href=?]', learning_path_path(@learning_path), count: 0 #No Edit
+    assert_select 'a.btn[href=?]', edit_learning_path_path(@learning_path), count: 0 # No Edit
+    assert_select 'a.btn[href=?]', learning_path_path(@learning_path), count: 0 # No Edit
   end
 
   test 'do not show action buttons when not owner or admin' do
@@ -353,8 +354,8 @@ class LearningPathsControllerTest < ActionController::TestCase
 
     get :show, params: { id: @learning_path }
 
-    assert_select 'a.btn[href=?]', edit_learning_path_path(@learning_path), count: 0 #No Edit
-    assert_select 'a.btn[href=?]', learning_path_path(@learning_path), count: 0 #No Edit
+    assert_select 'a.btn[href=?]', edit_learning_path_path(@learning_path), count: 0 # No Edit
+    assert_select 'a.btn[href=?]', learning_path_path(@learning_path), count: 0 # No Edit
   end
 
   test 'show action buttons when learning_path_curator' do
@@ -375,7 +376,7 @@ class LearningPathsControllerTest < ActionController::TestCase
     assert_select 'a.btn[href=?]', learning_path_path(@learning_path), text: 'Delete', count: 1
   end
 
-  #API Actions
+  # API Actions
   test 'should not allow access to private learning_paths' do
     sign_in users(:regular_user)
     get :show, params: { id: learning_paths(:in_development_learning_path) }
@@ -453,11 +454,11 @@ class LearningPathsControllerTest < ActionController::TestCase
 
     assert_difference('LearningPathTopicLink.count', -1) do
       patch :update, params: { learning_path: {
-        topic_links_attributes: { '1': { id: @learning_path.topic_link_ids.first, _destroy: '1' } } },
+                                 topic_links_attributes: { '1': { id: @learning_path.topic_link_ids.first, _destroy: '1' } }
+                               },
                                id: @learning_path.id }
       assert_redirected_to learning_path_path(assigns(:learning_path))
     end
-
   end
 
   test 'should not allow non-collaborator to edit' do
@@ -511,10 +512,10 @@ class LearningPathsControllerTest < ActionController::TestCase
     end
 
     response_materials = body.dig('data', 'relationships', 'materials', 'data')
-    assert_equal [materials[1].id, materials[0].id, materials[2].id], response_materials.map { |m| m['id'].to_i }
+    assert_equal([materials[1].id, materials[0].id, materials[2].id], response_materials.map { |m| m['id'].to_i })
 
     response_events = body.dig('data', 'relationships', 'events', 'data')
-    assert_equal [events[1].id, events[0].id], response_events.map { |e| e['id'].to_i }
+    assert_equal([events[1].id, events[0].id], response_events.map { |e| e['id'].to_i })
   end
 
   test 'should include back-reference to learning path in item links' do
@@ -537,5 +538,27 @@ class LearningPathsControllerTest < ActionController::TestCase
     assert_select '.deleted-item-overlay', count: 1 do
       assert_select 'h4', text: 'Deleted resource'
     end
+  end
+
+  test 'should update learning path authors using structured authors' do
+    sign_in @learning_path.user
+    update = @updated_learning_path.merge(authors: [
+      { name: 'Joe', orcid: '0000-0002-1825-0097' }
+    ])
+    patch :update, params: { id: @learning_path, learning_path: update }
+    lp = assigns(:learning_path)
+    assert_redirected_to learning_path_path(lp)
+    assert_equal update[:authors].first[:name], lp.authors.first[:name]
+    assert_equal update[:authors].first[:orcid], lp.authors.first[:orcid]
+  end
+
+  test 'should update learning path authors using string array of authors' do
+    sign_in @learning_path.user
+    update = @updated_learning_path.merge(authors: ['Joe'])
+    patch :update, params: { id: @learning_path, learning_path: update }
+    lp = assigns(:learning_path)
+    assert_redirected_to learning_path_path(lp)
+    assert_equal 'Joe', lp.authors.first[:name]
+    assert_nil lp.authors.first[:orcid]
   end
 end

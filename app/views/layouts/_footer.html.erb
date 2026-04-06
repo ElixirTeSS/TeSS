@@ -1,9 +1,15 @@
+<% space_string_in_config = current_space.default? ? 'default' : current_space.host %>
+
 <footer class="footer">
   <div class="container">
     <div class="row">
       <div class="col-sm-4 col-xs-6">
         <div class="footer-logo footer-item">
-          <%= image_tag(TeSS::Config.site['logo'], :alt => TeSS::Config.site['logo_alt']) %>
+          <% if TeSS::Config.site.dig('footer', 'show_space_logo') && current_space.image? %>
+            <%= image_tag(current_space.image.url, :alt => current_space.logo_alt) %>
+          <% else %>
+            <%= image_tag(TeSS::Config.site['logo'], :alt => TeSS::Config.site['logo_alt']) %>
+          <% end %>
         </div>
 
         <div class="footer-item contact-link">
@@ -12,7 +18,7 @@
 
         <% if TeSS::Config.site.dig('footer', 'additional_links') %>
            <% TeSS::Config.site.dig('footer', 'additional_links').each do |link| %>
-            <% if link[:location] == 'left' %>
+            <% if link[:location] == 'left' && (link[:space].blank? || link[:space] == space_string_in_config) %>
               <div class="footer-item">
                 <%= link_to link[:title], link[:url] %>
               </div>
@@ -45,7 +51,7 @@
         <% end %>
         <% if TeSS::Config.site.dig('footer', 'additional_links') %>
            <% TeSS::Config.site.dig('footer', 'additional_links').each do |link| %>
-            <% if link[:location] == 'center' || !link[:location] %>
+            <% if (link[:location] == 'center' || !link[:location]) && (link[:space].blank? || link[:space] == space_string_in_config)%>
               <div class="footer-item">
                 <%= link_to link[:title], link[:url] %>
               </div>
@@ -76,7 +82,7 @@
 
         <% if TeSS::Config.site.dig('footer', 'additional_links') %>
            <% TeSS::Config.site.dig('footer', 'additional_links').each do |link| %>
-            <% if link[:location] == 'right' %>
+            <% if link[:location] == 'right' && (link[:space].blank? || link[:space] == space_string_in_config)%>
               <div class="footer-item">
                 <%= link_to link[:title], link[:url] %>
               </div>

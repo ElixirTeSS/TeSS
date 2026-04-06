@@ -1,10 +1,14 @@
 {
     "post-docs": "researchers",
     "PhD's candidate": "researchers",
+    "PhD candidates": "researchers",
     "PhD student": "researchers",
     "principal investigator": "researchers",
     "professor": "researchers",
     "scientist": "researchers",
+    "researchers": "researchers",
+    "biologists": "researchers",
+    "chemists": "researchers",
 
     "library staff": "research support staff",
     "research librarian": "research support staff",
@@ -15,13 +19,20 @@
     "data manager": "research support staff",
     "data professional": "research support staff",
     "data engineer": "research support staff",
+    "data scientists": "research support staff",
     "software engineer": "research support staff",
     "data librarian": "research support staff",
+    "research support": "research support staff",
+    "bioinformaticians": "research support staff",
 
     "bachelor": "students",
     "master": "students",
 
     "teacher": "trainers",
     "coaches": "trainers",
-    "educator": "trainers"
+    "educator": "trainers",
+
+    "tabular data processors": "other",
+    "beginning programmers": "other",
+    "github beginners": "other"
 }
