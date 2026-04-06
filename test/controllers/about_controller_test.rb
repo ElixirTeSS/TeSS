@@ -15,6 +15,7 @@ class AboutControllerTest < ActionController::TestCase
   end
 
   test 'should show correct funder logos in about us and footer' do
+    plant_space = spaces(:plants)
     funder_setting = [
       {
         url: 'https://example.org/your-funders-website',
@@ -29,9 +30,19 @@ class AboutControllerTest < ActionController::TestCase
         url: 'https://example.org/funder-about',
         logo: 'https://example.org/funder-about/logo.png',
         only: 'about'
+      },
+      {
+        url: 'https://example.org/funder-default-space',
+        logo: 'https://example.org/funder-default-space/logo.png',
+        space: 'default'
+      },
+      {
+        url: 'https://example.org/funder-plants-space',
+        logo: 'https://example.org/funder-plants-space/logo.png',
+        space: plant_space.host
       }
     ]
-    
+
     with_settings(funders: funder_setting) do
       get :us
       assert_select '#funding' do
@@ -41,8 +52,13 @@ class AboutControllerTest < ActionController::TestCase
         assert_select 'a[href=?]', 'https://example.org/funder-about' do
           assert_select 'img[src=?]', 'https://example.org/funder-about/logo.png'
         end
+        assert_select 'a[href=?]', 'https://example.org/funder-default-space' do
+          assert_select 'img[src=?]', 'https://example.org/funder-default-space/logo.png'
+        end
         assert_select 'a[href=?]', 'https://example.org/funder-footer', count: 0
+        assert_select 'a[href=?]', 'https://example.org/funder-plants-space', count: 0
         assert_select 'img[src=?]', 'https://example.org/funder-footer/logo.png', count: 0
+        assert_select 'img[src=?]', 'https://example.org/funder-plants-space/logo.png', count: 0
       end
 
       assert_select 'footer' do
@@ -52,8 +68,32 @@ class AboutControllerTest < ActionController::TestCase
         assert_select 'a[href=?]', 'https://example.org/funder-footer' do
           assert_select 'img[src=?]', 'https://example.org/funder-footer/logo.png'
         end
+        assert_select 'a[href=?]', 'https://example.org/funder-default-space' do
+          assert_select 'img[src=?]', 'https://example.org/funder-default-space/logo.png'
+        end
         assert_select 'a[href=?]', 'https://example.org/funder-about', count: 0
+        assert_select 'a[href=?]', 'https://example.org/funder-plants-space', count: 0
         assert_select 'img[src=?]', 'https://example.org/funder-about/logo.png', count: 0
+        assert_select 'img[src=?]', 'https://example.org/funder-plants-space/logo.png', count: 0
+      end
+
+      with_host(plant_space.host) do
+        get :us
+        assert_select '#funding' do
+          assert_select 'a[href=?]', 'https://example.org/your-funders-website'
+          assert_select 'a[href=?]', 'https://example.org/funder-plants-space' do
+            assert_select 'img[src=?]', 'https://example.org/funder-plants-space/logo.png'
+          end
+          assert_select 'a[href=?]', 'https://example.org/funder-default-space', count: 0
+        end
+
+        assert_select 'footer' do
+          assert_select 'a[href=?]', 'https://example.org/your-funders-website'
+          assert_select 'a[href=?]', 'https://example.org/funder-plants-space' do
+            assert_select 'img[src=?]', 'https://example.org/funder-plants-space/logo.png'
+          end
+          assert_select 'a[href=?]', 'https://example.org/funder-default-space', count: 0
+        end
       end
     end
   end

@@ -17,8 +17,7 @@ class StaticControllerTest < ActionController::TestCase
                  'content_providers': true,
                  'trainers': true,
                  'nodes': true,
-                 'spaces': true
-    }
+                 'spaces': true }
 
     with_settings(feature: features) do
       get :home
@@ -48,8 +47,7 @@ class StaticControllerTest < ActionController::TestCase
                  'content_providers': false,
                  'trainers': false,
                  'nodes': false,
-                 'spaces': false
-    }
+                 'spaces': false }
 
     with_settings(feature: features) do
       get :home
@@ -156,8 +154,7 @@ class StaticControllerTest < ActionController::TestCase
                  'content_providers': true,
                  'trainers': true,
                  'nodes': true,
-                 'spaces': true
-    }
+                 'spaces': true }
 
     with_settings(feature: features, site: { tab_order: %w[materials events], directory_tabs: [] }) do
       get :home
@@ -234,13 +231,13 @@ class StaticControllerTest < ActionController::TestCase
 
     site_settings['home_page']['additional_links'] = [
       {
-        'url': 'https://example.org/', 
-        'icon': 'placeholder-person.png', 
+        'url': 'https://example.org/',
+        'icon': 'placeholder-person.png',
         'title': 'My Example Link'
       },
       {
-        'url': 'https://example.org/2', 
-        'icon': 'https://example.org/image.png', 
+        'url': 'https://example.org/2',
+        'icon': 'https://example.org/image.png',
         'title': 'My Other Example Link',
         'id': 'example-link-2',
         'new_tab': true
@@ -328,7 +325,7 @@ class StaticControllerTest < ActionController::TestCase
     user = users(:regular_user)
     11.times do |i|
       Event.create(title: "Event #{i}", url: "https://events.com/event##{i}",
-                   start: Time.zone.now + 1.week, end: Time.zone.now + 1.week + 8.hours, user: user)
+                   start: Time.zone.now + 1.week, end: Time.zone.now + 1.week + 8.hours, user:)
     end
     with_settings({ site: { home_page: { counters: true } } }) do
       get :home
@@ -449,6 +446,7 @@ class StaticControllerTest < ActionController::TestCase
 
   test 'should allow configuration of custom links in footer' do
     site_settings = TeSS::Config.site.dup
+    plant_space = spaces(:plants)
     site_settings['footer'] = nil
 
     with_settings({ site: site_settings }) do
@@ -463,23 +461,35 @@ class StaticControllerTest < ActionController::TestCase
     site_settings['footer'] = {
       'additional_links': [
         {
-          'url': 'https://example.org/', 
+          'url': 'https://example.org/',
           'title': 'My Example Link'
         },
         {
-          'url': 'https://example.org/l', 
+          'url': 'https://example.org/l',
           'title': 'Left Example Link',
           'location': 'left'
         },
         {
-          'url': 'https://example.org/c', 
+          'url': 'https://example.org/c',
           'title': 'Center Example Link',
           'location': 'center'
         },
         {
-          'url': 'https://example.org/r', 
+          'url': 'https://example.org/r',
           'title': 'Right Example Link',
           'location': 'right'
+        },
+        {
+          'url': 'https://example.org/default-space',
+          'title': 'Default Space Link',
+          'location': 'center',
+          'space': 'default'
+        },
+        {
+          'url': 'https://example.org/plant-space',
+          'title': 'Plant Space Link',
+          'location': 'center',
+          'space': plant_space.host
         }
       ]
     }
@@ -494,8 +504,38 @@ class StaticControllerTest < ActionController::TestCase
       assert_select 'footer .row > div:nth-of-type(2)' do
         assert_select 'a[href="https://example.org/c"]', 'Center Example Link'
       end
+      assert_select 'footer .row > div:nth-of-type(2)' do
+        assert_select 'a[href="https://example.org/default-space"]', 'Default Space Link'
+        assert_select 'a[href="https://example.org/plant-space"]', count: 0
+      end
       assert_select 'footer .row > div:nth-of-type(3)' do
         assert_select 'a[href="https://example.org/r"]', 'Right Example Link'
+      end
+
+      with_host(plant_space.host) do
+        get :home
+        assert_select 'footer .row > div:nth-of-type(2)' do
+          assert_select 'a[href="https://example.org/"]', 'My Example Link'
+          assert_select 'a[href="https://example.org/default-space"]', count: 0
+          assert_select 'a[href="https://example.org/plant-space"]', 'Plant Space Link'
+        end
+      end
+    end
+  end
+
+  test 'should allow showing current space logo in footer' do
+    plant_space = spaces(:plants)
+    plant_space.update_column(:image_file_name, 'space_logo.png')
+
+    with_host(plant_space.host) do
+      with_settings(site: { footer: { 'show_space_logo' => true } }) do
+        get :home
+        assert_select '.footer-logo img[alt=?]', plant_space.logo_alt
+      end
+
+      with_settings(site: { footer: { 'show_space_logo' => false } }) do
+        get :home
+        assert_select '.footer-logo img[alt=?]', TeSS::Config.site['logo_alt']
       end
     end
   end
@@ -510,8 +550,7 @@ class StaticControllerTest < ActionController::TestCase
   end
 
   test 'should find log in button when login_through_oidc_only is enabled' do
-    Devise.stub( :omniauth_configs, { oidc: OpenStruct.new(options: { label: "OIDC" }) }
-    ) do
+    Devise.stub(:omniauth_configs, { oidc: OpenStruct.new(options: { label: 'OIDC' }) }) do
       with_settings({ feature: { login_through_oidc_only: true } }) do
         get :home
         assert_select 'ul.user-options.nav.navbar-nav.navbar-right' do
@@ -523,10 +562,10 @@ class StaticControllerTest < ActionController::TestCase
 
   test 'should respect space disabled_features when displaying tabs' do
     space = spaces(:plants)
-    space.disabled_features = ['events', 'materials']
+    space.disabled_features = %w[events materials]
     space.save!
 
-    features = { 
+    features = {
       'events': true,
       'materials': true,
       'elearning_materials': true,
@@ -541,13 +580,13 @@ class StaticControllerTest < ActionController::TestCase
     with_settings(feature: features) do
       with_host('plants.mytess.training') do
         get :home
-        
+
         # These should NOT appear because they're disabled for this space
         assert_select 'ul.nav.navbar-nav' do
           assert_select 'li a[href=?]', events_path, count: 0
           assert_select 'li a[href=?]', materials_path, count: 0
         end
-        
+
         # These should still appear because they're not disabled
         assert_select 'ul.nav.navbar-nav' do
           assert_select 'li a[href=?]', about_path
@@ -561,10 +600,10 @@ class StaticControllerTest < ActionController::TestCase
 
   test 'space disabled_features do not affect default space' do
     space = spaces(:plants)
-    space.disabled_features = ['events', 'materials']
+    space.disabled_features = %w[events materials]
     space.save!
 
-    features = { 
+    features = {
       'events': true,
       'materials': true,
       'elearning_materials': true,
@@ -579,7 +618,7 @@ class StaticControllerTest < ActionController::TestCase
     with_settings(feature: features) do
       # Access the default space (not plants)
       get :home
-      
+
       # All features should appear in the default space
       assert_select 'ul.nav.navbar-nav' do
         assert_select 'li a[href=?]', about_path
@@ -601,7 +640,7 @@ class StaticControllerTest < ActionController::TestCase
     astro_space.disabled_features = ['materials']
     astro_space.save!
 
-    features = { 
+    features = {
       'events': true,
       'materials': true,
       'workflows': true,
@@ -612,7 +651,7 @@ class StaticControllerTest < ActionController::TestCase
       # Check plants space - events disabled
       with_host('plants.mytess.training') do
         get :home
-        
+
         assert_select 'ul.nav.navbar-nav' do
           assert_select 'li a[href=?]', events_path, count: 0
           assert_select 'li a[href=?]', materials_path
@@ -623,7 +662,7 @@ class StaticControllerTest < ActionController::TestCase
       # Check astro space - materials disabled
       with_host('space.mytess.training') do
         get :home
-        
+
         assert_select 'ul.nav.navbar-nav' do
           assert_select 'li a[href=?]', events_path
           assert_select 'li a[href=?]', materials_path, count: 0
@@ -638,7 +677,7 @@ class StaticControllerTest < ActionController::TestCase
     space.disabled_features = []
     space.save!
 
-    features = { 
+    features = {
       'events': true,
       'materials': true,
       'elearning_materials': true,
@@ -653,7 +692,7 @@ class StaticControllerTest < ActionController::TestCase
     with_settings(feature: features) do
       with_host('plants.mytess.training') do
         get :home
-        
+
         # All globally enabled features should appear
         assert_select 'ul.nav.navbar-nav' do
           assert_select 'li a[href=?]', about_path
@@ -672,7 +711,7 @@ class StaticControllerTest < ActionController::TestCase
     space.disabled_features = ['content_providers']
     space.save!
 
-    features = { 
+    features = {
       'events': true,
       'materials': true,
       'content_providers': true,
@@ -681,10 +720,10 @@ class StaticControllerTest < ActionController::TestCase
       'spaces': true
     }
 
-    with_settings(feature: features, site: { tab_order: [], directory_tabs: ['content_providers', 'trainers', 'nodes'] }) do
+    with_settings(feature: features, site: { tab_order: [], directory_tabs: %w[content_providers trainers nodes] }) do
       with_host('plants.mytess.training') do
         get :home
-        
+
         # content_providers should not appear even in directory menu
         assert_select 'li.dropdown.directory-menu' do
           assert_select 'li a[href=?]', content_providers_path, count: 0
@@ -712,7 +751,7 @@ class StaticControllerTest < ActionController::TestCase
       end
     end
   end
-        
+
   test 'disabled features do not show as counters on space front page' do
     space = spaces(:plants)
     space.disabled_features = ['materials']

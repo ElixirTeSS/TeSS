@@ -16,9 +16,10 @@
             <h3><%== t "us.keys.#{key}" %></h3>
             <%== t 'us.funding' %>
             <% if TeSS::Config.funders.present? %>
+              <% expected_space = current_space.default? ? 'default' : current_space.host %>
               <p>
                 <% TeSS::Config.funders.each do |funder| %>
-                  <% unless funder[:only] && funder[:only] != 'about' %>
+                  <% if (funder[:only].blank? || funder[:only] == 'about') && (funder[:space].blank? || funder[:space] == expected_space) %>
                     <%= link_to(funder[:url], target: '_blank', rel: 'noopener') do -%>
                       <%= image_tag(funder[:logo], class: 'funding-logo') -%>
                     <% end %>
