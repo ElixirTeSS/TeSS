@@ -28,7 +28,7 @@ module Ingestors
 
         log_sitemap('xml', url, urls.count)
         urls
-      rescue StandardError => e
+      rescue RuntimeError => e # sitemap-parser gem raises RuntimeErrors
         @messages << "Extract from sitemap[#{url}] failed with: #{e.message}"
         []
       end

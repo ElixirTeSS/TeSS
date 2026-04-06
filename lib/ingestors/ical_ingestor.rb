@@ -33,15 +33,16 @@ module Ingestors
       file_url << query unless url.to_s.downcase.ends_with? query
 
       # process file
-      events = Icalendar::Event.parse(open_url(file_url, raise: true).set_encoding('utf-8'))
+      data = open_url(file_url)
+      if data
+        events = Icalendar::Event.parse(data.set_encoding('utf-8'))
 
-      # process each event
-      events.each do |e|
-        process_event(e)
+        # process each event
+        events.each do |e|
+          process_event(e)
+        end
       end
-
       # finished
-      nil
     end
 
     def process_event(calevent)
