@@ -36,7 +36,16 @@ class CuratorController < ApplicationController
   def users
     @role = Role.fetch(params[:role]) if current_user.is_admin?
     @role ||= Role.fetch('unverified_user')
-    @users = User.with_role(@role).order('created_at DESC')
+    @users = User.with_role(@role)
+    max_age = nil
+    if params[:max_age]
+      begin
+        max_age = ActiveSupport::Duration.parse(params[:max_age])
+      rescue ArgumentError
+      end
+    end
+    @users = @users.where('users.created_at > ?', max_age.ago) if max_age
+    @users = @users.order('created_at DESC')
     if params[:with_content]
       @users = @users.includes(*User::CREATED_RESOURCE_TYPES).with_created_resources
     end

@@ -23,4 +23,4 @@
   <li><b>Reject</b> - Mark this user as a spammer, preventing them from creating further content on <%= TeSS::Config.site['title_short'] %>.</li>
 </ul>
 
-<%= link_to('Click here to approve or reject this user', curate_users_url(with_content: true)) %>
+<%= link_to('Click here to approve or reject this user', curate_users_url(with_content: true, max_age: 1.month.iso8601)) %>

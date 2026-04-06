@@ -52,7 +52,7 @@
 
       <% if is_admin || is_curator %>
         <li class="dropdown-item">
-          <%= link_to curate_users_path(with_content: true) do %>
+          <%= link_to curate_users_path(with_content: true, max_age: 1.month.iso8601) do %>
             <i class="fa fa-user-times"></i> <%= t('menu.user.curate_users') %>
           <% end %>
         </li>

@@ -1138,3 +1138,32 @@ en:
     authentication_failure: 'Failed to authenticate your ORCID.'
   people:
     add: Add %{role}
+  curation:
+    users:
+      title: Curate Users
+      recent_activity:
+        title: Recent Curation Activity
+        empty: No recent approvals/rejections.
+      list:
+        empty: Could not find any %{role} requiring approval. Another curator may have already taken action.
+        registered_time: Registered %{time} ago
+        blank_attribute: None specified
+      activity:
+        approved: approved
+        rejected: rejected
+        info: by %{curator} %{time} ago
+      filters:
+        with_role:
+          title: Role
+          hint: Show users with the selected role.
+        with_content:
+          title: With content?
+          hint: Only show users who have created content.
+        max_age:
+          title: Registered
+          hint: Only show users who registered within the selected period.
+          options:
+            any: Any time
+            week: Within the last week
+            month: Within the last month
+            year: Within the last year
