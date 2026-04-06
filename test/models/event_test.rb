@@ -775,4 +775,33 @@ class EventTest < ActiveSupport::TestCase
     assert_equal 'Goblet', bioschemas[:provider].first['name']
     assert_equal 'http://mygoblet.org', bioschemas[:provider].first['url']
   end
+
+  test 'does not destroy and recreate ontology term links' do
+    e = events(:scraper_user_event)
+
+    # Via names
+    assert_difference('OntologyTermLink.count', 2) do
+      e.scientific_topic_names = %w[Proteins Chromosomes]
+      e.save!
+      assert_equal 2, e.scientific_topics.count
+    end
+
+    ontology_term_links = e.ontology_term_links.to_a
+
+    assert_no_difference('OntologyTermLink.count') do
+      e.scientific_topic_names = %w[Proteins Chromosomes]
+      e.save!
+      assert_equal 2, e.scientific_topics.count
+    end
+
+    assert_equal ontology_term_links, e.reload.ontology_term_links.to_a
+
+    assert_no_difference('OntologyTermLink.count') do
+      e.scientific_topic_names = %w[Proteins Biodiversity]
+      e.save!
+      assert_equal 2, e.scientific_topics.count
+    end
+
+    assert_equal 1, (e.reload.ontology_term_links.to_a - ontology_term_links).length
+  end
 end

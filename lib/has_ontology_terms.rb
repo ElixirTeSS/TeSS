@@ -47,6 +47,26 @@ module HasOntologyTerms
       self.ontology_term_fields ||= []
       self.ontology_term_fields << method.to_sym
 
+      define_method "#{links_method}=" do |links|
+        send(links_method).reset
+        current_links = send(links_method).to_a
+        to_keep = []
+
+        links.reject(&:blank?).map do |link|
+          idx = current_links.index { |l| l.term_uri == link.term_uri }
+          if idx
+            match = current_links.delete_at(idx)
+            to_keep << match
+          else
+            to_keep << link
+          end
+        end
+
+        current_links.each(&:mark_for_destruction) # Now contains only redundant records
+
+        super(to_keep)
+      end
+
       # OntologyTerm objects
       define_method method do
         send(links_method).map(&:ontology_term).uniq
