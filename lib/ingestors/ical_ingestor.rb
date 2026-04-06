@@ -102,7 +102,7 @@ module Ingestors
         event.keywords = []
         unless calevent.categories.nil? or calevent.categories.first.nil?
           cats = calevent.categories.first
-          if cats.is_a?(Icalendar::Values::Array)
+          if cats.is_a?(Icalendar::Values::Helpers::Array)
             cats.each do |item|
               event.keywords << item.to_s.lstrip
             end
