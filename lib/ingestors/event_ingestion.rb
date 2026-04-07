@@ -29,10 +29,6 @@ module Ingestors
       EventTypeDictionary.instance.lookup_value(input, 'title')
     end
 
-    def convert_location(input)
-      input
-    end
-
     def parse_dates(input, timezone = nil)
       Time.use_zone(timezone) do
         # try to split on obvious interval markers
