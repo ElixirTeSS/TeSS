@@ -1,5 +1,4 @@
 require 'icalendar'
-require 'open-uri'
 require 'csv'
 require 'nokogiri'
 
@@ -112,7 +111,7 @@ module Ingestors
             # Now fetch the page to get the event date (until it is added to the RSS feed)
             # if event.url.starts_with('https://')
             # should we do more against data exfiltration? URI.open is a known hazard
-            # page = Nokogiri::XML(URI.open(event.url))
+            # page = Nokogiri::XML(open_url(event.url))
             # event.description = convert_description page.css('.content-block__inner').first.inner_html
             # end
             add_event(event)

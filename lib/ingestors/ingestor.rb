@@ -1,4 +1,6 @@
 require 'sitemap-parser'
+require 'private_address_check'
+require 'private_address_check/tcpsocket_ext'
 
 module Ingestors
   class Ingestor
@@ -71,7 +73,14 @@ module Ingestors
       redirect_attempts = 5
       options['Authorization'] = "Bearer #{token}" unless token.nil?
       begin
-        URI(url).open(options)
+        PrivateAddressCheck.only_public_connections do
+          URI(url).open(options)
+        end
+      rescue PrivateAddressCheck::PrivateConnectionAttemptedError
+        raise "Couldn't open URL #{url}" if raise
+        @messages << "Couldn't open URL #{url}"
+
+        nil
       rescue OpenURI::HTTPRedirect => e
         url = e.uri.to_s
         retry if (redirect_attempts -= 1) > 0

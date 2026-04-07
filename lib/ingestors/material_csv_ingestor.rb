@@ -1,4 +1,3 @@
-require 'open-uri'
 require 'csv'
 require 'cgi'
 

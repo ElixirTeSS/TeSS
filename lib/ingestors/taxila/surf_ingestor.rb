@@ -1,4 +1,3 @@
-require 'open-uri'
 require 'csv'
 require 'nokogiri'
 require 'active_support/core_ext/hash'

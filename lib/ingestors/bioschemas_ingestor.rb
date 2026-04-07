@@ -1,4 +1,3 @@
-require 'open-uri'
 require 'tess_rdf_extractors'
 
 module Ingestors

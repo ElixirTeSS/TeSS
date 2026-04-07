@@ -1,6 +1,4 @@
 # frozen_string_literal: true
-
-require 'open-uri'
 require 'json'
 require 'httparty'
 require 'nokogiri'

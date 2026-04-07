@@ -1,5 +1,4 @@
 require 'icalendar'
-require 'open-uri'
 require 'csv'
 require 'nokogiri'
 

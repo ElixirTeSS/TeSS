@@ -1,4 +1,3 @@
-require 'open-uri'
 require 'csv'
 require 'nokogiri'
 
@@ -48,7 +47,7 @@ module Ingestors
 
     def curricula
       Rails.cache.fetch('carpentries-curricula', expires_in: 1.week) do
-        json = URI.open(CURRICULA_URL).read
+        json = open_url(CURRICULA_URL).read
         hash = {}
         JSON.parse(json).each do |c|
           hash[c['slug']] = c

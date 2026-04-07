@@ -1,6 +1,5 @@
 require 'icalendar'
 require 'nokogiri'
-require 'open-uri'
 require 'tzinfo'
 
 module Ingestors

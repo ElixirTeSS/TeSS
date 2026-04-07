@@ -270,30 +270,24 @@ class IngestorTest < ActiveSupport::TestCase
     assert_equal 'ok', result.read
   end
 
-  test 'open_url raises HTTPRedirect after too many retries' do
+  test 'open_url raises exception after too many redirects' do
     ingestor = DummyIngestor.new
-    fake_uri = URI('https://example.com/')
+    WebMock.stub_request(:any, 'https://redirect.loop/').to_return(status: 301,
+                                                                   headers: { 'Location' => 'https://redirect.loop/' })
 
-    URI.stub(:parse, fake_uri) do
-      fake_uri.define_singleton_method(:open) do |*_args|
-        raise OpenURI::HTTPRedirect.new('Redirect', 1, URI('https://redirected.com'))
-      end
-
-      assert_raises(OpenURI::HTTPRedirect) do
-        ingestor.open_url('https://example.com/')
-      end
+    assert_raises(OpenURI::HTTPRedirect) do
+      ingestor.open_url('https://redirect.loop/')
     end
   end
 
-  test 'open_url raises HTTPError' do
+  test 'open_url logs error status' do
     ingestor = DummyIngestor.new
-    stub_request(:get, 'https://bad.com')
-      .to_raise(OpenURI::HTTPError.new('404 not found', StringIO.new))
+    WebMock.stub_request(:any, 'https://bad.com/').to_return(status: 404)
 
     result = ingestor.open_url('https://bad.com')
     assert_nil result
     assert_includes ingestor.instance_variable_get(:@messages).last,
-                    "Couldn't open URL https://bad.com: 404 not found"
+                    "Couldn't open URL https://bad.com: 404"
   end
 
   test 'get_redirected_url follows meta refresh redirect' do
@@ -358,6 +352,38 @@ class IngestorTest < ActiveSupport::TestCase
     end
     event = Event.find_by(title: 'Some course')
     assert_equal space, event.space
+  end
+
+  test 'handles HTTP errors and SSRF attempts' do
+    WebMock.stub_request(:any, 'http://200host.com').to_return(status: 200, body: 'hi')
+    WebMock.stub_request(:any, 'http://404host.com').to_return(status: 404, body: 'hi')
+    WebMock.stub_request(:any, 'http://slowhost.com').to_timeout
+
+    ingestor = Ingestors::BioschemasIngestor.new
+
+    # 200
+    assert ingestor.open_url('http://200host.com')
+
+    # 404
+    assert_nil ingestor.open_url('http://404host.com')
+    assert_equal "Couldn't open URL http://404host.com: 404 ", ingestor.messages.last
+    assert_raises(OpenURI::HTTPError) do
+      ingestor.open_url('http://404host.com', raise: true)
+    end
+
+    # private address
+    with_net_connection do # Allow request through to be caught by private_address_check
+      assert_nil ingestor.open_url('http://192.168.0.1')
+      assert_equal "Couldn't open URL http://192.168.0.1", ingestor.messages.last
+      assert_raises(RuntimeError) do
+        ingestor.open_url('http://192.168.0.1', raise: true)
+      end
+    end
+
+    # timeout
+    assert_raises(Net::OpenTimeout) do
+      ingestor.open_url('http://slowhost.com') # Always raises
+    end
   end
 
 end
