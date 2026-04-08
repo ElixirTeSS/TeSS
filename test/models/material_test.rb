@@ -214,7 +214,7 @@ class MaterialTest < ActiveSupport::TestCase
     material.reload
 
     assert_equal [], material.contributors.to_a
-    assert_equal [person1, person2], material.authors.to_a
+    assert_equal [person1, person2], material.authors.order(:name).to_a
   end
 
   test 'should handle single name in legacy author string' do
