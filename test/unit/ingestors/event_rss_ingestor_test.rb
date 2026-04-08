@@ -1,9 +1,9 @@
 require 'test_helper'
 require 'stringio'
 
-class EventRssIngestorTest < ActiveSupport::TestCase
+class EventRSSIngestorTest < ActiveSupport::TestCase
   setup do
-    @ingestor = Ingestors::EventRssIngestor.new
+    @ingestor = Ingestors::EventRSSIngestor.new
     mock_timezone
   end
 

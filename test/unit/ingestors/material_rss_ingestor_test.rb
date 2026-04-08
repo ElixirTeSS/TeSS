@@ -1,9 +1,9 @@
 require 'test_helper'
 require 'stringio'
 
-class MaterialRssIngestorTest < ActiveSupport::TestCase
+class MaterialRSSIngestorTest < ActiveSupport::TestCase
   setup do
-    @ingestor = Ingestors::MaterialRssIngestor.new
+    @ingestor = Ingestors::MaterialRSSIngestor.new
   end
 
   test 'reads rss items from dublin core and native rss fields' do

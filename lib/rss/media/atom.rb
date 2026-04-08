@@ -1,36 +1,41 @@
+# Patches RSS::Atom::Feed and RSS::Atom::Entry with Media namespace support (see ../media.rb).
+# Kept as RSS::Media::Atom so Zeitwerk can autoload it from lib/rss/media/atom.rb.
 module RSS
-  module Atom
-    Feed.install_ns(MEDIA_PREFIX, MEDIA_URI)
+  module Media
+    module Atom
+      ::RSS::Atom::Feed.install_ns(MEDIA_PREFIX, MEDIA_URI)
 
-    class Feed
-      include MediaGroupDescriptionModel
-      class Entry
-        include MediaGroupDescriptionModel
+      class ::RSS::Atom::Feed
+        include ::RSS::Media::MediaGroupDescriptionModel
 
-        class MediaGroup < Element
-          include RSS09
+        class Entry
+          include ::RSS::Media::MediaGroupDescriptionModel
 
-          @tag_name = 'group'
+          class MediaGroup < Element
+            include RSS09
 
-          class << self
-            def required_prefix
-              MEDIA_PREFIX
+            @tag_name = 'group'
+
+            class << self
+              def required_prefix
+                ::RSS::Media::MEDIA_PREFIX
+              end
+
+              def required_uri
+                ::RSS::Media::MEDIA_URI
+              end
             end
 
-            def required_uri
-              MEDIA_URI
-            end
+            install_must_call_validator(::RSS::Media::MEDIA_PREFIX, ::RSS::Media::MEDIA_URI)
+            install_text_element('title', ::RSS::Media::MEDIA_URI, '?', 'media_title')
+            install_text_element('description', ::RSS::Media::MEDIA_URI, '?', 'media_description')
           end
-
-          install_must_call_validator(MEDIA_PREFIX, MEDIA_URI)
-          install_text_element('title', MEDIA_URI, '?', 'media_title')
-          install_text_element('description', MEDIA_URI, '?', 'media_description')
         end
       end
-    end
 
-    class Entry
-      include MediaGroupDescriptionModel
+      class ::RSS::Atom::Entry
+        include ::RSS::Media::MediaGroupDescriptionModel
+      end
     end
   end
 end
