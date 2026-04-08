@@ -4,11 +4,6 @@ require 'stringio'
 class MaterialRssIngestorTest < ActiveSupport::TestCase
   setup do
     @ingestor = Ingestors::MaterialRssIngestor.new
-    mock_timezone
-  end
-
-  teardown do
-    reset_timezone
   end
 
   test 'reads rss items from dublin core and native rss fields' do
@@ -460,6 +455,123 @@ class MaterialRssIngestorTest < ActiveSupport::TestCase
     assert_equal 1, @ingestor.materials.count
     assert_includes @ingestor.messages, "HTML page detected, following feed link: #{feed_url}"
     assert_equal 'Alternate feed material', @ingestor.materials.first.title
+  end
+
+  test 'uses native atom title and description taking precedence over media extension' do
+    atom_feed_xml = <<~XML
+      <?xml version="1.0" encoding="utf-8"?>
+      <feed xmlns="http://www.w3.org/2005/Atom"
+            xmlns:media="http://search.yahoo.com/mrss/">
+        <title>Atom media precedence feed</title>
+
+        <entry>
+          <id>yt:video:abc123</id>
+          <title>Native Atom title wins</title>
+          <link rel="alternate" href="https://example.org/atom/media-precedence" />
+          <summary>Native Atom summary wins</summary>
+          <author><name>Atom Author</name></author>
+          <published>2024-02-02T03:04:05Z</published>
+          <updated>2024-02-03T03:04:05Z</updated>
+          <media:group>
+            <media:title>Media title ignored</media:title>
+            <media:description>Media description ignored</media:description>
+          </media:group>
+        </entry>
+      </feed>
+    XML
+
+    read_xml(atom_feed_xml)
+
+    assert_equal 1, @ingestor.materials.count
+    material = @ingestor.materials.first
+    assert_equal 'Native Atom title wins', material.title
+    assert_equal 'Native Atom summary wins', material.description
+  end
+
+  test 'uses media extension title and description for atom item when native ones are missing' do
+    atom_feed_xml = <<~XML
+      <?xml version="1.0" encoding="utf-8"?>
+      <feed xmlns="http://www.w3.org/2005/Atom"
+            xmlns:media="http://search.yahoo.com/mrss/">
+        <title>Atom media extension feed</title>
+
+        <entry>
+          <id>yt:video:fallback123</id>
+          <link rel="alternate" href="https://example.org/atom/media-extension-fallback" />
+          <author><name>Atom Author</name></author>
+          <published>2024-02-02T03:04:05Z</published>
+          <updated>2024-02-03T03:04:05Z</updated>
+          <media:group>
+            <media:title>Media title used here</media:title>
+            <media:description>Media description used here</media:description>
+          </media:group>
+        </entry>
+      </feed>
+    XML
+
+    read_xml(atom_feed_xml)
+
+    assert_equal 1, @ingestor.materials.count
+    material = @ingestor.materials.first
+    assert_equal 'Media title used here', material.title
+    assert_equal 'Media description used here', material.description
+  end
+
+  test 'parses media group description through rss media extension' do
+    atom_feed_xml = <<~XML
+      <?xml version="1.0" encoding="utf-8"?>
+      <feed xmlns="http://www.w3.org/2005/Atom"
+            xmlns:media="http://search.yahoo.com/mrss/">
+        <title>Media extension feed</title>
+        <id>urn:feed:test</id>
+        <updated>2024-01-01T00:00:00Z</updated>
+
+        <entry>
+          <id>urn:entry:test</id>
+          <title>Media extension title</title>
+          <link rel="alternate" href="https://example.org/atom/media-extension" />
+          <updated>2024-01-01T00:00:00Z</updated>
+          <media:group>
+            <media:description>Media extension description</media:description>
+          </media:group>
+        </entry>
+      </feed>
+    XML
+
+    feed = RSS::Parser.parse(atom_feed_xml, validate: false, ignore_unknown_element: true)
+    item = feed.items.first
+
+    assert item.respond_to?(:media_group)
+    assert_equal 'Media extension description', item.media_group.media_description
+  end
+
+  test 'uses itunes extension summary for rss item when native description is missing' do
+    rss_feed_xml = <<~XML
+      <?xml version="1.0"?>
+      <rss version="2.0"
+           xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+        <channel>
+          <title>RSS iTunes extension feed</title>
+          <item>
+            <title>RSS item with iTunes summary</title>
+            <link>https://example.org/rss/itunes-summary</link>
+            <author>RSS Author</author>
+            <pubDate>Fri, 02 Feb 2024 03:04:05 GMT</pubDate>
+            <itunes:summary>iTunes summary used here</itunes:summary>
+            <itunes:author>iTunes Author</itunes:author>
+          </item>
+        </channel>
+      </rss>
+    XML
+
+    read_xml(rss_feed_xml)
+
+    assert_equal 1, @ingestor.materials.count
+    material = @ingestor.materials.first
+    assert_equal 'RSS item with iTunes summary', material.title
+    assert_equal 'iTunes summary used here', material.description
+    assert_includes material.authors, 'RSS Author'
+    assert_includes material.authors, 'iTunes Author'
   end
 
   private
