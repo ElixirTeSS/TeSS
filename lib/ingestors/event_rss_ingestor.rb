@@ -77,10 +77,6 @@ module Ingestors
       event.organizer ||= organizer
       event.contact ||= organizer
 
-      item_date = parse_time(item.respond_to?(:pubDate) ? item.pubDate : nil) || parse_time(item.respond_to?(:date) ? item.date : nil)
-      event.start = prefer_precise_time(event.start, item_date)
-      event.end = prefer_precise_time(event.end, item_date)
-
       event
     end
 
@@ -95,11 +91,6 @@ module Ingestors
       organizer = extract_atom_authors(item).first
       event.organizer ||= organizer
       event.contact ||= organizer
-
-      published = parse_time(item.respond_to?(:published) ? item.published : nil)
-      updated = parse_time(item.respond_to?(:updated) ? item.updated : nil)
-      event.start = prefer_precise_time(event.start, published || updated)
-      event.end = prefer_precise_time(event.end, updated || published)
 
       event
     end

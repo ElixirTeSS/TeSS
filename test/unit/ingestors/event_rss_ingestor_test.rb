@@ -60,7 +60,7 @@ class EventRSSIngestorTest < ActiveSupport::TestCase
     assert_equal 'rss event publisher', dc_event.contact
     assert_equal %w[event-topic-a native-event-category], dc_event.keywords
     assert_equal ['workshop'], dc_event.event_types
-    assert_equal Time.utc(2024, 6, 1, 9, 0, 0), dc_event.start.utc
+    assert_equal Date.new(2024, 6, 1), dc_event.start
     assert_equal Date.new(2024, 6, 2), dc_event.end.to_date
 
     fallback_event = @ingestor.events.second
@@ -71,8 +71,8 @@ class EventRSSIngestorTest < ActiveSupport::TestCase
     assert_equal 'Fallback RSS Author', fallback_event.contact
     assert_equal ['fallback-event-category'], fallback_event.keywords
     assert_equal [], fallback_event.event_types
-    assert_equal Time.utc(2024, 6, 3, 12, 0, 0), fallback_event.start.utc
-    assert_equal Time.utc(2024, 6, 3, 12, 0, 0), fallback_event.end.utc
+    assert_nil fallback_event.start
+    assert_nil fallback_event.end
   end
 
   test 'resolves relative rss item links against the feed url' do
@@ -146,8 +146,8 @@ class EventRSSIngestorTest < ActiveSupport::TestCase
     assert_equal 'atom event publisher', dc_event.contact
     assert_equal %w[atom-event-topic native-atom-event-category], dc_event.keywords
     assert_equal ['seminar'], dc_event.event_types
-    assert_equal Time.utc(2024, 7, 1, 10, 0, 0), dc_event.start.utc
-    assert_equal Time.utc(2024, 7, 2, 11, 0, 0), dc_event.end.utc
+    assert_equal Date.new(2024, 7, 1), dc_event.start
+    assert_equal Date.new(2024, 7, 2), dc_event.end
 
     fallback_event = @ingestor.events.second
     assert_equal 'Fallback Atom event title', fallback_event.title
@@ -157,8 +157,8 @@ class EventRSSIngestorTest < ActiveSupport::TestCase
     assert_equal 'Fallback Atom Author', fallback_event.contact
     assert_equal ['fallback-atom-event-category'], fallback_event.keywords
     assert_equal [], fallback_event.event_types
-    assert_equal Time.utc(2024, 7, 3, 10, 0, 0), fallback_event.start.utc
-    assert_equal Time.utc(2024, 7, 4, 11, 0, 0), fallback_event.end.utc
+    assert_nil fallback_event.start
+    assert_nil fallback_event.end
   end
 
   test 'reads bioschemas event from rss 1.0 rdf feed' do
@@ -295,7 +295,7 @@ class EventRSSIngestorTest < ActiveSupport::TestCase
 
     assert_equal 1, @ingestor.events.count
     assert_includes @ingestor.messages,
-            "Found RSS/Atom alternate feed link during HTML discovery, following: #{feed_url}"
+                    "Found RSS/Atom alternate feed link during HTML discovery, following: #{feed_url}"
     assert_equal 'Alternate feed event', @ingestor.events.first.title
   end
 
@@ -305,7 +305,7 @@ class EventRSSIngestorTest < ActiveSupport::TestCase
     assert_equal 2, @ingestor.messages.length
     assert_match(/^parsing feed failed with: This is not well formed XML/, @ingestor.messages.first)
     assert_match(%r{^Attempted HTML feed discovery, but no RSS/Atom alternate feed link was found in:},
-           @ingestor.messages.second)
+                 @ingestor.messages.second)
     assert_empty @ingestor.events
   end
 

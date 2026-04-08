@@ -234,7 +234,7 @@ class MaterialRSSIngestorTest < ActiveSupport::TestCase
     assert_equal 2, @ingestor.messages.length
     assert_match(/^parsing feed failed with: This is not well formed XML/, @ingestor.messages.first)
     assert_match(%r{^Attempted HTML feed discovery, but no RSS/Atom alternate feed link was found in:},
-           @ingestor.messages.second)
+                 @ingestor.messages.second)
     assert_empty @ingestor.materials
   end
 
@@ -456,7 +456,7 @@ class MaterialRSSIngestorTest < ActiveSupport::TestCase
 
     assert_equal 1, @ingestor.materials.count
     assert_includes @ingestor.messages,
-            "Found RSS/Atom alternate feed link during HTML discovery, following: #{feed_url}"
+                    "Found RSS/Atom alternate feed link during HTML discovery, following: #{feed_url}"
     assert_equal 'Alternate feed material', @ingestor.materials.first.title
   end
 
