@@ -1,11 +1,10 @@
 require 'rss'
 require 'rss/media'
-require 'rss/itunes'
 require 'tess_rdf_extractors'
 
 module Ingestors
-  class MaterialRssIngestor < Ingestor
-    include RssIngestion
+  class MaterialRSSIngestor < Ingestor
+    include RSSIngestion
 
     def initialize
       super

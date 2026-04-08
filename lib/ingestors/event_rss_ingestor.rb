@@ -2,8 +2,8 @@ require 'rss'
 require 'tess_rdf_extractors'
 
 module Ingestors
-  class EventRssIngestor < Ingestor
-    include RssIngestion
+  class EventRSSIngestor < Ingestor
+    include RSSIngestion
 
     def initialize
       super

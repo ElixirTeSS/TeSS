@@ -1,5 +1,5 @@
 module Ingestors
-  module RssIngestion
+  module RSSIngestion
     include DublinCoreIngestion
 
     # Fetches and parses a feed from the URL, with optional HTML feed discovery.
