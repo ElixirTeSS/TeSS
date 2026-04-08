@@ -139,7 +139,17 @@ module Ingestors
     end
 
     def extract_atom_link(item)
-      item.links.map { |l| text_value(l.href) }.find(&:present?)
+      links = Array(item.links)
+
+      preferred_link = links.find do |link|
+        href = text_value(link.href)
+        rel = text_value(link.respond_to?(:rel) ? link.rel : nil).to_s.downcase
+
+        href.present? && (rel.blank? || rel == 'alternate')
+      end
+      return text_value(preferred_link.href) if preferred_link.present?
+
+      links.map { |link| text_value(link.href) }.find(&:present?)
     end
 
     def resolve_feed_url(candidate_url, feed_url)
