@@ -3,7 +3,20 @@
 module RSS
   module Media
     module Atom
-      ::RSS::Atom::Feed.install_ns(MEDIA_PREFIX, MEDIA_URI)
+      def self.install_media_namespace!
+        # This extension can be evaluated more than once in reloader/autoload flows.
+        # RSS::Element.install_ns raises on duplicate prefixes, so treat same mapping as a no-op.
+        ns_pool = ::RSS::Atom::Feed::NSPOOL
+        existing_uri = ns_pool[MEDIA_PREFIX]
+
+        return if existing_uri == MEDIA_URI
+
+        raise ::RSS::OverlappedPrefixError, MEDIA_PREFIX unless existing_uri.nil?
+
+        ::RSS::Atom::Feed.install_ns(MEDIA_PREFIX, MEDIA_URI)
+      end
+
+      install_media_namespace!
 
       class ::RSS::Atom::Feed
         include ::RSS::Media::MediaGroupDescriptionModel
