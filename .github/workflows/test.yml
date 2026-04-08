@@ -61,4 +61,4 @@ jobs:
       - name: Install JS dependencies
         run: yarn install --frozen-lockfile --non-interactive
       - name: Run tests
-        run: bundle exec rails test test/unit/ingestors/ingestor_test.rb
+        run: bundle exec rails test
