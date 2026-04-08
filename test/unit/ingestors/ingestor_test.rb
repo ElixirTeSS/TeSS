@@ -372,12 +372,18 @@ class IngestorTest < ActiveSupport::TestCase
     end
 
     # private address
-    with_net_connection do # Allow request through to be caught by private_address_check
-      assert_nil ingestor.open_url('http://192.168.0.1')
-      assert_equal "Couldn't open URL http://192.168.0.1", ingestor.messages.last
-      assert_raises(RuntimeError) do
-        ingestor.open_url('http://192.168.0.1', raise: true)
+    begin
+      server = TCPServer.new(3005)
+      thread = Thread.start { server.accept }
+      with_net_connection do # Allow request through to be caught by private_address_check
+        assert_nil ingestor.open_url('http://localhost:3005')
+        assert_equal "Couldn't open URL http://localhost:3005", ingestor.messages.last
+        assert_raises(RuntimeError) do
+          ingestor.open_url('http://localhost:3005', raise: true)
+        end
       end
+    ensure
+      thread.exit if thread
     end
 
     # timeout
