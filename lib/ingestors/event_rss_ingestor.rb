@@ -20,22 +20,22 @@ module Ingestors
     end
 
     def read(url)
-      feed, content = fetch_feed(url)
+      feed, content, source_url = fetch_feed(url)
       return if feed.nil?
 
       if feed.is_a?(RSS::Rss)
         @messages << "Parsing RSS feed: #{feed_title(feed)}"
-        feed.items.each { |item| add_event(build_event_from_rss_item(item)) }
+        feed.items.each { |item| add_event(build_event_from_rss_item(item, source_url)) }
       elsif feed.is_a?(RSS::RDF)
         @messages << "Parsing RSS-RDF feed: #{feed_title(feed)}"
-        rss_events = feed.items.map { |item| build_event_from_rss_item(item).to_h }
+        rss_events = feed.items.map { |item| build_event_from_rss_item(item, source_url).to_h }
         bioschemas_events = extract_rdf_bioschemas_events(content)
         merge_with_bioschemas_priority(bioschemas_events, rss_events).each do |event|
           add_event(event)
         end
       elsif feed.is_a?(RSS::Atom::Feed)
         @messages << "Parsing ATOM feed: #{feed_title(feed)}"
-        feed.items.each { |item| add_event(build_event_from_atom_item(item)) }
+        feed.items.each { |item| add_event(build_event_from_atom_item(item, source_url)) }
       else
         @messages << "Parsing UNKNOWN feed: #{feed_title(feed)}"
         @messages << 'unsupported feed format'
@@ -65,11 +65,11 @@ module Ingestors
       []
     end
 
-    def build_event_from_rss_item(item)
+    def build_event_from_rss_item(item, feed_url)
       event = build_event_from_dublin_core_data(extract_dublin_core(item))
 
       event.title ||= text_value(item.title)
-      native_url = text_value(item.link)
+      native_url = resolve_feed_url(item.link, feed_url)
       event.url = native_url if native_url.present?
       event.description ||= convert_description(text_value(item.description) || text_value(item.content_encoded))
       event.keywords = merge_unique(event.keywords, extract_rss_keywords(item))
@@ -84,11 +84,11 @@ module Ingestors
       event
     end
 
-    def build_event_from_atom_item(item)
+    def build_event_from_atom_item(item, feed_url)
       event = build_event_from_dublin_core_data(extract_dublin_core(item))
 
       event.title ||= text_value(item.title)
-      native_url = extract_atom_link(item)
+      native_url = resolve_feed_url(extract_atom_link(item), feed_url)
       event.url = native_url if native_url.present?
       event.description ||= convert_description(text_value(item.summary) || text_value(item.content))
       event.keywords = merge_unique(event.keywords, extract_atom_keywords(item))

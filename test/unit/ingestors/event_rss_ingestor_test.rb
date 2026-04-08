@@ -75,6 +75,28 @@ class EventRSSIngestorTest < ActiveSupport::TestCase
     assert_equal Time.utc(2024, 6, 3, 12, 0, 0), fallback_event.end.utc
   end
 
+  test 'resolves relative rss item links against the feed url' do
+    rss_feed_xml = <<~XML
+      <?xml version="1.0"?>
+      <rss version="2.0">
+        <channel>
+          <title>Relative link feed</title>
+          <item>
+            <title>Relative URL event</title>
+            <link>/community-calls/april-2026/</link>
+            <description>Event from a feed with relative links</description>
+            <pubDate>Wed, 08 Apr 2026 10:00:00 GMT</pubDate>
+          </item>
+        </channel>
+      </rss>
+    XML
+
+    read_xml(rss_feed_xml, 'https://nl-rse.org/feed.xml')
+
+    assert_equal 1, @ingestor.events.count
+    assert_equal 'https://nl-rse.org/community-calls/april-2026/', @ingestor.events.first.url
+  end
+
   test 'reads atom items from dublin core and native atom fields' do
     atom_feed_xml = <<~XML
       <?xml version="1.0" encoding="utf-8"?>
