@@ -3,34 +3,34 @@ module Ingestors
     include DublinCoreIngestion
 
     # Fetches and parses a feed from the URL, with optional HTML feed discovery.
-    # Returns [feed, parsed_content] on success, where parsed_content is the XML/Atom string used.
-    # Returns [nil, nil] when the URL cannot be opened or parsing/discovery fails.
+    # Returns [feed, raw_xml, source_url] on success.
+    # Returns [nil, nil, nil] when the URL cannot be opened or parsing/discovery fails.
     def fetch_feed(url)
       io = open_url(url)
-      return [nil, nil] if io.nil?
+      return [nil, nil, nil] if io.nil?
 
       content = io.read
       feed, parse_error_message = parse_feed(content)
-      return [feed, content] unless feed.nil?
+      return [feed, content, url] unless feed.nil?
 
       discovered_feed_url = discover_feed_url_from_html(content, url)
       if discovered_feed_url.blank?
         @messages << parse_error_message
-        return [nil, nil]
+        return [nil, nil, nil]
       end
 
       @messages << "HTML page detected, following feed link: #{discovered_feed_url}"
       discovered_io = open_url(discovered_feed_url)
-      return [nil, nil] if discovered_io.nil?
+      return [nil, nil, nil] if discovered_io.nil?
 
       discovered_content = discovered_io.read
       discovered_feed, discovered_parse_error_message = parse_feed(discovered_content)
       if discovered_feed.blank?
         @messages << discovered_parse_error_message
-        return [nil, nil]
+        return [nil, nil, nil]
       end
 
-      [discovered_feed, discovered_content]
+      [discovered_feed, discovered_content, discovered_feed_url]
     end
 
     def parse_feed(content)
@@ -114,6 +114,20 @@ module Ingestors
 
     def extract_atom_link(item)
       item.links.map { |l| text_value(l.href) }.find(&:present?)
+    end
+
+    def resolve_feed_url(candidate_url, feed_url)
+      candidate = text_value(candidate_url)
+      return nil if candidate.blank?
+
+      URI.parse(candidate)
+      return candidate if URI::DEFAULT_PARSER.make_regexp(%w[http https]).match?(candidate)
+
+      URI.join(feed_url, candidate).to_s
+    rescue URI::InvalidURIError
+      URI.join(feed_url, candidate).to_s
+    rescue StandardError
+      candidate
     end
 
     def prefer_precise_time(existing_value, candidate_time)
