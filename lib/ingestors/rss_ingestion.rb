@@ -1,5 +1,7 @@
 module Ingestors
   module RSSIngestion
+    require 'cgi'
+
     include DublinCoreIngestion
 
     # Fetches and parses a feed from the URL, with optional HTML feed discovery.
@@ -13,14 +15,12 @@ module Ingestors
       feed, parse_error_message = parse_feed(content)
       return [feed, content, url] unless feed.nil?
 
-      discovered_feed_url = discover_feed_url_from_html(content, url)
+      discovered_feed_url = discover_feed_url(content, url)
       if discovered_feed_url.blank?
         @messages << parse_error_message
         @messages << "Attempted HTML feed discovery, but no RSS/Atom alternate feed link was found in: #{url}"
         return [nil, nil, nil]
       end
-
-      @messages << "Found RSS/Atom alternate feed link during HTML discovery, following: #{discovered_feed_url}"
       discovered_io = open_url(discovered_feed_url)
       return [nil, nil, nil] if discovered_io.nil?
 
@@ -43,6 +43,20 @@ module Ingestors
       [nil, "parsing feed failed with: #{e.message}"]
     end
 
+    def discover_feed_url(content, base_url)
+      if (url = discover_feed_url_from_html(content, base_url))
+        @messages << "Found RSS/Atom feed link in HTML page, following: #{url}"
+        return url
+      end
+
+      if (url = discover_feed_url_from_youtube_playlist_url(base_url))
+        @messages << "Found Atom feed link from YouTube playlist URL, following: #{url}"
+        return url
+      end
+
+      nil
+    end
+
     def discover_feed_url_from_html(content, base_url)
       doc = Nokogiri::HTML(content)
       link = doc.css('link[rel]').find do |node|
@@ -52,10 +66,21 @@ module Ingestors
       end
 
       href = link&.[]('href')
-      return nil if href.blank?
-
-      URI.join(base_url, href).to_s
+      URI.join(base_url, href).to_s if href.present?
     rescue StandardError
+      nil
+    end
+
+    def discover_feed_url_from_youtube_playlist_url(base_url)
+      uri = URI.parse(base_url)
+      host = uri.host.to_s.downcase
+      return nil unless host == 'youtube.com' || host.end_with?('.youtube.com')
+
+      playlist_id = CGI.parse(uri.query.to_s).fetch('list', []).first
+      return nil if playlist_id.blank?
+
+      "https://www.youtube.com/feeds/videos.xml?playlist_id=#{CGI.escape(playlist_id)}"
+    rescue URI::InvalidURIError
       nil
     end
 

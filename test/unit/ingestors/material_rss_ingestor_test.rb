@@ -456,7 +456,7 @@ class MaterialRSSIngestorTest < ActiveSupport::TestCase
 
     assert_equal 1, @ingestor.materials.count
     assert_includes @ingestor.messages,
-                    "Found RSS/Atom alternate feed link during HTML discovery, following: #{feed_url}"
+                    "Found RSS/Atom feed link in HTML page, following: #{feed_url}"
     assert_equal 'Alternate feed material', @ingestor.materials.first.title
   end
 
