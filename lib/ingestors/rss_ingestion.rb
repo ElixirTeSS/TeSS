@@ -16,10 +16,11 @@ module Ingestors
       discovered_feed_url = discover_feed_url_from_html(content, url)
       if discovered_feed_url.blank?
         @messages << parse_error_message
+        @messages << "Attempted HTML feed discovery, but no RSS/Atom alternate feed link was found in: #{url}"
         return [nil, nil, nil]
       end
 
-      @messages << "HTML page detected, following feed link: #{discovered_feed_url}"
+      @messages << "Found RSS/Atom alternate feed link during HTML discovery, following: #{discovered_feed_url}"
       discovered_io = open_url(discovered_feed_url)
       return [nil, nil, nil] if discovered_io.nil?
 
