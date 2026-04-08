@@ -13,6 +13,8 @@ module Ingestors
         Ingestors::ZenodoIngestor,
         Ingestors::OaiPmhIngestor,
         Ingestors::GithubIngestor,
+        Ingestors::EventRssIngestor,
+        Ingestors::MaterialRssIngestor
       ] + taxila_ingestors + llm_ingestors + heptraining_ingestors
     end
 
