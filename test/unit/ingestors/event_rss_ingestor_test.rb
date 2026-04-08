@@ -295,8 +295,17 @@ class EventRSSIngestorTest < ActiveSupport::TestCase
 
     assert_equal 1, @ingestor.events.count
     assert_includes @ingestor.messages,
-                    "Found RSS/Atom alternate feed link during HTML discovery, following: #{feed_url}"
+                    "Found RSS/Atom feed link in HTML page, following: #{feed_url}"
     assert_equal 'Alternate feed event', @ingestor.events.first.title
+  end
+
+  test 'discovers youtube playlist feed from watch url' do
+    html_without_feed_link = '<html><head><title>No feed link</title></head><body></body></html>'
+    start_url = 'https://www.youtube.com/watch?v=z58CgdgFC8s&list=PLOVYPdB2NZ6M-hQfAIn6srsxfzuNp1EPd&index=1'
+
+    discovered_url = @ingestor.send(:discover_feed_url, html_without_feed_link, start_url)
+
+    assert_equal 'https://www.youtube.com/feeds/videos.xml?playlist_id=PLOVYPdB2NZ6M-hQfAIn6srsxfzuNp1EPd', discovered_url
   end
 
   test 'logs parse error for invalid feed input' do
