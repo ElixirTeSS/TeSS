@@ -308,11 +308,13 @@ class EventRSSIngestorTest < ActiveSupport::TestCase
     assert_equal 'https://www.youtube.com/feeds/videos.xml?playlist_id=PLOVYPdB2NZ6M-hQfAIn6srsxfzuNp1EPd', discovered_url
   end
 
-  test 'logs parse error for invalid feed input' do
-    read_xml('not valid rss or atom')
+  test 'logs rss parser error' do
+    RSS::Parser.stub(:parse, proc { raise RSS::InvalidRSSError, 'simulated rss parse error' }) do
+      read_xml('<rss version="2.0"></rss>')
+    end
 
     assert_equal 2, @ingestor.messages.length
-    assert_match(/^parsing feed failed with: This is not well formed XML/, @ingestor.messages.first)
+    assert_equal 'parsing feed failed with RSS::InvalidRSSError: simulated rss parse error', @ingestor.messages.first
     assert_match(%r{^Attempted HTML feed discovery, but no RSS/Atom alternate feed link was found in:},
                  @ingestor.messages.second)
     assert_empty @ingestor.events

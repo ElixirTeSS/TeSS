@@ -39,8 +39,8 @@ module Ingestors
       return [feed, nil] if feed.present?
 
       [nil, 'parsing feed failed with: unrecognized feed content']
-    rescue RSS::NotWellFormedError => e
-      [nil, "parsing feed failed with: #{e.message}"]
+    rescue RSS::Error => e
+      [nil, "parsing feed failed with #{e.class}: #{e.message}"]
     end
 
     def discover_feed_url(content, base_url)
