@@ -128,7 +128,8 @@ class MaterialRSSIngestorTest < ActiveSupport::TestCase
 
         <entry>
           <title>Native Atom title</title>
-          <link href="https://example.org/atom/native-link" />
+          <link rel="self" href="https://example.org/atom/feed.xml" />
+          <link rel="alternate" href="https://example.org/atom/native-link" />
           <summary>Native Atom summary</summary>
           <author><name>Native Atom Author</name></author>
           <category term="native-atom-category" />

@@ -105,7 +105,8 @@ class EventRSSIngestorTest < ActiveSupport::TestCase
 
         <entry>
           <title>Native Atom event title</title>
-          <link href="https://example.org/atom-events/native" />
+          <link rel="self" href="https://example.org/atom-events/feed.xml" />
+          <link rel="alternate" href="https://example.org/atom-events/native" />
           <summary>Native Atom event summary</summary>
           <author><name>Native Atom Author</name></author>
           <category term="native-atom-event-category" />
