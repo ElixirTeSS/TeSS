@@ -74,8 +74,17 @@
   <%= render partial: "common/people_form", locals: { f: f, field_name: 'contributors', role: 'contributor' } %>
 
   <!-- Field: Target Audience -->
-  <%= f.multi_input :target_audience, label: 'Target audiences', errors: @material.errors[:target_audience],
-                    title: t('events.hints.targets'), visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
+  <% if TeSS::Config.feature['controlled_vocabulary_vars'].include? 'target_audience' %>
+    <%= f.dropdown :target_audience,
+                  options: TargetAudienceDictionary.instance.options_for_select,
+                  label: 'Target audiences',
+                  errors: @material.errors[:target_audience],
+                  title: t('events.hints.targets'),
+                  visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
+  <% else %>
+    <%= f.multi_input :target_audience, label: 'Target audiences', errors: @material.errors[:target_audience],
+                      title: t('events.hints.targets'), visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
+  <% end %>
 
   <!-- Field: Prerequisites -->
   <%= f.input :prerequisites, as: :markdown_area, field_lock: true,
