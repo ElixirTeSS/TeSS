@@ -2,6 +2,8 @@ require 'tess_rdf_extractors'
 
 module Ingestors
   class OaiPmhIngestor < Ingestor
+    include DublinCoreIngestion
+
     def self.config
       {
         key: 'oai_pmh',
@@ -36,82 +38,41 @@ module Ingestors
       }
     end
 
+    def extract_dublin_core_from_xml(xml_doc)
+      {
+        title: xml_doc.at_xpath('//dc:title', ns)&.text,
+        description: xml_doc.at_xpath('//dc:description', ns)&.text,
+        creators: xml_doc.xpath('//dc:creator', ns).map(&:text),
+        contributors: xml_doc.xpath('//dc:contributor', ns).map(&:text),
+        rights: xml_doc.xpath('//dc:rights', ns).map(&:text),
+        dates: xml_doc.xpath('//dc:date', ns).map(&:text),
+        identifiers: xml_doc.xpath('//dc:identifier', ns).map(&:text),
+        subjects: xml_doc.xpath('//dc:subject', ns).map(&:text),
+        types: xml_doc.xpath('//dc:type', ns).map(&:text),
+        publisher: xml_doc.at_xpath('//dc:publisher', ns)&.text
+      }
+    end
+
     def read_oai_dublin_core(client)
       count = 0
       client.list_records(metadata_prefix: 'oai_dc').full.each do |record|
         xml_string = record.metadata.to_s
         doc = Nokogiri::XML(xml_string)
+        dc = extract_dublin_core_from_xml(doc)
 
-        types = doc.xpath('//dc:type', ns).map(&:text)
+        types = normalize_dublin_core_values(dc[:types])
         # this event detection heuristic captures in particular
         # - http://purl.org/dc/dcmitype/Event (the standard way of typing an event in dublin core)
         # - https://schema.org/Event
         if types.any? { |t| t.downcase.include? 'event' }
-          read_dublin_core_event(doc)
+          add_event(build_event_from_dublin_core_data(dc))
         else
-          read_dublin_core_material(doc)
+          add_material(build_material_from_dublin_core_data(dc))
         end
 
         count += 1
       end
       @messages << "found #{count} records"
-    end
-
-    def read_dublin_core_material(xml_doc)
-      material = OpenStruct.new
-      material.title = xml_doc.at_xpath('//dc:title', ns)&.text
-      material.description  = convert_description(xml_doc.at_xpath('//dc:description', ns)&.text)
-      material.authors      = xml_doc.xpath('//dc:creator', ns).map(&:text)
-      material.contributors = xml_doc.xpath('//dc:contributor', ns).map(&:text)
-
-      rights = xml_doc.xpath('//dc:rights', ns).map { |n| n.text&.strip }.reject(&:empty?)
-      material.licence = rights.find { |r| r.start_with?('http://', 'https://') } || rights.first || 'notspecified'
-
-      dates = xml_doc.xpath('//dc:date', ns).map(&:text)
-      parsed_dates = dates.map do |d|
-        Date.parse(d)
-      rescue StandardError
-        nil
-      end.compact
-      material.date_created = parsed_dates.first
-      material.date_modified = parsed_dates.last if parsed_dates.size > 1
-
-      identifiers = xml_doc.xpath('//dc:identifier', ns).map(&:text)
-      doi = identifiers.find { |id| id.start_with?('10.') || id.start_with?('https://doi.org/') || id.start_with?('http://doi.org/') }
-      if doi
-        doi = doi&.sub(%r{https?://doi\.org/}, '')
-        material.doi = "https://doi.org/#{doi}"
-      end
-      material.url = identifiers.find { |id| id.start_with?('http://', 'https://') }
-
-      material.keywords = xml_doc.xpath('//dc:subject', ns).map(&:text)
-      material.resource_type = xml_doc.xpath('//dc:type', ns).map(&:text)
-      material.contact = xml_doc.at_xpath('//dc:publisher', ns)&.text
-
-      add_material material
-    end
-
-    def read_dublin_core_event(xml_doc)
-      event = OpenStruct.new
-
-      event.title       = xml_doc.at_xpath('//dc:title', ns)&.text
-      event.description = convert_description(xml_doc.at_xpath('//dc:description', ns)&.text)
-      event.url         = xml_doc.xpath('//dc:identifier', ns).map(&:text).find { |id| id.start_with?('http://', 'https://') }
-      event.contact     = xml_doc.at_xpath('//dc:publisher', ns)&.text
-      event.organizer   = xml_doc.at_xpath('//dc:creator', ns)&.text
-      event.keywords = xml_doc.xpath('//dc:subject', ns).map(&:text)
-      event.event_types = xml_doc.xpath('//dc:type', ns).map(&:text)
-
-      dates = xml_doc.xpath('//dc:date', ns).map(&:text)
-      parsed_dates = dates.map do |d|
-        Date.parse(d)
-      rescue StandardError
-        nil
-      end.compact
-      event.start = parsed_dates.first
-      event.end   = parsed_dates.last
-
-      add_event event
     end
 
     def read_oai_rdf(client)
