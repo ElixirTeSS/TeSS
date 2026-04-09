@@ -75,8 +75,8 @@ module Ingestors
     # this method is also used by RSS ingestion under an alias
     def dublin_core_text(value)
       return nil if value.nil?
-      return value.content if value.respond_to?(:content)
-      return value.text if value.respond_to?(:text) && !value.is_a?(String)
+      return value.content if value.respond_to?(:content) # rss gem xml nodes
+      return value.text if value.respond_to?(:text) && !value.is_a?(String) # Nokogiri xml nodes
 
       value.to_s
     end
