@@ -79,7 +79,7 @@
   <% if TeSS::Config.feature['controlled_vocabulary_vars'].include? 'target_audience' %>
     <%= f.dropdown :target_audience,
                   options: TargetAudienceDictionary.instance.options_for_select,
-                  label: 'Target Audience',
+                  label: 'Target audiences',
                   errors: @material.errors[:target_audience],
                   title: t('events.hints.targets'),
                   visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
