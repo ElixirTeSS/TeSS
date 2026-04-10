@@ -26,7 +26,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
 
     assert ingestor.events.empty?
     assert ingestor.materials.empty?
-    assert_includes ingestor.messages, 'Extract from sitemap[https://missing.org/sitemap.xml] failed with: 404 '
+    assert_includes ingestor.messages, 'Extract from sitemap[https://missing.org/sitemap.xml] failed with: HTTP request to https://missing.org/sitemap.xml failed'
   end
 
   test 'ingest valid sitemap' do
@@ -68,7 +68,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
 
     # check individual events
     # check not found
-    assert_includes ingestor.messages, "Process file url\[https://pawsey.org.au/events/\?ical=true\] failed with: 404 "
+    assert_includes ingestor.messages, "Couldn't open URL https://pawsey.org.au/events/?ical=true: 404 "
 
     # check rejected
     event = ingestor.events.detect { |e| e.title == 'NVIDIA cuQuantum Session' }
