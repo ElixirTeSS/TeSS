@@ -392,4 +392,40 @@ class IngestorTest < ActiveSupport::TestCase
     end
   end
 
+  test 'does not log useless update activities' do
+    user = users(:scraper_user)
+    provider = content_providers(:goblet)
+    url = 'http://example.com/cool-course-summer'
+
+    assert provider.events.where(url: url).any?
+    event = OpenStruct.new(url: 'http://example.com/cool-course-summer',
+                           title: 'Summer Course on Learning Stuff')
+
+    ingestor = Ingestors::Ingestor.new
+    ingestor.instance_variable_set(:@events, [event])
+
+    assert_no_difference('provider.events.count') do
+      assert_no_difference('PublicActivity::Activity.where(key: "event.create").count') do
+        assert_difference('PublicActivity::Activity.where(key: "event.update").count', 1) do
+          assert_difference('PublicActivity::Activity.where(key: "event.update_parameter").count', 2) do # Title and slug are updated
+            ingestor.write(user, provider)
+          end
+        end
+      end
+    end
+
+    ingestor = Ingestors::Ingestor.new
+    ingestor.instance_variable_set(:@events, [event])
+
+    assert_no_difference('provider.events.count') do
+      assert_no_difference('PublicActivity::Activity.where(key: "event.create").count') do
+        assert_no_difference('PublicActivity::Activity.where(key: "event.update").count') do
+          assert_no_difference('PublicActivity::Activity.where(key: "event.update_parameter").count') do
+            ingestor.write(user, provider) # Nothing changed so don't log
+          end
+        end
+      end
+    end
+  end
+
 end

@@ -213,7 +213,14 @@ module Ingestors
               method: source.method
             }
           end
-          resource.create_activity(update ? :update : :create, owner: user, parameters: activity_params)
+
+          if update
+            if resource.log_update_activity?
+              resource.create_activity(:update, owner: user, parameters: activity_params)
+            end
+          else
+            resource.create_activity(:create, owner: user, parameters: activity_params)
+          end
           @stats[key][update ? :updated : :added] += 1
         else
           @stats[key][:rejected] += 1
