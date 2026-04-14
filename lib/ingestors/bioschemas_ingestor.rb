@@ -2,6 +2,8 @@ require 'tess_rdf_extractors'
 
 module Ingestors
   class BioschemasIngestor < Ingestor
+    include Ingestors::Concerns::SitemapHelpers
+
     DUMMY_URL = 'https://example.com'
 
     attr_reader :verbose
@@ -15,27 +17,8 @@ module Ingestors
     end
 
     def read(source_url)
-      sitemap_regex = nil
       @verbose = false
-      sources = if source_url.downcase.match?(/sitemap(.*)?.xml\Z/)
-                  sitemap_message = "Parsing .xml sitemap: #{source_url}\n"
-                  urls = SitemapParser.new(source_url, {
-                    recurse: true,
-                    url_regex: sitemap_regex,
-                    headers: { 'User-Agent' => config[:user_agent] }
-                  }).to_a.uniq.map(&:strip)
-                  sitemap_message << "\n - #{urls.count} URLs found"
-                  @messages << sitemap_message
-                  urls
-                elsif source_url.downcase.match?(/sitemap(.*)?.txt\Z/)
-                  sitemap_message = "Parsing .txt sitemap: #{source_url}\n"
-                  urls = open_url(source_url).to_a.uniq.map(&:strip)
-                  sitemap_message << "\n - #{urls.count} URLs found"
-                  @messages << sitemap_message
-                  urls
-                else
-                  [source_url]
-                end
+      sources = parse_sitemap(source_url)
 
       provider_events = []
       provider_materials = []
