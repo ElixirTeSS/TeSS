@@ -1631,7 +1631,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
   test 'should display non-trainer contributor with linked ORCID' do
     jc = profiles(:trainer_one_profile)
-    jc.update!(public: false)
+    jc.update!(public: false, website: nil, image_url: nil)
     jc = Profile.find(jc.id)
     assert @material.update(authors: [{ name: 'John Doe' },
                                       { name: 'Jane Smith', orcid: '0000-0001-9999-9990' }],
