@@ -1629,6 +1629,28 @@ class MaterialsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'should display non-trainer author with linked ORCID' do
+    jc = profiles(:trainer_one_profile)
+    jc.update_column(:public, false)
+    jc.update_column(:type, 'Profile')
+    assert @material.update(authors: [{ name: 'John Doe' },
+                                      { name: 'Jane Smith', orcid: '0000-0001-9999-9990' }],
+                            contributors: [{ name: 'Jos Ca', orcid: '0000-0002-1825-0097' }])
+
+    get :show, params: { id: @material.id }
+
+    assert_select '.authors', text: 'Authors: John Doe, Jane Smith'
+    assert_select '.authors a', count: 1 do
+      assert_select '[href=?]', 'https://orcid.org/0000-0001-9999-9990'
+    end
+
+    assert_select '.contributors', { text: 'Contributors: Josiah Carberry' },
+                  "Should use name from person's profile, if linked"
+    assert_select '.contributors a', count: 1 do
+      assert_select '[href=?]', user_path(jc.user)
+    end
+  end
+
   test 'should update material authors using structured authors' do
     sign_in @material.user
     update = @updated_material.merge(authors: [

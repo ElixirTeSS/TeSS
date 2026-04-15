@@ -105,7 +105,8 @@ module MaterialsHelper
     display_attribute(resource, attribute) do |values|
       html = values.map do |person|
         if person.profile
-          link_to(person.profile.full_name, person.profile)
+          target = person.profile.is_a?(Trainer) ? person.profile : person.profile.user
+          link_to(person.profile.full_name, target)
         elsif person.orcid.present?
           image_tag('ORCID-iD_icon_vector.svg', size: 16) + ' ' +
           external_link(person.display_name, person.orcid_url)
