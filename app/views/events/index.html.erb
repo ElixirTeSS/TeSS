@@ -66,11 +66,9 @@
         <% end %>
       </div>
     <% else %>
-      <% unless search_and_facet_params[:include_expired] %>
-        <% past_count = Event.search_and_filter(current_user, @search_params, @facet_params.merge(include_expired: 'true'), sort_by: @sort_by).total %>
-        <% if past_count > 0 %>
-          <%= link_to(t('events.show_past_events', count: past_count), events_path(**search_and_facet_params.merge(include_expired: 'true'))) %>
-        <% end %>
+      <% if @past_events_count > 0 %>
+        <%= link_to(t('events.show_past_events', count: @past_events_count),
+                    events_path(search_and_facet_params.merge(include_expired: 'true'))) %>
       <% end %>
     <% end %>
   </div>
