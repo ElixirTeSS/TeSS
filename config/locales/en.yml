@@ -627,6 +627,7 @@ en:
       language: 'Select a language...'
     long: 'Long events'
     pick_date: 'Pick a range of dates for a better collection of events.'
+    show_past_events: Show %{count} past events
   materials:
     hints:
       authors: >
