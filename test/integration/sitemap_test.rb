@@ -3,8 +3,7 @@ require 'test_helper'
 class SitemapTest < ActionDispatch::IntegrationTest
   teardown do
     dir = Rails.root.join('public', 'test_sitemaps')
-    dir.glob('*.xml').each(&:delete)
-    dir.delete
+    FileUtils.rm_rf(dir) if dir.exist?
   end
 
   test 'generates sitemap' do
@@ -37,19 +36,45 @@ class SitemapTest < ActionDispatch::IntegrationTest
     refute_includes urls, learning_path_url(learning_paths(:one))
   end
 
+  test 'generates space-scoped sitemaps when spaces feature is enabled' do
+    space = spaces(:plants)
+
+    with_settings(feature: { spaces: true }) do
+      SitemapGenerator::Interpreter.run(verbose: false)
+    end
+
+    # Global sitemap should include all content
+    global_urls = parse
+    assert_includes global_urls, material_url(materials(:good_material))
+    assert_includes global_urls, material_url(materials(:plant_space_material))
+
+    # Space sitemap should only include content for that space
+    space_urls = parse_space(space)
+    assert space_urls.any?
+    assert_includes space_urls, "https://#{space.host}/about"
+    assert_includes space_urls, "https://#{space.host}/materials/#{materials(:plant_space_material).friendly_id}"
+    refute_includes space_urls, "https://#{space.host}/materials/#{materials(:good_material).friendly_id}"
+  end
+
   private
 
-  # Hacked to read files from disk rather than fetching via URL
+  # Hacked to read files from disk rather than fetching via URL.
+  # Host-agnostic: strips the scheme+host and reads from public/ using the path only.
   class LocalSitemapParser < SitemapParser
     def raw_sitemap
-      path = @url.strip.sub('http://www.example.com/', '')
+      uri = URI.parse(@url.strip)
+      path = uri.path.delete_prefix('/')
       path = 'test_sitemaps/sitemap.xml' if path == 'sitemap.xml'
-      path = Rails.root.join('public', path)
-      path.read
+      Rails.root.join('public', path).read
     end
   end
 
   def parse
     LocalSitemapParser.new('http://www.example.com/sitemap.xml', { recurse: true }).to_a.uniq.map(&:strip)
+  end
+
+  def parse_space(space)
+    index_url = "https://#{space.host}/test_sitemaps/#{space.host}/sitemap.xml"
+    LocalSitemapParser.new(index_url, { recurse: true }).to_a.uniq.map(&:strip)
   end
 end
