@@ -13,6 +13,7 @@ class Subscription < ApplicationRecord
   validates :subscribable_type, presence: true
   validate :valid_subscribable_type
   belongs_to :user
+  belongs_to :space, optional: true
 
   before_create :set_last_checked_at
 
@@ -34,8 +35,11 @@ class Subscription < ApplicationRecord
 
   def digest
     type = subscribable_type.constantize
-
+    original_space = Thread.current[:current_space]
+    Thread.current[:current_space] = space
     type.search_and_filter(user, query, facets_with_max_age, per_page: 15).results
+  ensure
+    Thread.current[:current_space] = original_space
   end
 
   def facets_with_max_age
