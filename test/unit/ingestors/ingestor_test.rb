@@ -396,18 +396,19 @@ class IngestorTest < ActiveSupport::TestCase
     user = users(:scraper_user)
     provider = content_providers(:goblet)
     url = 'http://example.com/cool-course-summer'
+    e = events(:course_event)
+    e.update!(scraper_record: true)
 
     assert provider.events.where(url: url).any?
-    event = OpenStruct.new(url: 'http://example.com/cool-course-summer',
-                           title: 'Summer Course on Learning Stuff')
+
+    event = OpenStruct.new(url: 'http://example.com/cool-course-summer', title: 'A different title')
 
     ingestor = Ingestors::Ingestor.new
     ingestor.instance_variable_set(:@events, [event])
-
     assert_no_difference('provider.events.count') do
       assert_no_difference('PublicActivity::Activity.where(key: "event.create").count') do
         assert_difference('PublicActivity::Activity.where(key: "event.update").count', 1) do
-          assert_difference('PublicActivity::Activity.where(key: "event.update_parameter").count', 2) do # Title and slug are updated
+          assert_difference('PublicActivity::Activity.where(key: "event.update_parameter").count', 1) do # Title is changed
             ingestor.write(user, provider)
           end
         end
@@ -416,7 +417,6 @@ class IngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Ingestor.new
     ingestor.instance_variable_set(:@events, [event])
-
     assert_no_difference('provider.events.count') do
       assert_no_difference('PublicActivity::Activity.where(key: "event.create").count') do
         assert_no_difference('PublicActivity::Activity.where(key: "event.update").count') do
