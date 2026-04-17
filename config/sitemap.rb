@@ -39,13 +39,16 @@ end
 
 # When spaces feature is enabled, also generate a separate sitemap for each space
 if TeSS::Config.feature['spaces']
-  Space.find_each do |space|
-    Space.current_space = space
-    SitemapGenerator::Sitemap.default_host = space.url
-    SitemapGenerator::Sitemap.create(compress: false, sitemaps_path: "#{base_path}#{space.host}/", include_root: false) do
-      instance_exec(space, &generate_sitemap_content)
+  begin
+    Space.find_each do |space|
+      Space.current_space = space
+      SitemapGenerator::Sitemap.default_host = space.url
+      SitemapGenerator::Sitemap.create(compress: false, sitemaps_path: "#{base_path}#{space.host}/", include_root: false) do
+        instance_exec(space, &generate_sitemap_content)
+      end
     end
+  ensure
+    Space.current_space = nil
+    SitemapGenerator::Sitemap.default_host = TeSS::Config.base_url
   end
-  Space.current_space = nil
-  SitemapGenerator::Sitemap.default_host = TeSS::Config.base_url
 end

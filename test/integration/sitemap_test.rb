@@ -74,6 +74,8 @@ class SitemapTest < ActionDispatch::IntegrationTest
   end
 
   def parse_space(space)
+    # The index URL uses the space's host as both the URL authority and the subdirectory path,
+    # since sitemaps are stored under sitemaps/<space.host>/ and served via that same host.
     index_url = "https://#{space.host}/test_sitemaps/#{space.host}/sitemap.xml"
     LocalSitemapParser.new(index_url, { recurse: true }).to_a.uniq.map(&:strip)
   end
