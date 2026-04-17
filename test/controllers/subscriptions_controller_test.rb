@@ -43,18 +43,18 @@ class SubscriptionsControllerTest < ActionController::TestCase
   end
 
   test 'should create a new subscription scoped to the current space' do
-    sign_in users(:regular_user)
-    with_settings(feature: { 'spaces' => true }) do
-      with_host(spaces(:plants).host) do
+    with_host(spaces(:plants).host) do
+      sign_in users(:regular_user)
+      with_settings(feature: { 'spaces' => true }) do
         assert_difference('Subscription.count') do
           post :create, params: { subscription: { frequency: 'weekly', subscribable_type: 'Event' }, q: 'flowers' }
         end
       end
+
+      assert_equal spaces(:plants), assigns(:subscription).space
+
+      assert_redirected_to subscriptions_path
     end
-
-    assert_equal spaces(:plants), assigns(:subscription).space
-
-    assert_redirected_to subscriptions_path
   end
 
   test 'should not include junk params in new subscription' do
