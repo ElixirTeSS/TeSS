@@ -12,6 +12,7 @@ class SubscriptionsController < ApplicationController
 
   def create
     @subscription = current_user.subscriptions.build(subscription_params)
+    @subscription.space = current_space unless current_space.default?
 
     if @subscription.save
       flash[:notice] = t('subscriptions.created')

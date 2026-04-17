@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_10_163512) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_17_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -577,6 +577,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_10_163512) do
     t.datetime "updated_at", null: false
     t.string "subscribable_type"
     t.datetime "last_checked_at"
+    t.bigint "space_id"
+    t.index ["space_id"], name: "index_subscriptions_on_space_id"
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
@@ -705,6 +707,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_10_163512) do
   add_foreign_key "spaces", "users"
   add_foreign_key "staff_members", "nodes"
   add_foreign_key "stars", "users"
+  add_foreign_key "subscriptions", "spaces"
   add_foreign_key "subscriptions", "users"
   add_foreign_key "users", "roles"
   add_foreign_key "workflows", "spaces"
