@@ -11,6 +11,7 @@ class Space < ApplicationRecord
   has_many :collections, dependent: :nullify
   has_many :learning_paths, dependent: :nullify
   has_many :learning_path_topics, dependent: :nullify
+  has_many :subscriptions, dependent: :nullify
   has_many :space_roles, dependent: :destroy
   has_many :space_role_users, through: :space_roles, source: :user, class_name: 'User'
   has_many :administrator_roles, -> { where(key: :admin) }, class_name: 'SpaceRole'
