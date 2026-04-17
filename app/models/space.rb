@@ -33,6 +33,15 @@ class Space < ApplicationRecord
     Thread.current[:current_space] || Space.default
   end
 
+  def self.with_current_space(space)
+    old_space = current_space
+    old_space = nil if old_space.default?
+    self.current_space = space
+    yield
+  ensure
+    self.current_space = old_space
+  end
+
   def self.default
     DefaultSpace.new
   end

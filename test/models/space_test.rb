@@ -174,4 +174,34 @@ class SpaceTest < ActiveSupport::TestCase
     refute @space.is_subdomain?
     assert Space.new(host: 'test.example.com').is_subdomain?
   end
+
+  test 'with_current_space' do
+    astro = spaces(:astro)
+    Space.current_space = astro
+    assert_equal astro, Space.current_space
+
+    # Sets space and reverts after
+    plants = spaces(:plants)
+    Space.with_current_space(plants) do
+      assert_equal plants, Space.current_space
+    end
+    assert_equal astro, Space.current_space
+
+    # Resets after exception
+    assert_raises(RuntimeError) do
+      Space.with_current_space(plants) do
+        raise 'oh no'
+      end
+    end
+    assert_equal astro, Space.current_space
+
+    # Handles nil and default spaces
+    Space.with_current_space(nil) do
+      assert Space.current_space.default?
+    end
+
+    Space.with_current_space(Space.default) do
+      assert Space.current_space.default?
+    end
+  end
 end

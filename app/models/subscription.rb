@@ -34,12 +34,10 @@ class Subscription < ApplicationRecord
   end
 
   def digest
-    type = subscribable_type.constantize
-    original_space = Thread.current[:current_space]
-    Thread.current[:current_space] = space
-    type.search_and_filter(user, query, facets_with_max_age, per_page: 15).results
-  ensure
-    Thread.current[:current_space] = original_space
+    Space.with_current_space(space) do
+      type = subscribable_type.constantize
+      type.search_and_filter(user, query, facets_with_max_age, per_page: 15).results
+    end
   end
 
   def facets_with_max_age
