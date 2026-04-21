@@ -52,7 +52,7 @@ class Space < ApplicationRecord
   end
 
   def url
-    "https://#{host}"
+    "#{TeSS::Config.base_uri.scheme}://#{host}"
   end
 
   def default?
