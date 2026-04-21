@@ -3,10 +3,14 @@ class SitemapsController < ApplicationController
 
   def index
     if TeSS::Config.feature['spaces'] && !current_space.default?
-      render file: sitemap_base.join("#{current_space.host}/sitemap.xml"), layout: false
+      sitemap_path = sitemap_base.join("#{current_space.host}/sitemap.xml")
     else
-      render file: sitemap_base.join('sitemap.xml'), layout: false
+      sitemap_path = sitemap_base.join('sitemap.xml')
     end
+
+    return head :not_found unless sitemap_path.exist?
+
+    render file: sitemap_path, layout: false, content_type: 'application/xml'
   end
 
   private

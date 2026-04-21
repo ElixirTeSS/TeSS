@@ -9,6 +9,8 @@ class SitemapsControllerTest < ActionController::TestCase
 
     with_settings(feature: { spaces: false }) do
       get :index
+
+      assert_response :success
     end
 
     urls = sitemap_urls
@@ -19,6 +21,8 @@ class SitemapsControllerTest < ActionController::TestCase
   test 'renders global sitemap for default space when spaces feature is enabled' do
     with_settings(feature: { spaces: true }) do
       get :index
+
+      assert_response :success
     end
 
     urls = sitemap_urls
@@ -31,12 +35,25 @@ class SitemapsControllerTest < ActionController::TestCase
     with_settings(feature: { spaces: true }) do
       with_host(space.host) do
         get :index
+
+        assert_response :success
       end
     end
 
     urls = sitemap_urls
     assert_not_includes urls, 'http://mytess.training/about'
     assert_includes urls, 'http://plants.mytess.training/about'
+  end
+
+  test 'returns 404 if sitemap file does not exist' do
+    space = spaces(:astro)
+    with_settings(feature: { spaces: true }) do
+      with_host(space.host) do
+        get :index
+
+        assert_response :not_found
+      end
+    end
   end
 
   private
