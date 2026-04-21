@@ -32,23 +32,15 @@ generate_sitemap_content = lambda do |space|
 end
 
 # Always generate the global sitemap (for the default/main domain)
-SitemapGenerator::Sitemap.default_host = TeSS::Config.base_url
-SitemapGenerator::Sitemap.create(compress: false, sitemaps_path: base_path, include_root: false) do
+SitemapGenerator::Sitemap.create(compress: false, sitemaps_path: base_path, include_root: false, default_host: TeSS::Config.base_url) do
   instance_exec(Space.default, &generate_sitemap_content)
 end
 
 # When spaces feature is enabled, also generate a separate sitemap for each space
 if TeSS::Config.feature['spaces']
-  begin
-    Space.find_each do |space|
-      Space.current_space = space
-      SitemapGenerator::Sitemap.default_host = space.url
-      SitemapGenerator::Sitemap.create(compress: false, sitemaps_path: "#{base_path}#{space.host}/", include_root: false) do
-        instance_exec(space, &generate_sitemap_content)
-      end
+  Space.find_each do |space|
+    SitemapGenerator::Sitemap.create(compress: false, sitemaps_path: "#{base_path}#{space.host}/", include_root: false, default_host: space.url) do
+      instance_exec(space, &generate_sitemap_content)
     end
-  ensure
-    Space.current_space = nil
-    SitemapGenerator::Sitemap.default_host = TeSS::Config.base_url
   end
 end
