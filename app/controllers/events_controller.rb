@@ -241,7 +241,7 @@ class EventsController < ApplicationController
                                   external_resources_attributes: %i[id url title _destroy],
                                   external_resources: %i[url title], material_ids: [],
                                   llm_interaction_attributes: %i[id scrape_or_process model prompt input output needs_processing _destroy],
-                                  locked_fields: [])
+                                  locked_fields: [], instructors: [:name, :orcid], contributors: [:name, :orcid])
   end
 
   def event_report_params

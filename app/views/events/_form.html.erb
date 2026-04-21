@@ -175,6 +175,12 @@
     <%= f.multi_input :sponsors, errors: @event.errors[:sponsors], hint: t('events.hints.sponsors') %>
   <% end %>
 
+  <!-- Field: Contributors -->
+  <%= render partial: "common/people_form", locals: { f: f, field_name: 'contributors', role: 'contributor' } %>
+
+  <!-- Field: Instructors -->
+  <%= render partial: "common/people_form", locals: { f: f, field_name: 'instructors', role: 'instructor' } %>
+
   <div class="form-group">
     <%= f.submit(class: 'btn btn-primary') %>
     <%= link_to 'Back', :back, class: 'btn btn-default' %>

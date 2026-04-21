@@ -80,6 +80,8 @@ class BioschemasTest < ActionDispatch::IntegrationTest
     event = events(:course_event)
     event.external_resources.create!({ title: 'Cool website', url: 'https://external-resource.pizza' })
     event.node_names = ['Test Node']
+    event.contributors = [{ name: 'Contri Butor', orcid: '0000-0002-1694-233X' }]
+    event.instructors = [{ name: 'Josiah Carberry', orcid: 'https://orcid.org/0000-0002-1825-0097' }, { name: 'Gordon Freeman' }]
     event.save!
     url = event_url(event.slug)
 
@@ -213,6 +215,37 @@ class BioschemasTest < ActionDispatch::IntegrationTest
     assert_includes providers, ['ELIXIR Test Node', 'http://example.com']
     assert_includes providers, ['Goblet', 'http://mygoblet.org']
     assert_includes providers, ['University of Manchester', nil]
+
+    # Contributors
+    q = RDF::Query.new do
+      pattern RDF::Query::Pattern.new(course_instance_uri, RDF::Vocab::SCHEMA.contributor, :contributor_info)
+      pattern RDF::Query::Pattern.new(:contributor_info, RDF::Vocab::SCHEMA.name, :name)
+      pattern RDF::Query::Pattern.new(:contributor_info, RDF::Vocab::SCHEMA.identifier, :identifier, optional: true)
+    end
+    results = graph.query(q)
+    assert_equal 1, results.count
+    contributors = results.map { |r| { name: r.name.to_s,
+                                       id: r.contributor_info.to_s.start_with?('http') ? r.contributor_info.to_s : nil,
+                                       identifier: r[:identifier]&.to_s }}
+    assert_includes contributors, { name: 'Contri Butor',
+                                    id: 'https://orcid.org/0000-0002-1694-233X',
+                                    identifier: 'https://orcid.org/0000-0002-1694-233X' }
+
+    # Instructors
+    q = RDF::Query.new do
+      pattern RDF::Query::Pattern.new(course_instance_uri, RDF::Vocab::SCHEMA.instructor, :instructor_info)
+      pattern RDF::Query::Pattern.new(:instructor_info, RDF::Vocab::SCHEMA.name, :name)
+      pattern RDF::Query::Pattern.new(:instructor_info, RDF::Vocab::SCHEMA.identifier, :identifier, optional: true)
+    end
+    results = graph.query(q)
+    assert_equal 2, results.count
+    instructors = results.map { |r| { name: r.name.to_s,
+                                      id: r.instructor_info.to_s.start_with?('http') ? r.instructor_info.to_s : nil,
+                                      identifier: r[:identifier]&.to_s }}
+    assert_includes instructors, { name: 'Josiah Carberry',
+                                   id: 'https://orcid.org/0000-0002-1825-0097',
+                                   identifier: 'https://orcid.org/0000-0002-1825-0097' }
+    assert_includes instructors, { name: 'Gordon Freeman', id: nil, identifier: nil }
   end
 
   test 'handles non-list markdown for prereqs on course event' do

@@ -804,4 +804,64 @@ class EventTest < ActiveSupport::TestCase
 
     assert_equal 1, (e.reload.ontology_term_links.to_a - ontology_term_links).length
   end
+
+  test 'should set contributors from array of hashes' do
+    @event.contributors = [
+      { name: 'John Doe', orcid: '0000-0002-1825-0097' },
+      { name: 'Jane Smith' }
+    ]
+    @event.save!
+    @event.reload
+
+    assert_equal 2, @event.contributors.size
+    john = @event.contributors.find { |c| c.name == 'John Doe' }
+    assert_not_nil john
+    assert_equal '0000-0002-1825-0097', john.orcid
+  end
+
+  test 'should set contributors from array of Person objects' do
+    person1 = Person.new(resource: @event, name: 'Alice Wonder')
+    person2 = Person.new(resource: @event, name: 'Bob Builder')
+
+
+    assert_not_includes @event.contributors.map(&:name), person1.name
+
+    @event.contributors = [person1, person2]
+    @event.save!
+    @event.reload
+
+    assert_equal 2, @event.contributors.size
+    assert_includes @event.contributors.map(&:name), person1.name
+    assert_includes @event.contributors.map(&:name), person2.name
+  end
+
+  test 'should set instructors from array of hashes' do
+    @event.instructors = [
+      { name: 'John Doe', orcid: '0000-0002-1825-0097' },
+      { name: 'Jane Smith' }
+    ]
+    @event.save!
+    @event.reload
+
+    assert_equal 2, @event.instructors.size
+    john = @event.instructors.find { |c| c.name == 'John Doe' }
+    assert_not_nil john
+    assert_equal '0000-0002-1825-0097', john.orcid
+  end
+
+  test 'should set instructors from array of Person objects' do
+    person1 = Person.new(resource: @event, name: 'Alice Wonder')
+    person2 = Person.new(resource: @event, name: 'Bob Builder')
+
+
+    assert_not_includes @event.instructors.map(&:name), person1.name
+
+    @event.instructors = [person1, person2]
+    @event.save!
+    @event.reload
+
+    assert_equal 2, @event.instructors.size
+    assert_includes @event.instructors.map(&:name), person1.name
+    assert_includes @event.instructors.map(&:name), person2.name
+  end
 end

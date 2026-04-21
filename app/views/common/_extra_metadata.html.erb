@@ -61,6 +61,7 @@
 
 <%= display_people(resource, :authors) if resource.respond_to?(:authors) %>
 <%= display_people(resource, :contributors) if resource.respond_to?(:contributors) %>
+<%= display_people(resource, :instructors) if resource.respond_to?(:instructors) %>
 <%= display_attribute(resource, :remote_created_date) if resource.respond_to?(:remote_created_date) %>
 <%= display_attribute(resource, :remote_updated_date) if resource.respond_to?(:remote_updated_date) %>
 <%= display_attribute(resource, :scientific_topics) { 

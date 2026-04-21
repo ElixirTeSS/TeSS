@@ -20,5 +20,7 @@ module Bioschemas
     }
     property :maximumAttendeeCapacity, :capacity
     property :courseMode, :presence
+    property :contributor, -> (event) { event.contributors.map { |p| person(p) } }
+    property :instructor, -> (event) { event.instructors.map { |p| person(p) } }
   end
 end
