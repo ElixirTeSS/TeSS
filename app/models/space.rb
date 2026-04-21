@@ -44,7 +44,7 @@ class Space < ApplicationRecord
   end
 
   def self.default
-    DefaultSpace.new
+    TeSS::Config.feature['spaces'] ? DefaultSpace.new : GlobalSpace.new
   end
 
   def logo_alt
