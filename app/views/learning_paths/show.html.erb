@@ -64,7 +64,10 @@
         <% topics = @learning_path.topic_links.joins(:topic) %>
         <% topic_count = topics.count %>
         <% topics.each do |lpt| %>
-          <div class="learning-path-topic<%= topic_count == 1 ? ' single-topic' : ''-%>" id="topic-<%= lpt.id -%>">
+          <% classes = ['learning-path-topic'] %>
+          <% classes << 'single-topic' if topic_count == 1 %>
+          <% classes << 'unordered' if @learning_path.unordered? %>
+          <%= content_tag(:div, id: "topic-#{lpt.id}", class: classes) do %>
             <div class="learning-path-topic-order"><%= lpt.order %></div>
             <div class="learning-path-topic-title">
               <h4><%= lpt.topic.title %> <i class="icon icon-md expand-icon"></i></h4>
@@ -91,7 +94,7 @@
                 <% end %>
               </ul>
             </div>
-          </div>
+          <% end %>
         <% end %>
       </div>
     </div>

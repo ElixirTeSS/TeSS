@@ -36,6 +36,12 @@
     display: none;
   }
 
+  &.unordered {
+    .learning-path-topic-order {
+      display: none;
+    }
+  }
+
   &.single-topic {
     margin-left: 0;
     border-left: none;

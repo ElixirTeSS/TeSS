@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_17_000001) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_21_144919) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -323,6 +323,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_17_000001) do
     t.datetime "updated_at", null: false
     t.boolean "public", default: true
     t.bigint "space_id"
+    t.boolean "unordered"
     t.index ["content_provider_id"], name: "index_learning_paths_on_content_provider_id"
     t.index ["slug"], name: "index_learning_paths_on_slug", unique: true
     t.index ["space_id"], name: "index_learning_paths_on_space_id"
