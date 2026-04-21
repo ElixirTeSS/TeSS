@@ -1,9 +1,15 @@
 class SitemapsController < ApplicationController
   def index
     if TeSS::Config.feature['spaces'] && !current_space.default?
-      render file: Rails.root.join("public/sitemaps/#{current_space.host}/sitemap.xml"), layout: false
+      render file: sitemap_base.join("#{current_space.host}/sitemap.xml"), layout: false
     else
-      render file: Rails.root.join('public/sitemaps/sitemap.xml'), layout: false
+      render file: sitemap_base.join('sitemap.xml'), layout: false
     end
+  end
+
+  private
+
+  def sitemap_base
+    Rails.env.test? ? Rails.root.join('test/fixtures/files/sitemaps/') : Rails.root.join('public/sitemaps/')
   end
 end
