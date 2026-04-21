@@ -51,9 +51,9 @@ class SitemapTest < ActionDispatch::IntegrationTest
     # Space sitemap should only include content for that space
     space_urls = parse_space(space)
     assert space_urls.any?
-    assert_includes space_urls, "https://#{space.host}/about"
-    assert_includes space_urls, "https://#{space.host}/materials/#{materials(:plant_space_material).friendly_id}"
-    refute_includes space_urls, "https://#{space.host}/materials/#{materials(:good_material).friendly_id}"
+    assert_includes space_urls, "#{space.url}/about"
+    assert_includes space_urls, "#{space.url}/materials/#{materials(:plant_space_material).friendly_id}"
+    refute_includes space_urls, "#{space.url}/materials/#{materials(:good_material).friendly_id}"
   end
 
   private
@@ -70,13 +70,13 @@ class SitemapTest < ActionDispatch::IntegrationTest
   end
 
   def parse
-    LocalSitemapParser.new('http://www.example.com/sitemap.xml', { recurse: true }).to_a.uniq.map(&:strip)
+    LocalSitemapParser.new("#{TeSS::Config.base_url}/sitemap.xml", { recurse: true }).to_a.uniq.map(&:strip)
   end
 
   def parse_space(space)
     # The index URL uses the space's host as both the URL authority and the subdirectory path,
     # since sitemaps are stored under sitemaps/<space.host>/ and served via that same host.
-    index_url = "https://#{space.host}/test_sitemaps/#{space.host}/sitemap.xml"
+    index_url = "#{space.url}/test_sitemaps/#{space.host}/sitemap.xml"
     LocalSitemapParser.new(index_url, { recurse: true }).to_a.uniq.map(&:strip)
   end
 end
