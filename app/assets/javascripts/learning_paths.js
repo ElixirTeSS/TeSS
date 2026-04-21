@@ -1,6 +1,6 @@
 var LearningPaths = {
     init: function () {
-        $('.learning-path-topic-title').click(function () {
+        $('.learning-path-topic:not(.single-topic) .learning-path-topic-title').click(function () {
             const container = $(this).closest('.learning-path-topic');
             const contents = container.find('.learning-path-topic-contents');
             $(this).find('.expand-icon, .collapse-icon').toggleClass('collapse-icon').toggleClass('expand-icon');
