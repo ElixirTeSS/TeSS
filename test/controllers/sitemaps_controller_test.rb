@@ -4,6 +4,9 @@ class SitemapsControllerTest < ActionController::TestCase
   include Devise::Test::ControllerHelpers
 
   test 'renders global sitemap when spaces feature is disabled' do
+    sign_out :user
+    assert User.current_user.nil? # Should work anonymously
+
     with_settings(feature: { spaces: false }) do
       get :index
     end

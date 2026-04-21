@@ -1,4 +1,6 @@
 class SitemapsController < ApplicationController
+  skip_before_action :authenticate_user!, :authenticate_user_from_token!
+
   def index
     if TeSS::Config.feature['spaces'] && !current_space.default?
       render file: sitemap_base.join("#{current_space.host}/sitemap.xml"), layout: false
