@@ -4,6 +4,7 @@
 <%= display_attribute(resource, :licence) { |value| licence_name_for_abbreviation(value) } if resource.respond_to?(:licence) %>
 <%= display_attribute(resource, :contact) if resource.respond_to?(:contact) %>
 <%= display_attribute(resource, :keywords) { |values| values.join(', ') } %>
+<%= display_attribute(resource, :difficulty_level) { |value| display_difficulty_level(value) } if resource.respond_to?(:difficulty_level) %>
 
 <% if resource.is_a?(Material) %>
   <%= display_attribute(resource, :fields) { |values| values.join(', ') } %>

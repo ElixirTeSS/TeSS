@@ -50,8 +50,7 @@ module MaterialsHelper
     TargetAudienceDictionary.instance.lookup_value(label, 'title') || label
   end
 
-  def display_difficulty_level(resource)
-    value = resource.send('difficulty_level')
+  def display_difficulty_level(value)
     if value == 'beginner'
       '• ' + value
     elsif value == 'intermediate'
