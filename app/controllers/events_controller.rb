@@ -17,6 +17,12 @@ class EventsController < ApplicationController
   # GET /events.json
   def index
     @bioschemas = @events.flat_map(&:to_bioschemas)
+    @past_events_count = 0
+    if TeSS::Config.solr_enabled && @events.none? && @facet_params[:include_expired] != 'true' && request.format.html?
+      @past_events_count = Event.search_and_filter(current_user,
+                                                   @search_params,
+                                                   @facet_params.merge(include_expired: 'true'), sort_by: @sort_by).total
+    end
     respond_to do |format|
       format.html
       format.json

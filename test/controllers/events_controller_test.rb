@@ -1658,4 +1658,50 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'strong', text: 'Language of instruction:', count: 0
   end
+
+  test 'should show past events link' do
+    with_settings(solr_enabled: true) do
+      Event.stub(:search_and_filter, -> (_, _, selected_facets, **_) { MockSearch.new(selected_facets[:include_expired] ? Event.first(3) : []) }) do
+        get :index, params: { q: 'nightclub', keywords: 'ragtime' }
+
+        assert_response :success
+        assert_empty assigns(:events)
+        assert_select 'a[href=?]', events_path(q: 'nightclub', keywords: 'ragtime', include_expired: 'true'),
+                      text: 'Show 3 past events'
+      end
+    end
+  end
+
+  test 'should not show past events link if no past events' do
+    with_settings(solr_enabled: true) do
+      Event.stub(:search_and_filter, -> (_, _, selected_facets, **_) { MockSearch.new([]) }) do
+        get :index, params: { q: 'nightclub', keywords: 'ragtime' }
+
+        assert_response :success
+        assert_empty assigns(:events)
+        assert_select 'a', text: /Show (.)+ past events/, count: 0
+      end
+    end
+  end
+
+  test 'should not show past events link if past events filter already used' do
+    with_settings(solr_enabled: true) do
+      # The stubbed method will return 0 events with the first query, and raise an exception with the second (if it is ever executed).
+      # This is to ensure that the link is not displayed due to the presence of the `include_expired` param,
+      # and not because no results were found (which is tested above).
+      already_queried = false
+      Event.stub(:search_and_filter, -> (_, _, selected_facets, **_) {
+        r = MockSearch.new([])
+        raise 'Query called twice!' if already_queried
+        already_queried = true
+        r
+      }) do
+        get :index, params: { q: 'nightclub', keywords: 'ragtime', include_expired: 'true' }
+
+        assert_response :success
+        assert_empty assigns(:events)
+        assert_select 'a', text: /Show (.)+ past events/, count: 0
+      end
+    end
+  end
 end
