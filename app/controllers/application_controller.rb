@@ -114,7 +114,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_current_space
-    Space.current_space = TeSS::Config.feature['spaces'] ? Space.find_by_host(request.host) : nil
+    Space.current_space = TeSS::Config.feature['spaces'] ? Space.find_by_host(request.host) : Space.default
   end
 
   def current_space
