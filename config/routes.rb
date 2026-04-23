@@ -50,6 +50,8 @@ Rails.application.routes.draw do
 
   get 'static/home'
 
+  get 'sitemap.xml' => 'sitemaps#index', format: false
+
   resources :users, only: [:show, :index, :edit, :create, :update, :destroy] do
     resource :ban, only: [:create, :new, :destroy]
   end

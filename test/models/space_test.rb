@@ -204,4 +204,16 @@ class SpaceTest < ActiveSupport::TestCase
       assert Space.current_space.default?
     end
   end
+
+  test 'space url uses same protocol as instance' do
+    TeSS::Config.instance_variable_set(:@base_uri, nil) # Clear memoized value
+    with_settings(base_url: 'http://www.example.com') do
+      assert_equal 'http://plants.mytess.training', @space.url
+    end
+
+    TeSS::Config.instance_variable_set(:@base_uri, nil)
+    with_settings(base_url: 'https://www.example.com') do
+      assert_equal 'https://plants.mytess.training', @space.url
+    end
+  end
 end
