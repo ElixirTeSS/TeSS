@@ -172,4 +172,35 @@ class SubscriptionTest < ActiveSupport::TestCase
     sub = subscriptions(:event_subscription)
     assert_equal({ times: ["good", "great"], max_age: '1 week' }.with_indifferent_access, sub.facets_with_max_age)
   end
+
+  test 'subscription can be scoped to a space' do
+    sub = subscriptions(:spaced_subscription)
+    assert_equal spaces(:plants), sub.space
+  end
+
+  test 'digest temporarily sets current space to subscription space' do
+    Space.current_space = spaces(:astro)
+    sub = subscriptions(:spaced_subscription)
+    captured_space = nil
+
+    type = sub.subscribable_type.constantize
+    type.stub(:search_and_filter, ->(*_args) { captured_space = Space.current_space; MockSearch.new([]) }) do
+      sub.digest
+    end
+
+    assert_equal spaces(:plants), captured_space
+    assert_equal spaces(:astro), Space.current_space
+  end
+
+  test 'digest restores current space even if search raises' do
+    Space.current_space = spaces(:astro)
+    sub = subscriptions(:spaced_subscription)
+
+    type = sub.subscribable_type.constantize
+    type.stub(:search_and_filter, ->(*_args) { raise 'boom' }) do
+      assert_raises(RuntimeError) { sub.digest }
+    end
+
+    assert_equal spaces(:astro), Space.current_space
+  end
 end
