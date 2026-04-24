@@ -90,8 +90,16 @@
                     title: t('events.hints.hosts') %>
 
   <!-- Field: Keywords -->
-  <%= f.multi_input :keywords, errors: @event.errors[:keywords],
-                    title: t('events.hints.keywords') %>
+  <% if TeSS::Config.feature['controlled_vocabulary_vars'].include? 'keywords' %>
+    <%= f.dropdown :keywords,
+                  options: KeywordsDictionary.instance.options_for_select,
+                  label: t('activerecord.attributes.event.keywords'),
+                  errors: @event.errors[:keywords],
+                  title: t('events.hints.keywords') %>
+  <% else %>
+    <%= f.multi_input :keywords, errors: @event.errors[:keywords],
+                      title: t('events.hints.keywords') %>
+  <% end %>
 
   <!-- Field: Fields -->
   <% if !TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research' %>

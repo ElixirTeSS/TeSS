@@ -168,7 +168,7 @@ default: &default
     bioschemas_testing: false
     collection_curation: true
     auto_parse_vars: [] # available features to auto parse from description: ['keywords', 'target_audience']
-    controlled_vocabulary_vars: [] # available features: ['target_audience']
+    controlled_vocabulary_vars: [] # available features: ['keywords', 'target_audience']
 
     # User login
     invitation: false

@@ -37,7 +37,16 @@
   <hr>
 
   <!-- Field: Keywords -->
-  <%= f.multi_input :keywords, title: t('materials.hints.keywords'), visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
+  <% if TeSS::Config.feature['controlled_vocabulary_vars'].include? 'keywords' %>
+    <%= f.dropdown :keywords,
+                  options: KeywordsDictionary.instance.options_for_select,
+                  label: t('activerecord.attributes.event.keywords'),
+                  errors: @material.errors[:keywords],
+                  title: t('events.hints.keywords'),
+                  visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
+  <% else %>
+    <%= f.multi_input :keywords, title: t('materials.hints.keywords'), visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
+  <% end %>
 
   <!-- Field: Licence -->
   <%= f.input :licence, collection: licence_options_for_select, as: :grouped_select, group_method: :last, group_label_method: :first,

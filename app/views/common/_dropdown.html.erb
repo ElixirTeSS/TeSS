@@ -25,13 +25,6 @@ render :partial => 'common/dropdown',
   options ||= format_for_dropdown(field_name.capitalize.constantize.all)
   existing ||= format_for_dropdown(resource.send(field_name.pluralize))
 
-  # Remove existing objects from the pool of options
-  options = options - existing
-  dropdown_toggle_button_name ||= ''
-  if dropdown_toggle_button_name.blank?
-    dropdown_toggle_button_name = "Add #{field_name.to_s.sub(/_ids?\z/, '').humanize}"
-  end
-
   # show the required label?
   required ||= false
 
@@ -43,6 +36,14 @@ render :partial => 'common/dropdown',
 
   # check title
   title ||= ''
+
+  # Remove existing objects from the pool of options
+  options = options - existing
+  dropdown_toggle_button_name ||= ''
+  if dropdown_toggle_button_name.blank?
+    dropdown_toggle_button_name = "Add #{field_label.to_s.sub(/_ids?\z/, '').humanize}"
+  end
+
 %>
 
 <div class="form-group<%= ' has-error' if errors.size > 0 %>">
