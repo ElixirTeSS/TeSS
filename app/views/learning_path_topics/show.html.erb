@@ -21,10 +21,11 @@
     </div>
     <h4 class="nav-heading"><%= LearningPathTopic.human_attribute_name(:difficulty_level) %></h4>
     <div class="nav-block">
-      <% if @learning_path_topic.difficulty_level.present? %>
-        <span class="label label-default"><%= display_difficulty_level(@learning_path_topic.difficulty_level) %></span>
+      <% competency = display_difficulty_level(@learning_path_topic.difficulty_level) %>
+      <% if competency.present? %>
+        <span class="label label-default"><%= competency %></span>
       <% else %>
-        <span class="empty">None</span>
+        <span class="empty">Not specified</span>
       <% end %>
     </div>
     <h4 class="nav-heading"><%= LearningPathTopic.human_attribute_name(:owner) %></h4>

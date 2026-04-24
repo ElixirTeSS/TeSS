@@ -34,7 +34,10 @@
         <% end %>
       </div>
 
-      <div class="font-size-lg"><%= display_difficulty_level(material.difficulty_level) %></div>
+      <% competency = display_difficulty_level(material.difficulty_level) %>
+      <% if competency %>
+        <div class="font-size-lg"><%= competency %></div>
+      <% end %>
 
       <%= keywords_and_topics(material, limit: 10) %>
     </div>
