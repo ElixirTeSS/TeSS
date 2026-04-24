@@ -9,15 +9,8 @@ module Ingestors
         c.send(:material_params)
         material = OpenStruct.new(c.send(:material_params))
       end
-      TeSS::Config.feature['auto_parse_vars'].each do |var|
-        new_val = auto_parse(var, material.description)
-        next if new_val.blank? 
-
-        current_val = material.send(var) if material.respond_to?(var)
-        if !material.respond_to?(var) || current_val.blank?
-          material.send("#{var}=", new_val)
-        end
-      end
+      material = handle_auto_parsing(material)
+      material = handle_controlled_vocabulary(material)
       @materials << material unless material.nil?
     end
   end
