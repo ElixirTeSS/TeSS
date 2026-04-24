@@ -24,6 +24,10 @@
       </div>
 
       <div>
+        <% competency = display_difficulty_level(learning_path.difficulty_level) %>
+        <% if competency %>
+          <span class="label label-default"><%= competency %></span>
+        <% end %>
         <span class="label label-default"><i class="fa fa-folder-open"></i> <%= pluralize(learning_path.topics.count, 'topic') %></span>
         <span class="label label-default"><i class="fa fa-book"></i> <%= pluralize(learning_path.topics_materials.count, 'materials') %></span>
       </div>
