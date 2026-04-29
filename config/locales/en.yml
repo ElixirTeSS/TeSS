@@ -75,6 +75,8 @@ en:
         name: 'Name'
       material:
         difficulty_level: Competency level
+      learning_path:
+        difficulty_level: Competency level
       learning_path_topic:
         difficulty_level: Competency level
       workflow:
