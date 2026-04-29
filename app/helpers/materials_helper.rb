@@ -50,17 +50,20 @@ module MaterialsHelper
     TargetAudienceDictionary.instance.lookup_value(label, 'title') || label
   end
 
-  def display_difficulty_level(resource)
-    value = resource.send('difficulty_level')
+  def display_difficulty_level(value)
+    data = DifficultyDictionary.instance.lookup(value)
+    return nil if data.nil? || value == 'notspecified'
     if value == 'beginner'
-      '• ' + value
+      text = '• ' + data['title']
     elsif value == 'intermediate'
-      '•• ' + value
+      text = '•• ' + data['title']
     elsif value == 'advanced'
-      '••• ' + value
+      text = '••• ' + data['title']
     else
-      ''
+      text = data['title']
     end
+
+    content_tag(:span, text, title: data['description'])
   end
 
   def display_attribute(resource, attribute, show_label: true, title: nil, markdown: false, list: false, expandable: false)

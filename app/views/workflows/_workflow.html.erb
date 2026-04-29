@@ -11,6 +11,11 @@
       </h4>
     </div>
 
+    <% competency = display_difficulty_level(workflow.difficulty_level) %>
+    <% if competency %>
+      <div class="font-size-lg"><%= competency %></div>
+    <% end %>
+
     <div class="markdown-description">
       <%= render_sanitized_markdown truncate(workflow.description, length: 300, separator: ' ') %>
     </div>

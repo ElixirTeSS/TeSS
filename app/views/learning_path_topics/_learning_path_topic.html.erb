@@ -1,6 +1,16 @@
 <li class="masonry-brick media-item long">
   <%= link_to learning_path_topic, class: 'link-overlay' do %>
-    <h4><%= learning_path_topic.title %></h4>
+    <div class="masonry-brick-heading">
+        <h4><%= learning_path_topic.title %></h4>
+    </div>
+
+    <div class="mb-3">
+      <% competency = display_difficulty_level(learning_path_topic.difficulty_level) %>
+      <% if competency %>
+        <span class="label label-default"><%= competency %></span>
+      <% end %>
+      <span class="label label-default"><i class="fa fa-book"></i> <%= pluralize(learning_path_topic.materials.count, 'materials') %></span>
+    </div>
 
     <div class="markdown-description">
       <%= render_sanitized_markdown truncate(learning_path_topic.description, length: 300, separator: ' ') %>

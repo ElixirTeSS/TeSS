@@ -1,6 +1,6 @@
 <div class="wrapper collapsing-wrapper">
   <div class="collapsing-sidebar" id="sidebar">
-    <h4 class="nav-heading">Topic</h4>
+    <h4 class="nav-heading"><%= LearningPathTopic.model_name.human %></h4>
     <div class="nav-block">
       <h5>
         <%= @learning_path_topic.title %>
@@ -11,7 +11,7 @@
         </div>
       <% end %>
     </div>
-    <h4 class="nav-heading">Keywords</h4>
+    <h4 class="nav-heading"><%= LearningPathTopic.human_attribute_name(:keywords) %></h4>
     <div class="nav-block">
       <% if @learning_path_topic.keywords.any? %>
         <%= @learning_path_topic.keywords.join(', ') %>
@@ -19,7 +19,16 @@
         <span class="empty">None</span>
       <% end %>
     </div>
-    <h4 class="nav-heading">Owner</h4>
+    <h4 class="nav-heading"><%= LearningPathTopic.human_attribute_name(:difficulty_level) %></h4>
+    <div class="nav-block">
+      <% competency = display_difficulty_level(@learning_path_topic.difficulty_level) %>
+      <% if competency.present? %>
+        <span class="label label-default"><%= competency %></span>
+      <% else %>
+        <span class="empty">Not specified</span>
+      <% end %>
+    </div>
+    <h4 class="nav-heading"><%= LearningPathTopic.human_attribute_name(:owner) %></h4>
     <div class="nav-block">
       <%= link_to @learning_path_topic.user.name, @learning_path_topic.user %>
     </div>

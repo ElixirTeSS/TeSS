@@ -93,7 +93,7 @@
 
   <!-- Field: Level -->
   <%= f.input :difficulty_level, collection: DifficultyDictionary.instance.options_for_select,
-              label: 'Competency level', prompt: 'Select a difficulty level...', field_lock: true,
+              prompt: 'Select a difficulty level...', field_lock: true,
               errors: @material.errors[:difficulty_level], input_html: { title: t('materials.hints.difficulty') },
               visibility_toggle: TeSS::Config.feature['materials_disabled'] %>
 

@@ -73,6 +73,14 @@ en:
         default_language: 'Default language'
       person:
         name: 'Name'
+      material:
+        difficulty_level: Competency level
+      learning_path:
+        difficulty_level: Competency level
+      learning_path_topic:
+        difficulty_level: Competency level
+      workflow:
+        difficulty_level: Competency level
   about:
     headings:
       events: Events
@@ -843,8 +851,9 @@ en:
       user: Owner
       organizer: Organiser
     titles:
-      language: 'Language'
-      date_added: 'Date added'
+      language: Language
+      date_added: Date added
+      difficulty_level: Competency level
   languages: # Only needed to override default names from I18nData
     el: 'Greek'
   errors:
