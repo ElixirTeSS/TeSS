@@ -109,7 +109,8 @@ class LearningPathsController < ApplicationController
                                           { node_ids: [] }, { node_names: [] },
                                           { topic_links_attributes: [:id, :topic_id, :order, :_destroy] }, :public,
                                           { authors: [:name, :orcid] }, { contributors: [:name, :orcid] }, # Structured
-                                          { authors: [] }, { contributors: [] } # as strings
+                                          { authors: [] }, { contributors: [] }, # as strings
+                                          :unordered
                                           )
   end
 

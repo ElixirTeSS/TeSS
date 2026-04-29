@@ -151,6 +151,11 @@ class LearningPathsControllerTest < ActionController::TestCase
     get :show, params: { id: @learning_path }
     assert_response :success
     assert assigns(:learning_path)
+    assert_select '.learning-path-topic', count: 2
+    assert_operator assigns(:learning_path).topics.length, :>, 1
+    assert_select '.learning-path-topic.single-topic', count: 0
+    refute assigns(:learning_path).unordered?
+    assert_select '.learning-path-topic.unordered', count: 0
   end
 
   test 'should show learning_path as json' do
@@ -560,5 +565,23 @@ class LearningPathsControllerTest < ActionController::TestCase
     assert_redirected_to learning_path_path(lp)
     assert_equal 'Joe', lp.authors.first[:name]
     assert_nil lp.authors.first[:orcid]
+  end
+
+  test 'displays single-topic view if only one topic in the learning path' do
+    get :show, params: { id: learning_paths(:two) }
+    assert_response :success
+    assert assigns(:learning_path)
+    assert_select '.learning-path-topic', count: 1
+    assert_select '.learning-path-topic.single-topic', count: 1
+  end
+
+  test 'displays unordered view when learning path is unordered' do
+    learning_path = learning_paths(:one)
+    learning_path.update!(unordered: true)
+    get :show, params: { id: learning_path }
+    assert_response :success
+    assert assigns(:learning_path)
+    assert assigns(:learning_path).unordered?
+    assert_select '.learning-path-topic.unordered', minimum: 1
   end
 end

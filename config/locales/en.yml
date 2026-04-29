@@ -735,6 +735,7 @@ en:
       url: 'Preferred URL to direct people to your learning path landing page.'
       version: 'Indicate the current version of the learning path.'
       public: Un-ticking this box will hide this learning path from anyone who isn't the creator or a collaborator.
+      unordered: Ticking this box will hide the order numbering of topics when viewing the learning path.
     next_topic: Next topic
     next_item: Next
     end_of: End of learning path
