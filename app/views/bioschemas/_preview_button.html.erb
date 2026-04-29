@@ -1,4 +1,4 @@
-<%= form_tag(polymorphic_path([:preview, resource.class])) do |f| %>
+<%= form_tag(polymorphic_path([:preview, resource.class]), class: 'mt-3') do |f| %>
   <%= attributes_to_hidden_fields(resource.class.model_name.param_key, resource_params) %>
 
   <%= submit_tag('Preview', class: 'btn btn-primary', formtarget: '_blank', data: { disable_with: false }) %>

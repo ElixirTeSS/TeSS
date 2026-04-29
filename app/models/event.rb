@@ -20,6 +20,7 @@ class Event < ApplicationRecord
   include HasEdamTerms
   include HasLanguage
   include InSpace
+  include HasPeople
 
   before_validation :fix_keywords, on: :create, if: :scraper_record
   before_validation :presence_default
@@ -51,6 +52,13 @@ class Event < ApplicationRecord
       text :operations do
         operations_and_synonyms
       end
+      text :contributors do
+        contributors.map(&:display_name)
+      end
+      text :instructors do
+        instructors.map(&:display_name)
+      end
+
       # sort title
       string :sort_title do
         title.downcase.gsub(/^(an?|the) /, '')
@@ -105,6 +113,12 @@ class Event < ApplicationRecord
       string :collections, multiple: true do
         collections.where(public: true).pluck(:title)
       end
+      string :contributors, multiple: true do
+        contributors.map(&:display_name)
+      end
+      string :instructors, multiple: true do
+        instructors.map(&:display_name)
+      end
     end
     # :nocov:
   end
@@ -121,11 +135,13 @@ class Event < ApplicationRecord
   has_many :event_materials, dependent: :destroy
   has_many :materials, through: :event_materials
   has_many :widget_logs, as: :resource
+  has_many :stars, as: :resource, dependent: :destroy
 
   has_ontology_terms(:scientific_topics, branch: EDAM.topics)
   has_ontology_terms(:operations, branch: EDAM.operations)
 
-  has_many :stars, as: :resource, dependent: :destroy
+  has_person_role :contributors
+  has_person_role :instructors
 
   auto_strip_attributes :title, :description, :url, squish: false
 
@@ -196,7 +212,7 @@ class Event < ApplicationRecord
   def self.facet_fields
     field_list = %w[ content_provider keywords scientific_topics operations tools fields online event_types
                      start venue city country organizer sponsors target_audience eligibility language
-                     user node collections ]
+                     user node collections contributors instructors]
 
     field_list.delete('operations') if TeSS::Config.feature['disabled'].include? 'operations'
     field_list.delete('scientific_topics') if TeSS::Config.feature['disabled'].include? 'topics'
