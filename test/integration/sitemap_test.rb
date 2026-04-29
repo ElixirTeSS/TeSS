@@ -43,10 +43,10 @@ class SitemapTest < ActionDispatch::IntegrationTest
       SitemapGenerator::Interpreter.run(verbose: false)
     end
 
-    # Global sitemap should include all content
-    global_urls = parse
-    assert_includes global_urls, material_url(materials(:good_material))
-    assert_includes global_urls, material_url(materials(:plant_space_material))
+    # Default sitemap should only include default space content (content with null `space_id`)
+    default_space_urls = parse
+    assert_includes default_space_urls, material_url(materials(:good_material))
+    refute_includes default_space_urls, material_url(materials(:plant_space_material))
 
     # Space sitemap should only include content for that space
     space_urls = parse_space(space)
@@ -54,6 +54,17 @@ class SitemapTest < ActionDispatch::IntegrationTest
     assert_includes space_urls, "#{space.url}/about"
     assert_includes space_urls, "#{space.url}/materials/#{materials(:plant_space_material).friendly_id}"
     refute_includes space_urls, "#{space.url}/materials/#{materials(:good_material).friendly_id}"
+  end
+
+  test 'generates global sitemap when spaces feature is not enabled' do
+    with_settings(feature: { spaces: false }) do
+      SitemapGenerator::Interpreter.run(verbose: false)
+    end
+
+    # Global sitemap should include all content
+    global_urls = parse
+    assert_includes global_urls, material_url(materials(:good_material))
+    assert_includes global_urls, material_url(materials(:plant_space_material))
   end
 
   private

@@ -1,67 +1,25 @@
-class DefaultSpace
-  class Image
-    def url
-      TeSS::Config.site['logo']
-    end
-  end
-
-  def id
-    nil
-  end
-
-  def title
-    TeSS::Config.site['title_short']
-  end
-
-  def logo_alt
-    TeSS::Config.site['logo_alt']
-  end
-
-  def theme
-    nil
-  end
-
-  def image?
-    true
-  end
-
-  def image
-    Image.new
-  end
-
+class DefaultSpace < GlobalSpace
   def materials
-    Material.all
+    Material.where(space_id: nil)
   end
 
   def events
-    Event.all
+    Event.where(space_id: nil)
   end
 
   def workflows
-    Workflow.all
+    Workflow.where(space_id: nil)
   end
 
   def collections
-    Collection.all
+    Collection.where(space_id: nil)
   end
 
   def learning_paths
-    LearningPath.all
+    LearningPath.where(space_id: nil)
   end
 
   def learning_path_topics
-    LearningPathTopic.all
-  end
-
-  def default?
-    true
-  end
-
-  def administrators
-    User.with_role('admin')
-  end
-
-  def feature_enabled?(feature)
-    TeSS::Config.feature[feature]
+    LearningPathTopic.where(space_id: nil)
   end
 end

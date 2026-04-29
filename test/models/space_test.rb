@@ -216,4 +216,32 @@ class SpaceTest < ActiveSupport::TestCase
       assert_equal 'https://plants.mytess.training', @space.url
     end
   end
+
+  test 'get default space' do
+    with_settings(feature: { spaces: false }) do
+      assert Space.default.is_a?(GlobalSpace)
+    end
+
+    with_settings(feature: { spaces: true }) do
+      assert Space.default.is_a?(DefaultSpace)
+    end
+  end
+
+  test 'resources scoped to space' do
+    plant_materials = spaces(:plants).materials.all.to_a
+    assert_includes plant_materials, materials(:plant_space_material)
+    assert_not_includes plant_materials, materials(:good_material)
+
+    astro_materials = spaces(:astro).materials.all.to_a
+    assert_not_includes astro_materials, materials(:plant_space_material)
+    assert_not_includes astro_materials, materials(:good_material)
+
+    default_materials = DefaultSpace.new.materials.all.to_a
+    assert_not_includes default_materials, materials(:plant_space_material)
+    assert_includes default_materials, materials(:good_material)
+
+    all_materials = GlobalSpace.new.materials.all.to_a
+    assert_includes all_materials, materials(:plant_space_material)
+    assert_includes all_materials, materials(:good_material)
+  end
 end
