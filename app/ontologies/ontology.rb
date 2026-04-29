@@ -6,6 +6,15 @@ class Ontology
     @query_cache = {}
   end
 
+  def uri
+    # Must implement in subclass ...
+    raise NotImplementedError
+  end
+
+  def term_uri_matches?(uri)
+    uri.starts_with?(self.uri)
+  end
+
   def lookup(uri)
     @term_cache[RDF::URI(uri)] ||= fetch(uri)
   end

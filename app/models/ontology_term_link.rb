@@ -6,6 +6,7 @@ class OntologyTermLink < ApplicationRecord
   end
 
   def ontology
-    Edam::Ontology.instance
+    @ontology ||= Ontology.subclasses.map(&:instance).\
+                    find { |ontology| ontology.term_uri_matches?(term_uri) }
   end
 end

@@ -43,8 +43,12 @@ module HasOntologyTerms
                dependent: :destroy,
                inverse_of: :resource
 
-      cattr_accessor :ontology_term_fields
-      self.ontology_term_fields ||= []
+      # Previously used cattr_accessor, which uses "@@" variables that mess with inheritance.
+      # So we do this instead (use "@" class vars)...
+      def self.ontology_term_fields
+        @ontology_term_fields ||= []
+      end
+
       self.ontology_term_fields << method.to_sym
 
       define_method "#{links_method}=" do |links|
