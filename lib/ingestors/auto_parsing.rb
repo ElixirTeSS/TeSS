@@ -20,7 +20,7 @@ module Ingestors
       mapping = get_mapping(var)
        
       mapping
-        .select{ |key, val| description&.downcase&.include?(key.to_s.downcase) }
+        &.select{ |key, val| description&.downcase&.include?(key.to_s.downcase) }
         &.values
         &.uniq
     end
@@ -44,6 +44,8 @@ module Ingestors
 
         mapping = get_mapping(var)
         current_val = obj.send(var).map{|x| x.to_s.downcase}
+        next if current_val.blank? || mapping.blank?
+
         new_val = mapping
                     .filter{ |key, val| current_val.include?(key.to_s.downcase) || current_val.include?(val.to_s.downcase) }
                     .map{ |key, val| val }
