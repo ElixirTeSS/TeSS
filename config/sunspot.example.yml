@@ -16,5 +16,5 @@ test:
   solr:
     hostname: localhost
     port: 8983
-    log_level: WARNING
+    log_level: INFO
     path: /solr/tess_test
