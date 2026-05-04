@@ -2,7 +2,7 @@ module Renderers
   class Zenodo
     VALID_HOSTS = %w[zenodo.org doi.org].freeze
     VALID_SCHEMES = %w[http https].freeze
-    TEMPLATE = %(<video controls height="315" style="display:none;" id="zenodo-video"></video><script>make_zenodo_video(document.getElementById('zenodo-video'), '%{files_url}');</script>)
+    TEMPLATE = %(<video controls height="500" style="display:none;" id="zenodo-video"></video><script>make_zenodo_video(document.getElementById('zenodo-video'), '%{files_url}');</script>)
 
     def initialize(resource)
       @resource = resource
