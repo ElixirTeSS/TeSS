@@ -1353,6 +1353,14 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_select 'div.embedded-content iframe[src=?]', 'https://www.youtube.com/embed/1T_2xMTQCv4'
   end
 
+  test 'can render embedded zenodo video' do
+    sign_in users(:regular_user)
+    get :show, params: { id: materials(:zenodo_video_material) }
+    assert_response :success
+
+    assert_select 'div.embedded-content video#zenodo-video'
+  end
+
   test 'no embedded content section if not available' do
     sign_in users(:regular_user)
     get :show, params: { id: materials(:good_material) }
