@@ -5,30 +5,26 @@ module Renderers
     TEMPLATE = %(<video controls height="500" style="display:none;" id="zenodo-video"></video><script>make_zenodo_video(document.getElementById('zenodo-video'), '%{files_url}', %{key});</script>)
 
     def initialize(resource)
-      @resource = resource
+      @url = resource.url
+      @parsed_url = Addressable::URI.parse(@url) rescue nil
     end
 
     def can_render?
-      url && render_content.present?
-    end
-
-    def url
-      @resource.url
+      @url && @parsed_url && zenodo_id && VALID_SCHEMES.include?(@parsed_url.scheme)
     end
 
     def render_content
-      parsed_url = Addressable::URI.parse(url)
-      return unless VALID_SCHEMES.include?(parsed_url.scheme)
-
-      match = parsed_url.host == 'zenodo.org' && url.match(/records\/(\d+)/) ||
-        parsed_url.host == 'doi.org' && url.match(/10\.5281\/zenodo\.(\d+)/)
-      return unless match
-
-      files_url = "https://zenodo.org/api/records/#{match[1]}/files"
-      key = parsed_url.query_values.to_h['preview_file']
+      files_url = "https://zenodo.org/api/records/#{zenodo_id}/files"
+      key = @parsed_url.query_values.to_h['preview_file']
       (TEMPLATE % { files_url: files_url, key: key.to_json }).html_safe
-    rescue
-      nil
+    end
+
+    private
+
+    def zenodo_id
+      match = @parsed_url.host == 'zenodo.org' && @url.match(/records\/(\d+)/) ||
+        @parsed_url.host == 'doi.org' && @url.match(/10\.5281\/zenodo\.(\d+)/)
+      match[1] if match
     end
   end
 end
