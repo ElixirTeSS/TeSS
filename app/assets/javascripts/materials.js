@@ -5,7 +5,10 @@ function make_zenodo_video(video_element, files_url, preferred_key) {
     fetch(files_url)
         .then(response => response.json())
         .then(data => {
-            let video_file = data.entries.find(file => file.key == preferred_key);
+            let video_file = null;
+            if (preferred_key != null) {
+                video_file = data.entries.find(file => file.key === String(preferred_key));
+            }
             if (!video_file) {
                 video_file = data.entries.find(file => videoExtensions.some(ext => file.key.toLowerCase().endsWith(ext)));
             }
