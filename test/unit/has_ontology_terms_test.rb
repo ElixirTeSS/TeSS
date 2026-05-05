@@ -134,4 +134,55 @@ class HasOntologyTermsTest < ActiveSupport::TestCase
                  Set.new(['http://dummy/Poodles',
                           'http://edamontology.org/topic_3292'])
   end
+
+  test "Ignores attributes that don't come from any ontology" do
+    dummy = materials(:good_material).becomes(DummyMaterial)
+    dummy.ontology_term_links.create(field: :test_topics, term_uri: 'http://not-a-term.com')
+    dummy.ontology_term_links.create(field: :multi_test_topics, term_uri: 'http://also-not-a-term.com')
+
+    assert_equal dummy.ontology_term_links.count, 2
+
+    assert_equal dummy.test_topics, []
+    assert_equal dummy.test_topic_names, []
+    assert_equal dummy.test_topic_uris, []
+
+    assert_equal dummy.multi_test_topics, []
+    assert_equal dummy.multi_test_topic_names, []
+    assert_equal dummy.multi_test_topic_uris, []
+
+    # Setting URI manually wipes out the ontology_term_links
+    dummy.test_topic_uris = ['http://not-a-term.com']
+    dummy.multi_test_topic_uris = ['http://also-not-a-term.com']
+
+    assert_equal dummy.ontology_term_links.count, 0
+
+    # What if there is a term in here already, plus a bogus term link?
+    # (perhaps bogus because a previous ontology was take out).
+    dummy.test_topic_names = ['Bioinformatics']
+    dummy.multi_test_topic_names = ['Biochemistry', 'Bioinformatics', 'Poodles']
+    assert_equal dummy.ontology_term_links.count, 5
+    assert_equal dummy.test_topic_links.count, 1
+    assert_equal dummy.multi_test_topic_links.count, 4
+
+    dummy.ontology_term_links.create(field: :test_topics, term_uri: 'http://not-a-term.com')
+    dummy.ontology_term_links.create(field: :multi_test_topics, term_uri: 'http://also-not-a-term.com')
+    assert_equal dummy.ontology_term_links.count, 7
+    assert_equal dummy.test_topic_links.count, 2
+    assert_equal dummy.multi_test_topic_links.count, 5
+
+    # Terms with bogus URIs don't appear here
+    assert_equal dummy.test_topics.count, 1
+    assert_equal dummy.test_topic_names, ['Bioinformatics']
+    assert_equal dummy.test_topic_uris, ['http://dummy/Bioinformatics']
+
+    assert_equal dummy.multi_test_topics.count, 4
+    # Bioinformatics is in both ontologies
+    assert_equal Set.new(dummy.multi_test_topic_names), Set.new(['Biochemistry', 'Bioinformatics', 'Poodles'])
+    assert_equal Set.new(dummy.multi_test_topic_uris),
+                 Set.new(['http://edamontology.org/topic_3292',
+                          'http://edamontology.org/topic_0091',
+                          'http://dummy/Bioinformatics',
+                          'http://dummy/Poodles'])
+  end
+
 end

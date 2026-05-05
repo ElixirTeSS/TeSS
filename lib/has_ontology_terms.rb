@@ -96,7 +96,7 @@ module HasOntologyTerms
 
       # OntologyTerm objects
       define_method method do
-        send(links_method).map(&:ontology_term).uniq
+        send(links_method)&.compact&.map(&:ontology_term)&.uniq&.compact
       end
 
       define_method "#{method}=" do |terms|
@@ -105,7 +105,7 @@ module HasOntologyTerms
 
       # Names/Labels
       define_method names_method do
-        send(method).map(&:preferred_label).uniq
+        send(method)&.compact&.map(&:preferred_label)&.uniq
       end
 
       define_method "#{names_method}=" do |names|
@@ -130,7 +130,7 @@ module HasOntologyTerms
 
       # URIs
       define_method uris_method do
-        send(method).map(&:uri).uniq
+        send(method)&.compact&.map(&:uri)&.uniq
       end
 
       define_method "#{uris_method}=" do |uris|
