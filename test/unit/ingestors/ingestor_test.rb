@@ -131,6 +131,52 @@ class IngestorTest < ActiveSupport::TestCase
         end
       end
     end
+
+    test "handle controlled vocabulary if #{enabled}" do
+      if enabled == 'enabled'
+        controlled_vocabulary = ['target_audience', 'keywords']
+      else
+        controlled_vocabulary = []
+      end
+      user = users(:scraper_user)
+      provider = content_providers(:portal_provider)
+      @source = Source.create!(url: 'https://somewhere.com/stuff', method: 'bioschemas',
+                              enabled: true, approval_status: 'approved',
+                              content_provider: provider, user: users(:admin))
+      ingestor = Ingestors::Ingestor.new
+      new_event = OpenStruct.new(url: 'https://some-course.net',
+                                  title: 'Yet another event',
+                                  start: '2021-01-31 13:00:00',
+                                  end:'2021-01-31 14:00:00',
+                                  description: 'professor, tool criticism and software citation in text',
+                                  target_audience: ['nonsense', 'students', 'github beginners'],
+                                  keywords: ['nonsense', 'data infrastructure', 'Policy development'])
+      new_material = OpenStruct.new(url: 'https://some-course.net',
+                                  title: 'Yet another course',
+                                  description: 'professor, tool criticism and software citation in text',
+                                  target_audience: ['nonsense', 'students', 'github beginners'],
+                                  keywords: ['nonsense', 'data infrastructure', 'Policy development'])
+      with_settings({ feature: { controlled_vocabulary_vars: controlled_vocabulary } }) do
+        ingestor.add_event(new_event)
+        ingestor.add_material(new_material)
+        assert_difference('provider.events.count', 1) do
+          assert_difference('provider.materials.count', 1) do
+            ingestor.write(user, provider, source: @source)
+          end
+        end
+      end
+      event = Event.find_by(title: 'Yet another event')
+      material = Material.find_by(title: 'Yet another course')
+      [event, material].each do |obj|
+        if enabled == 'enabled'
+          assert_equal(['students', 'other'].sort, obj.target_audience.sort)
+          assert_equal(['Data infrastructure', 'Policy and governance'].sort, obj.keywords.sort)
+        else
+          assert_equal(['nonsense', 'students', 'github beginners'], obj.target_audience)
+          assert_equal(['nonsense', 'data infrastructure', 'Policy development'], obj.keywords)
+        end
+      end
+    end
   end
 
   test 'does not set event language when language and source default language missing' do
