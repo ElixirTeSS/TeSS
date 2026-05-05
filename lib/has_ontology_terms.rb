@@ -59,12 +59,20 @@ module HasOntologyTerms
                inverse_of: :resource
 
       # Previously used cattr_accessor, which uses "@@" variables that mess with inheritance.
-      # So we do this instead (use "@" class vars)...
+      # So we do this instead (use "@" class vars), while explicitly merging inherited
+      # values so STI subclasses still see ontology term fields declared on parent classes.
       def self.ontology_term_fields
-        @ontology_term_fields ||= []
+        inherited_fields = superclass.respond_to?(:ontology_term_fields) ? superclass.ontology_term_fields : []
+        own_fields = @ontology_term_fields ||= []
+        (inherited_fields + own_fields).uniq
       end
 
-      self.ontology_term_fields << method.to_sym
+      def self.add_ontology_term_field(field)
+        @ontology_term_fields ||= []
+        @ontology_term_fields << field unless ontology_term_fields.include?(field)
+      end
+
+      self.add_ontology_term_field(method.to_sym)
 
       define_method "#{links_method}=" do |links|
         send(links_method).reset
