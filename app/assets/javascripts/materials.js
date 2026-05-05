@@ -1,6 +1,7 @@
 function make_zenodo_video(video_element, files_url, preferred_key) {
     const videoExtensions = ['.mp4', '.webm', '.ogg', '.ogv', '.mov', '.m4v', '.mkv'];
     const audioExtensions = ['.mp3', '.ogg', '.wav', '.aac', '.flac', '.opus'];
+    video_element.parentElement.style.display = 'none';
 
     fetch(files_url)
         .then(response => response.json())
@@ -19,6 +20,7 @@ function make_zenodo_video(video_element, files_url, preferred_key) {
                 const video_url = video_file.links.content;
                 video_element.src = video_url;
                 video_element.style.display = 'block';
+                video_element.parentElement.style.display = 'block';
             }
         })
         .catch(error => console.error('Error fetching Zenodo files:', error));
