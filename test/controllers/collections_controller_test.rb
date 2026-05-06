@@ -101,7 +101,7 @@ class CollectionsControllerTest < ActionController::TestCase
     #Administrator = SUCCESS
     sign_in users(:another_regular_user)
     get :edit, params: { id: @collection }
-    assert :forbidden
+    assert_response :forbidden
   end
 
   #CURATE TESTS
