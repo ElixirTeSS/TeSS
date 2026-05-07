@@ -22,13 +22,13 @@ class RDNLIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::Taxila::RdnlIngestor.new
 
     # check event doesn't
-    new_title = 'Essentials 4 Data Support, Feb/Mar 2026'
-    new_url = 'https://researchdata.nl/agenda/essentials-4-data-support-feb-mar-2026/'
+    new_title = 'Essentials 4 Data Support, april/juni 2026 (NL)'
+    new_url = 'https://researchdata.nl/agenda/essentials-4-data-support-april-juni-2026/'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 1 do
-      freeze_time(2025) do
+    assert_difference 'Event.count', 2 do
+      freeze_time(2026) do
         VCR.use_cassette('ingestors/rdnl') do
           ingestor.read(source.url)
           ingestor.write(@user, @content_provider)
@@ -36,9 +36,9 @@ class RDNLIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 1, ingestor.events.count
+    assert_equal 2, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 1, ingestor.stats[:events][:added]
+    assert_equal 2, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -51,8 +51,9 @@ class RDNLIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'RDNL', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal 'DANS-KNAW', event.venue
-    assert_equal Time.zone.parse('Tue, 10 Feb 2026 09:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Mon, 26 Mar 2026 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal 'SURF, Health-RI', event.venue
+    assert_equal Time.zone.parse('Mon, 16 Apr 2026 09:00:00.000000000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Fri, 4 Jun 2026 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal 'charge', event&.cost_basis
   end
 end
