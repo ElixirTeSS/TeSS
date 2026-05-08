@@ -31,5 +31,13 @@ module Edam
       result = graph.query(query).first
       lookup(result.u) if result
     end
+
+    def scoped_lookup_by_name_or_synonym(name, subset = :_)
+      out = scoped_lookup_by_name(name, subset)
+      return out unless out.blank?
+      out = find_by(OBO.hasExactSynonym, name)
+      return out unless out.blank?
+      find_by(OBO.hasNarrowSynonym, name)
+    end
   end
 end

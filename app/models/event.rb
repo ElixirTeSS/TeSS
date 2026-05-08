@@ -17,7 +17,7 @@ class Event < ApplicationRecord
   include HasFriendlyId
   include FuzzyDictionaryMatch
   include WithTimezone
-  include HasEdamTerms
+  include HasTermsAndSynonyms
   include HasLanguage
   include InSpace
   include HasPeople

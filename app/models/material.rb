@@ -19,7 +19,7 @@ class Material < ApplicationRecord
   include IdentifiersDotOrg
   include HasFriendlyId
   include HasDifficultyLevel
-  include HasEdamTerms
+  include HasTermsAndSynonyms
   include InSpace
   include HasPeople
 

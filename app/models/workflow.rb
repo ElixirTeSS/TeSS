@@ -10,7 +10,7 @@ class Workflow < ApplicationRecord
   include HasFriendlyId
   include CurationQueue
   include HasDifficultyLevel
-  include HasEdamTerms
+  include HasTermsAndSynonyms
   include InSpace
   include HasPeople
 

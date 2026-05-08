@@ -22,7 +22,22 @@ module HasOntologyTerms
   end
 
   module ClassMethods
-    def has_ontology_terms(association_name, ontology: Edam::Ontology.instance, branch: :_) # :_ is essentially a wildcard, meaning it will match any branch.
+    def has_ontology_terms(association_name,
+                           ontology: nil,
+                           branch: nil,
+                           ontologies: nil)
+      unless ontologies
+        ontology ||= Edam::Ontology.instance
+        # :_ is essentially a wildcard, meaning it will match any branch.
+        branch ||= :_
+      else
+        # ontologies is an array of hashes with keys :ontology and :branch
+        ontologies = ontologies.map do |ontology_specification|
+          { ontology: ontology_specification[:ontology] || Edam::Ontology.instance,
+            branch: ontology_specification[:branch] || :_ }
+        end
+      end
+
       method = association_name.to_s
       singular = association_name.to_s.singularize
       links_method = "#{singular}_links"
@@ -43,9 +58,21 @@ module HasOntologyTerms
                dependent: :destroy,
                inverse_of: :resource
 
-      cattr_accessor :ontology_term_fields
-      self.ontology_term_fields ||= []
-      self.ontology_term_fields << method.to_sym
+      # Previously used cattr_accessor, which uses "@@" variables that mess with inheritance.
+      # So we do this instead (use "@" class vars), while explicitly merging inherited
+      # values so STI subclasses still see ontology term fields declared on parent classes.
+      def self.ontology_term_fields
+        inherited_fields = superclass.respond_to?(:ontology_term_fields) ? superclass.ontology_term_fields : []
+        own_fields = @ontology_term_fields ||= []
+        (inherited_fields + own_fields).uniq
+      end
+
+      def self.add_ontology_term_field(field)
+        @ontology_term_fields ||= []
+        @ontology_term_fields << field unless ontology_term_fields.include?(field)
+      end
+
+      self.add_ontology_term_field(method.to_sym)
 
       define_method "#{links_method}=" do |links|
         send(links_method).reset
@@ -69,7 +96,7 @@ module HasOntologyTerms
 
       # OntologyTerm objects
       define_method method do
-        send(links_method).map(&:ontology_term).uniq
+        send(links_method)&.compact&.map(&:ontology_term)&.uniq&.compact
       end
 
       define_method "#{method}=" do |terms|
@@ -78,29 +105,44 @@ module HasOntologyTerms
 
       # Names/Labels
       define_method names_method do
-        send(method).map(&:preferred_label).uniq
+        send(method)&.compact&.map(&:preferred_label)&.uniq
       end
 
       define_method "#{names_method}=" do |names|
         terms = []
         [names].flatten.each do |name|
           unless name.blank?
-            st = [ontology.scoped_lookup_by_name(name, branch)].compact # FIXME: This is probably too EDAM specific
-            st = ontology.find_by(OBO.hasExactSynonym, name) if st.empty?
-            st = ontology.find_by(OBO.hasNarrowSynonym, name) if st.empty?
+            st = if ontologies
+                   # TODO: if name is found in first ontology, should it skip others?
+                   ontologies.map do |ontology_specification|
+                     [ontology_specification[:ontology].\
+                        scoped_lookup_by_name_or_synonym(name,
+                                                         ontology_specification[:branch])]
+                   end
+                 else
+                   [ontology.scoped_lookup_by_name_or_synonym(name, branch)]
+                 end
             terms += st
           end
         end
-        send("#{method}=", terms.uniq)
+        send("#{method}=", terms.flatten.compact.uniq)
       end
 
       # URIs
       define_method uris_method do
-        send(method).map(&:uri).uniq
+        send(method)&.compact&.map(&:uri)&.uniq
       end
 
       define_method "#{uris_method}=" do |uris|
-        send("#{method}=", uris.map { |uri| ontology.lookup(uri) })
+        terms = if ontologies
+                  ontologies.map do |ontology_specification|
+                    uris.map { |uri| ontology_specification[:ontology].lookup(uri) }
+                  end.flatten
+                else
+                  uris.map { |uri| ontology.lookup(uri) }
+                end
+
+        send("#{method}=", terms)
       end
     end
   end
