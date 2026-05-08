@@ -126,7 +126,15 @@ module MaterialsHelper
   end
 
   def embed_youtube(material)
-    renderer = Renderers::Youtube.new(material)
+    embed_video(Renderers::Youtube, material)
+  end
+
+  def embed_zenodo(material)
+    embed_video(Renderers::Zenodo, material)
+  end
+
+  def embed_video(renderer_class, material)
+    renderer = renderer_class.new(material)
     return unless renderer.can_render?
 
     content_tag(:div, class: 'embedded-content') do
