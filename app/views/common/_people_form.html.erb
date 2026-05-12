@@ -22,7 +22,7 @@
   <div data-role="people-form-list">
     <% f.object.send(field_name).each_with_index do |person, index| %>
       <%= render partial: 'common/person_form',
-                 locals: { field_prefix: "#{model_name}[#{field_name}]", index: person.id, person: person, role: role } %>
+                 locals: { field_prefix: "#{model_name}[#{field_name}]", index: person.id || (index + 1), person: person, role: role } %>
     <% end %>
   </div>
 
