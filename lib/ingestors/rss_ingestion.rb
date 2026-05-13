@@ -73,8 +73,7 @@ module Ingestors
 
     def discover_feed_url_from_youtube_playlist_url(base_url)
       uri = URI.parse(base_url)
-      host = uri.host.to_s.downcase
-      return nil unless host == 'youtube.com' || host.end_with?('.youtube.com')
+      return nil unless Renderers::Youtube.is_youtube_url?(base_url)
 
       playlist_id = CGI.parse(uri.query.to_s).fetch('list', []).first
       return nil if playlist_id.blank?
