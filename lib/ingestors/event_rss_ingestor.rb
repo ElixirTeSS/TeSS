@@ -38,7 +38,7 @@ module Ingestors
         feed.items.each { |item| add_event(build_event_from_atom_item(item, source_url)) }
       else
         @messages << "Parsing UNKNOWN feed: #{feed_title(feed)}"
-        @messages << 'unsupported feed format'
+        @messages << "unsupported feed format: #{feed.class}"
       end
     end
 
