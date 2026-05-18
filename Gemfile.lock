@@ -187,7 +187,7 @@ GEM
     eventbrite_sdk (3.6.0)
       rest-client (~> 2.0)
     execjs (2.8.1)
-    faraday (2.14.1)
+    faraday (2.14.2)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
@@ -255,7 +255,7 @@ GEM
     jquery-turbolinks (2.1.0)
       railties (>= 3.1.0)
       turbolinks
-    json (2.19.2)
+    json (2.19.5)
     json-canonicalization (1.0.0)
     json-jwt (1.16.6)
       activesupport (>= 4.2)
