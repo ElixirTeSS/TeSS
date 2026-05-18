@@ -41,7 +41,7 @@ module Ingestors
             event.start = Time.zone.parse(start_str[0])
             event.end = Time.zone.parse(start_str[1])
           end
-          if event.start < Time.zone.now - 2.weeks
+          if event.end < Time.zone.now - 2.weeks
             event.start = event.start.change(year: Time.now.year + 1)
             event.end = event.end.change(year: Time.now.year + 1)
           end
