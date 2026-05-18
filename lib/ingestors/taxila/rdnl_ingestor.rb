@@ -44,7 +44,7 @@ module Ingestors
           end
           event.start = event.start.change(year: event.end.year) if event.start < event.end - 1.year
           event.start = event.start.change(year: event.end.year - 1) if event.start > event.end
-          if event.start < Time.zone.now - 2.weeks
+          if event.end < Time.zone.now - 2.weeks
             event.start = event.start.change(year: Time.now.year + 1)
             event.end = event.end.change(year: Time.now.year + 1)
           end

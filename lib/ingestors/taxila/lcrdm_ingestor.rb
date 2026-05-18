@@ -45,7 +45,7 @@ module Ingestors
           elsif [2, 3].include?(split_time_str[1].split(' ').length)
             event.end = Time.zone.parse(split_time_str[1])
           end
-          if event.start < Time.zone.now - 2.weeks
+          if event.end < Time.zone.now - 2.weeks
             event.start = event.start.change(year: Time.now.year + 1)
             event.end = event.end.change(year: Time.now.year + 1)
           end

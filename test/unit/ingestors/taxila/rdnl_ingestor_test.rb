@@ -27,7 +27,7 @@ class RDNLIngestorTest < ActiveSupport::TestCase
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 2 do
+    assert_difference 'Event.count', 3 do
       freeze_time(2026) do
         VCR.use_cassette('ingestors/rdnl') do
           ingestor.read(source.url)
@@ -36,9 +36,9 @@ class RDNLIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 2, ingestor.events.count
+    assert_equal 3, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 2, ingestor.stats[:events][:added]
+    assert_equal 3, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
