@@ -46,7 +46,7 @@ render :partial => 'common/dropdown',
 
 %>
 
-<div class="form-group<%= ' has-error' if errors.size > 0 %>">
+<div class="form-group<%= ' has-error' if errors.size > 0 %><%= ' hidden' if hidden %>">
 
   <% if required %><label class="control-label string required"><abbr title="required">*</abbr></label><% end %>
   <%= f.label field_label, class: 'control-label' %>
