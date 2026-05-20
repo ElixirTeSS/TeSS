@@ -13,6 +13,10 @@ class SearchController < ApplicationController
       search_models.each do |model_name|
         model = model_name.constantize
         @results[model_name.underscore.pluralize.to_sym] = Sunspot.search(model) do
+          if Facets.applicable?(:across_all_spaces, model)
+            Facets.across_all_spaces(self, false, current_user)
+          end
+
           fulltext search_params
 
           with('end').greater_than(Time.zone.now) if model_name == 'Event'
