@@ -10,7 +10,7 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
+//= require jquery3
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require bootstrap-sprockets
@@ -79,8 +79,7 @@ const Index = {
 
 // Perform an ajax request to load the calendar and replace the contents
 window.loadCalendar = function(url) {
-    req = $.ajax(url);
-    req.done((res) => eval(res));
+    $.ajax(url, { dataType: 'script', cache: true }); // Is loaded automatically.
     return true;
 }
 
