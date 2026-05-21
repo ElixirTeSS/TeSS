@@ -49,7 +49,7 @@ module Ingestors
     def parse_dublin_core_dates(dates)
       normalize_dublin_core_values(dates).map do |date_value|
         Date.parse(date_value)
-      rescue StandardError
+      rescue Date::Error, ArgumentError
         nil
       end.compact
     end

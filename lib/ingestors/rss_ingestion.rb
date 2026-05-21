@@ -67,8 +67,6 @@ module Ingestors
 
       href = link&.[]('href')
       Addressable::URI.join(base_url, href).to_s if href.present?
-    rescue StandardError
-      nil
     end
 
     def discover_feed_url_from_youtube_playlist_url(base_url)
