@@ -69,8 +69,7 @@ module Ingestors
       event = build_event_from_dublin_core_data(extract_dublin_core(item))
 
       event.title ||= text_value(item.title)
-      native_url = resolve_feed_url(item.link, feed_url)
-      event.url = native_url if native_url.present?
+      event.url = Addressable::URI.join(feed_url, text_value(item.link)).to_s
       event.description ||= convert_description(text_value(item.description) || text_value(item.content_encoded))
       event.keywords = merge_unique(event.keywords, extract_rss_keywords(item))
       organizer = text_value(item.respond_to?(:author) ? item.author : nil)
@@ -84,8 +83,7 @@ module Ingestors
       event = build_event_from_dublin_core_data(extract_dublin_core(item))
 
       event.title ||= text_value(item.title)
-      native_url = resolve_feed_url(extract_atom_link(item), feed_url)
-      event.url = native_url if native_url.present?
+      event.url = Addressable::URI.join(feed_url, text_value(extract_atom_link(item))).to_s
       event.description ||= convert_description(text_value(item.summary) || text_value(item.content))
       event.keywords = merge_unique(event.keywords, extract_atom_keywords(item))
       organizer = extract_atom_authors(item).first

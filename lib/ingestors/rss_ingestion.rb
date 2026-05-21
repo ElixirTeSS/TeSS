@@ -66,7 +66,7 @@ module Ingestors
       end
 
       href = link&.[]('href')
-      URI.join(base_url, href).to_s if href.present?
+      Addressable::URI.join(base_url, href).to_s if href.present?
     rescue StandardError
       nil
     end
@@ -149,20 +149,6 @@ module Ingestors
       return text_value(preferred_link.href) if preferred_link.present?
 
       links.map { |link| text_value(link.href) }.find(&:present?)
-    end
-
-    def resolve_feed_url(candidate_url, feed_url)
-      candidate = text_value(candidate_url)
-      return nil if candidate.blank?
-
-      URI.parse(candidate)
-      return candidate if URI::DEFAULT_PARSER.make_regexp(%w[http https]).match?(candidate)
-
-      URI.join(feed_url, candidate).to_s
-    rescue URI::InvalidURIError
-      URI.join(feed_url, candidate).to_s
-    rescue StandardError
-      candidate
     end
 
     def prefer_precise_time(existing_value, candidate_time)
