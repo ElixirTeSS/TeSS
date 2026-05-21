@@ -64,8 +64,7 @@ module Ingestors
       material = build_material_from_dublin_core_data(extract_dublin_core(item))
 
       material.title ||= text_value(item.title)
-      native_url = resolve_feed_url(item.link, feed_url)
-      material.url = native_url if native_url.present?
+      material.url = Addressable::URI.join(feed_url, text_value(item.link)).to_s
       itunes_summary = text_value(item.itunes_summary) if item.respond_to?(:itunes_summary)
       material.description ||= convert_description(text_value(item.description) || text_value(item.content_encoded) || itunes_summary)
       material.keywords = merge_unique(material.keywords, extract_rss_keywords(item))
@@ -90,8 +89,7 @@ module Ingestors
 
       media_title = text_value(item.media_group&.media_title)
       material.title ||= text_value(item.title) || media_title
-      native_url = resolve_feed_url(extract_atom_link(item), feed_url)
-      material.url = native_url if native_url.present?
+      material.url = Addressable::URI.join(feed_url, text_value(extract_atom_link(item))).to_s
       media_group_description = text_value(item.media_group&.media_description)
       material.description ||= convert_description(text_value(item.summary) || text_value(item.content) || media_group_description)
       material.keywords = merge_unique(material.keywords, extract_atom_keywords(item))

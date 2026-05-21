@@ -65,11 +65,8 @@ module Ingestors
     end
 
     def normalize_dublin_core_values(values)
-      Array(values).map { |v| dublin_core_text(v) }
-                   .map(&:to_s)
-                   .map(&:strip)
-                   .reject(&:blank?)
-                   .uniq
+      Array(values).map { |v| dublin_core_text(v).to_s.strip }
+                   .reject(&:blank?).uniq
     end
 
     # this method is also used by RSS ingestion under an alias
