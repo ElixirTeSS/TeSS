@@ -184,22 +184,25 @@ class MaterialsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def material_params
-    params.require(:material).permit(:id, :title, :url, :contact, :description, :short_description,
-                                     :long_description, :doi, :licence,
-                                     :last_scraped, :scraper_record, :remote_created_date, :remote_updated_date,
-                                     :content_provider_id, :difficulty_level, :version, :status,
-                                     :date_created, :date_modified, :date_published, :other_types,
-                                     :prerequisites, :syllabus, :visible, :learning_objectives, :origin_uri, { subsets: [] },
-                                     { target_audience: [] },
-                                     { collection_ids: [] }, { keywords: [] }, { resource_type: [] },
-                                     { scientific_topic_names: [] }, { scientific_topic_uris: [] },
-                                     { operation_names: [] }, { operation_uris: [] },
-                                     { node_ids: [] }, { node_names: [] }, { fields: [] },
-                                     { authors: [:name, :orcid] }, { contributors: [:name, :orcid] }, # Structured
-                                     { authors: [] }, { contributors: [] }, # as strings
-                                     external_resources_attributes: %i[id url title _destroy],
-                                     external_resources: %i[url title],
-                                     event_ids: [], locked_fields: [])
+    permitted = [:id, :title, :url, :contact, :description, :short_description,
+                  :long_description, :doi, :licence,
+                  :last_scraped, :scraper_record, :remote_created_date, :remote_updated_date,
+                  :content_provider_id, :difficulty_level, :version, :status,
+                  :date_created, :date_modified, :date_published, :other_types,
+                  :prerequisites, :syllabus, :visible, :learning_objectives, :origin_uri, { subsets: [] },
+                  { target_audience: [] },
+                  { collection_ids: [] }, { keywords: [] }, { resource_type: [] },
+                  { scientific_topic_names: [] }, { scientific_topic_uris: [] },
+                  { operation_names: [] }, { operation_uris: [] },
+                  { node_ids: [] }, { node_names: [] }, { fields: [] },
+                  { authors: [:name, :orcid] }, { contributors: [:name, :orcid] }, # Structured
+                  { authors: [] }, { contributors: [] }, # as strings
+                  external_resources_attributes: %i[id url title _destroy],
+                  external_resources: %i[url title],
+                  event_ids: [], locked_fields: []]
+    permitted << :approval_status if policy(@material || Material).approve?
+
+    params.require(:material).permit(permitted)
   end
 
   def set_learning_path_navigation
