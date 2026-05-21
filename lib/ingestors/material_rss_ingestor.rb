@@ -1,5 +1,3 @@
-require 'rss'
-require_relative '../rss/media'
 require 'tess_rdf_extractors'
 
 module Ingestors
