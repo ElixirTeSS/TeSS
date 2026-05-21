@@ -1,4 +1,3 @@
-require 'rss'
 require 'tess_rdf_extractors'
 
 module Ingestors
