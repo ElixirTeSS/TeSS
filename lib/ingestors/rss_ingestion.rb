@@ -1,7 +1,5 @@
 module Ingestors
   module RSSIngestion
-    require 'cgi'
-
     include DublinCoreIngestion
 
     # Fetches and parses a feed from the URL, with optional HTML feed discovery.
@@ -49,11 +47,6 @@ module Ingestors
         return url
       end
 
-      if (url = discover_feed_url_from_youtube_playlist_url(base_url))
-        @messages << "Found Atom feed link from YouTube playlist URL, following: #{url}"
-        return url
-      end
-
       nil
     end
 
@@ -67,18 +60,6 @@ module Ingestors
 
       href = link&.[]('href')
       Addressable::URI.join(base_url, href).to_s if href.present?
-    end
-
-    def discover_feed_url_from_youtube_playlist_url(base_url)
-      uri = URI.parse(base_url)
-      return nil unless Renderers::Youtube.is_youtube_url?(base_url)
-
-      playlist_id = CGI.parse(uri.query.to_s).fetch('list', []).first
-      return nil if playlist_id.blank?
-
-      "https://www.youtube.com/feeds/videos.xml?playlist_id=#{CGI.escape(playlist_id)}"
-    rescue URI::InvalidURIError
-      nil
     end
 
     def feed_title(feed)
