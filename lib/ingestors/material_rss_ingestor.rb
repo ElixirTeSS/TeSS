@@ -69,7 +69,7 @@ module Ingestors
     private
 
     def parse_feed(content)
-      feed = RSS::Parser.parse(content, { validate: false })
+      feed = RSS::Parser.parse(content, { validate: false, ignore_unknown_element: true })
       return [feed, nil] if feed.present?
 
       [nil, 'parsing feed failed with: unrecognized feed content']
@@ -193,7 +193,8 @@ module Ingestors
       material = build_material_from_dublin_core_data(extract_dublin_core(item))
 
       material.title ||= text_value(item.title)
-      material.url = Addressable::URI.join(feed_url, text_value(item.link)).to_s
+      item_link = text_value(item.link)
+      material.url = Addressable::URI.join(feed_url, item_link).to_s if item_link.present?
       itunes_summary = text_value(item.itunes_summary) if item.respond_to?(:itunes_summary)
       material.description ||= convert_description(text_value(item.description) || text_value(item.content_encoded) || itunes_summary)
       rss_keywords = if item.respond_to?(:categories)
@@ -223,7 +224,8 @@ module Ingestors
 
       media_title = text_value(item.media_group&.media_title)
       material.title ||= text_value(item.title) || media_title
-      material.url = Addressable::URI.join(feed_url, text_value(extract_atom_link(item))).to_s
+      atom_link = text_value(extract_atom_link(item))
+      material.url = Addressable::URI.join(feed_url, atom_link).to_s if atom_link.present?
       media_group_description = text_value(item.media_group&.media_description)
       material.description ||= convert_description(text_value(item.summary) || text_value(item.content) || media_group_description)
       atom_keywords = if item.respond_to?(:categories)
