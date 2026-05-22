@@ -10,6 +10,8 @@ module Ingestors
       }
     end
 
+    private
+
     def discover_feed_url(content, base_url)
       super_url = super(content, base_url) # discovers url from HTML
       return super_url if super_url
