@@ -234,8 +234,8 @@ class MaterialRSSIngestorTest < ActiveSupport::TestCase
 
     assert_equal 2, @ingestor.messages.length
     assert_match(/^parsing feed failed with RSS::NotWellFormedError: This is not well formed XML/, @ingestor.messages.first)
-    assert_equal 'Attempted feed discovery, but no feed URL was found.',
-                 @ingestor.messages.second
+    assert_match(%r{^Attempted HTML feed discovery, but no RSS/Atom alternate feed link was found in:},
+                 @ingestor.messages.second)
     assert_empty @ingestor.materials
   end
 

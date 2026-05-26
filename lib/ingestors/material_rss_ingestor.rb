@@ -2,7 +2,7 @@ require 'tess_rdf_extractors'
 
 module Ingestors
   class MaterialRSSIngestor < Ingestor
-    include DublinCoreIngestion
+    include RSSIngestion
 
     def initialize
       super
@@ -19,33 +19,8 @@ module Ingestors
     end
 
     def read(url)
-      io = open_url(url)
-      return if io.nil?
-
-      source_url = url
-      content = io.read
-      feed, parse_error_message = parse_feed(content)
-
-      unless feed
-        discovered_feed_url = discover_feed_url(content, source_url)
-        if discovered_feed_url.blank?
-          @messages << parse_error_message
-          @messages << 'Attempted feed discovery, but no feed URL was found.'
-          return
-        end
-
-        io = open_url(discovered_feed_url)
-        return if io.nil?
-
-        content = io.read
-        feed, parse_error_message = parse_feed(content)
-        unless feed
-          @messages << parse_error_message
-          return
-        end
-
-        source_url = discovered_feed_url
-      end
+      feed, content, source_url = fetch_feed(url)
+      return if feed.nil?
 
       if feed.is_a?(RSS::Rss)
         @messages << "Parsing RSS feed: #{feed_title(feed)}"
@@ -197,12 +172,7 @@ module Ingestors
       material.url = Addressable::URI.join(feed_url, item_link).to_s if item_link.present?
       itunes_summary = text_value(item.itunes_summary) if item.respond_to?(:itunes_summary)
       material.description ||= convert_description(text_value(item.description) || text_value(item.content_encoded) || itunes_summary)
-      rss_keywords = if item.respond_to?(:categories)
-                       Array(item.categories).map { |c| text_value(c.respond_to?(:content) ? c.content : c) }
-                     else
-                       []
-                     end
-      material.keywords = merge_unique(material.keywords, rss_keywords)
+      material.keywords = merge_unique(material.keywords, extract_rss_keywords(item))
       author = item.author if item.respond_to?(:author)
       itunes_author = item.itunes_author if item.respond_to?(:itunes_author)
       material.authors = merge_unique(material.authors, [text_value(author)] + [text_value(itunes_author)].compact)
@@ -228,14 +198,8 @@ module Ingestors
       material.url = Addressable::URI.join(feed_url, atom_link).to_s if atom_link.present?
       media_group_description = text_value(item.media_group&.media_description)
       material.description ||= convert_description(text_value(item.summary) || text_value(item.content) || media_group_description)
-      atom_keywords = if item.respond_to?(:categories)
-                        Array(item.categories).map { |c| text_value(c.respond_to?(:term) ? c.term : c) }
-                      else
-                        []
-                      end
-      atom_authors = Array(item.authors).map { |author| text_value(author.respond_to?(:name) ? author.name : author) }
-      material.keywords = merge_unique(material.keywords, atom_keywords)
-      material.authors = merge_unique(material.authors, atom_authors)
+      material.keywords = merge_unique(material.keywords, extract_atom_keywords(item))
+      material.authors = merge_unique(material.authors, extract_atom_authors(item))
       material.contact ||= material.authors&.first
       material.doi ||= extract_dublin_core_doi([text_value(item.id)])
 
