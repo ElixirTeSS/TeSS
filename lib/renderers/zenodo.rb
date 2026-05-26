@@ -1,7 +1,6 @@
 module Renderers
   class Zenodo
     VALID_SCHEMES = %w[http https].freeze
-    TEMPLATE = %(<video controls height="500" style="display:none;" id="zenodo-video" data-zenodo-files-url="%<files_url>s" data-zenodo-preferred-key="%<key>s"></video>)
 
     def initialize(resource)
       @url = resource.url
@@ -19,7 +18,11 @@ module Renderers
     def render_content
       files_url = "https://zenodo.org/api/records/#{zenodo_id}/files"
       key = @parsed_url.query_values.to_h['preview_file']
-      format(TEMPLATE, files_url:, key: key.to_json).html_safe
+      ActionController::Base.helpers.content_tag(
+        :video, '',
+        controls: true, height: 500, style: 'display:none;', id: 'zenodo-video',
+        data: { zenodo_files_url: files_url, zenodo_preferred_key: key }
+      )
     end
 
     private
