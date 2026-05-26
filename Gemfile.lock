@@ -135,6 +135,15 @@ GEM
       railties (>= 3.1)
     builder (3.3.0)
     byebug (11.1.3)
+    capybara (3.40.0)
+      addressable
+      matrix
+      mini_mime (>= 0.1.3)
+      nokogiri (~> 1.11)
+      rack (>= 1.6.0)
+      rack-test (>= 0.6.3)
+      regexp_parser (>= 1.5, < 3.0)
+      xpath (~> 3.2)
     case_transform (0.2)
       activesupport
     cgi (0.5.1)
@@ -643,6 +652,7 @@ GEM
       faraday (>= 1)
       faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
+    rubyzip (2.4.1)
     safely_block (0.4.0)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
@@ -661,6 +671,10 @@ GEM
       tilt
     scanf (1.0.0)
     securerandom (0.4.1)
+    selenium-webdriver (4.16.0)
+      rexml (~> 3.2, >= 3.2.5)
+      rubyzip (>= 1.2.2, < 3.0)
+      websocket (~> 1.0)
     sentry-rails (5.11.0)
       railties (>= 5.0)
       sentry-ruby (~> 5.11.0)
@@ -803,6 +817,7 @@ GEM
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
     webrick (1.9.2)
+    websocket (1.2.11)
     websocket-driver (0.8.0)
       base64
       websocket-extensions (>= 0.1.0)
@@ -810,6 +825,8 @@ GEM
     whenever (1.0.0)
       chronic (>= 0.6.3)
     will_paginate (4.0.0)
+    xpath (3.2.0)
+      nokogiri (~> 1.8)
     yaml-ld (0.0.3)
       json-ld (~> 3.3)
       psych (>= 3.3)
@@ -833,6 +850,7 @@ DEPENDENCIES
   bootstrap-sass
   bootstrap-tab-history-rails
   byebug
+  capybara
   committee
   country_select
   devise
@@ -883,6 +901,7 @@ DEPENDENCIES
   ruby-openai
   sass-rails
   sassc-rails
+  selenium-webdriver
   sentry-rails
   sentry-ruby
   sentry-sidekiq
