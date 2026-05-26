@@ -1,7 +1,7 @@
 module Renderers
   class Zenodo
     VALID_SCHEMES = %w[http https].freeze
-    TEMPLATE = %(<video controls height="500" style="display:none;" id="zenodo-video"></video><script>make_zenodo_video(document.getElementById('zenodo-video'), '%<files_url>s', %<key>s);</script>)
+    TEMPLATE = %(<video controls height="500" style="display:none;" id="zenodo-video" data-zenodo-files-url="%<files_url>s" data-zenodo-preferred-key="%<key>s"></video>)
 
     def initialize(resource)
       @url = resource.url
