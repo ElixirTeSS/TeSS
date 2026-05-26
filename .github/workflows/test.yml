@@ -1,4 +1,4 @@
-name: CI
+name: Tests
 
 on: [push, pull_request]
 
@@ -62,3 +62,5 @@ jobs:
         run: yarn install --frozen-lockfile --non-interactive
       - name: Run tests
         run: bundle exec rails test
+      - name: Run system tests
+        run: bundle exec rails test:system
