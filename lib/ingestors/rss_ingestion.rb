@@ -2,55 +2,82 @@ module Ingestors
   module RSSIngestion
     include DublinCoreIngestion
 
-    # Fetches and parses a feed from the URL, with optional HTML feed discovery.
-    # Returns [feed, raw_xml, source_url] on success.
-    # Returns [nil, nil, nil] when the URL cannot be opened or parsing/discovery fails.
-    def fetch_feed(url)
-      io = open_url(url)
-      return [nil, nil, nil] if io.nil?
+    # Core functionality that runs and manages RSS ingestion
 
-      content = io.read
-      feed, parse_error_message = parse_feed(content)
-      return [feed, content, url] unless feed.nil?
+    def read_from_rss_feed(url)
+      parsed_feed_data = fetch_and_parse_feed(url)
+      return if parsed_feed_data.blank?
 
-      discovered_feed_url = discover_feed_url(content, url)
-      if discovered_feed_url.blank?
-        @messages << parse_error_message
-        @messages << "Attempted HTML feed discovery, but no RSS/Atom alternate feed link was found in: #{url}"
-        return [nil, nil, nil]
+      feed = parsed_feed_data[:feed]
+      content = parsed_feed_data[:content]
+      feed_url = parsed_feed_data[:feed_url]
+
+      case feed
+      when RSS::Rss
+        @messages << 'Parsing RSS feed'
+        feed.items.each do |item|
+          ingest_record(build_record_from_rss_item(item, feed_url))
+        end
+      when RSS::RDF
+        @messages << 'Parsing RSS-RDF feed'
+        rss_records = feed.items.map { |item| build_record_from_rss_item(item, feed_url).to_h }
+        bioschemas_records = extract_rdf_bioschemas_records(content)
+        merge_rss_and_bioschemas_records(rss_records, bioschemas_records).each do |record|
+          ingest_record(record)
+        end
+      when RSS::Atom::Feed
+        @messages << 'Parsing ATOM feed'
+        feed.items.each do |item|
+          ingest_record(build_record_from_atom_item(item, feed_url))
+        end
+      else
+        @messages << "unsupported feed format: #{feed.class}"
       end
-      discovered_io = open_url(discovered_feed_url)
-      return [nil, nil, nil] if discovered_io.nil?
-
-      discovered_content = discovered_io.read
-      discovered_feed, discovered_parse_error_message = parse_feed(discovered_content)
-      if discovered_feed.blank?
-        @messages << discovered_parse_error_message
-        return [nil, nil, nil]
-      end
-
-      [discovered_feed, discovered_content, discovered_feed_url]
     end
 
-    def parse_feed(content)
-      feed = RSS::Parser.parse(content, { validate: false })
-      return [feed, nil] if feed.present?
+    def fetch_and_parse_feed(url, discover_on_failure: true)
+      io = open_url(url)
+      return if io.nil?
 
-      [nil, 'parsing feed failed with: unrecognized feed content']
-    rescue RSS::Error => e
-      [nil, "parsing feed failed with #{e.class}: #{e.message}"]
+      content = io.read
+      parse_error = nil
+      feed = begin
+        RSS::Parser.parse(content, { validate: false, ignore_unknown_element: true })
+      rescue RSS::Error => e
+        parse_error = e
+        nil
+      end
+
+      error_message = if parse_error
+                        "parsing feed failed with #{parse_error.class}: #{parse_error.message}"
+                      else
+                        'parsing feed failed with: unrecognized feed content'
+                      end
+
+      if feed.blank? && discover_on_failure
+        discovered_url = discover_feed_url(content, url)
+        if discovered_url.blank?
+          @messages << error_message
+          @messages << "Attempted HTML feed discovery, but no RSS/Atom alternate feed link was found in: #{url}"
+          return
+        end
+
+        return fetch_and_parse_feed(discovered_url, discover_on_failure: false)
+      end
+
+      if feed.blank?
+        @messages << error_message
+        return
+      end
+
+      {
+        feed:,
+        content:,
+        feed_url: url
+      }
     end
 
     def discover_feed_url(content, base_url)
-      if (url = discover_feed_url_from_html(content, base_url))
-        @messages << "Found RSS/Atom feed link in HTML page, following: #{url}"
-        return url
-      end
-
-      nil
-    end
-
-    def discover_feed_url_from_html(content, base_url)
       doc = Nokogiri::HTML(content)
       link = doc.css('link[rel]').find do |node|
         rel = node['rel'].to_s.downcase
@@ -59,16 +86,52 @@ module Ingestors
       end
 
       href = link&.[]('href')
-      Addressable::URI.join(base_url, href).to_s if href.present?
+      url = Addressable::URI.join(base_url, href).to_s if href.present?
+      return nil unless url.present?
+
+      @messages << "Found RSS/Atom feed link in HTML page, following: #{url}"
+      url
     end
 
-    def feed_title(feed)
-      channel = feed.respond_to?(:channel) ? feed.channel : nil
-      return channel.title if channel.present? && channel.respond_to?(:title)
-      return text_value(feed.title) if feed.respond_to?(:title)
+    def merge_rss_and_bioschemas_records(rss_records, bioschemas_records)
+      # Merges based on URL. Prefers bioschemas values on conflict.
+      rss_by_url = rss_records.index_by { |record| record[:url].to_s }
+      merged_records = bioschemas_records.map do |bioschemas_record|
+        key = bioschemas_record[:url].to_s
+        rss_record = rss_by_url.delete(key)
 
-      'Untitled feed'
+        if rss_record.nil?
+          bioschemas_record
+        else
+          rss_record.merge(bioschemas_record) do |_key, rss_value, bioschemas_value|
+            bioschemas_value.present? ? bioschemas_value : rss_value
+          end
+        end
+      end
+
+      merged_records + rss_by_url.values
     end
+
+    # Hook methods
+
+    def ingest_record(_record)
+      # call add_event or add_material
+      raise NotImplementedError
+    end
+
+    def build_record_from_rss_item(_item, _feed_url)
+      raise NotImplementedError
+    end
+
+    def build_record_from_atom_item(_item, _feed_url)
+      raise NotImplementedError
+    end
+
+    def extract_rdf_bioschemas_records(_content)
+      raise NotImplementedError
+    end
+
+    # Helper methods that are used by hook implementations
 
     alias text_value dublin_core_text
 
@@ -141,26 +204,6 @@ module Ingestors
 
     def merge_unique(existing_values, new_values)
       normalize_dublin_core_values(Array(existing_values) + Array(new_values))
-    end
-
-    def merge_with_bioschemas_priority(bioschemas_records, rss_records)
-      rss_by_url = rss_records.index_by { |record| record[:url].to_s }
-
-      merged = bioschemas_records.map do |bioschemas_record|
-        key = bioschemas_record[:url].to_s
-        rss_record = rss_by_url.delete(key)
-        merge_record_pair(bioschemas_record, rss_record)
-      end
-
-      merged + rss_by_url.values
-    end
-
-    def merge_record_pair(primary_record, secondary_record)
-      return primary_record if secondary_record.nil?
-
-      secondary_record.merge(primary_record) do |_key, secondary_value, primary_value|
-        primary_value.present? ? primary_value : secondary_value
-      end
     end
   end
 end

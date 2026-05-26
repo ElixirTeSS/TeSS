@@ -13,22 +13,18 @@ module Ingestors
     private
 
     def discover_feed_url(content, base_url)
-      super(content, base_url)
+      url = super(content, base_url)
+      return url if url.present?
 
-      return unless (url = discover_feed_url_from_youtube_playlist_url(base_url))
-
-      @messages << "Found Atom feed link from YouTube playlist URL, following: #{url}"
-      url
-    end
-
-    def discover_feed_url_from_youtube_playlist_url(base_url)
       uri = URI.parse(base_url)
       return nil unless Renderers::Youtube.is_youtube_url?(base_url)
 
       playlist_id = CGI.parse(uri.query.to_s).fetch('list', []).first
       return nil if playlist_id.blank?
 
-      "https://www.youtube.com/feeds/videos.xml?playlist_id=#{CGI.escape(playlist_id)}"
+      playlist_feed_url = "https://www.youtube.com/feeds/videos.xml?playlist_id=#{CGI.escape(playlist_id)}"
+      @messages << "Found Atom feed link from YouTube playlist URL, following: #{playlist_feed_url}" if playlist_feed_url.present?
+      playlist_feed_url
     rescue URI::InvalidURIError
       nil
     end

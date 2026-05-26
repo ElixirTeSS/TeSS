@@ -300,15 +300,6 @@ class EventRSSIngestorTest < ActiveSupport::TestCase
     assert_equal 'Alternate feed event', @ingestor.events.first.title
   end
 
-  test 'discovers youtube playlist feed from watch url' do
-    html_without_feed_link = '<html><head><title>No feed link</title></head><body></body></html>'
-    start_url = 'https://www.youtube.com/watch?v=z58CgdgFC8s&list=PLOVYPdB2NZ6M-hQfAIn6srsxfzuNp1EPd&index=1'
-
-    discovered_url = @ingestor.send(:discover_feed_url, html_without_feed_link, start_url)
-
-    assert_equal 'https://www.youtube.com/feeds/videos.xml?playlist_id=PLOVYPdB2NZ6M-hQfAIn6srsxfzuNp1EPd', discovered_url
-  end
-
   test 'logs rss parser error' do
     RSS::Parser.stub(:parse, proc { raise RSS::InvalidRSSError, 'simulated rss parse error' }) do
       read_xml('<rss version="2.0"></rss>')

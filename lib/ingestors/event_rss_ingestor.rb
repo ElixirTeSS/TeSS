@@ -19,31 +19,44 @@ module Ingestors
     end
 
     def read(url)
-      feed, content, source_url = fetch_feed(url)
-      return if feed.nil?
-
-      if feed.is_a?(RSS::Rss)
-        @messages << "Parsing RSS feed: #{feed_title(feed)}"
-        feed.items.each { |item| add_event(build_event_from_rss_item(item, source_url)) }
-      elsif feed.is_a?(RSS::RDF)
-        @messages << "Parsing RSS-RDF feed: #{feed_title(feed)}"
-        rss_events = feed.items.map { |item| build_event_from_rss_item(item, source_url).to_h }
-        bioschemas_events = extract_rdf_bioschemas_events(content)
-        merge_with_bioschemas_priority(bioschemas_events, rss_events).each do |event|
-          add_event(event)
-        end
-      elsif feed.is_a?(RSS::Atom::Feed)
-        @messages << "Parsing ATOM feed: #{feed_title(feed)}"
-        feed.items.each { |item| add_event(build_event_from_atom_item(item, source_url)) }
-      else
-        @messages << "Parsing UNKNOWN feed: #{feed_title(feed)}"
-        @messages << "unsupported feed format: #{feed.class}"
-      end
+      read_from_rss_feed(url)
     end
 
     private
 
-    def extract_rdf_bioschemas_events(content)
+    def ingest_record(record)
+      add_event(record)
+    end
+
+    def build_record_from_rss_item(item, feed_url)
+      event = build_event_from_dublin_core_data(extract_dublin_core(item))
+
+      event.title ||= text_value(item.title)
+      event.url = Addressable::URI.join(feed_url, text_value(item.link)).to_s
+      event.description ||= convert_description(text_value(item.description) || text_value(item.content_encoded))
+      event.keywords = merge_unique(event.keywords, extract_rss_keywords(item))
+      organizer = text_value(item.respond_to?(:author) ? item.author : nil)
+      event.organizer ||= organizer
+      event.contact ||= organizer
+
+      event
+    end
+
+    def build_record_from_atom_item(item, feed_url)
+      event = build_event_from_dublin_core_data(extract_dublin_core(item))
+
+      event.title ||= text_value(item.title)
+      event.url = Addressable::URI.join(feed_url, text_value(extract_atom_link(item))).to_s
+      event.description ||= convert_description(text_value(item.summary) || text_value(item.content))
+      event.keywords = merge_unique(event.keywords, extract_atom_keywords(item))
+      organizer = extract_atom_authors(item).first
+      event.organizer ||= organizer
+      event.contact ||= organizer
+
+      event
+    end
+
+    def extract_rdf_bioschemas_records(content)
       return [] unless content.present?
 
       events = Tess::Rdf::EventExtractor.new(content, :rdfxml).extract do |params|
@@ -62,34 +75,6 @@ module Ingestors
       Rails.logger.error(e.backtrace.join("\n")) if e.backtrace&.any?
       @messages << 'An error occurred while extracting Bioschemas Events.'
       []
-    end
-
-    def build_event_from_rss_item(item, feed_url)
-      event = build_event_from_dublin_core_data(extract_dublin_core(item))
-
-      event.title ||= text_value(item.title)
-      event.url = Addressable::URI.join(feed_url, text_value(item.link)).to_s
-      event.description ||= convert_description(text_value(item.description) || text_value(item.content_encoded))
-      event.keywords = merge_unique(event.keywords, extract_rss_keywords(item))
-      organizer = text_value(item.respond_to?(:author) ? item.author : nil)
-      event.organizer ||= organizer
-      event.contact ||= organizer
-
-      event
-    end
-
-    def build_event_from_atom_item(item, feed_url)
-      event = build_event_from_dublin_core_data(extract_dublin_core(item))
-
-      event.title ||= text_value(item.title)
-      event.url = Addressable::URI.join(feed_url, text_value(extract_atom_link(item))).to_s
-      event.description ||= convert_description(text_value(item.summary) || text_value(item.content))
-      event.keywords = merge_unique(event.keywords, extract_atom_keywords(item))
-      organizer = extract_atom_authors(item).first
-      event.organizer ||= organizer
-      event.contact ||= organizer
-
-      event
     end
   end
 end
