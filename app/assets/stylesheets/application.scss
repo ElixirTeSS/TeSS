@@ -891,10 +891,11 @@ input[type=checkbox].field-lock + label:before,
 
 .embedded-content {
   margin: 2em auto;
+  display: flex;
+  justify-content: center;
 
   iframe {
     display: block;
-    margin: auto;
   }
 }
 
