@@ -38,6 +38,8 @@ module Ingestors
       organizer = text_value(item.respond_to?(:author) ? item.author : nil)
       event.organizer ||= organizer
       event.contact ||= organizer
+      event.start = parse_date_from_description(event.description)
+      event.end = nil
 
       event
     end
@@ -52,6 +54,8 @@ module Ingestors
       organizer = extract_atom_authors(item).first
       event.organizer ||= organizer
       event.contact ||= organizer
+      event.start = parse_date_from_description(event.description)
+      event.end = nil
 
       event
     end
@@ -75,6 +79,15 @@ module Ingestors
       Rails.logger.error(e.backtrace.join("\n")) if e.backtrace&.any?
       @messages << 'An error occurred while extracting Bioschemas Events.'
       []
+    end
+
+    def parse_date_from_description(event_description)
+      # gets the date by parsing the beginning of the event description
+      # this simple heuristic worked in multiple tested event rss feeds
+      # takes start date for date ranges (end date if start date is just a single number)
+      Date.parse(event_description.to_s[0..80])
+    rescue Date::Error, ArgumentError
+      nil
     end
   end
 end

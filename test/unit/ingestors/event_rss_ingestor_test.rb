@@ -97,6 +97,33 @@ class EventRSSIngestorTest < ActiveSupport::TestCase
     assert_equal 'https://nl-rse.org/community-calls/april-2026/', @ingestor.events.first.url
   end
 
+  test 'parses event date from description' do
+    rss_feed_xml = <<~XML
+      <?xml version="1.0"?>
+      <rss version="2.0">
+        <channel>
+          <title>Description date feed</title>
+          <item>
+            <title>Description Date Event</title>
+            <link>https://example.org/events/description-date</link>
+            <description>22 September 2026 - 24 September 2026, PAN community workshop in Amsterdam.</description>
+            <author>Event Organizer</author>
+            <category>community</category>
+          </item>
+        </channel>
+      </rss>
+    XML
+
+    read_xml(rss_feed_xml)
+
+    assert_equal 1, @ingestor.events.count
+
+    event = @ingestor.events.first
+    assert_equal 'Description Date Event', event.title
+    assert_equal Date.new(2026, 9, 22), event.start
+    assert_nil event.end
+  end
+
   test 'reads atom items from dublin core and native atom fields' do
     atom_feed_xml = <<~XML
       <?xml version="1.0" encoding="utf-8"?>
