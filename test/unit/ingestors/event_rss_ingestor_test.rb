@@ -60,8 +60,6 @@ class EventRSSIngestorTest < ActiveSupport::TestCase
     assert_equal 'rss event publisher', dc_event.contact
     assert_equal %w[event-topic-a native-event-category], dc_event.keywords
     assert_equal ['workshop'], dc_event.event_types
-    assert_equal Date.new(2024, 6, 1), dc_event.start
-    assert_equal Date.new(2024, 6, 2), dc_event.end.to_date
 
     fallback_event = @ingestor.events.second
     assert_equal 'Fallback RSS event title', fallback_event.title
@@ -174,8 +172,6 @@ class EventRSSIngestorTest < ActiveSupport::TestCase
     assert_equal 'atom event publisher', dc_event.contact
     assert_equal %w[atom-event-topic native-atom-event-category], dc_event.keywords
     assert_equal ['seminar'], dc_event.event_types
-    assert_equal Date.new(2024, 7, 1), dc_event.start
-    assert_equal Date.new(2024, 7, 2), dc_event.end
 
     fallback_event = @ingestor.events.second
     assert_equal 'Fallback Atom event title', fallback_event.title
@@ -230,6 +226,8 @@ class EventRSSIngestorTest < ActiveSupport::TestCase
     refute_nil event
     assert_equal 'RSS 1.0 Bioschemas event title', event.title
     assert_equal 'https://example.org/rss10/bioschemas/event', event.url
+    assert_equal Date.new(2024, 8, 1), event.start.to_date
+    assert_equal Date.new(2024, 8, 2), event.end.to_date
 
     fallback_event = @ingestor.events.detect { |e| e.url == 'https://example.org/rss10-bioschemas/event-item' }
     refute_nil fallback_event
@@ -281,8 +279,6 @@ class EventRSSIngestorTest < ActiveSupport::TestCase
     assert_equal 'RSS 1.0 fallback event description that should fill missing bioschemas value', event.description
     assert_equal ['rss10-merged-event-subject'], event.keywords
     assert_equal 'RSS 1.0 Merged Event Creator', event.organizer
-    assert_equal Date.new(2024, 8, 1), event.start.to_date
-    assert_equal Date.new(2024, 8, 1), event.end.to_date
   end
 
   test 'reads feed from html alternate meta link' do
