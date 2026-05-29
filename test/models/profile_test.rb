@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'sidekiq/testing'
 
 class ProfileTest < ActiveSupport::TestCase
   setup do
