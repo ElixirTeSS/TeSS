@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '7.2.3'
+gem 'rails', '7.2.3.1'
 
 gem 'active_model_serializers'
 gem 'activerecord-session_store'
@@ -51,6 +51,7 @@ gem 'redis'
 gem 'rest-client'
 gem 'reverse_markdown'
 gem 'rss'
+gem 'ruby-openai'
 gem 'sassc-rails'
 gem 'sass-rails'
 gem 'sentry-rails'
@@ -85,6 +86,7 @@ end
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'bundle-audit'
   gem 'listen'
   gem 'puma'
   gem 'web-console'
@@ -100,5 +102,3 @@ group :test do
   gem 'vcr'
   gem 'webmock'
 end
-
-gem 'ruby-openai'
