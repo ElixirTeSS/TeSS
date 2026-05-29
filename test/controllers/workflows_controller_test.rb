@@ -81,7 +81,7 @@ class WorkflowsControllerTest < ActionController::TestCase
   test "should show workflow" do
     get :show, params: { id: @workflow }
     assert_response :success
-    assert_includes response.headers.keys, 'X-Frame-Options', 'X-Frame-Options header should be present in all actions except `embed`'
+    assert_includes response.headers.keys.map(&:downcase), 'x-frame-options', 'X-Frame-Options header should be present in all actions except `embed`'
     assert assigns(:workflow)
   end
 
@@ -98,7 +98,7 @@ class WorkflowsControllerTest < ActionController::TestCase
     get :embed, params: { id: @workflow }
     assert_response :success
     assert_select '.embedded-container', count: 1
-    assert_not_includes response.headers.keys, 'X-Frame-Options', 'X-Frame-Options header should be removed to allow embedding in iframes'
+    assert_not_includes response.headers.keys.map(&:downcase), 'x-frame-options', 'X-Frame-Options header should be removed to allow embedding in iframes'
   end
 
   test "should not show embedded private workflow" do
