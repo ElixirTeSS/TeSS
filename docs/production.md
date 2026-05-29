@@ -28,13 +28,12 @@ The official install guide can be found here: https://rvm.io/rvm/install
 
 Install PGP key:
 
-    sudo apt-get install -y dirmngr gnupg
-    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
-    sudo apt-get install -y apt-transport-https ca-certificates
+    sudo apt-get install -y dirmngr gnupg apt-transport-https ca-certificates curl
+    curl https://oss-binaries.phusionpassenger.com/auto-software-signing-gpg-key-2025.txt | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/phusion.gpg >/dev/null
 
 Add apt repository:
 
-    sudo sh -c 'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger bionic main > /etc/apt/sources.list.d/passenger.list'
+    sudo sh -c 'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger noble main > /etc/apt/sources.list.d/passenger.list'
     sudo apt-get update
 
 Install Apache module:
@@ -50,7 +49,7 @@ Check everything worked:
 
     sudo /usr/bin/passenger-config validate-install
 
-The official install guide can be found here: https://www.phusionpassenger.com/library/install/apache/install/oss/bionic/
+The official install guide can be found here: https://www.phusionpassenger.com/docs/advanced_guides/install_and_upgrade/apache/install/oss/noble.html
 
 ## Create user
 
@@ -68,15 +67,19 @@ Switch over to the `tess` user:
 
     sudo su - tess
 
-and clone the TeSS repo (for this guide we will put it in the `tess` user's home directory `/home/tess/TeSS`).
+and clone the TeSS repo (for this guide we will put it in the `tess` user's home directory `/home/tess/tess-app`).
 
-    git clone https://github.com/ElixirTeSS/TeSS.git
+    git clone https://github.com/ElixirTeSS/TeSS.git tess-app
+
+...You also need to ensure the directory hierarchy has execute permissions:
+
+    sudo chmod +x /home /home/tess /home/tess/tess-app
 
 ## Install Ruby
 
 Enter the TeSS directory we just cloned, and install TeSS' current Ruby version via RVM:
 
-    cd TeSS
+    cd tess-app
 
     rvm install `cat .ruby-version`
 
@@ -150,9 +153,9 @@ By default, solr should be running at localhost:8983
 
 ### Create a solr "collection"
 
-Next, create a collection for TeSS to use (assuming TeSS is checked out at `/home/tess/TeSS`):
+Next, create a collection for TeSS to use (assuming TeSS is checked out at `/home/tess/tess-app`):
 
-    sudo su - solr -c "/opt/solr/bin/solr create -c tess_production -d /home/tess/TeSS/solr/conf"
+    sudo su - solr -c "/opt/solr/bin/solr create -c tess_production -d /home/tess/tess-app/solr/conf"
 
 `tess_production` here is the collection name, which should match what is configured in your `config/sunspot.yml`
 under the `path` parameter, following `/solr/`.
@@ -188,7 +191,7 @@ _Note: Ensure you have started Solr before running this command!_
 
 Install yarn globally via npm:
 
-    npm install --global yarn@1.22.22
+    sudo npm install --global yarn@1.22.22
 
 Install JS dependencies:
 
@@ -220,8 +223,8 @@ ServerName appropriately):
         PassengerPreloadBundler on
         PassengerRuby /usr/local/rvm/rubies/tess/bin/ruby
         
-        DocumentRoot /home/tess/TeSS/public
-        <Directory /home/tess/TeSS/public>
+        DocumentRoot /home/tess/tess-app/public
+        <Directory /home/tess/tess-app/public>
             # This relaxes Apache security settings.
             Allow from all
             # MultiViews must be turned off.
@@ -247,24 +250,30 @@ modules for Apache, so run:
     sudo a2enmod headers
     sudo a2enmod expires
 
-Now enable the TeSS site, and disable the default that is installed with
-Apache, and restart:
+Now enable the TeSS site, and disable the default that is installed with Apache:
 
     sudo a2ensite tess
     sudo a2dissite 000-default
+
+Check the Apache config is OK:
+
+    sudo apache2ctl configtest
+
+...and if so, restart apache:
+
     sudo service apache2 restart
 
 If you wish to restart TeSS, maybe after an upgrade, without restarting Apache
-you can do so by running (as the `tess` user)
+you can do so by running (as the `tess` user in the TeSS app directory):
 
-    touch /home/tess/TeSS/tmp/restart.txt
+    touch tmp/restart.txt
 
 ### Configuring for HTTPS
 
-We would strongly recommend using [Lets Encrypt](https://letsencrypt.org/) for free SSL certificates.
+We would recommend using [Lets Encrypt](https://letsencrypt.org/) for free SSL certificates.
 
 Certbot is a commandline tool can be used to request an SSL certificate and automatically configure Apache.
-[See this guide for more information](https://certbot.eff.org/instructions?ws=apache&os=ubuntufocal).
+[See this guide for more information](https://certbot.eff.org/instructions?ws=apache&os=snap).
 
 ## Configure Sidekiq
 
