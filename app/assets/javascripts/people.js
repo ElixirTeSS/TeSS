@@ -13,8 +13,21 @@ const People = {
         // Replace the placeholder index with the actual index
         newForm = $(newForm.replace(/replace-me/g, index + 1));
         newForm.appendTo(list);
-        const nameInput = newForm.find('.person-name');
-        const orcidInput = newForm.find('.person-orcid');
+
+        People.bind(newForm);
+
+        return newForm;
+    },
+
+    delete: function () {
+        $(this).parents('.person-form').fadeOut('fast', function() {
+            $(this).remove();
+        });
+    },
+
+    bind: function (element) {
+        const nameInput = element.find('.person-name');
+        const orcidInput = element.find('.person-orcid');
         const opts = {
             orientation: 'top',
             triggerSelectOnValidInput: false,
@@ -32,19 +45,11 @@ const People = {
             formatResult: Autocompleters.formatResultWithHint
         }
 
-        opts.serviceUrl = list.parents('[data-role="people-form"]').data('autocompleteUrl');
+        opts.serviceUrl = element.parents('[data-role="people-form"]').data('autocompleteUrl');
         opts.dataType = 'json';
         opts.deferRequestBy = 100;
 
         nameInput.autocomplete(opts);
-
-        return newForm;
-    },
-
-    delete: function () {
-        $(this).parents('.person-form').fadeOut('fast', function() {
-            $(this).remove();
-        });
     },
 
     init: function () {
@@ -70,8 +75,14 @@ const People = {
                     nextItem.find('input.form-control:first').focus();
                 }
             });
+
+            // Set up autocomplete on any existing fields
+            form.find('.person-form').each(function (node) {
+                People.bind($(this));
+            });
+
+            $(form).on('change', '.delete-person-btn input.destroy-attribute', People.delete);
         });
 
-        $('.delete-person-btn input.destroy-attribute').change(People.delete);
     }
 };
