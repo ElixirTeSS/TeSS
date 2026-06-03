@@ -1,0 +1,29 @@
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="subscribe-oai-pmh-modal-title" id="subscribe-oai-pmh-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"
+                aria-label="<%= t('subscriptions.modal.close') %>">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="subscribe-oai-pmh-modal-title">
+          <%= t('subscriptions.button.to_oai_pmh') %>
+        </h4>
+      </div>
+
+      <div class="modal-body">
+        <label for="oai-pmh-link"><%= t('subscriptions.modal.url') %></label>
+        <div class="input-group input-group-lg">
+          <input id="oai-pmh-link" type="text" class="form-control" value="<%= url %>" readonly>
+          <span class="input-group-btn">
+            <button class="btn btn-default clipboard-btn" type="button" data-clipboard-target="#oai-pmh-link"
+                    title="<%= t('subscriptions.modal.click_to_copy') %>">
+              <i class="fa fa-clipboard" aria-hidden="true"></i>
+            </button>
+          </span>
+        </div>
+        <h3><%= t('subscriptions.oai_pmh.instructions_header') %></h3>
+        <p><%= t('subscriptions.oai_pmh.instructions_body_html', url: url) %></p>
+      </div>
+    </div>
+  </div>
+</div>

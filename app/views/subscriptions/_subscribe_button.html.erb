@@ -2,6 +2,7 @@
   show_email_sub = true
   show_calendar_sub = (type == 'Event')
   show_rss_sub = (type == 'Event')
+  show_oai_pmh_sub = (type == 'Material')
 %>
 
 <% if show_calendar_sub || show_email_sub || show_rss_sub %>
@@ -36,6 +37,13 @@
                 title="<%= t('subscriptions.button.events_rss_feed') %>" href="<%= rss_url %>" />
         <% end %>
       <% end %>
+      <% if show_oai_pmh_sub %>
+        <li>
+          <a href="#" data-toggle="modal" data-target="#subscribe-oai-pmh-modal">
+            <i class="fa fa-arrow-left"></i> <%= t('subscriptions.button.to_oai_pmh') %>
+          </a>
+        </li>
+      <% end %>
     </ul>
   </div>
 
@@ -68,4 +76,5 @@
 
   <%= render partial: 'subscriptions/subscribe_to_calendar_modal' if show_calendar_sub %>
   <%= render partial: 'subscriptions/subscribe_to_rss_modal', locals: { url: rss_url } if show_rss_sub %>
+  <%= render partial: 'subscriptions/subscribe_to_oai_pmh_modal', locals: { url: oai_pmh_url } if show_oai_pmh_sub %>
 <% end %>
