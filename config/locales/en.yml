@@ -1012,6 +1012,7 @@ en:
       via_email: 'Subscribe via email'
       add_to_calendar: 'Add to calendar'
       to_rss: 'Subscribe to RSS feed'
+      to_oai_pmh: 'Harvest using OAI-PMH'
       events_rss_feed: 'Events RSS feed'
       email_title: 'Email Subscription'
       submit_button: 'Subscribe'
@@ -1042,6 +1043,14 @@ en:
       instructions_paragraph2_html: >-
         Please note, it may take a while for newly created events in %{title} to synchronise with
         your Google Calendar.
+    oai_pmh:
+      instructions_header: 'Exchange content using OAI-PMH'
+      instructions_body_html: >-
+        Use an <a href="https://www.openarchives.org/pmh/" target="_blank" rel="noopener">OAI-PMH</a> compatible 
+        tool to harvest metadata using the OAI-PMH endpoint. In particular, this endpoint 
+        can be used for exchanging content between different TeSS instances. 
+        See the <a href="https://elixirtess.github.io/docs/" target="_blank" rel="noopener">TeSS documentation</a> 
+        for more details.
     unsubscribe:
       success: 'You have successfully unsubscribed.'
     frequency_options:
