@@ -111,3 +111,11 @@ filtered_source:
   user: regular_user
   approval_status: 2
 
+youtube_source:
+  content_provider: portal_provider
+  url: 'https://www.youtube.com/feeds/videos.xml?playlist_id=PL123456789'
+  method: youtube
+  enabled: true
+  user: scraper_user
+  approval_status: 2
+
