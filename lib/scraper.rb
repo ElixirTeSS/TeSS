@@ -87,7 +87,7 @@ class Scraper
       # --- finished
       log t('scraper.messages.status', status: 'finish'), 0
     rescue StandardError => e
-      log "   Run Scraper failed with: #{e.message}", 0
+      log "   Run Scraper failed with: #{e.message} (#{e.class.name})", 0
       e.backtrace.each do |line|
         log "       #{line}", 0
       end
