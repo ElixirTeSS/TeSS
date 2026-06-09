@@ -465,7 +465,7 @@ GEM
       i18n (>= 0.5.0)
       railties (>= 6.1.0)
     public_suffix (7.0.5)
-    puma (6.5.0)
+    puma (8.0.2)
       nio4r (~> 2.0)
     pundit (2.3.1)
       activesupport (>= 3.0.0)
@@ -947,4 +947,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   4.0.13
+  4.0.13
