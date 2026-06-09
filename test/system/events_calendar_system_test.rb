@@ -3,7 +3,7 @@ require 'application_system_test_case'
 class EventsCalendarSystemTest < ApplicationSystemTestCase
   test 'calendar tab loads and renders events with javascript' do
     freeze_time(Time.utc(2026, 5, 20, 12, 0, 0)) do
-      Event.create!(
+      Event.order(:id).first!.update!(
         title: 'System calendar event',
         url: 'http://example.com/system-calendar-event',
         user: users(:regular_user),
