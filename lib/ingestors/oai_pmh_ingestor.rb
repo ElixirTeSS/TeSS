@@ -96,7 +96,7 @@ module Ingestors
       if totals.keys.any?
         bioschemas_summary = "Bioschemas summary:\n"
         totals.each do |type, count|
-          bioschemas_summary << "\n - #{type}: #{count}"
+          bioschemas_summary += "\n - #{type}: #{count}"
         end
         @messages << bioschemas_summary
       end

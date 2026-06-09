@@ -114,9 +114,9 @@ class Scraper
     end
     if validate_source(source)
       log t('scraper.messages.valid_source'), 2
-      output.concat "**Provider:** #{source.content_provider.title}\n\n"
-      output.concat "<span style='url-wrap'>**URL:** #{source.url}</span>\n\n"
-      output.concat "**Method:** #{source.ingestor_title}\n\n"
+      output += "**Provider:** #{source.content_provider.title}\n\n"
+      output += "<span style='url-wrap'>**URL:** #{source.url}</span>\n\n"
+      output += "**Method:** #{source.ingestor_title}\n\n"
 
       # get ingestor
       ingestor = Ingestors::IngestorFactory.get_ingestor(source.method)
@@ -127,16 +127,16 @@ class Scraper
       # read records
       ingestor.read(source.url)
       unless ingestor.messages.blank?
-        output.concat "\n## Reading\n\n"
-        ingestor.messages.each { |m| output.concat "#{m}\n" }
+        output += "\n## Reading\n\n"
+        ingestor.messages.each { |m| output += "#{m}\n" }
         ingestor.messages.clear
       end
 
       # write resources
       ingestor.write(user, source.content_provider, source: source)
       unless ingestor.messages.blank?
-        output.concat "\n## Writing\n\n"
-        ingestor.messages.each { |m| output.concat "#{m}\n" }
+        output += "\n## Writing\n\n"
+        ingestor.messages.each { |m| output += "#{m}\n" }
         ingestor.messages.clear
       end
 
@@ -152,13 +152,13 @@ class Scraper
           ", rejected[#{source.resources_rejected}]", 2
     end
   rescue StandardError => e
-    output.concat "\n**Failed:** #{e.message}\n\n"
+    output += "\n**Failed:** #{e.message}\n\n"
     log "Ingestor: #{ingestor.class} failed with: #{e.message}\t#{e.backtrace[0]}", 2
   ensure
     source.finished_at = Time.now
     run_time = source.finished_at - source_start
-    output.concat "\n**Finished at:** #{source.finished_at.strftime '%H:%M on %A, %d %B %Y (UTC)'}\n"
-    output.concat "\n**Run time:** #{run_time.round(2)}s\n"
+    output += "\n**Finished at:** #{source.finished_at.strftime '%H:%M on %A, %d %B %Y (UTC)'}\n"
+    output += "\n**Run time:** #{run_time.round(2)}s\n"
     source.log = output
     begin
       # only update enabled sources

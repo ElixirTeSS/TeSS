@@ -304,12 +304,12 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
-    kt-paperclip (7.2.0)
+    kt-paperclip (7.3.0)
       activemodel (>= 4.2.0)
       activesupport (>= 4.2.0)
       marcel (~> 1.0.1)
       mime-types
-      terrapin (~> 0.6.0)
+      terrapin (>= 0.6.0, < 2.0)
     language_server-protocol (3.17.0.3)
     ld-patch (3.3.0)
       ebnf (~> 2.4)
@@ -632,7 +632,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    reverse_markdown (2.1.1)
+    reverse_markdown (3.0.2)
       nokogiri
     rexml (3.4.4)
     rouge (4.1.3)
@@ -739,7 +739,7 @@ GEM
     sitemap-parser (0.5.6)
       nokogiri (~> 1.6)
       typhoeus (>= 0.6, < 2.0)
-    sitemap_generator (6.3.0)
+    sitemap_generator (7.0.1)
       builder (~> 3.0)
     slim (5.1.1)
       temple (~> 0.10.0)
@@ -780,8 +780,8 @@ GEM
       matrix (~> 0.4)
       rdf (~> 3.3)
     temple (0.10.4)
-    terrapin (0.6.0)
-      climate_control (>= 0.0.3, < 1.0)
+    terrapin (1.1.1)
+      climate_control
     terser (1.1.17)
       execjs (>= 0.3.0, < 3)
     thor (1.5.0)
@@ -826,7 +826,7 @@ GEM
       activesupport
       faraday (~> 2.0)
       faraday-follow_redirects
-    webmock (3.18.1)
+    webmock (3.26.2)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -837,7 +837,7 @@ GEM
     websocket-extensions (0.1.5)
     whenever (1.0.0)
       chronic (>= 0.6.3)
-    will_paginate (4.0.0)
+    will_paginate (4.0.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     yaml-ld (0.0.3)

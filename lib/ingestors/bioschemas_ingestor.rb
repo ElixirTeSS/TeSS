@@ -33,14 +33,14 @@ module Ingestors
           output[:totals].each do |key, value|
             totals[key] += value
           end
-          no_bioschema_urls << "\n - #{url}" if !source.nil? && output[:totals].values.sum.zero?
+          no_bioschema_urls += "\n - #{url}" if !source.nil? && output[:totals].values.sum.zero?
         end
       end
 
       if totals.keys.any?
         bioschemas_summary = "Bioschemas summary:\n"
         totals.each do |type, count|
-          bioschemas_summary << "\n - #{type}: #{count}"
+          bioschemas_summary += "\n - #{type}: #{count}"
         end
         @messages << bioschemas_summary
       end
@@ -115,11 +115,11 @@ module Ingestors
         end
         message = "#{error} occurred while reading"
         if url.present? && url != 'https://example.com'
-          message << ": #{url} "
+          message += ": #{url} "
         else
-          message << " the source"
+          message += " the source"
         end
-        message << ". #{comment}" if comment
+        message += ". #{comment}" if comment
         @messages << message
       end
 

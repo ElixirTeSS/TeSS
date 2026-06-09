@@ -86,21 +86,21 @@ module MaterialsHelper
     end
     string = "<p class=\"#{attribute}#{show_label ? ' no-spacing' : ''}\">"
     unless value.blank? || value.try(:strip) == 'License Not Specified'
-      string << "<strong class='text-primary'> #{title || resource.class.human_attribute_name(attribute)}: </strong>" if show_label
+      string += "<strong class='text-primary'> #{title || resource.class.human_attribute_name(attribute)}: </strong>" if show_label
       if list
-        string << '<ul>'
+        string += '<ul>'
         value.each do |v|
-          string << "<li>#{v}</li>"
+          string += "<li>#{v}</li>"
         end
-        string << '</ul>'
+        string += '</ul>'
       elsif expandable
         height_limit = expandable.is_a?(Numeric) ? expandable : nil
-        string << "<div class=\"tess-expandable\"#{" data-height-limit=\"#{height_limit}\"" if height_limit}>" + value.to_s + '</div>'
+        string += "<div class=\"tess-expandable\"#{" data-height-limit=\"#{height_limit}\"" if height_limit}>" + value.to_s + '</div>'
       else
-        string << value.to_s
+        string += value.to_s
       end
     end
-    string << '</p>'
+    string += '</p>'
     string.html_safe
   end
 
