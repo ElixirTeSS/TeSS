@@ -90,7 +90,7 @@ module MaterialsHelper
       unless value.blank? || value.try(:strip) == 'License Not Specified'
         concat content_tag(:strong, "#{title || resource.class.human_attribute_name(attribute)}: ", class: 'text-primary') if show_label
         if list
-          concat content_tag(:ul, value.map { |v| content_tag(:li, v) })
+          concat content_tag(:ul) { value.each { |v| concat(content_tag(:li, v)) } }
         elsif expandable
           height_limit = expandable.is_a?(Numeric) ? expandable : nil
           concat content_tag(:div, value.to_s, class: 'tess-expandable', 'data-height-limit': height_limit ? height_limit : nil)
