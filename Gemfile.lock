@@ -689,12 +689,6 @@ GEM
       sentry-ruby (~> 6.5.0)
     sentry-ruby (6.5.0)
       bigdecimal
-    sentry-rails (5.11.0)
-      railties (>= 5.0)
-      sentry-ruby (~> 5.11.0)
-    sentry-ruby (5.11.0)
-      concurrent-ruby (~> 1.0, >= 1.0.2)
-      logger
     sentry-sidekiq (6.5.0)
       sentry-ruby (~> 6.5.0)
       sidekiq (>= 5.0)
