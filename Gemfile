@@ -91,10 +91,12 @@ group :development do
 end
 
 group :test do
+  gem 'capybara'
   gem 'committee'
   gem 'minitest'
   gem 'minitest-reporters'
   gem 'rails-controller-testing'
+  gem 'selenium-webdriver'
   gem 'vcr'
   gem 'webmock'
 end
