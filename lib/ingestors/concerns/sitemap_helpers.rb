@@ -41,7 +41,7 @@ module Ingestors
       end
 
       def log_sitemap(ext, url, count)
-        @messages << "Parsing .#{ext} sitemap: #{url}\n - #{count} URLs found"
+        @messages << "Parsing .#{ext} sitemap: #{url}\n\n - #{count} URLs found"
       end
     end
   end

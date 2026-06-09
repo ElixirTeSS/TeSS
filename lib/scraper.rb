@@ -104,7 +104,7 @@ class Scraper
 
   def scrape(source, user = get_user, index: 0)
     source_start = Time.now
-    output = ''
+    output = []
     log '', 1
     if source.enabled
       log t('scraper.messages.processing', source: source.content_provider&.title, num: index.to_s), 1
@@ -114,9 +114,9 @@ class Scraper
     end
     if validate_source(source)
       log t('scraper.messages.valid_source'), 2
-      output += "**Provider:** #{source.content_provider.title}\n\n"
-      output += "<span style='url-wrap'>**URL:** #{source.url}</span>\n\n"
-      output += "**Method:** #{source.ingestor_title}\n\n"
+      output << "**Provider:** #{source.content_provider.title}"
+      output << "<span style='url-wrap'>**URL:** #{source.url}</span>"
+      output << "**Method:** #{source.ingestor_title}"
 
       # get ingestor
       ingestor = Ingestors::IngestorFactory.get_ingestor(source.method)
@@ -127,16 +127,16 @@ class Scraper
       # read records
       ingestor.read(source.url)
       unless ingestor.messages.blank?
-        output += "\n## Reading\n\n"
-        ingestor.messages.each { |m| output += "#{m}\n" }
+        output << "\n## Reading"
+        output += ingestor.messages
         ingestor.messages.clear
       end
 
       # write resources
       ingestor.write(user, source.content_provider, source: source)
       unless ingestor.messages.blank?
-        output += "\n## Writing\n\n"
-        ingestor.messages.each { |m| output += "#{m}\n" }
+        output << "\n## Writing"
+        output += ingestor.messages
         ingestor.messages.clear
       end
 
@@ -152,14 +152,14 @@ class Scraper
           ", rejected[#{source.resources_rejected}]", 2
     end
   rescue StandardError => e
-    output += "\n**Failed:** #{e.message}\n\n"
+    output << "\n**Failed:** #{e.message}"
     log "Ingestor: #{ingestor.class} failed with: #{e.message}\t#{e.backtrace[0]}", 2
   ensure
     source.finished_at = Time.now
     run_time = source.finished_at - source_start
-    output += "\n**Finished at:** #{source.finished_at.strftime '%H:%M on %A, %d %B %Y (UTC)'}\n"
-    output += "\n**Run time:** #{run_time.round(2)}s\n"
-    source.log = output
+    output << "\n**Finished at:** #{source.finished_at.strftime '%H:%M on %A, %d %B %Y (UTC)'}"
+    output << "**Run time:** #{run_time.round(2)}s"
+    source.log = output.join("\n\n")
     begin
       # only update enabled sources
       source.save! if source.enabled && !source.is_a?(Scraper::ConfigSource)
