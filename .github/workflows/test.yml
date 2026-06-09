@@ -48,7 +48,7 @@ jobs:
         with:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Audit gems
-        run: bundle exec bundle audit check --update
+        run: bundle exec bundle-audit check --update
       - name: Configure and initialize database
         run: |
           cp test/config/test_tess.yml config/tess.yml

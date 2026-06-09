@@ -76,6 +76,7 @@ gem 'whenever', require: false # Work around https://github.com/javan/whenever/i
 gem 'will_paginate'
 
 group :development, :test do
+  gem 'bundle-audit'
   gem 'byebug'
   gem 'pry-byebug'
   gem 'rubocop'
@@ -86,7 +87,6 @@ end
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'bundle-audit'
   gem 'listen'
   gem 'puma'
   gem 'web-console'
