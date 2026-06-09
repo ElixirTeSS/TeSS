@@ -69,7 +69,7 @@ class SearchControllerTest < ActionController::TestCase
     end
 
     search = dummy_search.new
-    Sunspot.stub(:search, -> (_, &block) { search.instance_eval(&block) }) do
+    Sunspot.stub(:search, ->(_, &block) { search.instance_eval(&block); MockSearch.new([]) }) do
       # When not in a space, with spaces disabled, space constraint should be unset (show everything)
       with_settings(solr_enabled: true, feature: { spaces: false }) do
         get :index, params: { q: 'banana' }
@@ -104,5 +104,4 @@ class SearchControllerTest < ActionController::TestCase
       end
     end
   end
-
 end
