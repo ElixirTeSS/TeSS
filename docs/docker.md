@@ -45,6 +45,10 @@ Create TeSS configuration files:
     docker compose run app bundle install
     docker compose run app bundle exec rake db:setup
 
+### Setup yarn dependencies
+
+    docker compose run app yarn install
+
 ### Start services
 
     docker compose up -d
