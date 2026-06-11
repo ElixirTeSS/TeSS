@@ -38,7 +38,8 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
   adminer:
-    image: adminer
+    container_name: ${PREFIX}-adminer
+    image: adminer:5.4.2
     restart: always
     ports:
       - 8080:8080

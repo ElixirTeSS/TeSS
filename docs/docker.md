@@ -59,10 +59,9 @@ TeSS is accessible at the following URL:
 
 <http://localhost:3000>
 
+### Access [Adminer](https://www.adminer.org/)
 
-### Access Adminer
-
-An Adminer instance is accessible at the following URL:
+An Adminer instance to connect to and visualize your local database is accessible at the following URL:
 
 <http://localhost:8080>
 
