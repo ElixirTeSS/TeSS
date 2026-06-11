@@ -59,6 +59,15 @@ TeSS is accessible at the following URL:
 
 <http://localhost:3000>
 
+
+### Access Adminer
+
+An Adminer instance is accessible at the following URL:
+
+<http://localhost:8080>
+
+Credentials are in the .env file (choose PostgreSQL for "System").
+
 ### Testing
 
 The full test suite can be run using the following command:
