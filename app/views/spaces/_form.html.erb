@@ -19,6 +19,12 @@
                       id_field: :id,
                       existing_items_method: :administrators %>
 
+
+  <div>
+    <%= f.label :groups, style: "display: block" %>
+    <%= f.collection_select :group_ids, Group.all, :id, :title, {}, multiple: true %>
+  </div>
+
   <div>
     <%= f.input :enabled_features, label: t('features.enabled'), collection: space_feature_options, as: :check_boxes %>
   </div>
