@@ -37,6 +37,12 @@ services:
       interval: 5s
     volumes:
       - db-data:/var/lib/postgresql/data
+  adminer:
+    container_name: ${PREFIX}-adminer
+    image: adminer:5.4.2
+    restart: always
+    ports:
+      - 8080:8080
   solr:
     container_name: ${PREFIX}-solr
     image: solr:8
