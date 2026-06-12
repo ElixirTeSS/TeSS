@@ -34,7 +34,7 @@ class GroupsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /groups/1 or /groups/1.json
+  # PATCH/PUT /groups/1
   def update
     respond_to do |format|
       if @group.update(group_params)
@@ -45,7 +45,7 @@ class GroupsController < ApplicationController
     end
   end
 
-  # DELETE /groups/1 or /groups/1.json
+  # DELETE /groups/1
   def destroy
     authorize @group
     @group.destroy!
@@ -63,6 +63,6 @@ class GroupsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def group_params
-      params.require(:group).permit(:title)
+      params.require(:group).permit(:title, user_ids: [])
     end
 end

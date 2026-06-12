@@ -50,6 +50,7 @@ class User < ApplicationRecord
            as: :owner
 
   has_and_belongs_to_many :editables, class_name: "ContentProvider"
+  has_and_belongs_to_many :groups
 
   has_many :collaborations, dependent: :destroy
   has_many :space_roles, dependent: :destroy
