@@ -3,6 +3,7 @@ class SpacesController < ApplicationController
   before_action :ensure_feature_enabled
   before_action :set_space, only: [:show, :edit, :update, :destroy]
   before_action :set_breadcrumbs
+  before_action :restrict_to_allowed_groups, only: [:show, :edit, :update, :destroy]
 
   # GET /spaces
   def index
@@ -79,5 +80,14 @@ class SpacesController < ApplicationController
     permitted = [:title, :description, :theme, :image, :image_url, { administrator_ids: [] }, { enabled_features: [] }, { group_ids: [] }]
     permitted += [:host] if current_user.is_admin?
     params.require(:space).permit(*permitted)
+  end
+
+  def restrict_to_allowed_groups
+    user_groups = current_user.groups.pluck(:id)  # Array of group IDs
+    space_groups = @space.groups.pluck(:id)       # Array of group IDs
+    unless current_user && space_groups.all? { |group_id| user_groups.include?(group_id) }
+      flash[:alert] = "You are not authorized to access this page."
+      redirect_to root_path # or any other fallback path
+    end
   end
 end
