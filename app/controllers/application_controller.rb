@@ -117,8 +117,8 @@ class ApplicationController < ActionController::Base
   def set_current_space
     if current_user
       Space.current_space = TeSS::Config.feature['spaces'] ? Space.find_by_host(request.host) : Space.default
-
-      if TeSS::Config.feature['spaces'] && Space.current_space != Space.default && current_user
+      # if the current_space is a specific space (not the default one), we check if the users has all the necessary groups
+      if TeSS::Config.feature['spaces'] && Space.current_space != Space.default
         user_groups  = current_user.groups.pluck(:id)
         space_groups = Space.current_space.groups.pluck(:id)
         unless space_groups.all? { |group_id| user_groups.include?(group_id) }
