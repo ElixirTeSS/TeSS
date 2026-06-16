@@ -114,7 +114,20 @@ class ApplicationController < ActionController::Base
   end
 
   def set_current_space
-    Space.current_space = TeSS::Config.feature['spaces'] ? Space.find_by_host(request.host) : Space.default
+    if current_user
+      Space.current_space = TeSS::Config.feature['spaces'] ? Space.find_by_host(request.host) : Space.default
+
+      if TeSS::Config.feature['spaces'] && Space.current_space != Space.default && current_user
+        user_groups  = current_user.groups.pluck(:id)
+        space_groups = Space.current_space.groups.pluck(:id)
+        unless space_groups.all? { |group_id| user_groups.include?(group_id) }
+          flash[:alert] = "You are not authorized to access this page."
+          Space.current_space = Space.default
+        end
+      end
+    else
+      Space.current_space = Space.default
+    end
   end
 
   def current_space
