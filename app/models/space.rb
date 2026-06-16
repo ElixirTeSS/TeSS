@@ -84,6 +84,10 @@ class Space < ApplicationRecord
     (host == domain || host.ends_with?(".#{domain}"))
   end
 
+  def ==(other)
+    other.is_a?(Space) && self.id == other.id
+  end
+
   private
 
   def disabled_features_valid?
