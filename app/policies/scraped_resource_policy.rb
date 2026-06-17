@@ -6,6 +6,21 @@ class ScrapedResourcePolicy < ResourcePolicy
     super || (@user&.is_curator?) || is_content_provider_editor?
   end
 
+  def shown?
+    return true if @record.space == nil
+
+    if @record.space.id == @space.id
+      user_groups  = @user.groups.pluck(:id)
+      space_groups = @record.space.groups.pluck(:id)
+
+      if @user && space_groups.all? { |group_id| user_groups.include?(group_id) }
+        return true
+      end
+    end
+
+    false
+  end
+
   private
 
   def is_content_provider_editor?
