@@ -261,6 +261,8 @@ class ApplicationController < ActionController::Base
                     elsif ActiveSupport::TimeZone[tz].present?
                       tz
                     end
+
+    true
   end
 
 end

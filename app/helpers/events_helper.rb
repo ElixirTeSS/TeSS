@@ -171,7 +171,10 @@ module EventsHelper
 
   def normalized_icu_timezone(name)
     # Get more standardized name from TZinfo...
-    tz_name = ActiveSupport::TimeZone[name].tzinfo.name
+    tz_name = ActiveSupport::TimeZone[name]&.tzinfo&.name
+
+    return nil unless tz_name
+
     # The ICU library we use want's underscores not spaces ...
     tz_name = tz_name.gsub(' ', '_')
     formatter = ICU::TimeFormatting.create(locale: I18n.locale.to_s,
