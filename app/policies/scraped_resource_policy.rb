@@ -7,18 +7,17 @@ class ScrapedResourcePolicy < ResourcePolicy
   end
 
   def shown?
-    return true if @record.space == nil
-
-    if @record.space.id == @space.id
+    return true if @space == nil
+    if @space == Space.current_space
       user_groups  = @user.groups.pluck(:id)
-      space_groups = @record.space.groups.pluck(:id)
+      space_groups = @space.groups.pluck(:id)
 
       if @user && space_groups.all? { |group_id| user_groups.include?(group_id) }
         return true
       end
     end
 
-    false
+    return false
   end
 
   private
