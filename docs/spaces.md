@@ -24,6 +24,8 @@ file `config/initializers/local_hosts.rb` and add the necessary hosts to Rails' 
 Rails.application.config.hosts << '.mytess.training' if Rails.env.development?
 ```
 
+if you are using Docker, the private space is accessible on port 3000 (e.g.: http://whatever.mytess.training:3000)
+
 # Production
 
 To run a multi-space TeSS instance in production you will need to:
