@@ -65,7 +65,7 @@ An Adminer instance to connect to and visualize your local database is accessibl
 
 <http://localhost:8080>
 
-Credentials are in the .env file (choose PostgreSQL for "System").
+Credentials are in the `.env` file. Use `db` as the server/host (choose PostgreSQL for "System").
 
 ### Testing
 
