@@ -1,4 +1,4 @@
-class GroupPolicy < ScrapedResourcePolicy
+class GroupPolicy < ResourcePolicy
 
   def index?
     true
