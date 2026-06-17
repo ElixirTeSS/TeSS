@@ -575,6 +575,7 @@ en:
     local_content_banner:
       title: Connecting from %{country_name}?
       body: Visit the %{community_name} portal to browse local training.
+    upcoming_events: 'Upcoming events'
   privacy:
     registration: |
       <p>When you register with %{site_name} we ask for a username, password and email address.</p>
@@ -631,6 +632,8 @@ en:
       title: 'Add a title for your training event.'
       url: 'Location where the event and its details are advertised on the internet.'
       providers: The organisation providing the event metadata.
+    no_timezone_provided_gmt_assumed: >
+      (no timezone provided, GMT assumed.)
     prompts:
       language: 'Select a language...'
     long: 'Long events'

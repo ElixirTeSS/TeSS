@@ -186,11 +186,11 @@ class Event < ApplicationRecord
   end
 
   def start_local
-    set_to_local start
+    start&.in_time_zone(self&.timezone)
   end
 
   def end_local
-    set_to_local self.end
+    self.end&.in_time_zone(self&.timezone)
   end
 
   def started?
