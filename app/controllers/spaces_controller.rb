@@ -13,6 +13,7 @@ class SpacesController < ApplicationController
     end
     respond_to do |format|
       format.html
+      format.json { render json: @groups.as_json(only: [:id, :title]) }
     end
   end
 
@@ -81,7 +82,7 @@ class SpacesController < ApplicationController
   end
 
   def space_params
-    permitted = [:title, :description, :theme, :image, :image_url, { administrator_ids: [] }, { enabled_features: [] }, { group_ids: [] }]
+    permitted = [:title, :description, :theme, :image, :image_url, :is_private, { administrator_ids: [] }, { enabled_features: [] }, { group_ids: [] }]
     permitted += [:host] if current_user.is_admin?
     params.require(:space).permit(*permitted)
   end
