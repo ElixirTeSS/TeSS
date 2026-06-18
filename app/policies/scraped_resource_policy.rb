@@ -6,28 +6,6 @@ class ScrapedResourcePolicy < ResourcePolicy
     super || (@user&.is_curator?) || is_content_provider_editor?
   end
 
-  def shown?
-    return true if @space == nil
-    return true if !@space.is_private
-    if @space == Space.current_space
-      user_groups  = @user.groups.pluck(:id)
-      space_groups = @space.groups.pluck(:id)
-
-      if @user && space_groups.all? { |group_id| user_groups.include?(group_id) }
-        return true
-      end
-    end
-
-    return false
-  end
-
-  class Scope < Scope
-    def resolve
-      scope.select { |record| ScrapedResourcePolicy.new(context, record).shown? }
-    end
-  end
-
-
   private
 
   def is_content_provider_editor?

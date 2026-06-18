@@ -18,6 +18,7 @@ class ApplicationPolicy
     @record = record
     @space = nil
     @space = record.space if record.respond_to?(:space)
+    @space = record if record.instance_of?(Space)
   end
 
   def index?
@@ -58,7 +59,20 @@ class ApplicationPolicy
   end
 
   def scope
-    Pundit.policy_scope!(user, record.class)
+    Pundit.policy_scope!(user, record.class).shown?
+  end
+
+  def shown?
+    return true if @space == nil
+    return true if !@space.is_private
+
+    if @space == Space.current_space
+      user_groups  = @user.groups.pluck(:id)
+      space_groups = @space.groups.pluck(:id)
+      return @user && space_groups.all? { |group_id| user_groups.include?(group_id) }
+    end
+
+    return false
   end
 
   class Scope
