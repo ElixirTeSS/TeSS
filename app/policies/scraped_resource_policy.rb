@@ -8,6 +8,7 @@ class ScrapedResourcePolicy < ResourcePolicy
 
   def shown?
     return true if @space == nil
+    return true if !@space.is_private
     if @space == Space.current_space
       user_groups  = @user.groups.pluck(:id)
       space_groups = @space.groups.pluck(:id)
