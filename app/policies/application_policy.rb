@@ -66,7 +66,7 @@ class ApplicationPolicy
     return true if @space == nil
     return true if !@space.is_private
 
-    if @space == Space.current_space
+    if @space == Space.current_space || @record == @space
       user_groups  = @user.groups.pluck(:id)
       space_groups = @space.groups.pluck(:id)
       return @user && space_groups.all? { |group_id| user_groups.include?(group_id) }
