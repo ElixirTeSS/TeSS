@@ -6,7 +6,11 @@ class SpacesController < ApplicationController
 
   # GET /spaces
   def index
-    @spaces = Space.all.select { |space| policy(space).shown? }
+    @spaces = Space.all.select do |space|
+      user_groups = current_user.groups.pluck(:id)
+      space_groups = space.groups.pluck(:id)
+      space_groups.all? { |group_id| user_groups.include?(group_id) } || !space.is_private
+    end
     respond_to do |format|
       format.html
     end
