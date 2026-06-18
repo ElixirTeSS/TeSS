@@ -20,9 +20,21 @@
                       existing_items_method: :administrators %>
 
 
+  
   <div>
-    <%= f.label :groups, style: "display: block" %>
-    <%= f.collection_select :group_ids, Group.all, :id, :title, {}, multiple: true %>
+    <%= f.label "Private space", style: "display: block" %>
+    <%= f.input :is_private, label: "", input_html: { id: "space_is_private" } %>
+  </div>
+
+  <div id="groups_container" style="display: none;">
+    <%= f.autocompleter :groups,
+                      url: groups_path, transform_function: 'groups',
+                      template: 'autocompleter/group_id',
+                      form_field_name: 'space[group_ids]',
+                      label_field: :title,
+                      id_field: :id,
+                      existing_items_method: :groups %>
+    <p>You can select only the groups you are in.</p>
   </div>
 
   <div>
