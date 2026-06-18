@@ -26,7 +26,17 @@ module SearchableIndex
 
       @search_results = @model.search_and_filter(current_user, @search_params, @facet_params,
                                     page: page, per_page: per_page, sort_by: @sort_by)
-      @index_resources = @search_results.results
+
+      filtered = @search_results.results.select { |record| policy(record).shown? }
+
+      # Override total on the Solr result object so the view gets the right count
+      @search_results.instance_variable_set(:@total, filtered.length)
+      def @search_results.total; @total; end
+
+      @index_resources = WillPaginate::Collection.create(page, per_page, filtered.length) do |pager|
+        pager.replace(filtered)
+      end
+
       instance_variable_set("@#{controller_name}_results", @search_results) # e.g. @nodes_results
     else
       @index_resources = policy_scope(@model).paginate(page: @page)
@@ -59,7 +69,7 @@ module SearchableIndex
             f.rows.map { |r| { value: r.value, count: r.count } }
         ]
       end]
-      total = @search_results.total
+      total = @filtered_total
 
       res = @index_resources
       p = search_and_facet_params

@@ -20,6 +20,13 @@ class ScrapedResourcePolicy < ResourcePolicy
     return false
   end
 
+  class Scope < Scope
+    def resolve
+      scope.select { |record| ScrapedResourcePolicy.new(context, record).shown? }
+    end
+  end
+
+
   private
 
   def is_content_provider_editor?
