@@ -8,6 +8,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/1
   def show
+    authorize @group
   end
 
   # GET /groups/new
@@ -22,6 +23,7 @@ class GroupsController < ApplicationController
   end
 
   def create
+    authorize Group
     @group = Group.new(group_params.except(:owner_ids))
 
     if @group.save
@@ -33,6 +35,7 @@ class GroupsController < ApplicationController
   end
 
   def update
+    authorize @group
     if @group.update(group_params.except(:owner_ids))
       sync_owners
       redirect_to @group, notice: "Group was successfully updated."
