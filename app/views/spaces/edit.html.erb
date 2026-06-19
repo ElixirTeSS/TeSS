@@ -10,24 +10,4 @@
     <%= render partial: 'form' %>
   </div>
 </div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    let checkbox = document.getElementById("space_is_private")
-    let container = document.getElementById("groups_container")
-
-    const toggleGroups = () => {
-      if (checkbox && checkbox.checked) {
-        container.style.display = "block"
-      } else {
-        container.style.display = "none"
-      }
-    }
-
-    toggleGroups()
-
-    if (checkbox) {
-      checkbox.addEventListener("change", toggleGroups)
-    }
-  })
-</script>
+<%= javascript_include_tag 'show_private_groups' %>
