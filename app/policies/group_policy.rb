@@ -5,7 +5,7 @@ class GroupPolicy < ResourcePolicy
   end
 
   def show?
-    see?
+    see? || @user&.is_admin?
   end
 
   def edit?
