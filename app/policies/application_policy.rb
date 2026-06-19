@@ -63,6 +63,7 @@ class ApplicationPolicy
   end
 
   def shown?
+    raise Pundit::NotAuthorizedError, "User must be logged in" unless @user
     return true if @space == nil
     return true if !@space.is_private
 
