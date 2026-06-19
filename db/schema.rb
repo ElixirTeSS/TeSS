@@ -268,7 +268,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_18_141208) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
-  create_table "group_memberships", force: :cascade do |t|
+  create_table "group_memberships", id: false, force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "group_id", null: false
     t.boolean "owner", default: false, null: false
