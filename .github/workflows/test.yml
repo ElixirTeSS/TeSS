@@ -42,11 +42,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install imagemagick
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Install Ruby & gems
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Audit gems
+        run: bundle exec bundle-audit check --update
       - name: Configure and initialize database
         run: |
           cp test/config/test_tess.yml config/tess.yml
@@ -54,7 +56,7 @@ jobs:
           cp config/ingestion.example.yml config/ingestion.yml
           bundle exec rake db:test:prepare
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '20.x'
           cache: 'yarn'

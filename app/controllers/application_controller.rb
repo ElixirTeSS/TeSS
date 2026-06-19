@@ -37,6 +37,7 @@ class ApplicationController < ActionController::Base
   def handle_error(status_code = 500, message = nil)
     status_code = (params[:status_code] || status_code) # params[:status_code] comes from routes for 500, 503, 422 and 404 errors
     if status_code.is_a?(Symbol) # Convert :forbidden, :not_found, etc. to 403, 404 etc.
+      status_code = :unprocessable_content if status_code == :unprocessable_entity
       status_code = Rack::Utils::SYMBOL_TO_STATUS_CODE[status_code] || status_code
     end
 

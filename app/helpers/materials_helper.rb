@@ -84,24 +84,21 @@ module MaterialsHelper
                 html_escape(block_given? ? yield(value) : value)
               end
     end
-    string = "<p class=\"#{attribute}#{show_label ? ' no-spacing' : ''}\">"
-    unless value.blank? || value.try(:strip) == 'License Not Specified'
-      string << "<strong class='text-primary'> #{title || resource.class.human_attribute_name(attribute)}: </strong>" if show_label
-      if list
-        string << '<ul>'
-        value.each do |v|
-          string << "<li>#{v}</li>"
+    classes = [attribute]
+    classes << 'no-spacing' if show_label
+    content_tag(:p, class: classes) do
+      unless value.blank? || value.try(:strip) == 'License Not Specified'
+        concat content_tag(:strong, "#{title || resource.class.human_attribute_name(attribute)}: ", class: 'text-primary') if show_label
+        if list
+          concat content_tag(:ul) { safe_join(value.map { |v| content_tag(:li, v) }) }
+        elsif expandable
+          height_limit = expandable.is_a?(Numeric) ? expandable : nil
+          concat content_tag(:div, value.to_s, class: 'tess-expandable', 'data-height-limit': height_limit ? height_limit : nil)
+        else
+          concat value.to_s
         end
-        string << '</ul>'
-      elsif expandable
-        height_limit = expandable.is_a?(Numeric) ? expandable : nil
-        string << "<div class=\"tess-expandable\"#{" data-height-limit=\"#{height_limit}\"" if height_limit}>" + value.to_s + '</div>'
-      else
-        string << value.to_s
       end
     end
-    string << '</p>'
-    string.html_safe
   end
 
   def display_people(resource, attribute)

@@ -94,11 +94,11 @@ module Ingestors
       end
 
       if totals.keys.any?
-        bioschemas_summary = "Bioschemas summary:\n"
+        bioschemas_summary = ["Bioschemas summary:\n"]
         totals.each do |type, count|
-          bioschemas_summary << "\n - #{type}: #{count}"
+          bioschemas_summary << " - #{type}: #{count}"
         end
-        @messages << bioschemas_summary
+        @messages << bioschemas_summary.join("\n")
       end
 
       @bioschemas_manager.deduplicate(provider_events).each do |event_params|

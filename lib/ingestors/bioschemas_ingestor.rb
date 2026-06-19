@@ -23,7 +23,7 @@ module Ingestors
       provider_events = []
       provider_materials = []
       totals = Hash.new(0)
-      no_bioschema_urls = "Bioschemas not found in:\n"
+      no_bioschema_urls = []
       sources.each do |url|
         source = open_url(url)
         output = read_content(source, url: url)
@@ -33,19 +33,19 @@ module Ingestors
           output[:totals].each do |key, value|
             totals[key] += value
           end
-          no_bioschema_urls << "\n - #{url}" if !source.nil? && output[:totals].values.sum.zero?
+          no_bioschema_urls << url if !source.nil? && output[:totals].values.sum.zero?
         end
       end
 
       if totals.keys.any?
-        bioschemas_summary = "Bioschemas summary:\n"
+        bioschemas_summary = ["Bioschemas summary:\n"]
         totals.each do |type, count|
-          bioschemas_summary << "\n - #{type}: #{count}"
+          bioschemas_summary << " - #{type}: #{count}"
         end
-        @messages << bioschemas_summary
+        @messages << bioschemas_summary.join("\n")
       end
 
-      @messages << no_bioschema_urls
+      @messages << "Bioschemas not found in:\n\n#{no_bioschema_urls.map { |u| " - #{u}" }.join("\n")}" if no_bioschema_urls.any?
 
       deduplicate(provider_events).each do |event_params|
         add_event(event_params)
@@ -113,7 +113,7 @@ module Ingestors
           error = 'A parsing error'
           comment = 'Please check your page contains valid JSON-LD or HTML.'
         end
-        message = "#{error} occurred while reading"
+        message = String.new("#{error} occurred while reading")
         if url.present? && url != 'https://example.com'
           message << ": #{url} "
         else

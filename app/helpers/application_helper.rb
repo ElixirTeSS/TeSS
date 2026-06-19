@@ -251,8 +251,8 @@ module ApplicationHelper
   end
 
   def info_button(title, opts = {}, &block)
-    classes = 'btn btn-default has-popover'
-    classes << " #{opts[:class]}" if opts[:class]
+    classes = %w(btn btn-default has-popover)
+    classes << opts[:class] if opts[:class]
     title_text = opts[:hide_text] ? '' : title
     content_tag(:a, tabindex: 0, class: classes,
                     data: { toggle: 'popover', placement: 'bottom',
@@ -300,7 +300,7 @@ module ApplicationHelper
         options['data-tab-history-update-url'] = true
       end
 
-      text << " (#{count})" if count
+      text += " (#{count})" if count
 
       link_to("##{href}", options) do
         content_tag(:i, nil, class: icon, 'aria-hidden': 'true') + ' ' + text

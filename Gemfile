@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-source 'https://rubygems.org'
+source 'https://rubygems.org', cooldown: 14
 
-gem 'rails', '7.2.3'
+gem 'rails', '8.1.3'
 
 gem 'active_model_serializers'
 gem 'activerecord-session_store'
@@ -37,7 +37,6 @@ gem 'maxmind-db'
 gem 'money-rails'
 gem 'oai'
 gem 'omniauth_openid_connect'
-gem 'omniauth-rails_csrf_protection'
 gem 'pg'
 gem 'private_address_check'
 gem 'public_activity'
@@ -51,6 +50,7 @@ gem 'redis'
 gem 'rest-client'
 gem 'reverse_markdown'
 gem 'rss'
+gem 'ruby-openai'
 gem 'sassc-rails'
 gem 'sass-rails'
 gem 'sentry-rails'
@@ -60,7 +60,7 @@ gem 'sidekiq'
 gem 'sidekiq-status'
 gem 'simple_calendar', '~> 2.4'
 gem 'simple_form'
-gem 'simple_token_authentication'
+gem 'simple_token_authentication', git: 'https://github.com/gonzalo-bulnes/simple_token_authentication.git', ref: 'f1cba4e' # Rails 8 support not yet released on Rubygems
 gem 'sitemap_generator'
 gem 'sitemap-parser'
 gem 'slim'
@@ -75,6 +75,7 @@ gem 'whenever', require: false # Work around https://github.com/javan/whenever/i
 gem 'will_paginate'
 
 group :development, :test do
+  gem 'bundle-audit'
   gem 'byebug'
   gem 'pry-byebug'
   gem 'rubocop'
@@ -100,5 +101,3 @@ group :test do
   gem 'vcr'
   gem 'webmock'
 end
-
-gem 'ruby-openai'
