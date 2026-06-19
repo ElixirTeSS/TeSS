@@ -14,6 +14,8 @@ function show_private_groups() {
     if (checkbox) {
         checkbox.addEventListener("change", toggleGroups)
     }
+
+    toggleGroups()
 }
 
 window.addEventListener('turbolinks:load', function() {
