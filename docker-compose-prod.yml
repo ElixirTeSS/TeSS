@@ -58,7 +58,7 @@ services:
       - /opt/solr/server/solr/configsets/production
   redis:
     container_name: ${PREFIX}-redis
-    image: redis:6
+    image: redis:7
     restart: always
     healthcheck:
       test: redis-cli ping
