@@ -17,7 +17,15 @@
 
   <div>
     <%= f.label :users, style: "display: block" %>
-    <%= f.collection_select :user_ids, User.all, :id, :name, {}, multiple: true %>
+    <% User.all.each do |user| %>
+      <% membership = @group.group_memberships.find { |m| m.user_id == user.id } %>
+      <div>
+        <%= check_box_tag "group[user_ids][]", user.id, membership.present?, id: "user_#{user.id}" %>
+        <%= label_tag "user_#{user.id}", user.name %>
+        <%= check_box_tag "group[owner_ids][]", user.id, membership&.owner?, id: "owner_#{user.id}" %>
+        <%= label_tag "owner_#{user.id}", "Owner" %>
+      </div>
+    <% end %>
   </div>
 
   <div>
