@@ -4,7 +4,6 @@ output = `curl --verbose --silent http://localhost:3000/ 2>&1`
 
 if $?.success? && output.include?('Browse the catalogue')
   docker_ps = `docker compose ps -a --format json | jq -s`
-  puts docker_ps
   if $?.success?
     j = JSON.parse(docker_ps)
     unless j.any? { |c| c['ExitCode'] == 1 }
