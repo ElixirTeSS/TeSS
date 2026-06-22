@@ -1,0 +1,18 @@
+<li data-id="{{ item.id }}">
+    <input type="hidden" name="{{ prefix }}[]" value="{{ item.id }}" />
+    <span class="group-member-name">{{ item.name }}</span>
+    {{#if item.email}}
+        <span class="group-member-email">{{ item.email }}</span>
+    {{/if}}
+    <label class="group-member-owner-label" title="Owner">
+        <input type="checkbox"
+               name="group[owner_ids][]"
+               value="{{ item.id }}"
+               class="group-owner-checkbox"
+               {{#if item.owner}}checked="checked"{{/if}} />
+        <i class="glyphicon glyphicon-star"></i> Owner
+    </label>
+    <a href="#" class="delete-list-item btn btn-icon" title="Remove member">
+        <i class="icon cross-icon icon-sm icon-greyscale"></i>
+    </a>
+</li>

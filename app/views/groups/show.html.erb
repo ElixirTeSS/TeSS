@@ -1,10 +1,126 @@
-<p style="color: green"><%= notice %></p>
+<%
+  @breadcrumbs = [
+    { name: 'Home', url: root_path },
+    { name: 'Groups', url: groups_path },
+    { name: @group.title }
+  ]
+%>
+<% content_for :title, @group.title %>
 
-<%= render @group %>
+<div class="wrapper collapsing-wrapper">
+  <%# SIDEBAR %>
+  <div id="sidebar" class="collapsing-sidebar">
+    <h4 class="nav-heading">Group</h4>
+    <div class="nav-block">
+      <h5><%= @group.title %></h5>
+    </div>
 
-<div>
-  <%= link_to "Edit this group", edit_group_path(@group) %> |
-  <%= link_to "Back to groups", groups_path %>
+    <h4 class="nav-heading">
+      Members
+      <span class="badge" style="background:#2a6ebb; margin-left: 4px;">
+        <%= @group.group_memberships.count %>
+      </span>
+    </h4>
+    <div class="nav-block">
+      <% memberships = @group.group_memberships.includes(:user) rescue @group.group_memberships %>
+      <% if memberships.any? %>
+        <% memberships.each do |membership| %>
+          <p style="margin-bottom: 0.5rem;">
+            <% if membership.owner? %>
+              <i class="glyphicon glyphicon-star" style="color: #E9822C;" title="Owner"></i>
+            <% else %>
+              <i class="glyphicon glyphicon-user" style="color: #aaa;"></i>
+            <% end %>
+            &nbsp;<strong><%= membership.user.name %></strong>
+            <% if membership.owner? %>
+              <br><span class="text-muted" style="padding-left: 20px; font-size: 0.85em;">Owner</span>
+            <% end %>
+          </p>
+        <% end %>
+      <% else %>
+        <span class="empty">No members yet.</span>
+      <% end %>
+    </div>
 
-  <%= button_to "Destroy this group", @group, method: :delete %>
+    <h4 class="nav-heading">Quick stats</h4>
+    <div class="nav-block">
+      <p>
+        <strong>Total members</strong><br/>
+        <%= @group.group_memberships.count %>
+      </p>
+      <p>
+        <strong>Owners</strong><br/>
+        <%= @group.group_memberships.select(&:owner?).count %>
+      </p>
+    </div>
+  </div>
+
+  <%# MAIN CONTENT %>
+  <div id="content">
+    <div class="content-actions">
+      <div class="content-viewer-actions"></div>
+      <div class="content-manager-actions">
+        <%= link_to edit_group_path(@group), class: 'btn btn-default' do %>
+          <i class="glyphicon glyphicon-pencil"></i> Edit
+        <% end %>
+        <%= button_to @group, method: :delete,
+            class: 'btn btn-danger',
+            form: { data: { confirm: "Are you sure you want to delete this group?" } } do %>
+          <i class="glyphicon glyphicon-trash"></i> Delete
+        <% end %>
+      </div>
+    </div>
+
+    <%# Members table %>
+    <% memberships = @group.group_memberships.includes(:user) rescue @group.group_memberships %>
+
+    <% if memberships.any? %>
+      <table class="table table-hover" style="margin-top: 1rem;">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <% if memberships.first.user.respond_to?(:email) %>
+              <th>Email</th>
+            <% end %>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% memberships.each do |membership| %>
+            <tr class="<%= membership.owner? ? 'warning' : '' %>">
+              <td>
+                <%= link_to membership.user.name, membership.user rescue membership.user.name %>
+              </td>
+              <% if membership.user.respond_to?(:email) %>
+                <td class="text-muted"><%= membership.user.email %></td>
+              <% end %>
+              <td>
+                <% if membership.owner? %>
+                  <span class="label" style="background-color: #E9822C;">
+                    <i class="glyphicon glyphicon-star"></i> Owner
+                  </span>
+                <% else %>
+                  <span class="label label-default">Member</span>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="well text-center" style="margin-top: 1rem;">
+        <i class="glyphicon glyphicon-user" style="font-size: 2rem; color: #aaa;"></i>
+        <p class="text-muted" style="margin-top: 0.5rem;">
+          No members yet.
+          <%= link_to "Add members", edit_group_path(@group) %>.
+        </p>
+      </div>
+    <% end %>
+
+    <hr/>
+
+    <%= link_to groups_path, class: 'btn btn-default' do %>
+      <i class="glyphicon glyphicon-arrow-left"></i> Back to groups
+    <% end %>
+  </div>
 </div>
