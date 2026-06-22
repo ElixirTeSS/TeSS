@@ -3,14 +3,9 @@ require 'json'
 output = `curl --verbose --silent http://localhost:3000/ 2>&1`
 
 if $?.success? && output.include?('Browse the catalogue')
-  docker_ps = `docker compose ps -a --format json > out.json`
+  docker_ps = `docker compose ps -a --format json | jq -s`
   if $?.success?
-    begin
-      j = JSON.parse(File.read('out.json'))
-    rescue => e
-      puts "THE JSON:\n\n\n\n#{docker_ps}\n\n\n\n"
-      raise e
-    end
+    j = JSON.parse(docker_ps)
     unless j.any? { |c| c['ExitCode'] == 1 }
       exit 0
     end
