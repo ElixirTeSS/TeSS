@@ -7,7 +7,6 @@ if $?.success? && output.include?('Browse the catalogue')
   puts docker_ps
   if $?.success?
     j = JSON.parse(docker_ps)
-    puts JSON.pretty_generate(j)
     unless j.any? { |c| c['ExitCode'] == 1 }
       exit 0
     end
