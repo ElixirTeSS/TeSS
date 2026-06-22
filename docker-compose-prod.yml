@@ -42,9 +42,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
-      interval: 1s
-      timeout: 5s
-      retries: 10
+      interval: 5s
     volumes:
       - db-data:/var/lib/postgresql/data
   solr:
