@@ -34,7 +34,6 @@
                       label_field: :title,
                       id_field: :id,
                       existing_items_method: :groups %>
-    <p>You can select only the groups you are in.</p>
   </div>
 
   <div>
@@ -47,3 +46,4 @@
                 @space.new_record? ? spaces_path : space_path(@space), class: 'btn btn-default' %>
   </div>
 <% end %>
+<%= javascript_include_tag 'show_private_groups', 'data-turbolinks-track': 'reload' %>

@@ -5,11 +5,11 @@ class GroupPolicy < ResourcePolicy
   end
 
   def show?
-    true
+    see? || @user&.is_admin?
   end
 
   def edit?
-    @user&.is_admin?
+    manage?
   end
 
   def create?
@@ -18,12 +18,24 @@ class GroupPolicy < ResourcePolicy
   end
 
   def update?
-    # Do not allow creations via API and only admin role can create group
-    !request_is_api? && @user&.is_admin?
+    !request_is_api? && manage?
   end
 
   def destroy?
-    @user&.is_admin?
+    !request_is_api? && @user&.is_admin?
   end
 
+  def manage?
+    (see? && owner?) || @user&.is_admin?
+  end
+
+  def see?
+    @record.users.include?(@user)
+  end
+
+  private
+
+  def owner?
+    @record.group_memberships.find_by(user: @user)&.owner == true
+  end
 end

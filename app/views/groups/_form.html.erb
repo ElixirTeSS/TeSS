@@ -1,26 +1,127 @@
 <%= form_with(model: group) do |f| %>
-  <% if group.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(group.errors.count, "error") %> prohibited this group from being saved:</h2>
-      <ul>
-        <% group.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+  <%= render partial: 'common/error_summary', locals: { resource: group } %>
+
+  <%# --- Title --- %>
+  <div class="form-group <%= 'has-error' if group.errors[:title].any? %>">
+    <%= f.label :title, class: "control-label" %>
+    <%= f.text_field :title, class: "form-control input-lg", placeholder: "Group title" %>
+    <% if group.errors[:title].any? %>
+      <span class="help-block"><%= group.errors[:title].first %></span>
+    <% end %>
+  </div>
+
+  <%# --- Members ---
+      Re-uses the same autocompleter infrastructure as spaces/_form.html.erb.
+      Template: app/assets/javascripts/templates/autocompleter/group_member.hbs (new file).
+      The sentinel hidden field ensures group[user_ids] is submitted even when the list is empty.
+  %>
+  <div class="form-group">
+    <label class="control-label">Members</label>
+    <p class="help-block">
+      <i class="glyphicon glyphicon-info-sign"></i>
+      Search and add members below. Check <strong>Owner</strong> to grant ownership.
+    </p>
+
+    <%# Sentinel: guarantees group[user_ids] key is always present in params %>
+    <input type="hidden" name="group[user_ids][]" value="" />
+
+    <%
+      form_field_name = "group[user_ids]"
+      existing_json = group.group_memberships.includes(:user).map do |m|
+        {
+          item: {
+            id:    m.user_id,
+            name:  m.user.name,
+            email: m.user.try(:email).to_s,
+            owner: m.owner?
+          },
+          prefix: form_field_name
+        }
+      end.to_json
+    %>
+
+    <div data-role="autocompleter-group"
+         data-url="<%= users_path(format: :json) %>"
+         data-prefix="<%= form_field_name %>"
+         data-label-field="name"
+         data-id-field="id"
+         data-transform-function="users"
+         data-template="autocompleter/group_member">
+
+      <script type="application/json" data-role="autocompleter-existing">
+        <%= existing_json.html_safe %>
+      </script>
+
+      <%# Sentinel inside the widget (mirrors what _autocompleter.html.erb does) %>
+      <input type="hidden" name="<%= form_field_name %>[]" value="" />
+
+      <ul data-role="autocompleter-list" class="list-unstyled group-member-list"></ul>
+
+      <input type="text"
+             data-role="autocompleter-input"
+             autocomplete="off"
+             class="form-control"
+             placeholder="Search for a user to add…">
     </div>
-  <% end %>
-
-  <div>
-    <%= f.label :title, style: "display: block" %>
-    <%= f.text_field :title %>
   </div>
 
-  <div>
-    <%= f.label :users, style: "display: block" %>
-    <%= f.collection_select :user_ids, User.all, :id, :name, {}, multiple: true %>
-  </div>
-
-  <div>
-    <%= f.submit %>
+  <div class="form-group" style="border-top: 1px solid #e5e5e5; padding-top: 1rem; margin-top: 0.5rem;">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "Cancel", :back, class: "btn btn-default" %>
   </div>
 <% end %>
+
+<style>
+  /* Member list rows */
+  .group-member-list { margin-top: 6px; }
+
+  .group-member-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #f9f9f9;
+    margin-bottom: 4px;
+  }
+
+  .group-member-list li.is-owner {
+    background: #fff6ee;
+    border-color: #f0c89a;
+  }
+
+  .group-member-name  { font-weight: 600; color: #2a6ebb; flex: 1 1 auto; }
+  .group-member-email { font-size: 0.85em; color: #888; flex: 1 1 auto; }
+
+  .group-member-owner-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: normal;
+    margin: 0;
+    white-space: nowrap;
+    cursor: pointer;
+    color: #555;
+  }
+  .group-member-owner-label .glyphicon-star            { color: #ccc; transition: color 0.15s; }
+  .group-member-owner-label input:checked ~ .glyphicon-star { color: #E9822C; }
+</style>
+
+<script>
+  /* Owner-checkbox: toggle .is-owner highlight on the <li> */
+  document.addEventListener("change", function (e) {
+    if (e.target.classList.contains("group-owner-checkbox")) {
+      var li = e.target.closest("li");
+      if (li) li.classList.toggle("is-owner", e.target.checked);
+    }
+  });
+
+  /* Apply .is-owner on page load for pre-checked rows (edit form) */
+  document.addEventListener("turbolinks:load", function () {
+    document.querySelectorAll(".group-owner-checkbox:checked").forEach(function (chk) {
+      var li = chk.closest("li");
+      if (li) li.classList.add("is-owner");
+    });
+  });
+</script>

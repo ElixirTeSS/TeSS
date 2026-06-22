@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_06_18_090239) do
+ActiveRecord::Schema[7.2].define(version: 2026_06_18_141208) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -268,6 +268,16 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_18_090239) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
+  create_table "group_memberships", id: false, force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "group_id", null: false
+    t.boolean "owner", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_group_memberships_on_group_id"
+    t.index ["user_id"], name: "index_group_memberships_on_user_id"
+  end
+
   create_table "groups", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", null: false
@@ -277,11 +287,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_18_090239) do
   create_table "groups_spaces", id: false, force: :cascade do |t|
     t.bigint "group_id", null: false
     t.bigint "space_id", null: false
-  end
-
-  create_table "groups_users", id: false, force: :cascade do |t|
-    t.bigint "group_id", null: false
-    t.bigint "user_id", null: false
   end
 
   create_table "learning_path_topic_items", force: :cascade do |t|
@@ -704,6 +709,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_06_18_090239) do
   add_foreign_key "event_materials", "materials"
   add_foreign_key "events", "spaces"
   add_foreign_key "events", "users"
+  add_foreign_key "group_memberships", "groups"
+  add_foreign_key "group_memberships", "users"
   add_foreign_key "learning_path_topic_links", "learning_paths"
   add_foreign_key "learning_path_topics", "spaces"
   add_foreign_key "learning_paths", "content_providers"

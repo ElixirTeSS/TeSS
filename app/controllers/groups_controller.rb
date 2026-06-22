@@ -8,6 +8,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/1
   def show
+    authorize @group
   end
 
   # GET /groups/new
@@ -21,27 +22,25 @@ class GroupsController < ApplicationController
     authorize @group
   end
 
-  # POST /groups
   def create
-    @group = Group.new(group_params)
+    authorize Group
+    @group = Group.new(group_params.except(:owner_ids))
 
-    respond_to do |format|
-      if @group.save
-        format.html { redirect_to @group, notice: "Group was successfully created." }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-      end
+    if @group.save
+      sync_owners
+      redirect_to @group, notice: "Group was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /groups/1
   def update
-    respond_to do |format|
-      if @group.update(group_params)
-        format.html { redirect_to @group, notice: "Group was successfully updated." }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-      end
+    authorize @group
+    if @group.update(group_params.except(:owner_ids))
+      sync_owners
+      redirect_to @group, notice: "Group was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -61,8 +60,14 @@ class GroupsController < ApplicationController
       @group = Group.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def group_params
-      params.require(:group).permit(:title, user_ids: [])
+      params.require(:group).permit(:title, user_ids: [], owner_ids: [])
+    end
+
+    def sync_owners
+      owner_ids = (params.dig(:group, :owner_ids) || []).map(&:to_i)
+      @group.group_memberships.each do |membership|
+        membership.update(owner: owner_ids.include?(membership.user_id))
+      end
     end
 end
