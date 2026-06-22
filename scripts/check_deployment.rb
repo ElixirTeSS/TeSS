@@ -1,3 +1,5 @@
+require 'json'
+
 output = `curl --verbose --silent http://localhost:3000/ 2>&1`
 
 if $?.success? && output.include?('Browse the catalogue')
