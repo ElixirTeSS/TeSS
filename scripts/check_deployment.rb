@@ -9,7 +9,7 @@ if $?.success? && output.include?('Browse the catalogue')
   if $?.success?
     puts 2
     j = JSON.parse(docker_ps)
-    unless j.any? { |c| c['ExitCode'] == 1 }
+    unless j.any? { |c| c['ExitCode'] == 1 } || j.any? { |c| c['Health'] == 'unhealthy' }
       puts 'exit 0'
       exit 0
     end
