@@ -1,16 +1,58 @@
-<p style="color: green"><%= notice %></p>
-
+<%
+  @breadcrumbs = [{ name: 'Home', url: root_path }, { name: 'Groups' }]
+%>
 <% content_for :title, "Groups" %>
 
-<h1>Groups</h1>
-
-<div id="groups">
-  <% @groups.each do |group| %>
-    <%= render group %>
-    <p>
-      <%= link_to "Show this group", group %>
-    </p>
-  <% end %>
+<div class="page-header">
+  <%= page_title("Groups") %>
 </div>
 
-<%= link_to "New group", new_group_path %>
+<div class="wrapper">
+  <div id="content">
+    <div class="content-actions">
+      <div class="content-viewer-actions"></div>
+      <div class="content-manager-actions">
+        <%= link_to new_group_path, class: 'btn btn-primary' do %>
+          <i class="glyphicon glyphicon-plus"></i> New group
+        <% end %>
+      </div>
+    </div>
+
+
+
+    <% if @groups.empty? %>
+      <div class="well well-lg text-center" style="margin-top: 2rem;">
+        <i class="glyphicon glyphicon-user" style="font-size: 3rem; color: #aaa;"></i>
+        <p class="text-muted" style="margin-top: 1rem;">No groups have been created yet.</p>
+        <%= link_to "Create the first group", new_group_path, class: 'btn btn-primary' %>
+      </div>
+    <% else %>
+      <div class="search-results-count my-3">
+        <%= pluralize(@groups.count, 'group') %>
+      </div>
+
+      <ul class="masonry-grid">
+        <% @groups.each do |group| %>
+          <% owners = group.group_memberships.select(&:owner?) %>
+          <li class="masonry-brick media-item long">
+            <%= link_to group, class: 'link-overlay' do %>
+              <h4><%= group.title %></h4>
+            <% end %>
+
+            <div class="text-muted" style="font-size: 0.9em; margin-top: 0.35rem;">
+              <i class="glyphicon glyphicon-user"></i>
+              <%= pluralize(group.group_memberships.count, 'member') %>
+
+              <% if owners.any? %>
+                &nbsp;&middot;&nbsp;
+                <i class="glyphicon glyphicon-star" style="color: #E9822C;"></i>
+                <% owner_names = owners.map { |m| m.user.name } %>
+                <%= owner_names.first(2).join(", ") %><%= " +#{owner_names.size - 2} more" if owner_names.size > 2 %>
+              <% end %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+</div>
