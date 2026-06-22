@@ -51,7 +51,7 @@ services:
       - '8984:8983'
   redis:
     container_name: ${PREFIX}-redis
-    image: redis:6
+    image: redis:7
     healthcheck:
       test: redis-cli ping
       interval: 1s
