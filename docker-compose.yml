@@ -66,6 +66,8 @@ services:
     container_name: ${PREFIX}-sidekiq
     image: ${PREFIX}-app
     restart: unless-stopped
+    healthcheck:
+      test: bundle exec sidekiqmon | grep $(hostname)
     depends_on:
       - app
       - db
