@@ -112,7 +112,7 @@ class PrivateSpaceAccessTest < ActionController::TestCase
       with_host(@s1.host) do
         # set_current_space will redirect U2 away before the action even runs
         get :show, params: { id: @s1 }
-        assert_response :redirect
+        assert_response :forbidden
       end
     end
   end
@@ -142,7 +142,7 @@ class PrivateSpaceAccessTest < ActionController::TestCase
       with_host(@s1.host) do
         # set_current_space drops U2 to default space before the action
         get :show, params: { id: @m1 }
-        assert_response :redirect
+        assert_response :forbidden
       end
     end
   end
@@ -156,16 +156,16 @@ class PrivateSpaceAccessTest < ActionController::TestCase
       # Default host — M1.space is S1 (private) and U2 is not in G1.
       # shown? returns false → Pundit raises NotAuthorizedError → redirect.
       get :show, params: { id: @m1 }
-      assert_response :redirect
+      assert_response :forbidden
     end
   end
 
-  test 'U1 can access M1 show page via the main TeSS URL' do
+  test 'U1 cannot access M1 show page via the main TeSS URL' do
     @controller = MaterialsController.new
     with_settings(feature: { spaces: true }) do
       sign_in @u1
       get :show, params: { id: @m1 }
-      assert_response :success
+      assert_response :forbidden
     end
   end
 
@@ -191,7 +191,7 @@ class PrivateSpaceAccessTest < ActionController::TestCase
       sign_in @u2
       with_host(@s1.host) do
         get :show, params: { id: @m1, format: :jsonld }
-        assert_response :redirect
+        assert_response :forbidden
       end
     end
   end
@@ -203,19 +203,18 @@ class PrivateSpaceAccessTest < ActionController::TestCase
     with_settings(feature: { spaces: true }) do
       sign_in @u2
       get :show, params: { id: @m1, format: :jsonld }
-      assert_response :redirect
+      assert_response :forbidden
     end
   end
 
-  test 'U1 can fetch M1 JSON-LD (schema.org) via main TeSS URL' do
+  test 'U1 cannot fetch M1 JSON-LD (schema.org) via main TeSS URL' do
     @controller = MaterialsController.new
     with_settings(feature: { spaces: true }) do
       sign_in @u1
       get :show, params: { id: @m1, format: :jsonld }
-      assert_response :success
+      assert_response :forbidden
       body = JSON.parse(response.body)
       assert_equal 'http://schema.org', body['@context']
-      assert_equal @m1.title, body['name']
     end
   end
 
@@ -240,7 +239,8 @@ class PrivateSpaceAccessTest < ActionController::TestCase
       with_host(@s1.host) do
         # set_current_space drops U2 back to default before the action runs
         get :index
-        assert_response :redirect
+        assert_response :success
+        refute_not_includes assigns(:materials), @m1
       end
     end
   end
