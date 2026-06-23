@@ -40,21 +40,13 @@ class GroupsControllerTest < ActionController::TestCase
 
   test 'should deny show to anonymous user' do
     get :show, params: { id: @group }
-<<<<<<< HEAD
     assert_response :forbidden
-=======
-    assert_response :redirect
->>>>>>> 75c094a5a1a472c2b736352b0ba315a6c9819449
   end
 
   test 'should deny show to outsider (non-member)' do
     sign_in @outsider
     get :show, params: { id: @group }
-<<<<<<< HEAD
     assert_response :forbidden
-=======
-    assert_response :redirect
->>>>>>> 75c094a5a1a472c2b736352b0ba315a6c9819449
   end
 
   test 'should allow show to group member' do
@@ -87,21 +79,13 @@ class GroupsControllerTest < ActionController::TestCase
   test 'should deny new to regular member' do
     sign_in @member_user
     get :new
-<<<<<<< HEAD
     assert_response :forbidden
-=======
-    assert_response :redirect
->>>>>>> 75c094a5a1a472c2b736352b0ba315a6c9819449
   end
 
   test 'should deny new to group owner (non-admin)' do
     sign_in @owner_user
     get :new
-<<<<<<< HEAD
     assert_response :forbidden
-=======
-    assert_response :redirect
->>>>>>> 75c094a5a1a472c2b736352b0ba315a6c9819449
   end
 
   test 'should allow new for admin' do
@@ -115,11 +99,7 @@ class GroupsControllerTest < ActionController::TestCase
     assert_no_difference('Group.count') do
       post :create, params: { group: { title: 'New group' } }
     end
-<<<<<<< HEAD
     assert_response :forbidden
-=======
-    assert_response :redirect
->>>>>>> 75c094a5a1a472c2b736352b0ba315a6c9819449
   end
 
   test 'should allow admin to create group' do
@@ -142,21 +122,13 @@ class GroupsControllerTest < ActionController::TestCase
   test 'should deny edit to outsider' do
     sign_in @outsider
     get :edit, params: { id: @group }
-<<<<<<< HEAD
     assert_response :forbidden
-=======
-    assert_response :redirect
->>>>>>> 75c094a5a1a472c2b736352b0ba315a6c9819449
   end
 
   test 'should deny edit to non-owner member' do
     sign_in @member_user
     get :edit, params: { id: @group }
-<<<<<<< HEAD
     assert_response :forbidden
-=======
-    assert_response :redirect
->>>>>>> 75c094a5a1a472c2b736352b0ba315a6c9819449
   end
 
   test 'should allow edit for group owner' do
@@ -174,11 +146,7 @@ class GroupsControllerTest < ActionController::TestCase
   test 'should deny update to non-owner member' do
     sign_in @member_user
     patch :update, params: { id: @group, group: { title: 'Hacked title' } }
-<<<<<<< HEAD
     assert_response :forbidden
-=======
-    assert_response :redirect
->>>>>>> 75c094a5a1a472c2b736352b0ba315a6c9819449
     assert_not_equal 'Hacked title', @group.reload.title
   end
 
@@ -200,11 +168,7 @@ class GroupsControllerTest < ActionController::TestCase
     sign_in @owner_user
     patch :update, params: { id: @group, group: { title: 'API attempt' } },
                    as: :json
-<<<<<<< HEAD
     assert_response :forbidden
-=======
-    assert_response :redirect
->>>>>>> 75c094a5a1a472c2b736352b0ba315a6c9819449
     assert_not_equal 'API attempt', @group.reload.title
   end
 
@@ -224,11 +188,7 @@ class GroupsControllerTest < ActionController::TestCase
     assert_no_difference('Group.count') do
       delete :destroy, params: { id: @group }
     end
-<<<<<<< HEAD
     assert_response :forbidden
-=======
-    assert_response :redirect
->>>>>>> 75c094a5a1a472c2b736352b0ba315a6c9819449
   end
 
   test 'should allow admin to destroy group' do
@@ -244,10 +204,6 @@ class GroupsControllerTest < ActionController::TestCase
     assert_no_difference('Group.count') do
       delete :destroy, params: { id: @group }, as: :json
     end
-<<<<<<< HEAD
     assert_response :forbidden
-=======
-    assert_response :redirect
->>>>>>> 75c094a5a1a472c2b736352b0ba315a6c9819449
   end
 end
