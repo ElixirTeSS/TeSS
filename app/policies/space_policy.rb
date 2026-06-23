@@ -5,7 +5,7 @@ class SpacePolicy < ApplicationPolicy
   end
 
   def create?
-    @user&.has_role?(:admin)
+    manage?
   end
 
   def edit?
@@ -21,7 +21,7 @@ class SpacePolicy < ApplicationPolicy
   end
 
   def destroy?
-    edit?
+    manage?
   end
 
 end
