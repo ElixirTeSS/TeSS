@@ -63,10 +63,9 @@ class ApplicationPolicy
   end
 
   def shown?
-    raise Pundit::NotAuthorizedError, "User must be logged in" unless @user
     return true if @space == nil
     return true if !@space.is_private
-
+    return false unless @user # and so if space is private
     if @space == Space.current_space || @record == @space
       user_groups  = @user.groups.pluck(:id)
       space_groups = @space.groups.pluck(:id)
