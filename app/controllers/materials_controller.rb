@@ -24,6 +24,7 @@ class MaterialsController < ApplicationController
       format.json
       format.json_api { render({ json: @materials }.merge(api_collection_properties)) }
     end
+    @results_count = @search_results&.total || 0
   end
 
   # GET /materials/1

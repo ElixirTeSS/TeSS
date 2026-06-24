@@ -69,7 +69,7 @@ module SearchableIndex
             f.rows.map { |r| { value: r.value, count: r.count } }
         ]
       end]
-      total = @filtered_total
+      total = @search_results.total
 
       res = @index_resources
       p = search_and_facet_params
@@ -87,10 +87,10 @@ module SearchableIndex
     {
         links: links,
         meta: {
-            facets: facets,
-            available_facets: available_facets,
-            query: @search_params,
-            results_count: total
+          facets: facets,
+          :'available-facets' => available_facets,
+          query: @search_params,
+          :'results-count' => total
         }
     }
   end

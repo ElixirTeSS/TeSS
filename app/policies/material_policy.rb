@@ -1,7 +1,7 @@
 class MaterialPolicy < ScrapedResourcePolicy
 
   def show?
-    shown?
+    super && shown?
   end
 
   def clone?

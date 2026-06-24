@@ -47,10 +47,12 @@ class GroupsController < ApplicationController
   # DELETE /groups/1
   def destroy
     authorize @group
-    @group.destroy!
-
     respond_to do |format|
-      format.html { redirect_to groups_path, status: :see_other, notice: "Group was successfully destroyed." }
+      format.html do
+        @group.destroy!
+        redirect_to groups_path, status: :see_other, notice: "Group was successfully destroyed."
+      end
+      format.json { head :forbidden }
     end
   end
 

@@ -1,7 +1,7 @@
 class EventPolicy < ScrapedResourcePolicy
 
   def show?
-    shown?
+    super && shown?
   end
 
   def edit_report?
