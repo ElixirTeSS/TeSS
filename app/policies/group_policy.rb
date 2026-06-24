@@ -22,7 +22,7 @@ class GroupPolicy < ResourcePolicy
   end
 
   def destroy?
-    !request_is_api? && @user&.is_admin?
+    !request_is_api? && (@user&.is_admin? || owner?)
   end
 
   def manage?
