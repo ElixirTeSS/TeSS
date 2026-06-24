@@ -800,4 +800,17 @@ class StaticControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test 'shows space title in head when looking at a space' do
+    space = spaces(:plants)
+    with_host(space.host) do
+      get :home
+      assert_select 'head title', text: 'TeSS Plants Community'
+    end
+  end
+
+  test 'shows regular title in head when in default space' do
+    get :home
+    assert_select 'head title', text: 'TeSS Test Instance'
+  end
 end
