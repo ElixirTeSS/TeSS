@@ -112,7 +112,7 @@ class PrivateSpaceAccessTest < ActionController::TestCase
       with_host(@s1.host) do
         # set_current_space will redirect U2 away before the action even runs
         get :show, params: { id: @s1 }
-        assert_response :forbidden
+        assert_response :redirect
       end
     end
   end
@@ -142,7 +142,7 @@ class PrivateSpaceAccessTest < ActionController::TestCase
       with_host(@s1.host) do
         # set_current_space drops U2 to default space before the action
         get :show, params: { id: @m1 }
-        assert_response :forbidden
+        assert_response :redirect
       end
     end
   end
@@ -191,7 +191,7 @@ class PrivateSpaceAccessTest < ActionController::TestCase
       sign_in @u2
       with_host(@s1.host) do
         get :show, params: { id: @m1, format: :jsonld }
-        assert_response :forbidden
+        assert_response :redirect
       end
     end
   end
@@ -240,7 +240,7 @@ class PrivateSpaceAccessTest < ActionController::TestCase
       with_host(@s1.host) do
         # set_current_space drops U2 back to default before the action runs
         get :index
-        assert_response :success
+        assert_response :redirect
         #refute_includes assigns(:materials), @m1
       end
     end

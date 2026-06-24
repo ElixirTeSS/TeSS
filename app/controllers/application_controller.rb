@@ -119,8 +119,13 @@ class ApplicationController < ActionController::Base
     # if the current_space is a specific space (not the default one), we check if the user can access it
     if TeSS::Config.feature['spaces'] && Space.current_space != Space.default
       unless policy(Space.current_space).shown?
-        flash[:alert] = "You are not authorized to access this page."
-        Space.current_space = Space.default
+        if @user
+          flash[:alert] = "You are not authorized to access this page."
+          redirect_to TeSS::Config.default_space_url, allow_other_host: true
+        else
+          flash[:alert] = "Sign in to access this page."
+          redirect_to TeSS::Config.default_space_url + '/users/sign_in', allow_other_host: true
+        end
       end
     end
   end
