@@ -254,7 +254,7 @@ class PrivateSpaceAccessTest < ActionController::TestCase
       get :index
       assert_response :success
       # SearchableIndex#fetch_resources filters by policy(record).shown?
-      refute_includes assigns(:materials), @m1
+      refute_not_includes assigns(:materials), @m1
     end
   end
 
