@@ -119,11 +119,7 @@ module TeSS
         ENV.fetch('REDIS_URL') { 'redis://localhost:6379/1' }
       end
     end
-
-    def default_space_url
-      ENV.fetch('MAIN_URL') { 'http://localhost:3000' }
-    end
-
+    
     def ingestion
       return @ingestion if @ingestion
 
