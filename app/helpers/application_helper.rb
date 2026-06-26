@@ -362,6 +362,7 @@ module ApplicationHelper
     def dropdown(name, options = {})
       existing_values = object.send(name.to_sym)
       existing = options[:options].select { |_label, value| existing_values.include?(value) }
+      visibility_toggle = options[:visibility_toggle] || []
       @template.render(partial: 'common/dropdown', locals: { field_name: name, f: self,
                                                              model_name: options[:model_name],
                                                              resource: object,
@@ -370,7 +371,8 @@ module ApplicationHelper
                                                              field_label: options[:label],
                                                              required: options[:required],
                                                              errors: options[:errors],
-                                                             title: options[:title] })
+                                                             title: options[:title],
+                                                             hidden: hidden?(name, visibility_toggle) })
     end
 
     def hidden?(name, visibility_toggle)

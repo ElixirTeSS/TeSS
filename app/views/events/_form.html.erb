@@ -90,8 +90,16 @@
                     title: t('events.hints.hosts') %>
 
   <!-- Field: Keywords -->
-  <%= f.multi_input :keywords, errors: @event.errors[:keywords],
-                    title: t('events.hints.keywords') %>
+  <% if TeSS::Config.feature['controlled_vocabulary_vars'].include? 'keywords' && File.exist?(KeywordsDictionary.instance.dictionary_filepath) %>
+    <%= f.dropdown :keywords,
+                  options: KeywordsDictionary.instance.options_for_select,
+                  label: t('activerecord.attributes.event.keywords', default: 'Keywords'),
+                  errors: @event.errors[:keywords],
+                  title: t('events.hints.keywords') %>
+  <% else %>
+    <%= f.multi_input :keywords, errors: @event.errors[:keywords],
+                      title: t('events.hints.keywords') %>
+  <% end %>
 
   <!-- Field: Fields -->
   <% if !TeSS::Config.feature['disabled'].include? 'ardc_fields_of_research' %>
@@ -105,7 +113,7 @@
   <% end %>
 
   <!-- Field: Target Audience -->
-  <% if TeSS::Config.feature['controlled_vocabulary_vars'].include? 'target_audience' %>
+  <% if TeSS::Config.feature['controlled_vocabulary_vars'].include? 'target_audience' && File.exist?(TargetAudienceDictionary.instance.dictionary_filepath) %>
     <%= f.dropdown :target_audience,
                   options: TargetAudienceDictionary.instance.options_for_select,
                   label: 'Target audiences',
