@@ -47,8 +47,6 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-      - name: Audit gems
-        run: bundle exec bundle-audit check --update
       - name: Configure and initialize database
         run: |
           cp test/config/test_tess.yml config/tess.yml
@@ -66,3 +64,5 @@ jobs:
         run: bundle exec rails test
       - name: Run system tests
         run: bundle exec rails test:system
+      - name: Audit gems
+        run: bundle exec bundle-audit check --update

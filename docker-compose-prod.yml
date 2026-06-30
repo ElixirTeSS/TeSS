@@ -41,7 +41,7 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     healthcheck:
-      test: pg_isready -U postgres -h 127.0.0.1
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
       interval: 5s
     volumes:
       - db-data:/var/lib/postgresql/data
@@ -71,6 +71,8 @@ services:
     container_name: ${PREFIX}-sidekiq
     image: ${PREFIX}-app
     restart: always
+    healthcheck:
+      test: bundle exec sidekiqmon | grep $(hostname)
     depends_on:
       - app
       - db

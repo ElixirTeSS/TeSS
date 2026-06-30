@@ -26,6 +26,7 @@ services:
     logging:
       driver: none
     image: postgres:14.2
+    restart: unless-stopped
     env_file: .env
     environment:
       PGDATA: /var/lib/postgresql/data
@@ -33,7 +34,7 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     healthcheck:
-      test: pg_isready -U postgres -h 127.0.0.1
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
       interval: 5s
     volumes:
       - db-data:/var/lib/postgresql/data
@@ -48,6 +49,7 @@ services:
   solr:
     container_name: ${PREFIX}-solr
     image: solr:8
+    restart: unless-stopped
     volumes:
       - solr-data:/var/solr
       - ./solr:/opt/solr/server/solr/configsets/development
@@ -60,6 +62,7 @@ services:
   redis:
     container_name: ${PREFIX}-redis
     image: redis:7
+    restart: unless-stopped
     healthcheck:
       test: redis-cli ping
       interval: 1s
@@ -70,6 +73,9 @@ services:
   sidekiq:
     container_name: ${PREFIX}-sidekiq
     image: ${PREFIX}-app
+    restart: unless-stopped
+    healthcheck:
+      test: bundle exec sidekiqmon | grep $(hostname)
     depends_on:
       - app
       - db
