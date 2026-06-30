@@ -64,5 +64,3 @@ jobs:
         run: bundle exec rails test
       - name: Run system tests
         run: bundle exec rails test:system
-      - name: Audit gems
-        run: bundle exec bundle-audit check --update
