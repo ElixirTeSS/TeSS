@@ -1,6 +1,15 @@
 name: Gem audit
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - 'Gemfile*'
+  pull_request:
+    paths:
+      - 'Gemfile*'
+  schedule:
+    - cron: '0 9 * * 1'
+      timezone: 'Europe/London'
 
 jobs:
   test:
