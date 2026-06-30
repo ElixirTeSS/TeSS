@@ -12,7 +12,7 @@ on:
       timezone: 'Europe/London'
 
 jobs:
-  test:
+  audit:
     runs-on: ubuntu-latest
     steps:
       - name: Install system dependencies
