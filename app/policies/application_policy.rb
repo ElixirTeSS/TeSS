@@ -69,7 +69,7 @@ class ApplicationPolicy
     if @space == Space.current_space || @record == @space
       user_groups  = @user.groups.pluck(:id)
       space_groups = @space.groups.pluck(:id)
-      return @user && space_groups.any? { |group_id| user_groups.include?(group_id) }
+      return @user.is_admin? || space_groups.any? { |group_id| user_groups.include?(group_id) }
     end
 
     return false
