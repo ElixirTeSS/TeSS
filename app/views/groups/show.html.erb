@@ -71,6 +71,10 @@
       </div>
     </div>
 
+    <%= link_to groups_path, class: 'btn btn-default' do %>
+      <i class="glyphicon glyphicon-arrow-left"></i> Back to groups
+    <% end %>
+
     <%# Members table %>
     <% memberships = @group.group_memberships.includes(:user) rescue @group.group_memberships %>
 
@@ -119,8 +123,44 @@
 
     <hr/>
 
-    <%= link_to groups_path, class: 'btn btn-default' do %>
-      <i class="glyphicon glyphicon-arrow-left"></i> Back to groups
+    <%# Private spaces table %>
+    <% spaces = @group.spaces.all %>
+
+    <h4 style="margin-top:120px;margin-bottom:25px;">Spaces which require this group to have access to:</h4>
+
+    <% if spaces.any? %>
+      <table class="table table-hover" style="margin-top: 1rem;">
+        <thead>
+          <tr>
+            <th>Space</th>
+            <th>Other groups which have access</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% spaces.each do |space| %>
+          <% groups = space.groups.all %>
+            <tr>
+              <td>
+                <%= link_to space.title, space %>
+              </td>
+              <td>
+                <% groups.each_with_index do |group, index| %>
+                  <% if group != @group %>
+                    <%= index != groups.length-1 ? group.title + ',' : group.title %>
+                  <% end %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="well text-center" style="margin-top: 1rem;">
+        <i class=" 	glyphicon glyphicon-th-large" style="font-size: 2rem; color: #aaa;"></i>
+        <p class="text-muted" style="margin-top: 0.5rem;">
+          This group does not give access to any private space
+        </p>
+      </div>
     <% end %>
   </div>
 </div>
