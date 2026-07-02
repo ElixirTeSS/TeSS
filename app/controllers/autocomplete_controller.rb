@@ -7,15 +7,29 @@ class AutocompleteController < ApplicationController
   end
 
   def people_suggestions
-    people = Person.query(params[:query])
-    suggestions = people.map do |p|
-      { value: p.name,
-        data: {
-          orcid: p.orcid,
-          profile_id: p.profile_id
+    people = Person.query(params[:query], 20)
+    profiles = Profile.query(params[:query], 20)
+    unique_map = {}
+    people.each do |p|
+      unique_map[p.profile_id || p.orcid || p.name] =
+        { value: p.name,
+          data: {
+            orcid: p.orcid,
+            profile_id: p.profile_id
+          }
         }
-      }
     end
+    profiles.each do |p|
+      unique_map[p.id || p.orcid || p.full_name] =
+        { value: p.full_name,
+          data: {
+            orcid: p.orcid_authenticated? ? p.orcid : nil,
+            profile_id: p.id
+          }
+        }
+    end
+
+    suggestions = unique_map.values.sort_by { |s| [s[:value].downcase, s[:data][:orcid] || 'z'] }
     respond_with({ suggestions: suggestions })
   end
 end
