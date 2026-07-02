@@ -13,7 +13,8 @@ export RAILS_ENV=$ENV
 
 # rebuild rails environment
 git pull --rebase
-bundle install --deployment
+bundle config set --local deployment true
+bundle install
 bundle exec rake db:migrate
 bundle exec rake assets:clean
 bundle exec rake assets:precompile
