@@ -30,5 +30,9 @@
     <%= link_to "View all #{name.pluralize(shown_count)} & filter", inc_expired_link, class: 'btn btn-xs btn-default' %>
   <% end %>
 
+  <% if TeSS::Config.feature.fetch('timezone_controls') %>
+    <%= render partial: 'events/event_timezone_control' %>
+  <% end %>
+
   <%= render partial: 'common/masonry_grid', locals: { objects: resources } %>
 </div>

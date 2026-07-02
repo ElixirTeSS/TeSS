@@ -575,6 +575,7 @@ en:
     local_content_banner:
       title: Connecting from %{country_name}?
       body: Visit the %{community_name} portal to browse local training.
+    upcoming_events: 'Upcoming events'
   privacy:
     registration: |
       <p>When you register with %{site_name} we ask for a username, password and email address.</p>
@@ -631,13 +632,39 @@ en:
       title: 'Add a title for your training event.'
       url: 'Location where the event and its details are advertised on the internet.'
       providers: The organisation providing the event metadata.
+    no_timezone_provided_gmt_assumed: >
+      (no timezone provided, GMT assumed.)
     prompts:
       language: 'Select a language...'
     long: 'Long events'
+    date: 'Date'
+    labels:
+      start: 'Start (in specified time zone)'
+      end: 'End (in specified time zone)'
+    view_event: 'View event'
     pick_date: 'Pick a range of dates for a better collection of events.'
     show_past_events:
       one: Show %{count} past event
       other: Show %{count} past events
+    info_button_header: 'What are events in %{site}?'
+    info_button_body_html: >-
+      <p>An event in %{site} is a link to a single training event sourced by a
+      provider along with description and other meta information (e.g. date, location, audience,
+      ontological categorization, keywords, etc.).</p>
+      <p>Training events can be added manually or automatically harvested from a provider's website.</p>
+      <p>If your website contains training events that you wish to include in %{site},
+      <a href="%{url}">see here for details on automatic registration</a></p>
+    breadcrumb_index: Events
+    timezone_controls:
+      all_events_in_local_html: >
+        Note: all times are shown in <b>the timezone in which each event occurs</b>.
+      all_events_in_timezone_html: >
+        Note: all times are shown in the <b>%{timezone}</b> timezone.
+      controls_show: 'Change...'
+      controls_legend: 'When displaying times, use:'
+      local_time_select: 'the timezone in which the event occurs'
+      timezone_select_html: '<b>%{timezone}</b> timezone (detected from your browser)'
+      close: 'Close'
   materials:
     hints:
       authors: >

@@ -34,7 +34,11 @@
           <%= elixir_node_icon %>
         <% end -%>
 
-        <p><%= neatly_printed_date_range(event.start, event.end) %></p>
+        <% if TeSS::Config.feature.fetch('timezone_controls') %>
+          <%= render partial: 'events/event_time_div', locals: {event: event} %>
+        <% else %>
+          <p><%= neatly_printed_date_range(event.start, event.end) %></p>
+        <% end %>
 
         <% if event.onsite? %>
           <% location = [event.city, event.country].reject { |field_value| field_value.blank? }.join(", ") %>

@@ -108,6 +108,7 @@ class EventsController < ApplicationController
   # GET /events/1/edit
   def edit
     authorize @event
+    shift_times_to_timezone_for_editing
   end
 
   # GET /events/1/report
@@ -155,6 +156,8 @@ class EventsController < ApplicationController
   def create
     authorize Event
     @event = Event.new(event_params)
+    # TODO: should time only shift for timezone if format is HTML?
+    shift_times_to_utc_for_saving
     @event.user = current_user
     @event.space = current_space
 
@@ -174,8 +177,11 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1.json
   def update
     authorize @event
+    @event.assign_attributes(event_params)
+    # TODO: should time only shift for timezone if format is HTML?
+    shift_times_to_utc_for_saving
     respond_to do |format|
-      if @event.update(event_params)
+      if @event.save
         @event.create_activity(:update, owner: current_user) if @event.log_update_activity?
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }
         format.json { render :show, status: :ok, location: @event }
@@ -226,11 +232,54 @@ class EventsController < ApplicationController
     redirect_to @event.url, allow_other_host: true
   end
 
+  def event_time_data
+    # Serve JSON of some DOM ids that need updating, with rendered HTML content
+    respond_to do |format|
+      event_ids = params[:event_ids]
+      timezone = session[:tz]
+      browser_timezone = params[:browser_timezone]
+
+      # Render times for the following event ids
+      out = (event_ids || []).map do |event_id|
+        event = Event.find(event_id.to_i)
+        html = render_to_string partial: 'events/event_time_div',
+                                formats: [:html],
+                                locals: { event: event, timezone: timezone }
+        { id: "#event-time-#{event.id}",
+          html: html}
+      end
+      if browser_timezone
+        # Render timezone controls
+        control_html = render_to_string partial: 'events/event_timezone_control',
+                                        formats: [:html],
+                                        locals: { browser_timezone: browser_timezone,
+                                                  timezone: browser_timezone }
+        out << { id: '#timezone-controls',
+                 html: control_html }
+      end
+      format.json { render json: out}
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
   def set_event
     @event = Event.friendly.find(params[:id])
+  end
+
+  def shift_times_to_timezone_for_editing
+    if (@event&.timezone)
+      @event.start = @event.start&.in_time_zone(@event.timezone.to_s)
+      @event.end = @event.end&.in_time_zone(@event.timezone.to_s)
+    end
+  end
+
+  def shift_times_to_utc_for_saving
+    if (@event&.timezone)
+      @event.start = @event.start&.change(zone: @event.timezone.to_s)
+      @event.end = @event.end&.change(zone: @event.timezone.to_s)
+    end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
