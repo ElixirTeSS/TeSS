@@ -20,10 +20,12 @@ class AutocompleteController < ApplicationController
         }
     end
     profiles.each do |p|
-      unique_map[p.id || p.orcid || p.full_name] =
+      orcid = p.orcid_authenticated? ? p.orcid : nil
+      unique_map.delete(orcid) if orcid
+      unique_map[p.id] =
         { value: p.full_name,
           data: {
-            orcid: p.orcid_authenticated? ? p.orcid : nil,
+            orcid: orcid,
             profile_id: p.id
           }
         }
