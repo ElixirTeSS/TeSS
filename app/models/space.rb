@@ -24,6 +24,17 @@ class Space < ApplicationRecord
   validates :host, presence: true, uniqueness: true, format: /\A[a-zA-Z0-9\-]+(\.[a-zA-Z0-9\-]+)*\z/i
   validates :theme, inclusion: { in: TeSS::Config.themes.keys, allow_blank: true }
   validate :disabled_features_valid?
+  
+  class CheckPrivateSpace < ActiveModel::Validator
+    def validate(record)
+      Rails.logger.info "Validating space: is_private=#{record.is_private}, groups_count=#{record.groups.length}"
+      if record.is_private && record.groups.length == 0
+        record.errors.add(:base, "If the space is private, you must add required groups.")
+      end
+    end
+  end
+  
+  validates_with CheckPrivateSpace
 
   before_destroy :handle_associations_on_destroy
 
