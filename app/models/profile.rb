@@ -62,6 +62,21 @@ class Profile < ApplicationRecord
     out
   end
 
+  def self.visible
+    joins(:user).merge(User.visible)
+  end
+
+  # For autocomplete
+  def self.starting_with(query)
+    where('lower(firstname) LIKE ?', "#{query.downcase}%").or(where('lower(surname) LIKE ?', "#{query.downcase}%"))
+  end
+
+  def self.query(query, limit = nil)
+    q = visible.select(:id, :firstname, :surname, :orcid, :orcid_authenticated).starting_with(query).distinct
+    q = q.limit(limit) if limit
+    q.order(firstname: :asc, surname: :asc, orcid: :asc)
+  end
+
   private
 
   def check_public

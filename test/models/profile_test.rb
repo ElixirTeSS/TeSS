@@ -154,4 +154,44 @@ class ProfileTest < ActiveSupport::TestCase
       refute Profile.new.authenticate_orcid('0009-0006-0987-5702')
     end
   end
+
+  test 'visible' do
+    visible = Profile.visible
+    assert_includes visible, profiles(:one)
+    assert_includes visible, profiles(:two)
+    refute_includes visible, profiles(:basic_user_profile)
+    refute_includes visible, profiles(:banned_user_profile)
+  end
+
+  test 'starting_with' do
+    regi = Profile.starting_with('regi')
+    assert_includes regi, profiles(:one)
+    refute_includes regi, profiles(:two)
+
+    user = Profile.starting_with('user')
+    assert_includes user, profiles(:one)
+    refute_includes user, profiles(:two)
+
+    bla = Profile.starting_with('bla')
+    refute_includes bla, profiles(:one)
+    refute_includes bla, profiles(:two)
+
+    ad = Profile.starting_with('ad')
+    refute_includes ad, profiles(:two)
+    assert_includes ad, profiles(:three)
+    assert_includes ad, profiles(:admin_trainer_profile)
+  end
+
+  test 'query' do
+    regi = Profile.query('regi')
+    assert_equal 1, regi.length
+    assert_includes regi, profiles(:one)
+
+    # Excludes non-visible:
+    banned = profiles(:banned_user_profile)
+    banned.update!(firstname: 'Banned')
+    assert_includes Profile.starting_with('banned'), banned
+    banned = Profile.query('Banned')
+    assert_equal 0, banned.length
+  end
 end
