@@ -179,7 +179,7 @@ GEM
       countries (~> 5.0)
     crack (0.4.5)
       rexml
-    crass (1.0.6)
+    crass (1.0.7)
     csv (3.3.2)
     date (3.5.1)
     debug_inspector (1.1.0)
@@ -392,7 +392,7 @@ GEM
       monetize (~> 1.9)
       money (~> 6.13)
       railties (>= 3.0)
-    msgpack (1.7.2)
+    msgpack (1.8.3)
     multi_json (1.19.1)
     multi_xml (0.8.0)
       bigdecimal (>= 3.1, < 5)
