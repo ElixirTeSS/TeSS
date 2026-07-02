@@ -177,7 +177,7 @@ class ProfileTest < ActiveSupport::TestCase
     refute_includes bla, profiles(:two)
 
     ad = Profile.starting_with('ad')
-    refute_includes regi, profiles(:two)
+    refute_includes ad, profiles(:two)
     assert_includes ad, profiles(:three)
     assert_includes ad, profiles(:admin_trainer_profile)
   end
