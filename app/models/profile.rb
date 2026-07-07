@@ -72,7 +72,9 @@ class Profile < ApplicationRecord
   end
 
   def self.query(query, limit = nil)
-    q = visible.select(:id, :firstname, :surname, :orcid, :orcid_authenticated).starting_with(query).distinct
+    q = visible.where.not(orcid: nil).where(orcid_authenticated: true)
+               .select(:id, :firstname, :surname, :orcid, :orcid_authenticated)
+               .starting_with(query).distinct
     q = q.limit(limit) if limit
     q.order(firstname: :asc, surname: :asc, orcid: :asc)
   end

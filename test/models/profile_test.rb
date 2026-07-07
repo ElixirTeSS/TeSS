@@ -183,15 +183,22 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   test 'query' do
-    regi = Profile.query('regi')
-    assert_equal 1, regi.length
-    assert_includes regi, profiles(:one)
+    josi = Profile.query('josi')
+    assert_equal 1, josi.length
+    assert_includes josi, profiles(:trainer_one_profile).becomes(Profile) # Need to cast back to Profile because it is a Trainer otherwise
+
+    # Excludes unauthenticated orcids
+    unauth = profiles(:trainer_two_profile)
+    assert_includes Profile.starting_with('luci'), unauth
+    unauth_q = Profile.query('luci')
+    assert_equal 0, unauth_q.length
 
     # Excludes non-visible:
     banned = profiles(:banned_user_profile)
     banned.update!(firstname: 'Banned')
+    assert banned.authenticate_orcid('0009-0006-0987-5702')
     assert_includes Profile.starting_with('banned'), banned
-    banned = Profile.query('Banned')
-    assert_equal 0, banned.length
+    banned_q = Profile.query('Banned')
+    assert_equal 0, banned_q.length
   end
 end
