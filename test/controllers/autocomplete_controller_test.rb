@@ -51,14 +51,14 @@ class AutocompleteControllerTest < ActionController::TestCase
     res = JSON.parse(response.body)
     suggestions = res['suggestions']
     assert_equal 3, suggestions.length, "Should be 3 - 2 with ORCIDs and 1 without. Should not include duplicates."
-    assert_equal ['0000-0002-1694-233X', '0000-0002-1825-0097', nil], suggestions.map { |s| s['data']['orcid'] }
-    assert_equal ['John Doe', 'John Doe', 'John Doe'], suggestions.map { |s| s['value'] }
+    assert_equal ['0000-0002-1694-233X', nil, '0000-0002-1825-0097'], suggestions.map { |s| s['data']['orcid'] }
+    assert_equal ['John Doe', 'John Doe', 'Josiah Carberry'], suggestions.map { |s| s['value'] }, "Should use Josiah Carberry's name from his profile rather than John Doe from the author"
 
     get :people_suggestions, params: { query: 'j' }, format: :json
     assert_response :success
     res = JSON.parse(response.body)
     suggestions = res['suggestions']
-    assert_equal ['jane Doe', 'John Doe', 'John Doe', 'John Doe'], suggestions.map { |s| s['value'] }
+    assert_equal ['jane Doe', 'John Doe', 'John Doe', 'Josiah Carberry'], suggestions.map { |s| s['value'] }
 
     get :people_suggestions, params: { query: 'FRED' }, format: :json
     assert_response :success
