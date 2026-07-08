@@ -272,17 +272,21 @@ class EventsController < ApplicationController
   end
 
   def shift_times_to_timezone_for_editing
-    if (@event&.timezone)
-      @event.start = @event.start&.in_time_zone(@event.timezone.to_s)
-      @event.end = @event.end&.in_time_zone(@event.timezone.to_s)
-    end
+    tz = @event&.timezone.to_s
+    return if tz.blank? || ActiveSupport::TimeZone[tz].blank?
+
+    @event.start = @event.start&.in_time_zone(tz)
+    @event.end = @event.end&.in_time_zone(tz)
   end
 
   def shift_times_to_utc_for_saving
-    if (@event&.timezone)
-      @event.start = @event.start&.change(zone: @event.timezone.to_s)
-      @event.end = @event.end&.change(zone: @event.timezone.to_s)
-    end
+    return unless request.format.html?
+
+    tz = @event&.timezone.to_s
+    return if tz.blank? || ActiveSupport::TimeZone[tz].blank?
+
+    @event.start = @event.start&.change(zone: tz)
+    @event.end = @event.end&.change(zone: tz)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
