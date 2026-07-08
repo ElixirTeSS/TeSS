@@ -13,6 +13,8 @@ class EventsController < ApplicationController
   include FieldLockEnforcement
   include TopicCuration
 
+  MAX_EVENT_TIMEZONE_IDS = 200
+
   # GET /events
   # GET /events.json
   def index
@@ -240,22 +242,23 @@ class EventsController < ApplicationController
       browser_timezone = params[:browser_timezone]
 
       # Render times for the following event ids
-      out = (event_ids || []).map do |event_id|
-        event = Event.find(event_id.to_i)
+      events = Event.where(id: Array(event_ids).uniq.first(MAX_EVENT_TIMEZONE_IDS))
+      out = events.map do |event|
+        next unless policy(event).show?
+
         html = render_to_string partial: 'events/event_time_div',
                                 formats: [:html],
                                 locals: { event: event, timezone: timezone }
-        { id: "#event-time-#{event.id}",
-          html: html}
-      end
+
+        { id: "#event-time-#{event.id}", html: html}
+      end.compact
       if browser_timezone
         # Render timezone controls
         control_html = render_to_string partial: 'events/event_timezone_control',
                                         formats: [:html],
                                         locals: { browser_timezone: browser_timezone,
                                                   timezone: browser_timezone }
-        out << { id: '#timezone-controls',
-                 html: control_html }
+        out << { id: '#timezone-controls', html: control_html }
       end
       format.json { render json: out}
     end
