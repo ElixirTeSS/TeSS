@@ -7,7 +7,7 @@
   <p class="date no-spacing">
     <strong class="text-primary"><%= t('events.date') %>: </strong>
     <%= neatly_printed_date_range(event.start_local, event.end_local) %>
-    <% unless event.timezone %>
+    <% if event.timezone.blank? %>
       <%= t('events.no_timezone_provided_gmt_assumed') %>
     <% end %>
   </p>
