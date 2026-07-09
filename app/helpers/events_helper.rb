@@ -175,7 +175,7 @@ module EventsHelper
 
     return nil unless tz_name
 
-    # The ICU library we use want's underscores not spaces ...
+    # The ICU library we use wants underscores not spaces ...
     tz_name = tz_name.gsub(' ', '_')
     formatter = ICU::TimeFormatting.create(locale: I18n.locale.to_s,
                                            zone: tz_name,
