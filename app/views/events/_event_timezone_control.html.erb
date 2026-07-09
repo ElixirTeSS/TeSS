@@ -17,7 +17,7 @@
 
       <% if local_assigns[:browser_timezone] %>
         <a data-toggle="collapse" href="#timezone-select" class="show-timezone-controls"
-           role="button" aria-expanded="false" aria-controls="collapseExample">
+           role="button" aria-expanded="false" aria-controls="timezone-select">
           <%= t('events.timezone_controls.controls_show') %>
       </a>
       <% end %>
@@ -26,8 +26,8 @@
     <% if local_assigns[:browser_timezone] %>
       <div class="collapse" id="timezone-select">
         <hr>
-        <i class="fa fa-window-close close-timezone-controls"
-           aria-label="<%= t('events.timezone_controls.close') %>"></i>
+        <button class="fa fa-window-close close-timezone-controls"
+           aria-label="<%= t('events.timezone_controls.close') %>"></button>
 
         <fieldset>
           <legend><%= t('events.timezone_controls.controls_legend') %></legend>
