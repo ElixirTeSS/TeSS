@@ -30,7 +30,7 @@
     <%= link_to "View all #{name.pluralize(shown_count)} & filter", inc_expired_link, class: 'btn btn-xs btn-default' %>
   <% end %>
 
-  <% if TeSS::Config.feature.fetch('timezone_controls') %>
+  <% if TeSS::Config.feature.fetch('timezone_controls') && total_count > 0 %>
     <%= render partial: 'events/event_timezone_control' %>
   <% end %>
 
