@@ -41,7 +41,7 @@ var Events = {
 
         // Server renders the various DOM ids that need updating
         $.ajax({
-            url: "/events/event_time_data.json",
+            url: $('#timezone-controls').data('event-time-data-url'),
             data: data,
             context: document.body
         }).done(function(elements) {
