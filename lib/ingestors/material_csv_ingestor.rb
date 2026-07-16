@@ -15,7 +15,7 @@ module Ingestors
 
     def read(url)
       begin
-        # Google spreadsheet convertor
+        # Google spreadsheet converter
         url = gsheet_to_csv(url)
 
         # parse table

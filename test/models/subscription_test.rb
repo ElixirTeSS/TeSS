@@ -112,7 +112,7 @@ class SubscriptionTest < ActiveSupport::TestCase
   end
 
   test '24-hour subscription is due slightly before 24 hours' do
-    # To prevent "mis-alignment" with daily cronjob.
+    # To prevent "misalignment" with daily cronjob.
     sub = Subscription.new(frequency: :daily, user: users(:regular_user), query: 'test', subscribable_type: 'Material',
                            last_checked_at: 60.minutes.ago)
     sub.save!
