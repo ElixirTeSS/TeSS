@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_21_144919) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_10_154329) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -212,6 +212,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_144919) do
     t.text "notes"
     t.string "open_science", default: [], array: true
     t.string "organizer"
+    t.string "origin_uri"
     t.string "postcode"
     t.text "prerequisites"
     t.integer "presence", default: 0
@@ -371,6 +372,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_144919) do
     t.date "last_scraped"
     t.text "learning_objectives"
     t.string "licence", default: "notspecified"
+    t.string "origin_uri"
     t.string "other_types"
     t.text "prerequisites"
     t.date "remote_created_date"
