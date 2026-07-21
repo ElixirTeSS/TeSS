@@ -1,0 +1,15 @@
+en:
+  home:
+    welcome: |
+      <span class="text-primary">%{site_name}</span> - The home of training
+    catalogue:
+      title: Browse the catalogue
+      link_text: Start browsing
+      events: "Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers."
+      materials: "Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers."
+      workflows: "Create training workflows to visualise learning steps and link to resources specific to your training needs."
+      providers: "Browse training providers to discover training resources they offer and follow links to their materials and courses."
+      trainers: "Browse a directory of trainers based on their skills and expertise."
+      spaces: "Browse a directory of community-managed spaces across different disciplines and locations."
+      learning_paths: "Follow organized pathways of training resources leading you towards specific learning objectives."
+      events_count: "%{total_events} upcoming events, %{last_month_events} added last month"
