@@ -17,6 +17,7 @@
           <%= scrape_status_icon(material) %>
           <%= suggestion_icon(material) %>
         <% end %>
+        <%= exchange_icon(material) %>
       </div>
       <div class="sub-heading">
         <%= display_attribute_no_label(material, :resource_type) { |values| values.join(', ') } %>

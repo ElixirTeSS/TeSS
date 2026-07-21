@@ -1706,4 +1706,19 @@ class MaterialsControllerTest < ActionController::TestCase
     assert_select 'p.scientific_topics a[href="http://edamontology.org/topic_0622"]', text: 'Genomics'
     assert_select 'p.operations a[href="http://edamontology.org/operation_0292"]', text: 'Sequence alignment'
   end
+
+  test 'should link back to original entry if origin URI set' do
+    get :show, params: { id: @material }
+    assert_response :success
+
+    assert_select '#origin-info', count: 0
+
+    uri = 'https://some-tess-instance.org/materials/123'
+    @material.update(origin_uri: uri)
+
+    get :show, params: { id: @material }
+    assert_response :success
+
+    assert_select '#origin-info a[href=?]', uri
+  end
 end
