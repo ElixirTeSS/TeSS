@@ -37,7 +37,7 @@ Variable that should be available
     </h4>
   </li>
 
-  <% if @facet_params.values.flatten.length >= SearchableIndex::ANON_FILTER_LIMIT %>
+  <% if !current_user && @facet_params&.values && (@facet_params.values.flatten.length >= SearchableIndex::ANON_FILTER_LIMIT) %>
     <div class="alert alert-warning">
       Filter limit reached, please <%= link_to 'log in', new_user_session_path %> to add more.
     </div>

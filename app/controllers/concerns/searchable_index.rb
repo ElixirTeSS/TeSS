@@ -104,7 +104,7 @@ module SearchableIndex
   end
 
   def limit_filters
-    if !request.format.json? && !request.format.json_api? && current_user.nil? &&
+    if !request.format.json? && !request.format.json_api? && current_user.nil? && @facet_params&.values &&
       @facet_params.values.flatten.length > ANON_FILTER_LIMIT
       handle_error(400, 'Please log in to add more filters.')
     end
