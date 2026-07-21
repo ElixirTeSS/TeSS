@@ -1,5 +1,6 @@
 # The concern for searchable index
 module SearchableIndex
+  ANON_FILTER_LIMIT=3
   DEFAULT_PAGE_SIZE = 10
   PER_PAGE_OPTIONS = [10, 20, 50, 100]
 
@@ -8,6 +9,7 @@ module SearchableIndex
   included do
     attr_reader :facet_fields, :search_params, :facet_params, :page, :sort_by, :index_resources
     before_action :set_params, only: [:index, :count]
+    before_action :limit_filters
     before_action :fetch_resources, only: [:index, :count]
 
     helper 'search'
@@ -99,5 +101,12 @@ module SearchableIndex
 
   def search_and_facet_params
     params.permit(*(@model.search_and_facet_keys | [:page_size, :page_number, :page, :per_page]))
+  end
+
+  def limit_filters
+    if !request.format.json? && !request.format.json_api? && current_user.nil? &&
+      @facet_params.values.flatten.length > ANON_FILTER_LIMIT
+      handle_error(400, 'Please log in to add more filters.')
+    end
   end
 end
