@@ -556,7 +556,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_144919) do
     t.bigint "image_file_size"
     t.datetime "image_updated_at"
     t.text "image_url"
-    t.string "disabled_features", default: [], array: true
     t.boolean "is_private"
     t.string "theme"
     t.string "title"
