@@ -29,6 +29,10 @@ class TrainingProvider < OAI::Provider::Base
   record_prefix "oai:#{URI(TeSS::Config.base_url).host}"
   admin_email TeSS::Config.contact_email
   sample_id 'materials/142' # so that example id is oai:domain:materials/142
+  extra_description %(
+     <description>
+       <tess-instance xmlns="http://tess.elixir-europe.org/xmlns" />
+     </description>)
 
   register_format(OAIRDF.instance)
 end

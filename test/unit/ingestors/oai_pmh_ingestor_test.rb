@@ -174,6 +174,17 @@ class OaiPmhIngestorTest < ActiveSupport::TestCase
     assert_equal 'https://example.org/bioschemas/event', result.url
   end
 
+  test 'should read TeSS instance OAI-PMH endpoint and store origin URI' do
+    VCR.use_cassette('ingestors/tess_oai_pmh_listrecords') do
+      VCR.use_cassette('ingestors/tess_oai_pmh_identify') do
+        @ingestor.read('https://oai-pmh.tesshub.space/oai-pmh')
+      end
+    end
+
+    assert_equal 2, @ingestor.materials.length
+    assert @ingestor.materials.all? { |m| m.origin_uri.start_with?('https://tesshub.space/materials/') }
+  end
+
   private
 
   IDENTIFY = %(
