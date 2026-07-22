@@ -441,7 +441,7 @@ module ApplicationHelper
     else
       ''
       # end + "TeSS (Training eSupport System)"
-    end + TeSS::Config.site['title']
+    end + (Space.current_space.default? ? TeSS::Config.site['title'] : Space.current_space.title)
   end
 
   # Renders a title on the page (by default in an H2 tag, pass a "tag" option with a symbol to change) as well as

@@ -96,7 +96,8 @@ having to change any configuration files.
 
 ## Install gems
 
-    bundle install --deployment
+    bundle config set --local deployment true
+    bundle install
 
 ## Set up database
 
