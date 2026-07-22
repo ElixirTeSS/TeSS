@@ -38,7 +38,7 @@ class StaticController < ApplicationController
     trainers = Trainer.joins(:user).order(:id)
     f_trainers = trainers.where.not(users: { image_file_size: nil })
     trainers = f_trainers.exists? ? f_trainers : trainers
-    trainers.sample(1)
+    trainers.sample(TeSS::Config.site.dig('home_page', 'featured_trainer'))
   end
 
   def set_content_providers
