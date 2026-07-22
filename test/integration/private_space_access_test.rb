@@ -37,9 +37,9 @@ class PrivateSpaceAccessTest < ActionController::TestCase
       title:      'S1 Private Space',
       host:       's1.example.com',
       is_private: true,
-      user:       @admin
+      user:       @admin,
+      groups: [@g1]
     )
-    @s1.groups << @g1
 
     # Material M1 — belongs to S1, created by U1
     @m1 = Material.create!(
