@@ -43,6 +43,7 @@ class User < ApplicationRecord
   belongs_to :role, optional: true
   has_many :subscriptions, dependent: :destroy
   has_many :stars, dependent: :destroy
+  has_many :identities, dependent: :destroy
   has_one :ban, dependent: :destroy, inverse_of: :user
   has_many :bans_as_banner, class_name: 'Ban', foreign_key: :banner_id, inverse_of: :banner, dependent: :nullify
   has_many :activities_as_owner,
@@ -201,21 +202,21 @@ class User < ApplicationRecord
     # TODO: The code below will update their account to note the Elixir auth. but leave their password intact;
     # TODO: is this what we should be doing?
 
-    # find by provider and { uid or email}
-    users = User.where(provider: auth.provider, uid: auth.uid)
-    if users.none? && auth.info.email.present? && auth.provider.present?
-      users = User.where(provider: auth.provider, email: auth.info.email)
+    identity = Identity.where(provider: auth.provider, uid: auth.uid).first
+    user = identity&.user
+
+    if user.nil? && auth.info.email.present? && auth.provider.present?
+      user = User.joins(:identities).where(email: auth.info.email, identities: { provider: auth.provider }).first
     end
 
-    # get first user
-    user = users.first
-
     if user
-      # update provider and uid if present
-      if user.provider.nil? and user.uid.nil?
-        user.uid = auth.uid
-        user.provider = auth.provider
-        user.save
+      existing_identity = user.identities.find_by(provider: auth.provider)
+      unless existing_identity&.uid == auth.uid
+        if existing_identity&.uid.blank?
+          existing_identity.update(uid: auth.uid)
+        else
+          user.identities.create(provider: auth.provider, uid: auth.uid)
+        end
       end
     else
       # set name components
@@ -226,12 +227,11 @@ class User < ApplicationRecord
 
       # create user
       username = User.username_from_auth_info(auth.info)
-      user = User.new(provider: auth.provider,
-                      uid: auth.uid,
-                      email: auth.info.email,
+      user = User.new(email: auth.info.email,
                       username: username,
                       profile_attributes: { firstname: first_name, surname: last_name },
       )
+      user.identities.build(provider: auth.provider, uid: auth.uid)
       user.skip_confirmation!
     end
 
@@ -260,7 +260,7 @@ class User < ApplicationRecord
   end
 
   def using_omniauth?
-    provider.present? && uid.present?
+    identities.any? || (provider.present? && uid.present?)
   end
 
   def password_required?

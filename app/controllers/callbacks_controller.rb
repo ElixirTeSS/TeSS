@@ -11,10 +11,17 @@ class CallbacksController < Devise::OmniauthCallbacksController
   private
 
   def handle_callback(provider, config)
-    @user = User.from_omniauth(request.env["omniauth.auth"])
+    auth = request.env['omniauth.auth']
     if request.env['omniauth.params'] && request.env['omniauth.params']['space_id']
       space = Space.find_by_id(request.env['omniauth.params']['space_id'])
     end
+
+    if current_user && request.env.dig('omniauth.params', 'link_identity').to_s == '1'
+      link_identity(auth, space)
+      return
+    end
+
+    @user = User.from_omniauth(auth)
 
     if @user.new_record?
       # new user
@@ -41,5 +48,24 @@ class CallbacksController < Devise::OmniauthCallbacksController
       sign_in(scope, resource, {})
       redirect_to_space(after_sign_in_path_for(@user), space)
     end
+  end
+
+  def link_identity(auth, space)
+    identity = Identity.from_omniauth(auth)
+
+    if identity.user == current_user
+      flash[:notice] = 'Identity is already linked to your account.'
+    elsif identity.user.present?
+      flash[:notice] = 'Identity is already linked to another account.'
+    else
+      identity.user = current_user
+      identity.save!
+      flash[:notice] = 'Identity linked successfully.'
+    end
+
+    redirect_to_space(user_identities_path(current_user), space)
+  rescue StandardError => e
+    flash[:notice] = "Could not link identity: #{e.message}"
+    redirect_to_space(user_identities_path(current_user), space)
   end
 end

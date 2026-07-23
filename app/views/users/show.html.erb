@@ -93,6 +93,7 @@
       <% if TeSS::Config.feature['registration'] %>
         <% if !current_user.nil? and current_user == @user %>
           <%= link_to "Manage account", edit_user_registration_path, :class => 'btn btn-default center-block' %>
+          <%= link_to "Manage identities", user_identities_path(@user), :class => 'btn btn-default center-block mt-2' %>
         <% end %>
       <% end %>
     </div>
@@ -109,6 +110,7 @@
           <% if TeSS::Config.feature['registration'] %>
             <%= link_to "Manage account", edit_user_registration_path, class: 'btn btn-default' %>
           <% end %>
+          <%= link_to "Manage identities", user_identities_path(@user), class: 'btn btn-default' %>
           <!-- Subscriptions Button -->
           <% if TeSS::Config.feature['subscription'] %>
             <%= link_to "Manage subscriptions", subscriptions_path, class: 'btn btn-default' %>

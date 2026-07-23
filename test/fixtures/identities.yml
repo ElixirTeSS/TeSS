@@ -1,0 +1,21 @@
+existing_aaf_user_oidc:
+  user: existing_aaf_user
+  provider: oidc
+  uid: '1234'
+
+trainer_user_oidc:
+  user: trainer_user
+  provider: oidc
+
+private_user_oidc:
+  user: private_user
+  provider: oidc
+
+existing_tuakiri_user_oidc2:
+  user: existing_tuakiri_user
+  provider: oidc2
+
+existing_aai_user_elixir_aai:
+  user: existing_aai_user
+  provider: elixir_aai
+  uid: '1234'

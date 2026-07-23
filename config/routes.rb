@@ -53,6 +53,7 @@ Rails.application.routes.draw do
   get 'sitemap.xml' => 'sitemaps#index', format: false
 
   resources :users, only: [:show, :index, :edit, :create, :update, :destroy] do
+    resources :identities, only: [:index, :destroy]
     resource :ban, only: [:create, :new, :destroy]
   end
 

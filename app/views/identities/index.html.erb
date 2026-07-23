@@ -1,0 +1,45 @@
+<div class="page-header">
+  <%= page_title('Manage identities') %>
+</div>
+
+<p>Linked identities can be used to sign in to your account.</p>
+
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Provider</th>
+        <th>UID</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @identities.each do |identity| %>
+        <tr>
+          <td><%= t("authentication.omniauth.providers.#{identity.provider}", default: identity.provider.to_s.titleize) %></td>
+          <td><%= identity.uid.presence || content_tag(:span, 'Not set', class: 'empty') %></td>
+          <td>
+            <%= link_to 'Remove', user_identity_path(@user, identity),
+                        method: :delete,
+                        data: { confirm: 'Are you sure you want to remove this identity?' },
+                        class: 'btn btn-danger btn-sm' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<h4>Add a new identity</h4>
+<ul>
+  <% Devise.omniauth_configs.each do |provider, config| %>
+    <% params = { link_identity: '1' } %>
+    <% params[:space_id] = current_space.id unless current_space&.default? %>
+    <li>
+      <%= link_to t('authentication.omniauth.log_in_with',
+                    provider: config.options[:label] || t("authentication.omniauth.providers.#{provider}", default: provider.to_s.titleize)),
+                  omniauth_authorize_path('user', provider, **params),
+                  method: :post %>
+    </li>
+  <% end %>
+</ul>
