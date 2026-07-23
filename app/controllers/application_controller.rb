@@ -176,7 +176,9 @@ class ApplicationController < ActionController::Base
   # and redirects unauthorized users away from private spaces they cannot
   # access.
   def set_current_space
-    Space.current_space = TeSS::Config.feature['spaces'] ? Space.find_by_host(request.host) : Space.default
+    host = request.host
+    return Space.default if host == 'tess.elixir-europe.org'
+    Space.current_space = TeSS::Config.feature['spaces'] ? Space.find_by_host(host) : Space.default
     # if the current_space is a specific space (not the default one), we check if the user can access it
     if TeSS::Config.feature['spaces'] && Space.current_space != Space.default
       unless policy(Space.current_space).shown?
