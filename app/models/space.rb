@@ -43,8 +43,7 @@ class Space < ApplicationRecord
     #
     # record:: the Space instance being validated.
     def validate(record)
-      Rails.logger.info "Validating space: is_private=#{record.is_private}, groups_count=#{record.groups.length}"
-      if record.is_private && record.groups.length == 0
+    if record.is_private && !(record.group_ids.length > 0)
         record.errors.add(:base, "If the space is private, you must add required groups.")
       end
     end

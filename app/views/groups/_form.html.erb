@@ -41,7 +41,7 @@
     %>
 
     <div data-role="autocompleter-group"
-         data-url="<%= users_path(format: :json) %>"
+         data-url="<%= users_path(format: :json, exclude_admins: true) %>"
          data-prefix="<%= form_field_name %>"
          data-label-field="name"
          data-id-field="id"

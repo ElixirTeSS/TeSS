@@ -183,12 +183,12 @@ class GroupsControllerTest < ActionController::TestCase
     assert_redirected_to new_user_session_path
   end
 
-  test 'should deny destroy to group owner (non-admin)' do
+  test 'should allow destroy to group owner (non-admin)' do
     sign_in @owner_user
     assert_difference('Group.count', -1) do
       delete :destroy, params: { id: @group }
     end
-    assert_response :redirect
+    assert_redirected_to groups_url
   end
 
   test 'should allow admin to destroy group' do

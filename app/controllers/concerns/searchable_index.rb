@@ -52,11 +52,9 @@ module SearchableIndex
 
       filtered = @search_results.results.select { |record| policy(record).shown? }
 
-      # Override total on the Solr result object so the view gets the right count
-      @search_results.instance_variable_set(:@total, filtered.length)
-      def @search_results.total; @total; end
+      original_total = @search_results.total
 
-      @index_resources = WillPaginate::Collection.create(page, per_page, filtered.length) do |pager|
+      @index_resources = WillPaginate::Collection.create(page, per_page, original_total) do |pager|
         pager.replace(filtered)
       end
 
@@ -120,10 +118,10 @@ module SearchableIndex
     {
         links: links,
         meta: {
-          facets: facets,
-          :'available-facets' => available_facets,
-          query: @search_params,
-          :'results-count' => total
+            facets: facets,
+            available_facets: available_facets,
+            query: @search_params,
+            results_count: total
         }
     }
   end

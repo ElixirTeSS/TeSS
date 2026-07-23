@@ -90,10 +90,9 @@ class ApplicationPolicy
     user_has_role?(:curator, :admin, :scraper_user)
   end
 
-  # Returns:: the default Pundit policy scope for the record's class,
-  #           filtered by #shown?.
+  # Returns:: the default Pundit policy scope for the record's class.
   def scope
-    Pundit.policy_scope!(user, record.class).shown?
+    Pundit.policy_scope!(user, record.class)
   end
 
   # Determines whether the record should be visible to the current user,

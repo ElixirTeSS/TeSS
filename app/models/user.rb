@@ -392,7 +392,7 @@ class User < ApplicationRecord
   end
 
   def is_owner_in_any_group?
-    Group.all.any? { |group| group.group_memberships.find_by(user: self)&.owner == true }
+    group_memberships.where(owner: true).exists?
   end
 
   # Get user's registrations

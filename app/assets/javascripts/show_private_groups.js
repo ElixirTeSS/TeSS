@@ -1,4 +1,4 @@
-// excuted for space form
+// executed for space form
 function show_private_groups() {
     let checkbox = document.getElementById("space_is_private")
     let container = document.getElementById("groups_container")

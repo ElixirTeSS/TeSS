@@ -215,7 +215,7 @@ class PrivateSpaceAccessTest < ActionController::TestCase
       assert_response :forbidden
       return if response.body.blank?
       json = JSON.parse(response.body)
-      assert_equal 'http://schema.org', body['@context']
+      assert_equal 'http://schema.org', json['@context']
     end
   end
 

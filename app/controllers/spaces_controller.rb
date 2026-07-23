@@ -12,7 +12,7 @@ class SpacesController < ApplicationController
     @spaces = Space.all.select { |space| policy(space).shown? }
     respond_to do |format|
       format.html
-      format.json { render json: @groups.as_json(only: [:id, :title]) }
+      format.json { render json: @spaces.as_json(only: [:id, :title]) }
     end
   end
 
