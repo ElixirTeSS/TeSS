@@ -20,7 +20,7 @@ class AboutController < ApplicationController
   private
 
   def check_external_link
-    if TeSS::Config.site['about_us_link']
+    if TeSS::Config.site['about_us_link'].present?
       action_name_map = { 
         'tess' => '/', 'registering' => '/content/intro-content/', 
         'learning_paths' => '/content/learning-paths/', 'developers' => '/developers/code-data/', 'us' => '/overview/about' 
