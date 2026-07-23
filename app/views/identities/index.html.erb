@@ -20,8 +20,7 @@
           <td><%= identity.uid.presence || content_tag(:span, 'Not set', class: 'empty') %></td>
           <td>
             <%= link_to 'Remove', user_identity_path(@user, identity),
-                        method: :delete,
-                        data: { confirm: 'Are you sure you want to remove this identity?' },
+                        data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to remove this identity?' },
                         class: 'btn btn-danger btn-sm' %>
           </td>
         </tr>

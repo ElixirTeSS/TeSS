@@ -348,8 +348,10 @@ class User < ApplicationRecord
       other_profiles = others.map(&:profile)
       others.each do |other|
         other.identities.each do |identity|
-          existing_identity = identities.find_by(provider: identity.provider, uid: identity.uid)
-          if existing_identity
+          existing_identity = if identity.uid.present?
+                                identities.find_by(provider: identity.provider, uid: identity.uid)
+                              end
+          if existing_identity.present?
             identity.destroy
           else
             identity.update!(user: self)
