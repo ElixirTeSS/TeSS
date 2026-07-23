@@ -95,7 +95,7 @@ module ApplicationHelper
   end
 
   def exchange_icon(resource, size = nil)
-    return unless resource.origin_uri
+    return unless resource.origin_uri.present?
     "<span class='exchange-icon pull-right'>#{icon_for(:exchanged, size)}</span>".html_safe
   end
 

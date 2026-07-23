@@ -157,6 +157,8 @@ class Event < ApplicationRecord
   validates :presence, inclusion: { in: presences.keys, allow_blank: true }
   validates :keywords, length: { maximum: 20 }
   validate :allowed_url
+  validates :origin_uri, url: { allow_blank: true }
+
   clean_array_fields(:keywords, :fields, :event_types, :target_audience,
                      :eligibility, :host_institutions, :sponsors)
   update_suggestions(:keywords, :target_audience, :host_institutions)

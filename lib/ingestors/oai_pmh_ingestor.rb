@@ -91,7 +91,7 @@ module Ingestors
 
         extra_metadata = {}
         if tess_instance
-          origin_uri = metadata_tag.at_xpath('//rdf:RDF/*/@rdf:about', 'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')&.to_s
+          origin_uri = metadata_tag.at_xpath('//rdf:RDF/*/@rdf:about', 'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')&.value
           extra_metadata[:origin_uri] = origin_uri
         end
 
