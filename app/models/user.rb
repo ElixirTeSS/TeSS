@@ -207,6 +207,7 @@ class User < ApplicationRecord
 
     if user.nil? && auth.info.email.present? && auth.provider.present?
       user = User.joins(:identities).where(email: auth.info.email, identities: { provider: auth.provider }).first
+      user ||= User.where(provider: auth.provider, email: auth.info.email).first
     end
 
     if user
@@ -346,6 +347,14 @@ class User < ApplicationRecord
       new_collaborations = []
       other_profiles = others.map(&:profile)
       others.each do |other|
+        other.identities.each do |identity|
+          existing_identity = identities.find_by(provider: identity.provider, uid: identity.uid)
+          if existing_identity
+            identity.destroy
+          else
+            identity.update!(user: self)
+          end
+        end
         other.reassign_resources(self)
         other.activities_as_owner.update_all(owner_id: id, owner_type: self.class.name)
         other.activities.update_all(trackable_id: id, trackable_type: self.class.name)

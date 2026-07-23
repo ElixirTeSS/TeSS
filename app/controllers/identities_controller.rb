@@ -27,7 +27,9 @@ class IdentitiesController < ApplicationController
   end
 
   def authorize_user
-    handle_error(:forbidden) && return unless current_user == @user
+    return if current_user == @user
+
+    handle_error(:forbidden)
   end
 
   def set_breadcrumbs

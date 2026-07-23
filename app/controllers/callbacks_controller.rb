@@ -45,7 +45,7 @@ class CallbacksController < Devise::OmniauthCallbacksController
       end
     else
       scope = Devise::Mapping.find_scope!(@user)
-      sign_in(scope, resource, {})
+      sign_in(scope, @user, {})
       redirect_to_space(after_sign_in_path_for(@user), space)
     end
   end

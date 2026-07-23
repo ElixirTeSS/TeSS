@@ -225,9 +225,9 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     # check user created
     new_user = User.find_by_username(expected_username)
     assert !new_user.nil?, "new username[#{expected_username}] not created successfully"
-    assert_equal 'oidc2', new_user.provider
-    assert !new_user.uid.nil?
-    assert_equal new_uid, new_user.uid
+    identity = new_user.identities.find_by(provider: 'oidc2')
+    refute_nil identity
+    assert_equal new_uid, identity.uid
     assert_equal new_email, new_user.email
   end
 
@@ -397,6 +397,28 @@ class OmniauthTest < ActionDispatch::IntegrationTest
 
     post '/users/auth/not_a_real_provider'
     assert_response :not_found
+  end
+
+  test 'logged-in users can link additional identities' do
+    user = users(:regular_user)
+    post '/users/sign_in', params: { 'user[login]' => user.username, 'user[password]' => 'hello' }
+
+    OmniAuth.config.mock_auth[:oidc2] = OmniAuth::AuthHash.new(
+      {
+        provider: 'oidc2',
+        uid: 'oidc2-linked-uid',
+        info: {
+          email: user.email,
+          nickname: user.username
+        }
+      })
+
+    post user_oidc2_omniauth_authorize_url(link_identity: '1')
+    follow_redirect! # OmniAuth redirect
+    follow_redirect! # CallbacksController identities redirect
+
+    assert_equal user_identities_path(user), path
+    assert user.reload.identities.where(provider: 'oidc2', uid: 'oidc2-linked-uid').any?
   end
 
   test 'authentication redirects users back to origin space on subdomain' do

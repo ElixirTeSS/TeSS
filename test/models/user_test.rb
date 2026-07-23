@@ -92,11 +92,27 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "should save with nil password if using omniauth" do
-    user = User.new(@user_params.merge(password: nil, provider: 'elixir_aai', uid: 'abcdefg'))
+    user = User.new(@user_params.merge(password: nil))
+    user.identities.build(provider: 'elixir_aai', uid: 'abcdefg')
     refute user.password_required?
     assert user.using_omniauth?
     assert user.save
     assert user.reload.encrypted_password.blank?
+  end
+
+  test 'should create identity from omniauth details when creating new user' do
+    auth = OpenStruct.new(
+      provider: 'oidc',
+      uid: 'abc123',
+      info: OpenStruct.new(email: 'new-aaf-user@example.com', nickname: 'new_aaf_user')
+    )
+
+    user = User.from_omniauth(auth)
+    assert user.save
+
+    identity = user.identities.find_by(provider: 'oidc')
+    refute_nil identity
+    assert_equal 'abc123', identity.uid
   end
 
   test "should not save with password under 8 characters" do
