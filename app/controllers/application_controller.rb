@@ -115,7 +115,9 @@ class ApplicationController < ActionController::Base
   end
 
   def set_current_space
-    Space.current_space = TeSS::Config.feature['spaces'] ? Space.find_by_host(request.host) : Space.default
+    host = request.host
+    return Space.default if host == 'tess.elixir-europe.org'
+    Space.current_space = TeSS::Config.feature['spaces'] ? Space.find_by_host(host) : Space.default
   end
 
   def current_space
