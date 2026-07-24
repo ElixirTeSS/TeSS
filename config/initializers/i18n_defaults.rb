@@ -3,7 +3,8 @@ module I18n
     alias original_translate translate
 
     def translate(key, **options)
-      defaults = { site_name: TeSS::Config.site['title_short'] }
+      defaults = { site_name: TeSS::Config.site['title_short'],
+                    repository: TeSS::Config.site['repository'] }
       original_translate(key, **defaults.merge(options))
     end
     alias t translate
