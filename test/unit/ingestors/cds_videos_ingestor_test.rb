@@ -75,6 +75,7 @@ class CdsVideosIngestorTest < ActiveSupport::TestCase
     end
 
     mock_logger.verify
+    assert true, 'Mock verification passed'
   end
 
 test 'should read search source with pagination across multiple pages' do
