@@ -11,6 +11,7 @@
       <% end %>
     </div>
 
+    <% @spaces = @spaces.map { |s| (s.host == 'tess.elixir-europe.org') ? s.becomes(ElixirTessSpace) : s }.sort_by { |s| -(s.materials.count + s.events.not_finished.count) } %>
     <%= render partial: 'common/masonry_grid', locals: { objects: @spaces } %>
   </div>
 </div>

@@ -3,6 +3,10 @@ class ElixirTessSpace < Space
     Space.model_name
   end
 
+  def to_partial_path
+    'spaces/space'
+  end
+
   def self.policy_class
     SpacePolicy
   end
