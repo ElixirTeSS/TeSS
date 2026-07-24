@@ -53,7 +53,9 @@ module HasTestJob
 
   def test_results_path
     path_id = Rails.env.test? ? "fakeid_#{model_name.singular}_#{id}" : test_job_id
-    Rails.root.join('tmp', 'source_test_results').tap { |d| d.mkdir unless d.exist? }.join("test_results_#{path_id}.yml")
+    dir = Rails.root.join('tmp', 'source_test_results')
+    dir.mkpath
+    dir.join("test_results_#{path_id}.yml")
   end
 
   def deep_hashify(params)
