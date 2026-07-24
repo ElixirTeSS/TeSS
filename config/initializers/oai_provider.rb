@@ -31,7 +31,7 @@ class TrainingProvider < OAI::Provider::Base
   sample_id 'materials/142' # so that example id is oai:domain:materials/142
   extra_description %(
      <description>
-       <tess-instance xmlns="http://tess.elixir-europe.org/xmlns" />
+       <tess-instance xmlns="http://tesshub.org/xmlns" />
      </description>)
 
   register_format(OAIRDF.instance)
