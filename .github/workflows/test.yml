@@ -64,3 +64,9 @@ jobs:
         run: bundle exec rails test
       - name: Run system tests
         run: bundle exec rails test:system
+      - name: Upload system test failure screenshots
+        uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          path: tmp/screenshots/*.png
+          if-no-files-found: ignore
