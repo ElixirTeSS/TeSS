@@ -68,5 +68,6 @@ jobs:
         uses: actions/upload-artifact@v7
         if: failure()
         with:
+          name: Screenshots
           path: tmp/screenshots/*.png
           if-no-files-found: ignore
