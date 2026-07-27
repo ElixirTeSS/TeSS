@@ -1,0 +1,166 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://oai-pmh.tesshub.space/oai-pmh?metadataPrefix=rdf&verb=ListRecords
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0
+      From:
+      - test@example.com
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 21 Jul 2026 13:06:44 GMT
+      Content-Type:
+      - text/xml; charset=utf-8
+      Content-Length:
+      - '3270'
+      Connection:
+      - keep-alive
+      Server:
+      - cloudflare
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Vary:
+      - Accept,Origin,Accept-Encoding
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Xss-Protection:
+      - '0'
+      Feature-Policy:
+      - camera 'none'; gyroscope 'none'; microphone 'none'; usb 'none'; fullscreen
+        'self'; payment 'none'
+      X-Request-Id:
+      - d0013d21-bc24-4956-b930-055f3f7c5956
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Runtime:
+      - '0.071256'
+      X-Content-Type-Options:
+      - nosniff
+      Content-Security-Policy:
+      - 'default-src ''self'' https:; font-src ''self'' https: data:; img-src ''self''
+        https: data:; object-src ''none''; script-src ''self'' https: ''unsafe-inline'';
+        style-src ''self'' https: ''unsafe-inline'''
+      X-Powered-By:
+      - Phusion Passenger(R) 6.0.18
+      Etag:
+      - W/"a3f07edfcb2ab6214614661382a7b916-gzip"
+      Status:
+      - 200 OK
+      Nel:
+      - '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}'
+      Report-To:
+      - '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=%2B%2FNroeqG4tsUqXtpDqDYWQwXVwloSkQ7imaOxw87RJRDIJsuNsAue9n%2Bx1hmc7Sebtdnt69rRi8vFg6Vv3L7NcHaWXd0IWe8r4ymgf744QWJwtIxvIbE%2B3vRftGM%2F2IokT%2BF9wYNAFE%3D"}]}'
+      Cf-Cache-Status:
+      - DYNAMIC
+      Cf-Ray:
+      - a1ea6cb55b4525c5-LHR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <?xml-stylesheet type="text/xsl" href="/oai2xhtml.xsl"?>
+        <OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+          <responseDate>2026-07-21T13:06:44Z</responseDate>
+          <request metadataPrefix="rdf" verb="ListRecords">https://tesshub.space/oai-pmh</request>
+          <ListRecords>
+            <record>
+              <header>
+                <identifier>oai:tesshub.space:3931</identifier>
+                <datestamp>2026-07-21T12:59:13Z</datestamp>
+              </header>
+              <metadata>
+                <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sdo="http://schema.org/"
+                         xmlns:dc="http://purl.org/dc/terms/">
+                  <sdo:LearningResource
+                          rdf:about="https://tesshub.space/materials/example-material-1e5c21fe-8578-45be-9021-3d764aac1675">
+                    <dc:conformsTo>
+                      <sdo:CreativeWork rdf:about="https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE">
+                      </sdo:CreativeWork>
+                    </dc:conformsTo>
+                    <sdo:name>Example Material</sdo:name>
+                    <sdo:url rdf:resource="https://example.com/materials/example-material"/>
+                    <sdo:description>An example material</sdo:description>
+                    <sdo:keywords>example</sdo:keywords>
+                    <sdo:author>
+                      <sdo:Person rdf:nodeID="g873240">
+                        <sdo:name>Steve Steveson</sdo:name>
+                      </sdo:Person>
+                    </sdo:author>
+                    <sdo:author>
+                      <sdo:Person rdf:about="https://orcid.org/0000-0002-1825-0097">
+                        <sdo:name>Josiah Carberry</sdo:name>
+                        <sdo:identifier>https://orcid.org/0000-0002-1825-0097</sdo:identifier>
+                      </sdo:Person>
+                    </sdo:author>
+                    <sdo:contributor>
+                      <sdo:Person rdf:nodeID="g873260">
+                        <sdo:name>Joe Bloggs</sdo:name>
+                      </sdo:Person>
+                    </sdo:contributor>
+                    <sdo:license rdf:resource="https://spdx.org/licenses/Apache-2.0.html"/>
+                  </sdo:LearningResource>
+                </rdf:RDF>
+              </metadata>
+            </record>
+            <record>
+              <header>
+                <identifier>oai:tesshub.space:3932</identifier>
+                <datestamp>2026-07-21T13:04:24Z</datestamp>
+              </header>
+              <metadata>
+                <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sdo="http://schema.org/"
+                         xmlns:dc="http://purl.org/dc/terms/">
+                  <sdo:LearningResource rdf:about="https://tesshub.space/materials/another-material">
+                    <dc:conformsTo>
+                      <sdo:CreativeWork rdf:about="https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE">
+                      </sdo:CreativeWork>
+                    </dc:conformsTo>
+                    <sdo:name>Another Material</sdo:name>
+                    <sdo:url rdf:resource="https://example.com/materials/another-material"/>
+                    <sdo:description>Sir, a second material has hit the registry</sdo:description>
+                    <sdo:keywords>testing</sdo:keywords>
+                    <sdo:keywords>example</sdo:keywords>
+                    <sdo:author>
+                      <sdo:Person rdf:nodeID="g873280">
+                        <sdo:name>Jose Gonzales</sdo:name>
+                      </sdo:Person>
+                    </sdo:author>
+                    <sdo:author>
+                      <sdo:Person rdf:nodeID="g873300">
+                        <sdo:name>Amelie Martin</sdo:name>
+                      </sdo:Person>
+                    </sdo:author>
+                    <sdo:audience>
+                      <sdo:Audience rdf:nodeID="g873320">
+                        <sdo:audienceType>Researchers</sdo:audienceType>
+                      </sdo:Audience>
+                    </sdo:audience>
+                    <sdo:license rdf:resource="https://spdx.org/licenses/MIT.html"/>
+                  </sdo:LearningResource>
+                </rdf:RDF>
+              </metadata>
+            </record>
+          </ListRecords>
+        </OAI-PMH>
+  recorded_at: Tue, 21 Jul 2026 13:06:44 GMT
+recorded_with: VCR 6.2.0

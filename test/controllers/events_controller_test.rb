@@ -1704,4 +1704,19 @@ class EventsControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test 'should link back to original entry if origin URI set' do
+    get :show, params: { id: @event }
+    assert_response :success
+
+    assert_select '#origin-info', count: 0
+
+    uri = 'https://some-tess-instance.org/events/123'
+    @event.update(origin_uri: uri)
+
+    get :show, params: { id: @event }
+    assert_response :success
+
+    assert_select '#origin-info a[href=?]', uri
+  end
 end

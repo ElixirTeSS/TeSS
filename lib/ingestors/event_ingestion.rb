@@ -6,7 +6,6 @@ module Ingestors
       if event.is_a?(Hash)
         c = EventsController.new
         c.params = { event: event }
-        c.send(:event_params)
         event = OpenStruct.new(c.send(:event_params))
       end
       event = handle_auto_parsing(event)

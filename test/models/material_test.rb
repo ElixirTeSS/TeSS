@@ -751,4 +751,21 @@ class MaterialTest < ActiveSupport::TestCase
     bioschemas = m.to_bioschemas.first.generate
     refute bioschemas.key?(:license)
   end
+
+  test 'validates origin_uri' do
+    @material.origin_uri = nil
+    assert @material.valid?
+
+    @material.origin_uri = ''
+    assert @material.valid?
+
+    @material.origin_uri = 'https://tess-instance.org/materials/123'
+    assert @material.valid?
+
+    @material.origin_uri = 'hamster'
+    refute @material.valid?
+
+    @material.origin_uri = 'ftp://tess-instance.org/materials/123'
+    refute @material.valid?
+  end
 end

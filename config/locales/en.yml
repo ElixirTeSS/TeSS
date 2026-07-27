@@ -1189,3 +1189,7 @@ en:
             week: Within the last week
             month: Within the last month
             year: Within the last year
+  exchange:
+    title: Original entry
+    info: "This %{resource_type} originated from another TeSS registry. For complete, up-to-date information, please visit the original entry:"
+    link: Go to original entry
