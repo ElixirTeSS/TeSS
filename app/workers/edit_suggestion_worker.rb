@@ -2,7 +2,7 @@ class EditSuggestionWorker
   include Sidekiq::Worker
 
   # TODO: Should a random time delay go in here such that the chastisement of
-  # TODO: BioPortal is somewhat mimimised?
+  # TODO: BioPortal is somewhat minimised?
   def perform(arg_array)
     suggestible_id, suggestible_type = arg_array
     logger.debug "ID: #{suggestible_id}"

@@ -111,7 +111,7 @@ class SubscriptionsControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
-  test 'should delete a subscription via unsubcribe link' do
+  test 'should delete a subscription via unsubscribe link' do
     sub = subscriptions(:daily_subscription)
 
     assert_difference('Subscription.count', -1) do
@@ -121,7 +121,7 @@ class SubscriptionsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test 'should not delete a subscription via unsubcribe link with invalid code' do
+  test 'should not delete a subscription via unsubscribe link with invalid code' do
     sub = subscriptions(:daily_subscription)
     sub2 = subscriptions(:weekly_subscription)
 

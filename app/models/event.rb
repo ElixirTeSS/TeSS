@@ -388,7 +388,7 @@ class Event < ApplicationRecord
       redis = Redis.new(url: TeSS::Config.redis_url)
       if redis.exists?(location)
         self.latitude, self.longitude = JSON.parse(redis.get(location))
-        Rails.logger.info("Re-using: #{location}")
+        Rails.logger.info("Reusing: #{location}")
       end
     rescue Redis::BaseError => e
       raise e unless Rails.env.production?
