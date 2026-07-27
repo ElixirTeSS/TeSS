@@ -6,4 +6,7 @@ class ApplicationRecord < ActiveRecord::Base
   include AutocompleteManager
   include ArrayFieldCleaner
 
+  def oai_identifier
+    "#{self.class.model_name.route_key}/#{id}"
+  end
 end

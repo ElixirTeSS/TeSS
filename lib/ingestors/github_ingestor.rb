@@ -155,7 +155,7 @@ module Ingestors
     end
 
     # DOI – Fetches DOI from various sources in a repo
-    # I chose to only read the `README.md` as it seems to have the DOI badge almost everytime.
+    # I chose to only read the `README.md` as it seems to have the DOI badge almost every time.
     # Whereas enabling the fetching of CITATION.cff or CITATION.md would result in increasing
     # the number of api request.
     def fetch_doi(full_name)

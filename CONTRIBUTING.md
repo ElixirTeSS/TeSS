@@ -1,7 +1,7 @@
 
 # Contributing to TeSS
 
-While TeSS was originally developed to serve as the training portal for [ELIXIR](https://www.elixir-europe.org/), it endeavours to be a generic training platform that can be easily customized and re-used in other communities. 
+While TeSS was originally developed to serve as the training portal for [ELIXIR](https://www.elixir-europe.org/), it endeavours to be a generic training platform that can be easily customized and reused in other communities. 
 To that end we welcome and encourage new contributors to get involved and help to shape and improve TeSS. This document discusses and explains different ways you can contribute to TeSS.
 You can find a code checklist at the end of this document to summarize the important points.
 

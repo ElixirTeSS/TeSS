@@ -1,47 +1,19 @@
 require 'test_helper'
 
-class FakeClient
-  def initialize(rdf_strings, dc_strings)
-    @rdf_response = Minitest::Mock.new
-    rdf_response = rdf_strings.map do |s|
-      inner_mock = Minitest::Mock.new
-      outer_mock = Minitest::Mock.new
-      inner_mock.expect(:metadata, outer_mock, [])
-      outer_mock.expect(:to_s, s, [])
-      inner_mock
-    end
-    dc_response = dc_strings.map do |s|
-      inner_mock = Minitest::Mock.new
-      outer_mock = Minitest::Mock.new
-      inner_mock.expect(:metadata, outer_mock, [])
-      outer_mock.expect(:to_s, s, [])
-      inner_mock
-    end
-    @rdf_response.expect(:full, rdf_response, [])
-    @dc_response = Minitest::Mock.new
-    @dc_response.expect(:full, dc_response, [])
-  end
-
-  def list_records(metadata_prefix: nil)
-    if metadata_prefix == 'rdf'
-      @rdf_response
-    elsif metadata_prefix == 'oai_dc'
-      @dc_response
-    end
-  end
-end
-
-class OaiPmhTest < ActiveSupport::TestCase
+class OaiPmhIngestorTest < ActiveSupport::TestCase
   setup do
     @ingestor = Ingestors::OaiPmhIngestor.new
     @user = users(:regular_user)
     @content_provider = content_providers(:another_portal_provider)
+    @oai_pmh_url = 'https://example.org/oai-pmh'
+    @oai_pmh_id = 'example'
   end
 
   test 'should read empty oai pmh endpoint' do
-    OAI::Client.stub(:new, FakeClient.new([], [])) do
-      @ingestor.read('https://example.org')
-    end
+    mock_oai_pmh([], [])
+
+    @ingestor.read(@oai_pmh_url)
+
     assert_equal [], @ingestor.materials
     assert_equal [], @ingestor.events
   end
@@ -68,9 +40,10 @@ class OaiPmhTest < ActiveSupport::TestCase
       </metadata>
     METADATA
 
-    OAI::Client.stub(:new, FakeClient.new([], [record])) do
-      @ingestor.read('https://example.org')
-    end
+    mock_oai_pmh([], [record])
+
+    @ingestor.read(@oai_pmh_url)
+
     result = @ingestor.materials.first
 
     assert_equal 'dc_title', result.title
@@ -103,9 +76,10 @@ class OaiPmhTest < ActiveSupport::TestCase
       </metadata>
     METADATA
 
-    OAI::Client.stub(:new, FakeClient.new([], [record])) do
-      @ingestor.read('https://example.org')
-    end
+    mock_oai_pmh([], [record])
+
+    @ingestor.read(@oai_pmh_url)
+
     result = @ingestor.events.first
 
     assert_equal 'dc_title', result.title
@@ -152,9 +126,9 @@ class OaiPmhTest < ActiveSupport::TestCase
       </metadata>
     METADATA
 
-    OAI::Client.stub(:new, FakeClient.new([], [material1, material2, event1, event2])) do
-      @ingestor.read('https://example.org')
-    end
+    mock_oai_pmh([], [material1, material2, event1, event2])
+
+    @ingestor.read(@oai_pmh_url)
 
     assert_equal %w[title1 title2], @ingestor.events.map(&:title)
     assert_equal %w[title3 title4], @ingestor.materials.map(&:title)
@@ -184,9 +158,9 @@ class OaiPmhTest < ActiveSupport::TestCase
       </rdf:RDF></metadata>
     METADATA
 
-    OAI::Client.stub(:new, FakeClient.new([material, material, event], [])) do
-      @ingestor.read('https://example.org')
-    end
+    mock_oai_pmh([material, material, event], [])
+
+    @ingestor.read(@oai_pmh_url)
 
     assert_equal 1, @ingestor.materials.length
     result = @ingestor.materials.first
@@ -198,5 +172,92 @@ class OaiPmhTest < ActiveSupport::TestCase
     result = @ingestor.events.first
     assert_equal 'bioschemas title2', result.title
     assert_equal 'https://example.org/bioschemas/event', result.url
+  end
+
+  test 'should read TeSS instance OAI-PMH endpoint and store origin URI' do
+    VCR.use_cassette('ingestors/tess_oai_pmh_listrecords') do
+      VCR.use_cassette('ingestors/tess_oai_pmh_identify') do
+        @ingestor.read('https://oai-pmh.tesshub.space/oai-pmh')
+      end
+    end
+
+    assert_equal 2, @ingestor.materials.length
+    assert @ingestor.materials.all? { |m| m.origin_uri.start_with?('https://tesshub.space/materials/') }
+  end
+
+  private
+
+  IDENTIFY = %(
+<?xml-stylesheet type="text/xsl" href="/oai2xhtml.xsl"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+  <responseDate>2026-07-22T09:37:47Z</responseDate>
+  <request verb="Identify">https://tesshub.space/oai-pmh</request>
+  <Identify>
+    <repositoryName>OAI-PMH Provider</repositoryName>
+    <baseURL>https://some-oai-pmh.org/oai-pmh</baseURL>
+    <protocolVersion>2.0</protocolVersion>
+    <adminEmail>contact@example.com</adminEmail>
+    <earliestDatestamp>2026-07-21T12:59:13Z</earliestDatestamp>
+    <deletedRecord>transient</deletedRecord>
+    <granularity>YYYY-MM-DDThh:mm:ssZ</granularity>
+    <description>
+      <oai-identifier xmlns="http://www.openarchives.org/OAI/2.0/oai-identifier" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai-identifier http://www.openarchives.org/OAI/2.0/oai-identifier.xsd">
+        <scheme>oai</scheme>
+        <repositoryIdentifier>some-oai-pmh</repositoryIdentifier>
+        <delimiter>:</delimiter>
+        <sampleIdentifier>some-oai-pmh:142</sampleIdentifier>
+      </oai-identifier>
+    </description>
+  </Identify>
+</OAI-PMH>
+)
+
+  LIST_RECORDS_WRAPPER = %(
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/oai2xhtml.xsl"?>
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+  <responseDate>2026-07-21T13:06:44Z</responseDate>
+  <request metadataPrefix="rdf" verb="ListRecords">https://tesshub.space/oai-pmh</request>
+  <ListRecords>
+    %{records}
+  </ListRecords>
+</OAI-PMH>
+)
+
+
+
+  # ?verb=Identify
+  # ?metadataPrefix=rdf&verb=ListRecords
+  # ?metadataPrefix=oai_dc&verb=ListRecords
+  def mock_oai_pmh(rdf_strings, dc_strings)
+    WebMock.stub_request(:get, "#{@oai_pmh_url}?verb=Identify").to_return(status: 200, body: IDENTIFY)
+
+    id = 1
+    rdf_response = LIST_RECORDS_WRAPPER % { records: rdf_strings.map do |rdf|
+      %(
+<record>
+  <header>
+    <identifier>oai:#{@oai_pmh_id}:#{id += 1}</identifier>
+    <datestamp>#{Time.now.utc.iso8601}</datestamp>
+  </header>
+  #{rdf}
+</record>
+      )
+    end.join("\n") }
+    WebMock.stub_request(:get, "#{@oai_pmh_url}?metadataPrefix=rdf&verb=ListRecords").to_return(status: 200, body: rdf_response)
+
+    dc_response = LIST_RECORDS_WRAPPER % { records: dc_strings.map do |rdf|
+      %(
+<record>
+  <header>
+    <identifier>oai:#{@oai_pmh_id}:#{id += 1}</identifier>
+    <datestamp>#{Time.now.utc.iso8601}</datestamp>
+  </header>
+  #{rdf}
+</record>
+      )
+    end.join("\n") }
+    WebMock.stub_request(:get, "#{@oai_pmh_url}?metadataPrefix=oai_dc&verb=ListRecords").to_return(status: 200, body: dc_response)
   end
 end
