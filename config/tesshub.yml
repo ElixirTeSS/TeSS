@@ -1,0 +1,146 @@
+default: &default
+  base_url: http://localhost:3000
+  contact_email: contact@example.com
+  sender_email: no-reply@localhost
+  twitter_handle:
+  solr_enabled: true
+#  solr_facets:
+#    events: [content_provider]
+  announcement_message: # Test one two three
+  prevent_robot_indexing: false
+  require_cookie_consent: true
+  identifiers_prefix: 123
+  blocked_domains:
+    - !ruby/regexp '/bad-domain\.example/'
+  blocked_countries: # Block registration from the following ISO 3166-1 alpha-2 codes
+    #- gb
+  #sentry_dsn: https://e3e0eb6c35b03b5235049ba8d9299d08@o4505884333506560.ingest.sentry.io/4505884336652288
+  site:
+    title: 'TeSSHub'
+    title_short: "TeSSHub"
+    #favicon: elixir/favicon.png
+    #logo: elixir/elixir-tess.svg
+    favicon: tess-hub-square-8.svg
+    logo: tess-hub-wide-8.svg
+    logo_alt: 'TeSSHub logo'
+    logo_open_graph: ''
+    logo_email: ''
+    repository: 'https://github.com/ElixirTeSS/TeSS'
+    supported_by: 'elixir_supported_by'
+    widget_example:
+    # default_theme: blue
+    icon_primary_color: '#047EAA' # Blue by default
+    icon_secondary_color: '#F47D21' # Orange by default
+    home_page: # Configuration for the sections displayed on the front page
+      catalogue_blocks: true
+      provider_grid: false
+      provider_carousel: false
+      featured_providers:
+      # A list of content provider IDs to show in the front page carousel. Leave blank to show latest 5 (with avatar defined)
+      faq: [spaces, who, how, why, embed, subscribe] # Questions/answers in config/en.yml: home > faq. Use empty array to hide section
+      promo_blocks: false
+      communities: false
+      upcoming_events: 0
+      latest_materials: 0
+    tab_order: ['about', 'spaces', 'events', 'materials', 'workflows', 'collections']
+    # The tabs that should be collapsed under the "Directory" tab. Can be left blank to hide it.
+    directory_tabs: ['trainers', 'content_providers', 'nodes']
+  placeholder:
+    collection: 'placeholder-collection.png'
+    content_provider: 'placeholder-organization.png'
+    group: 'placeholder-group.png'
+    person: 'placeholder-person.png'
+  mailer:
+    delivery_method: sendmail
+    location: /usr/sbin/sendmail
+    arguments: '-i -t'
+  gmaps:
+    center:
+      latitude: 53.4674583
+      longitude: -2.233948899999973
+    zoom:
+      latitude: 3
+      longitude: 13
+  header_notice:
+  feature:
+    elearning_materials: false
+    events: true
+    invitation: true
+    materials: true
+    nodes: true
+    collections: true
+    content_providers: true
+    subscription: true
+    registration: true
+    trainers: true
+    workflows: true
+    sources: true
+    user_source_creation: true
+    edit_suggestions: false
+    geocoding: false
+    collection_curation: false
+    learning_paths: true
+    # Possible features to disable:
+    #  biotools, topics, operations, sponsors, fairshare, county, ardc_fields_of_research,
+    #  other_types, subsets, syllabus, approved_editors
+    disabled: ['other_types', 'subsets', 'syllabus', 'visibility']
+    materials_disabled: []
+    bioschemas_testing: true
+    spaces: true
+    controlled_vocabulary_vars: ['keywords'] # available features: ['target audience']
+  user_ingestion_methods: ['bioschemas']
+  dictionaries:
+    cost_basis: 'cost_basis.yml'
+    difficulty: 'difficulty.yml'
+    eligibility: 'eligibility.yml'
+    event_types: 'event_types.yml'
+    licences: 'licences.yml'
+    material_status: 'material_status.yml'
+    material_type: 'material_type.yml'
+    target_audience: 'target_audience.yml'
+    trainer_experience: 'trainer_experience.yml'
+  funders:
+    - url: https://www.oscars-project.eu/projects/mtess-x-scaling-training-portal-federation-ris-through-multi-tenanting-and-exchange
+      logo: elixir/oscars-logo.svg
+    - url: https://biofair.uk/
+      logo: elixir/biofair-logo.png
+    - url: https://elixir.ut.ee/
+      logo: nodes/logos_svg/EE.svg
+    - url: http://elixir-uk.org/
+      logo: nodes/logos_svg/GB.svg
+    - url: http://www.bbsrc.ac.uk/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1
+      logo: elixir/bbsrc-logo.svg
+    - url: http://www.manchester.ac.uk/
+      logo: elixir/uom-logo.svg
+    - url: http://www.oerc.ox.ac.uk/
+      logo: elixir/oerc-logo.svg
+
+  communities:
+#    uk:
+#      name: UK training
+#      filters:
+#        node: United Kingdom
+#      flag: 🇬🇧
+#      description: Some text about what the community is bla bla bla
+#      country_code: 'GB'
+#      featured_providers:
+#        node:
+#          name: United Kingdom
+  spaces:
+    plants:
+      name: TeSS Plants Community
+    astro:
+      name: TeSS Space Community
+    elixir:
+      name: ELIXIR TeSS
+development:
+  <<: *default
+  base_url: http://mytess.training
+
+production:
+  <<: *default
+  base_url: http://example.com
+
+test:
+  <<: *default
+  base_url: http://test.example.com

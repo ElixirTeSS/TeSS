@@ -42,13 +42,13 @@
         <%# Menu -%>
         <%
           tabs = [
-            { feature: 'about', link: about_path },
-            { feature: 'events', link: events_path },
-            { feature: 'materials', link: materials_path },
-            { feature: 'elearning_materials', link: elearning_materials_path },
-            { feature: 'learning_paths', link: learning_paths_path },
-            { feature: 'workflows', link: workflows_path },
-            { feature: 'collections', link: collections_path },
+            #{ feature: 'about', link: about_path },
+            { feature: 'events', link: events_path(across_all_spaces: true) },
+            { feature: 'materials', link: materials_path(across_all_spaces: true) },
+            { feature: 'elearning_materials', link: elearning_materials_path(across_all_spaces: true) },
+            { feature: 'learning_paths', link: learning_paths_path(across_all_spaces: true) },
+            { feature: 'workflows', link: workflows_path(across_all_spaces: true) },
+            { feature: 'collections', link: collections_path(across_all_spaces: true) },
             { feature: 'trainers', link: trainers_path },
             { feature: 'content_providers', link: content_providers_path },
             { feature: 'nodes', link: nodes_path },
