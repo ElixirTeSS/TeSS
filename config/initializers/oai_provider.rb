@@ -10,7 +10,7 @@ class MultiModel < OAI::Provider::Model
   attr_reader :model_scopes
 
   def initialize(model_scopes, limit = nil, timestamp_field = 'updated_at', identifier_field = 'id')
-    super(limit || 3, timestamp_field, identifier_field)
+    super(limit || 100, timestamp_field, identifier_field)
     @model_scopes = model_scopes
   end
 
@@ -33,22 +33,21 @@ class MultiModel < OAI::Provider::Model
   def find(selector, options={})
     return find_by_id(selector) unless selector == :all
 
-    from_date = options[:from]
-    if options[:resumptionToken]
-      resumption_token = OAI::Provider::ResumptionToken.parse(options[:resumptionToken])
+    skip_until = nil
+    if options[:resumption_token]
+      resumption_token = OAI::Provider::ResumptionToken.parse(options[:resumption_token])
       options = resumption_token.to_conditions_hash
-      from_date = Date.parse(options[:resume_at]) if options[:resume_at]
+      skip_until = resumption_token.last_str
     end
 
     scopes = model_scopes
     scopes = scopes.select { |scope| scope.model.model_name.route_key == options[:set] } if options[:set]
-    scopes = scopes.map { |scope| scope.where("#{timestamp_field} >= ?", from_date) } if from_date
-    scopes = scopes.map { |scope| scope.where("#{timestamp_field} <= ?", options[:until]) } if options[:until]
-    enumerators = scopes.map { |scope| scope.order(timestamp_field => :asc, id: :asc).limit(limit + 1).to_enum }
+    scopes = scopes.map { |scope| scope.where("#{timestamp_field} >= ?", options[:from]) } if options[:from]
+    scopes = scopes.map { |scope| scope.where("#{timestamp_field} < ?", options[:until] + 1.second) } if options[:until]
+    enumerators = scopes.map { |scope| scope.order(timestamp_field => :asc, id: :asc).to_enum }
 
     results = []
     skipped_results = []
-    skip_until = resumption_token.next_item if resumption_token&.next_item
     while results.size < limit + 1
       enumerators = enumerators.filter { |enum| enum.peek rescue false }
       break if enumerators.empty?
@@ -57,25 +56,25 @@ class MultiModel < OAI::Provider::Model
       result = min_enum.next
       if skip_until && result.oai_identifier == skip_until
         skip_until = nil
+        next
       end
-      if skip_until && result.send(timestamp_field) > from_date
-        # don't miss results in case skip_until item is not found
+      if skip_until && result.send(timestamp_field) > options[:from] + 1.days
+        # If the marker record is gone or changed, stop skipping so records are not lost.
         skip_until = nil
         results.concat(skipped_results)
       end
       if skip_until
         skipped_results << result
-      else
-        results << result
+        next
       end
+
+      results << result
     end
     return results if results.size <= limit
+    results.pop
 
-    next_item = results.pop
-    # Resumption token follows dual approach with coarse skip to resume_at and precise skip to next_item.
-    resumption_token = OAI::Provider::ResumptionToken.new(options.merge({
-      next_item: next_item.oai_identifier, resume_at: next_item.send(timestamp_field).iso8601
-    }))
+    last_returned = results.last
+    resumption_token = OAI::Provider::ResumptionToken.new(options.merge(from: last_returned.send(timestamp_field), last: last_returned.oai_identifier))
     return OAI::Provider::PartialResult.new(results, resumption_token)
   end
 

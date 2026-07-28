@@ -775,6 +775,41 @@ class EventTest < ActiveSupport::TestCase
     assert_equal 'http://mygoblet.org', bioschemas[:provider].first['url']
   end
 
+  test 'serializes event to oai_dc xml' do
+    event = events(:one)
+    material = materials(:good_material)
+    event.materials << material unless event.materials.include?(material)
+
+    parsed = Nokogiri::XML(event.to_oai_dc)
+    ns = {
+      'dc' => 'http://purl.org/dc/elements/1.1/',
+      'oai_dc' => 'http://www.openarchives.org/OAI/2.0/oai_dc/'
+    }
+
+    assert_equal 'oai_dc', parsed.root.namespace.prefix
+    assert_equal event.title, parsed.at_xpath('//dc:title', ns).text
+    assert_equal event.url, parsed.at_xpath('//dc:identifier', ns).text
+
+    dc_types = parsed.xpath('//dc:type', ns).map(&:text)
+    assert_includes dc_types, 'http://purl.org/dc/dcmitype/Event'
+    assert_includes dc_types, 'https://schema.org/Event'
+
+    relations = parsed.xpath('//dc:relation', ns).map(&:text)
+    assert_includes relations, material.doi
+  end
+
+  test 'serializes event to rdf xml' do
+    event = events(:two)
+    parsed = Nokogiri::XML(event.to_rdf)
+    ns = {
+      'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+      'sdo' => 'http://schema.org/'
+    }
+
+    assert_includes parsed.xpath('//sdo:name', ns).map(&:text), event.title
+    assert_includes parsed.xpath('//sdo:url/@rdf:resource', ns).map(&:value), event.url
+  end
+
   test 'does not destroy and recreate ontology term links' do
     e = events(:scraper_user_event)
 
