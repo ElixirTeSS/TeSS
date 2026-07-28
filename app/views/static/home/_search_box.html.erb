@@ -1,9 +1,9 @@
 <%# Big search box %>
 <div class="searchbox">
-  <%= form_tag search_path, method: :get, role: 'search' do %>
+  <%= form_tag search_path(across_all_spaces: true), method: :get, role: 'search' do %>
     <div class="searchbox-wrapper">
       <input type="text" class="searchbox-field" name="q"
-              placeholder= "<%= t('home.search_placeholder') %>" ">
+              placeholder="<%= t('home.search_placeholder') %>">
       <button type="submit" class="searchbox-btn">
         <i class="icon icon-h3 search-icon"></i>
       </button>
