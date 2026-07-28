@@ -1,5 +1,6 @@
 <% cache(learning_path, expires_in: 1.hour) do %>
   <li class="masonry-brick media-item large block-item learning-path-bg-<%= (learning_path.id % 4) + 1 -%>">
+    <%= space_tag(learning_path) %>
     <%= link_to learning_path, class: 'link-overlay' do %>
       <%= item_order_badge(collection_item) if defined? collection_item %>
 

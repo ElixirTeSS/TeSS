@@ -27,6 +27,13 @@
           <p class="muted">No description provided</p>
         <% end %>
         <%= render partial: 'common/extra_metadata', locals: { resource: @workflow } %>
+        <% space = @workflow.space %>
+        <% if TeSS::Config.feature['spaces'] && space && !space.default? && space != current_space %>
+          <p class="space no-spacing">
+            <strong class="text-primary"><%= Space.model_name.human %>: </strong>
+            <%= link_to(space.title, space) %>
+          </p>
+        <% end %>
         <% if policy(@workflow).update? && @workflow.edit_suggestion %>
           <%= render partial: 'common/approve_term_suggestions', locals: { suggestion: @workflow.edit_suggestion } %>
         <% end %>

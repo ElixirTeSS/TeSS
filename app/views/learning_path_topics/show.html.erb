@@ -1,5 +1,6 @@
 <div class="wrapper collapsing-wrapper">
   <div class="collapsing-sidebar" id="sidebar">
+    <%= render partial: 'common/space_info', locals: { resource: @learning_path_topic } %>
     <h4 class="nav-heading"><%= LearningPathTopic.model_name.human %></h4>
     <div class="nav-block">
       <h5>
