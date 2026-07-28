@@ -1,0 +1,135 @@
+.facet-sort-group {
+  display: flex;
+  align-items: center;
+}
+
+ul.facet-sort-wrap {
+  margin-bottom: $layout-spacing-base;
+}
+
+.facet-sort {
+  flex-shrink: 1;
+}
+
+.facet-sort-icon {
+  flex-shrink: 0;
+  margin: 10px;
+}
+
+.facet-select {
+  border-radius: 0;
+  border-width: 1px 0;
+}
+
+// Modified from CKAN - for sidebar facets
+ul.unstyled {
+  @include unstyled-ul;
+}
+
+.nav-simple {
+  margin: 0;
+  list-style: outside none none;
+  padding-bottom: 0;
+}
+
+.nav-simple li {
+  padding: 0;
+}
+
+.nav-simple li:last-of-type {
+  border-bottom: 0 none;
+}
+
+.nav-simple {
+  .form-control {
+    border: 0;
+    box-shadow: none;
+  }
+}
+
+.nav-block {
+  padding: 7px 20px;
+}
+
+.nav-item {
+  padding: 7px 20px;
+  width: 100%;
+}
+
+.nav-item > a {
+  position: relative;
+  display: block;
+  color: #333;
+  padding: 7px 20px 7px 20px;
+  text-decoration: none;
+}
+
+.nav-item > a:hover {
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+
+.nav-item.active > a {
+  position: relative;
+  color: $brand-primary;
+  background-color: #eee;
+}
+
+// End CKAN's sidebar facets
+
+// Facet's title
+.nav-heading {
+  padding: 10px;
+  //background-color: #f6f6f6;
+  margin: 0;
+}
+
+.facet-option {
+  display: flex !important;
+
+  .facet-label {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+  }
+
+  .facet-count, .remove-facet-icon {
+    flex-shrink: 0;
+    display: inline-block;
+  }
+  .facet-count {
+    color: #999;
+    padding-left: 5px;
+  }
+}
+
+.active-filters {
+  .remove-facet-icon {
+    margin-left: 5px;
+  }
+}
+
+.term_suggestions .dropdown-backdrop {
+  display: none;
+}
+
+.filter-heading {
+  cursor: pointer;
+  color: $headings-color;
+}
+
+.filter-heading-active {
+  color: $brand-primary;
+}
+
+.expand-filters {
+  text-align: right;
+  padding: 7px 20px 7px 20px !important;
+  a {
+    font-size: $font-size-small;
+    color: $gray-light !important;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,61 @@
+.resource-type-icon {
+  text-align: center;
+}
+
+.info-icon {
+  font-size: 24px;
+}
+
+.info-icon-small {
+  font-size: 16px;
+}
+
+.info-icon-large {
+  font-size: 48px;
+}
+
+.delete-icon {
+  vertical-align: middle;
+  color: $brand-danger;
+  font-weight: bold;
+  font-size: 120%;
+
+  &:hover {
+    color: darken($brand-danger, 20%);
+  }
+}
+
+.fresh-icon {
+  color: $brand-primary;
+  margin-left: 5px;
+}
+
+.stale-icon {
+  color: $brand-secondary;
+  margin-left: 5px;
+}
+
+.missing-icon {
+  color: $brand-secondary;
+  margin-left: 5px;
+}
+
+.event-started-icon {
+  color: $brand-primary;
+  margin-left: 5px;
+}
+
+.event-expired-icon {
+  color: $gray;
+  margin-left: 5px;
+}
+
+.exchange-icon {
+  color: $brand-primary;
+  margin-left: 5px;
+}
+
+// minor fix of the icon's alignment
+.glyphicon-remove {
+  top: 3px;
+}

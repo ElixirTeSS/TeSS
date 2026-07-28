@@ -1,0 +1,156 @@
+// Override Bootstrap's alert
+.alert {
+  margin-bottom: 0;
+  margin-top: 5px;
+}
+
+.show-page-description {
+  padding: 50px 0;
+}
+
+/* The max width is dependent on the container (more info below) */
+.popover {
+  max-width: 500px !important; /* Max Width of the popover (depending on the container!) */
+}
+
+.schemaorg-element {
+  display: none;
+}
+
+.muted {
+  color: $text-muted;
+}
+
+.gap {
+  padding: 0 5px;
+}
+
+.tool-suggestions-header {
+  margin-bottom: 20px;
+  color: $gray-darker;
+}
+
+.external-links {
+  margin-top: 10px;
+}
+
+.days_ago_text {
+  color: grey;
+  font-style: italic;
+}
+
+.latest_resource_description {
+  /*
+  min-width: 500px;
+  min-height: 20px;
+  */
+  word-wrap: break-word;
+}
+
+div.legal-block {
+  max-width: 800px;
+  margin: auto;
+}
+
+.url-wrap {
+  display: inline-block;
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+.bs-type-selectors ul {
+  display: inline;
+  padding: 0;
+  padding-inline-start: 0;
+
+  li {
+    display: inline;
+    padding: 10px;
+  }
+}
+
+.alert-info a {
+  text-decoration: underline;
+}
+
+#why-register {
+  ul {
+    font-size: $font-size-large;
+
+    li {
+      margin: 1em 0;
+    }
+  }
+}
+
+.selected-tab {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.embedded-content {
+  margin: 2em auto;
+  display: flex;
+  justify-content: center;
+
+  iframe {
+    display: block;
+  }
+}
+
+.bulk-import-row {
+  .scraped-metadata p {
+    margin: 0;
+  }
+}
+
+.test-controls {
+  padding: 10px;
+  display: inline-block;
+}
+
+/* Calendar inset numbers */
+td.day {
+  position: relative;
+}
+td.day .day-number {
+  position: absolute;
+  bottom: 0px;
+  right: 6px;
+  font-size: 1.5em;
+  color: rgb(186, 186, 186);
+}
+td.day .calendar-text {
+  font-size: 12px;
+  line-height: 14px;
+  margin-bottom: 12px;
+}
+
+.draggable--over {
+  opacity: 0.7;
+  background: $state-success-bg;
+}
+
+.theme-selector {
+  display: flex;
+  gap: 10px;
+}
+
+.theme-select-option {
+  flex-grow: 1;
+  label {
+    border: 5px solid;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: block;
+
+    hr {
+      border-width: 10px;
+    }
+  }
+}
+
+.tag-topic, .tag-operation {
+  text-decoration: none;
+}
