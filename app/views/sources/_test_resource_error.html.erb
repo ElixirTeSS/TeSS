@@ -1,0 +1,9 @@
+<div class="list-card bulk-import-row alert alert-danger">
+  <h4><%= "#{t('sources.testing.error.title')} (#{resource_type})" %></h4>
+  <p class="pt-2">
+    <div><%= t('sources.testing.error.input_data') %></div>
+    <pre><%= JSON.pretty_generate(resource_params) %></pre>
+    <div><%= "#{t('sources.testing.error.message')} #{exception.message}" %></div>
+    <pre><%= exception.backtrace.first(3).join('<br>').html_safe %></pre>
+  </p>
+</div>

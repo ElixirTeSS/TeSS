@@ -818,6 +818,11 @@ en:
       filters: Filters
       allow_list: Allow List
       block_list: Block List
+    testing:
+      error:
+        title: "Error rendering test ingestion!"
+        input_data: "Input data:"
+        message: "Error message:"
     prompts:
       default_language: 'Select a default language...'
   scraper:
