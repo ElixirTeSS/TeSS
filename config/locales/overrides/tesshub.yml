@@ -1,18 +1,19 @@
 en:
   home:
     search_placeholder: >
-      Search across all %{site_name} Spaces...
+      Search across %{site_name}...
     welcome: |
-      <span class="text-primary">%{site_name}</span> - The home of training
+      <span class="text-primary">%{site_name}</span> - Gateway to training
+    subtitle: ""
     catalogue:
-      title: Browse the catalogue
+      title: ""
       link_text: Start browsing
-      events: "Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers."
-      materials: "Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers."
+      events: "See the upcoming training events from all the %{site_name} communities."
+      materials: "Browse the aggregated catalogue of training materials from across %{site_name}."
       workflows: "Create training workflows to visualise learning steps and link to resources specific to your training needs."
       providers: "Browse training providers to discover training resources they offer and follow links to their materials and courses."
       trainers: "Browse a directory of trainers based on their skills and expertise."
-      spaces: "Browse a directory of community-managed spaces across different disciplines and locations."
+      spaces: "Browse a directory of community-managed spaces across different disciplines and themes."
       learning_paths: "Follow organized pathways of training resources leading you towards specific learning objectives."
       events_count: "%{total_events} upcoming events, %{last_month_events} added last month"
     faq:
