@@ -1,5 +1,7 @@
 en:
   home:
+    search_placeholder: >
+      Search across all %{site_name} Spaces...
     welcome: |
       <span class="text-primary">%{site_name}</span> - The home of training
     catalogue:
@@ -13,3 +15,22 @@ en:
       spaces: "Browse a directory of community-managed spaces across different disciplines and locations."
       learning_paths: "Follow organized pathways of training resources leading you towards specific learning objectives."
       events_count: "%{total_events} upcoming events, %{last_month_events} added last month"
+    faq:
+      title: Frequently asked questions
+      hub:
+        q: What is %{site_name}?
+        a: >
+          <p>%{site_name} is a hub of training catalogues, or "Spaces", each managed by their own community.
+          %{site_name} acts as both a portal for discovering Spaces relevant to your areas of interest, 
+          as well as an aggregated browsing and search interface, where content from all Spaces can be discovered.</p>
+      spaces:
+        q: What is a Space?
+        a: >
+          <p>Spaces are customizable, community-managed sub-portals within %{site_name}, each with their own catalogue of training content.</p>
+      get_space:
+        q: How can I create a Space for my community?
+        a: >
+          <p>See <a href="https://elixirtess.github.io/docs/spaces/instance-or-space/" target="_blank">here</a> 
+          for information about whether a Space is the right choice for you, 
+          and see <a href="https://elixirtess.github.io/docs/spaces/request-space/" target="_blank">here</a>
+          for information about how to request a Space.</p>
