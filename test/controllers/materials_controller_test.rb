@@ -1721,4 +1721,46 @@ class MaterialsControllerTest < ActionController::TestCase
 
     assert_select '#origin-info a[href=?]', uri
   end
+
+  # Space info tests
+  test 'should show space info when viewing a material from a different non-default space' do
+    plant_space_material = materials(:plant_space_material)
+    with_settings(feature: { spaces: true }) do
+      # Request comes from the default space (no specific host)
+      get :show, params: { id: plant_space_material }
+      assert_response :success
+      assert_select '#space-info', count: 1
+      assert_select '#space-info a', text: plant_space_material.space.title
+    end
+  end
+
+  test 'should not show space info when viewing a material from the current space' do
+    plant_space = spaces(:plants)
+    plant_space_material = materials(:plant_space_material)
+    with_settings(feature: { spaces: true }) do
+      with_host(plant_space.host) do
+        get :show, params: { id: plant_space_material }
+        assert_response :success
+        assert_select '#space-info', count: 0
+      end
+    end
+  end
+
+  test 'should not show space info when spaces feature is disabled' do
+    plant_space_material = materials(:plant_space_material)
+    with_settings(feature: { spaces: false }) do
+      get :show, params: { id: plant_space_material }
+      assert_response :success
+      assert_select '#space-info', count: 0
+    end
+  end
+
+  test 'should not show space info when material has no space' do
+    with_settings(feature: { spaces: true }) do
+      # @material has no space assigned
+      get :show, params: { id: @material }
+      assert_response :success
+      assert_select '#space-info', count: 0
+    end
+  end
 end
