@@ -6,7 +6,18 @@ Rails.configuration.after_initialize do
       config.excluded_exceptions += ['ActionController::RoutingError', 'ActiveRecord::RecordNotFound']
       filter = ActiveSupport::ParameterFilter.new(Rails.application.config.filter_parameters)
       config.before_send = lambda do |event, hint|
-        filter.filter(event.to_hash)
+        # Sanitize extra data
+        if event.extra
+          event.extra = filter.filter(event.extra)
+        end
+        # Sanitize user data
+        if event.user
+          event.user = filter.filter(event.user)
+        end
+        # Sanitize context data (if present)
+        if event.contexts
+          event.contexts = filter.filter(event.contexts)
+        end
       end
       git_rev = `git rev-parse --short HEAD`&.chomp("\n")
       config.release = git_rev if git_rev.present?
