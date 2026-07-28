@@ -29,35 +29,37 @@
 @import "base/cards-panels";
 @import "base/utilities";
 
-// Local
-@import "about";
-@import "account";
-@import "activities";
-@import "autocomplete";
-@import "bootstrap-tweaks";
-@import "collaborations";
-@import "collection";
-@import "carousel";
-@import "community-banner";
-@import "curators";
-@import "events";
-@import "external-resources";
-@import "sources";
-@import "sidebar";
-@import "search";
-@import "footer";
-@import "forms";
-@import "headers";
-@import "helpers";
-@import "home";
-@import "icons";
-@import "learning-paths";
-@import "navbar-header";
-@import "masonry";
-@import "nodes";
-@import "showcase";
-@import "toggle";
-@import "workflows";
+// Local - components
+@import "components/autocomplete";
+@import "components/bootstrap-tweaks";
+@import "components/carousel";
+@import "components/community-banner";
+@import "components/footer";
+@import "components/forms";
+@import "components/headers";
+@import "components/helpers";
+@import "components/icons";
+@import "components/masonry";
+@import "components/navbar-header";
+@import "components/sidebar";
+@import "components/toggle";
+
+// Local - pages
+@import "pages/about";
+@import "pages/account";
+@import "pages/activities";
+@import "pages/collaborations";
+@import "pages/collection";
+@import "pages/curators";
+@import "pages/events";
+@import "pages/external-resources";
+@import "pages/home";
+@import "pages/learning-paths";
+@import "pages/nodes";
+@import "pages/search";
+@import "pages/showcase";
+@import "pages/sources";
+@import "pages/workflows";
 
 // Vendor
 @import "cytoscape-panzoom";
