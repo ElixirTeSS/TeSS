@@ -27,7 +27,7 @@ class GroupsTest < ApplicationSystemTestCase
     find("[data-role='autocompleter-input']").fill_in(with: @owner.name)
     find("[data-role='autocompleter-input']").native.send_keys(:down, :enter)
 
-    click_on "Create Group"
+    find("input[name='commit']").click
 
     assert_text "Group was successfully created"
     click_on "Back to groups"
@@ -39,7 +39,7 @@ class GroupsTest < ApplicationSystemTestCase
     click_on "Edit", match: :first
 
     fill_in "Title", with: @group.title
-    click_on "Update Group"
+    find("input[name='commit']").click
 
     assert_text "Group was successfully updated"
     click_on "Back to groups"
@@ -48,7 +48,10 @@ class GroupsTest < ApplicationSystemTestCase
   test "should destroy Group" do
     sign_in @owner
     visit group_url(@group)
-    click_on "Delete", match: :first
+
+    accept_confirm do
+      click_on "Delete", match: :first
+    end
 
     assert_text "Group was successfully destroyed"
   end
