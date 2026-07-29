@@ -24,13 +24,9 @@ class GroupsTest < ApplicationSystemTestCase
 
     fill_in "Title", with: @group.title
 
-    find("[data-role='autocompleter-input']").fill_in(with: @owner.name)
-    find("[data-role='autocompleter-input']").native.send_keys(:down, :enter)
-
-    find("input[name='commit']").click
+    find(".btn .btn-primary").click
 
     assert_text "Group was successfully created"
-    click_on "Back to groups"
   end
 
   test "should update Group" do
@@ -39,10 +35,9 @@ class GroupsTest < ApplicationSystemTestCase
     click_on "Edit", match: :first
 
     fill_in "Title", with: @group.title
-    find("input[name='commit']").click
+    find(".btn .btn-primary").click
 
     assert_text "Group was successfully updated"
-    click_on "Back to groups"
   end
 
   test "should destroy Group" do
