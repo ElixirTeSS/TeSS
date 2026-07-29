@@ -24,7 +24,7 @@ class GroupsTest < ApplicationSystemTestCase
 
     fill_in "Title", with: @group.title
 
-    find(".btn .btn-primary").click
+    find(".btn-primary").click
 
     assert_text "Group was successfully created"
   end
@@ -35,7 +35,7 @@ class GroupsTest < ApplicationSystemTestCase
     click_on "Edit", match: :first
 
     fill_in "Title", with: @group.title
-    find(".btn .btn-primary").click
+    find(".btn-primary").click
 
     assert_text "Group was successfully updated"
   end
