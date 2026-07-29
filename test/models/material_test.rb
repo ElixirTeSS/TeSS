@@ -768,4 +768,37 @@ class MaterialTest < ActiveSupport::TestCase
     @material.origin_uri = 'ftp://tess-instance.org/materials/123'
     refute @material.valid?
   end
+
+  test 'validates languages if present' do
+    material = Material.new(title: 'An material', url: 'https://mymaterial.com', description: 'Hello world', language: 'en',
+                         user: users(:regular_user))
+    assert material.valid?
+
+    # Okay if not present
+    material.language = nil
+    assert material.valid?
+
+    # Okay if blank
+    material.language = ['']
+    assert material.valid?
+
+    # Not okay if not a known ISO-639-2 code
+    material.language = ['yo']
+    refute material.valid?
+    assert material.errors.added?(:language, 'contained invalid terms: yo')
+
+    # Okay if array
+    material.language = ['en', 'de']
+    assert material.valid?
+
+    # Okay if array with blank
+    material.language = ['', 'en', 'de']
+    assert material.valid?
+    assert_equal ['en', 'de'], material.language
+
+    # Okay if array with an invalid language
+    material.language = ['en', 'jk']
+    refute material.valid?
+    assert material.errors.added?(:language, 'contained invalid terms: jk')
+  end
 end

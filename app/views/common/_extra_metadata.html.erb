@@ -7,6 +7,7 @@
 <%= display_attribute(resource, :difficulty_level) { |value| display_difficulty_level(value) } if resource.respond_to?(:difficulty_level) %>
 
 <% if resource.is_a?(Material) %>
+  <%= display_attribute(resource, :language, list: true) { |value| render_language_name(value) } %>
   <%= display_attribute(resource, :fields) { |values| values.join(', ') } %>
   <%= display_attribute(resource, :target_audience) { |values| values.map { |x| target_audience_title_for_label(x) }.join(', ') } %>
   <%= display_attribute(resource, :resource_type) { |values| values.map { |x| material_type_title_for_label(x) }.join(', ') } %>

@@ -22,6 +22,7 @@ class Material < ApplicationRecord
   include HasTermsAndSynonyms
   include InSpace
   include HasPeople
+  include HasLanguage
 
   if TeSS::Config.solr_enabled
     # :nocov:
@@ -126,7 +127,7 @@ class Material < ApplicationRecord
   validates :origin_uri, url: { allow_blank: true }
 
   clean_array_fields(:keywords, :fields,
-                     :target_audience, :resource_type, :subsets)
+                     :target_audience, :resource_type, :subsets, :language)
 
   update_suggestions(:keywords, :target_audience,
                      :resource_type)
@@ -145,7 +146,7 @@ class Material < ApplicationRecord
   end
 
   def self.facet_fields
-    field_list = %w[scientific_topics operations tools standard_database_or_policy content_provider keywords
+    field_list = %w[language scientific_topics operations tools standard_database_or_policy content_provider keywords
                     difficulty_level fields licence target_audience authors contributors resource_type
                     related_resources user node collections status]
 

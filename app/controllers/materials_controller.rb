@@ -180,7 +180,7 @@ class MaterialsController < ApplicationController
                                      { authors: [] }, { contributors: [] }, # as strings
                                      external_resources_attributes: %i[id url title _destroy],
                                      external_resources: %i[url title],
-                                     event_ids: [], locked_fields: [])
+                                     event_ids: [], locked_fields: [], language: [])
   end
 
   def set_learning_path_navigation

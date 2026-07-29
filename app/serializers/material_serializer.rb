@@ -1,5 +1,5 @@
 class MaterialSerializer < ApplicationSerializer
-  attributes :id, :title, :url, :description,
+  attributes :id, :title, :url, :description, :language,
 
              :keywords, :resource_type, :other_types, :scientific_topics, :operations, :fields, :external_resources,
 

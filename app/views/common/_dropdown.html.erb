@@ -36,7 +36,7 @@ render :partial => 'common/dropdown',
   required ||= false
 
   # Name for the dropdown toggle button, if not specified will be set to 'Add <field_name>
-  field_label ||= field_name.pluralize.capitalize unless field_name.blank?
+  field_label ||= f.object.class.human_attribute_name(field_name) unless field_name.blank?
 
   # check error count
   errors ||= []

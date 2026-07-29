@@ -23,6 +23,9 @@
   <%= f.input :description, as: :markdown_area, field_lock: true, label: 'Description',
               input_html: { rows: '5', title: t('materials.hints.description') } %>
 
+  <!-- Field: Language -->
+  <%= f.dropdown :language, options: LanguageDictionary.instance.options_for_select, errors: @material.errors[:language], title: t('materials.hints.language') %>
+
   <hr />
 
   <!-- Field: Resource Type -->

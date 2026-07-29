@@ -664,6 +664,7 @@ en:
         Workshops, seminars, conferences, summer or winter schools that contribute to or disseminate the training.
       fields: 'Select Fields of Research to better classify your material.'
       keywords: "Provide words or terms that clearly identify the training material's topics."
+      language: 'The languages in which the material is available.'
       licence: >
         The most appropriate license that specifies the terms under which your training material and dataset can be used, 
         modified, and distributed. 

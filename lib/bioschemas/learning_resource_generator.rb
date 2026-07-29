@@ -42,5 +42,6 @@ module Bioschemas
       markdown_to_array(material.learning_objectives)
     }
     property :mentions, -> (material) { external_resources(material) }
+    property :inLanguage, :language
   end
 end

@@ -344,6 +344,15 @@ paths:
             type: array
             items:
               type: string
+        - name: language[]
+          in: query
+          description: Filter by materials that are available in the given language.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
         - name: licence[]
           in: query
           description: Filter by licence. Uses SPDX identifiers.
@@ -1348,6 +1357,11 @@ components:
         scraper-record:
           type: boolean
           description: Was this material automatically harvested (as opposed to being submitted manually)?
+        language:
+          type: array
+          description: The languages in which the material is available as ISO 639-1 2-letter codes.
+          items:
+            type: string
     MaterialCollection:
       allOf:
         - $ref: '#/components/schemas/FacetedCollection'

@@ -534,6 +534,11 @@ components:
           type: string
         user_id:
           type: integer
+        language:
+          type: array
+          description: The languages in which the material is available as ISO 639-1 2-letter codes.
+          items:
+            type: string
     OntologyTerm:
       type: object
       additionalProperties: false

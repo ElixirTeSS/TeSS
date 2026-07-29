@@ -1,4 +1,4 @@
-json.extract! @material, :id, :title, :url, :description,
+json.extract! @material, :id, :title, :url, :description, :language,
 
               :content_provider_id, :user_id,
 
