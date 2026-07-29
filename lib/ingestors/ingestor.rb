@@ -175,9 +175,10 @@ module Ingestors
 
     private
 
-    def set_resource_defaults(resource)
+    def set_resource_defaults(resource, source: nil)
       resource.scraper_record = true
       resource.last_scraped = Time.now
+      resource.last_scraped_by_source = source if source
 
       resource
     end
@@ -193,6 +194,8 @@ module Ingestors
         resource.space_id ||= source&.space_id
         existing_resource = find_existing(type, resource)
 
+        next unless responsible_for?(existing_resource, resource, source)
+
         update = existing_resource
         resource = if update
                      update_resource(existing_resource, resource.to_h)
@@ -202,7 +205,7 @@ module Ingestors
 
         resource.language ||= source&.default_language if resource.has_attribute?(:language) && resource.new_record?
 
-        resource = set_resource_defaults(resource)
+        resource = set_resource_defaults(resource, source: source)
         if resource.valid?
           resource.save!
           activity_params = {}
@@ -234,6 +237,30 @@ module Ingestors
 
         resources[i] = resource
       end
+    end
+
+    def responsible_for?(existing_resource, new_resource, source)
+      # Stay with existing source if there is any, to not constantly change metadata back and fourth.
+      # Switch responsibility if higher number of considered metadata fields or number of metadata fields 
+      # are the same but significantly longer description is available from new source.
+      # This prefers a source closest to the original one because it is likely the first one and switches 
+      # source when originally scraped simple metadata is extended manually at an intermediate source.
+      # When there are no external changes, the source can only switch a limited number of times.
+
+      return true unless source && existing_resource
+      return true if existing_resource.last_scraped_by_source == source
+
+      considered_fields = %i[title url doi description resource_type keywords start end sponsors venue city county postcode cost_value target_audience contact language]
+      existing_fields_count = considered_fields.count { |f| existing_resource[f].present? }
+      new_fields_count = considered_fields.count { |f| new_resource[f].present? }
+      return true if new_fields_count > existing_fields_count
+
+      considered_description_fields = %i[description prerequisites learning_objectives tech_requirements]
+      existing_description_length = considered_description_fields.sum { |f| existing_resource[f].to_s.length }
+      new_description_length = considered_description_fields.sum { |f| new_resource[f].to_s.length }
+      return true if new_fields_count == existing_fields_count && new_description_length > existing_description_length * 1.5
+
+      false
     end
 
     def find_existing(type, resource)
