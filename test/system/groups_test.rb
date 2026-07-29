@@ -14,7 +14,7 @@ class GroupsTest < ApplicationSystemTestCase
   test "visiting the index" do
     sign_in @admin
     visit groups_url
-    assert_selector "h1", text: "Groups"
+    assert_selector "h2", text: "Groups"
   end
 
   test "should create group" do
