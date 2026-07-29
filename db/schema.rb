@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_10_154329) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_29_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -205,6 +205,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_154329) do
     t.string "keywords", default: [], array: true
     t.string "language"
     t.date "last_scraped"
+    t.bigint "last_scraped_by_id"
     t.decimal "latitude", precision: 10, scale: 6
     t.text "learning_objectives"
     t.decimal "longitude", precision: 10, scale: 6
@@ -370,6 +371,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_154329) do
     t.string "fields", default: [], array: true
     t.string "keywords", default: [], array: true
     t.date "last_scraped"
+    t.bigint "last_scraped_by_id"
     t.text "learning_objectives"
     t.string "licence", default: "notspecified"
     t.string "origin_uri"
