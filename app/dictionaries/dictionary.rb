@@ -75,14 +75,14 @@ class Dictionary
     @dictionary.keys
   end
 
+  def configured?
+    File.exist?(dictionary_filepath)
+  end
+
   private
 
   def load_dictionary
-    if File.exist?(dictionary_filepath)
-      YAML.safe_load(File.read(dictionary_filepath)).with_indifferent_access
-    else
-      {}
-    end
+    YAML.safe_load(File.read(dictionary_filepath)).with_indifferent_access
   end
 
   def get_file_path(config_file, default_file)

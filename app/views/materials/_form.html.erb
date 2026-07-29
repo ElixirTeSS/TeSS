@@ -37,7 +37,7 @@
   <hr>
 
   <!-- Field: Keywords -->
-  <% if TeSS::Config.feature['controlled_vocabulary_vars'].include? 'keywords' %>
+  <% if TeSS::Config.feature['controlled_vocabulary_vars'].include? 'keywords' && KeywordsDictionary.instance.configured? %>
     <%= f.dropdown :keywords,
                   options: KeywordsDictionary.instance.options_for_select,
                   label: t('activerecord.attributes.event.keywords', default: 'Keywords'),
