@@ -713,15 +713,15 @@ class EventTest < ActiveSupport::TestCase
     provider_1 = content_providers(:goblet)
     provider_2 = content_providers(:iann)
     provider_3 = content_providers(:two)
-    e1a = provider_1.events.create!(title: 'Event1a', url: 'https://example.com/events/1a', user: user)
-    e1b = provider_1.events.create!(title: 'Event1b', url: 'https://example.com/events/1b', user: user)
-    e1c = provider_1.events.create!(title: 'Event1c', url: 'https://example.com/events/1c', user: user)
-    e2a = provider_2.events.create!(title: 'Event2a', url: 'https://example.com/events/2a', user: user)
-    e2b = provider_2.events.create!(title: 'Event2b', url: 'https://example.com/events/2b', user: user)
-    e2c = provider_2.events.create!(title: 'Event2c', url: 'https://example.com/events/2c', user: user)
-    e3a = provider_3.events.create!(title: 'Event3a', url: 'https://example.com/events/3a', user: user)
-    e3b = provider_3.events.create!(title: 'Event3b', url: 'https://example.com/events/3b', user: user)
-    e3c = provider_3.events.create!(title: 'Event3c', url: 'https://example.com/events/3c', user: user)
+    e1a = provider_1.events.create!(title: 'Event1a', url: 'https://example.com/events/1a', user:)
+    e1b = provider_1.events.create!(title: 'Event1b', url: 'https://example.com/events/1b', user:)
+    e1c = provider_1.events.create!(title: 'Event1c', url: 'https://example.com/events/1c', user:)
+    e2a = provider_2.events.create!(title: 'Event2a', url: 'https://example.com/events/2a', user:)
+    e2b = provider_2.events.create!(title: 'Event2b', url: 'https://example.com/events/2b', user:)
+    e2c = provider_2.events.create!(title: 'Event2c', url: 'https://example.com/events/2c', user:)
+    e3a = provider_3.events.create!(title: 'Event3a', url: 'https://example.com/events/3a', user:)
+    e3b = provider_3.events.create!(title: 'Event3b', url: 'https://example.com/events/3b', user:)
+    e3c = provider_3.events.create!(title: 'Event3c', url: 'https://example.com/events/3c', user:)
 
     even_single_mix = Event.from_varied_providers([e1a, e1b, e1c, e2a, e2b, e2c, e3a, e3b, e3c], 3)
     assert_equal 3, even_single_mix.length
@@ -857,7 +857,6 @@ class EventTest < ActiveSupport::TestCase
     person1 = Person.new(resource: @event, name: 'Alice Wonder')
     person2 = Person.new(resource: @event, name: 'Bob Builder')
 
-
     assert_not_includes @event.contributors.map(&:name), person1.name
 
     @event.contributors = [person1, person2]
@@ -886,7 +885,6 @@ class EventTest < ActiveSupport::TestCase
   test 'should set instructors from array of Person objects' do
     person1 = Person.new(resource: @event, name: 'Alice Wonder')
     person2 = Person.new(resource: @event, name: 'Bob Builder')
-
 
     assert_not_includes @event.instructors.map(&:name), person1.name
 

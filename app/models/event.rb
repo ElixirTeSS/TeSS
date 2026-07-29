@@ -493,14 +493,15 @@ class Event < ApplicationRecord
 
     events = []
     events_left = true
-    while events_left && (events.length < count) do
+    while events_left && (events.length < count)
       events_left = false
       provider_events.each_value do |p_events|
-        if p_events.any?
-          events << p_events.shift
-          break if events.length == count
-          events_left ||= p_events.any?
-        end
+        next unless p_events.any?
+
+        events << p_events.shift
+        break if events.length == count
+
+        events_left ||= p_events.any?
       end
     end
 
@@ -532,7 +533,6 @@ class Event < ApplicationRecord
       instructors.each { |c| xml.tag!('dc:creator', c.display_name) }
       contributors.each { |c| xml.tag!('dc:contributor', c.display_name) }
       xml.tag!('dc:publisher', contact) if contact.present?
-      
 
       xml.tag!('dc:format', 'text/html')
       xml.tag!('dc:language', language) if language.present?
@@ -549,7 +549,7 @@ class Event < ApplicationRecord
 
       xml.tag!('dc:type', 'http://purl.org/dc/dcmitype/Event')
       xml.tag!('dc:type', 'https://schema.org/Event')
-      xml.tag!('dc:type', self.presence.to_s + ' event')
+      xml.tag!('dc:type', presence.to_s + ' event')
 
       xml.tag!('dc:relation', "#{TeSS::Config.base_url}#{Rails.application.routes.url_helpers.event_path(self)}")
       xml.tag!('dc:relation', content_provider.url) if content_provider&.url

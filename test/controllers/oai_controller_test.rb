@@ -146,7 +146,7 @@ class OaiControllerTest < ActionDispatch::IntegrationTest
     records_needed = [0, 105 - base_count].max
 
     records_needed.times do |i|
-      Event.create!(title: "Paged event #{i}", url: "https://example.org/paged-events/#{i}", user: user)
+      Event.create!(title: "Paged event #{i}", url: "https://example.org/paged-events/#{i}", user:)
     end
 
     get '/oai-pmh', params: { verb: 'ListRecords', metadataPrefix: 'rdf' }
@@ -166,14 +166,14 @@ class OaiControllerTest < ActionDispatch::IntegrationTest
 
   test 'OAI resumption token does not repeat the last returned record at a same-timestamp page boundary' do
     user = users(:regular_user)
-    boundary_space = Space.create!(title: 'Boundary Space', host: 'boundary-space.example', user: user)
+    boundary_space = Space.create!(title: 'Boundary Space', host: 'boundary-space.example', user:)
     boundary_time = Time.utc(2026, 7, 28, 12, 0, 0)
 
     records = 101.times.map do |i|
       material = Material.create!(title: "Boundary material #{i}",
                                   description: "Boundary material #{i}",
                                   url: "https://example.org/boundary-material/#{i}",
-                                  user: user,
+                                  user:,
                                   visible: true,
                                   space: boundary_space)
       material.update_columns(updated_at: boundary_time, created_at: boundary_time)

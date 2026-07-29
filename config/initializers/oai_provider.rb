@@ -4,7 +4,7 @@ require 'oai'
 require 'uri'
 
 class MultiModel < OAI::Provider::Model
-  # represents multiple rails models in one OAI-PMH model. 
+  # Represents multiple rails models in one OAI-PMH model.
   # It assumes OAI-PMH identifiers are of the form: <model_route_key>/<id> (e.g. materials/142)
 
   attr_reader :model_scopes
@@ -25,12 +25,12 @@ class MultiModel < OAI::Provider::Model
   def sets
     model_scopes.map do |scope|
       n = scope.model.model_name
-      OAI::Set.new({spec: n.route_key, name: n.plural.titleize, description: "Set of all training #{n.plural.humanize.downcase}"})
+      OAI::Set.new({ spec: n.route_key, name: n.plural.titleize, description: "Set of all training #{n.plural.humanize.downcase}" })
     end
   end
 
   # <tt>selector</tt> can be a singular id, or the symbol :all
-  def find(selector, options={})
+  def find(selector, options = {})
     return find_by_id(selector) unless selector == :all
 
     skip_until = nil
@@ -49,8 +49,13 @@ class MultiModel < OAI::Provider::Model
     results = []
     skipped_results = []
     while results.size < limit + 1
-      enumerators = enumerators.filter { |enum| enum.peek rescue false }
+      enumerators = enumerators.filter do |enum|
+        enum.peek
+      rescue StopIteration
+        false
+      end
       break if enumerators.empty?
+
       # min_by returns the first minimum resulting in deterministic order if different scopes have the same timestamp.
       min_enum = enumerators.min_by { |enum| enum.peek.send(timestamp_field) }
       result = min_enum.next
@@ -71,11 +76,12 @@ class MultiModel < OAI::Provider::Model
       results << result
     end
     return results if results.size <= limit
+
     results.pop
 
     last_returned = results.last
     resumption_token = OAI::Provider::ResumptionToken.new(options.merge(from: last_returned.send(timestamp_field), last: last_returned.oai_identifier))
-    return OAI::Provider::PartialResult.new(results, resumption_token)
+    OAI::Provider::PartialResult.new(results, resumption_token)
   end
 
   private
@@ -85,7 +91,7 @@ class MultiModel < OAI::Provider::Model
     scope = model_scopes.find { |s| s.model.model_name.route_key == route_key }
     return nil unless scope
 
-    scope.find_by(id: id)
+    scope.find_by(id:)
   end
 end
 
