@@ -347,7 +347,7 @@ en:
       <p>%{site_name} currently supports the APIs for:
       <ul>
       <li><a target='_blank', href='https://eventbrite.com'>Eventbrite</a> - for events</li>
-      <li><a target='_blank', href='https://zenodo.com'>Zenodo</a> - for materials</li>
+      <li><a target='_blank', href='https://zenodo.org'>Zenodo</a> - for materials</li>
       <li>Other TeSS instances - for events</li>
       </ul>
       </p>
