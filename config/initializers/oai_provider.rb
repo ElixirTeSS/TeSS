@@ -44,7 +44,7 @@ class MultiModel < OAI::Provider::Model
     scopes = scopes.select { |scope| scope.model.model_name.route_key == options[:set] } if options[:set]
     scopes = scopes.map { |scope| scope.where("#{timestamp_field} >= ?", options[:from]) } if options[:from]
     scopes = scopes.map { |scope| scope.where("#{timestamp_field} < ?", options[:until] + 1.second) } if options[:until]
-    enumerators = scopes.map { |scope| scope.order(timestamp_field => :asc, id: :asc).to_enum }
+    enumerators = scopes.map { |scope| scope.order(timestamp_field => :asc, identifier_field => :asc).to_enum }
 
     results = []
     skipped_results = []
