@@ -4,7 +4,7 @@ en:
       Search across %{site_name}...
     welcome: |
       <span class="text-primary">%{site_name}</span> - Gateway to training
-    subtitle: ""
+    subtitle: "TeSSHub is a hub of community-managed training catalogues. Discover training relevant to you."
     catalogue:
       title: ""
       link_text: Start browsing
@@ -33,5 +33,15 @@ en:
         a: >
           <p>See <a href="https://elixirtess.github.io/docs/spaces/instance-or-space/" target="_blank">here</a> 
           for information about whether a Space is the right choice for you, 
-          and see <a href="https://elixirtess.github.io/docs/spaces/request-space/" target="_blank">here</a>
-          for information about how to request a Space.</p>
+          and see <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNPKIsL3Ot-a5XHMogeTIe3duft6bdK4Q-elFmgw26fT6GZQ/viewform" target="_blank">here</a>
+          to request a new space.</p>
+    promo:
+      browse_space:
+        title: "Browse community-managed spaces"
+        description: "Discover curated catalogues of training from multiple scientific disciplines and communities."
+      create_space:
+        title: "Onboard your community"
+        description: "Establish a new training catalogue to support your own community."
+      search:
+        title: "Cross-space search"
+        description: "Search and browse across all TeSSHub spaces from a unified interface."

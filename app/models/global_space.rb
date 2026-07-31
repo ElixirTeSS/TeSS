@@ -18,7 +18,7 @@ class GlobalSpace
   end
 
   def theme
-    nil
+    'tesshub'
   end
 
   def image?

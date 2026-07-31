@@ -37,7 +37,7 @@ default: &default
       provider_carousel: false
       featured_providers:
       faq: [hub, spaces, get_space] # Questions/answers in config/en.yml: home > faq. Use empty array to hide section
-      promo_blocks: false
+      promo_blocks: true
       communities: false
       upcoming_events: 0
       latest_materials: 0
@@ -125,13 +125,22 @@ default: &default
 #      featured_providers:
 #        node:
 #          name: United Kingdom
-  spaces:
-    plants:
-      name: TeSS Plants Community
-    astro:
-      name: TeSS Space Community
-    elixir:
-      name: ELIXIR TeSS
+  themes:
+    default:
+      primary: '#047eaa' # Blue by default
+      secondary: '#f47d21' # Orange by default
+    green:
+      primary: '#529d00'
+      secondary: '#829d30'
+    blue:
+      primary: '#024552'
+      secondary: '#00839d'
+    space:
+      primary: '#260252'
+      secondary: '#5c29b1'
+    tesshub:
+      primary: '#047eaa'
+      secondary: '#f47d21'
 development:
   <<: *default
   base_url: http://mytess.training
