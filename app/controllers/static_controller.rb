@@ -32,13 +32,22 @@ class StaticController < ApplicationController
   end
 
   def set_featured_trainer
-    return nil unless TeSS::Config.site.dig('home_page', 'featured_trainer')
+    featured_trainer = TeSS::Config.site.dig('home_page', 'featured_trainer')
+    return nil if featured_trainer.blank? || featured_trainer == false
 
+    # featured_trainers used to be boolean, we keep this safety net for TeSS instances using the legacy value
+    # https://github.com/ElixirTeSS/TeSS/pull/1340
+    n_trainers = case featured_trainer
+                 when true then 1
+                 else [featured_trainer.to_i, 0].max
+                 end
+    return nil if n_trainers.zero?
+    
     srand(Date.today.beginning_of_day.to_i)
     trainers = Trainer.joins(:user).order(:id)
     f_trainers = trainers.where.not(users: { image_file_size: nil })
     trainers = f_trainers.exists? ? f_trainers : trainers
-    trainers.sample(TeSS::Config.site.dig('home_page', 'featured_trainer'))
+    trainers.sample(n_trainers)
   end
 
   def set_content_providers
