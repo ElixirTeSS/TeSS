@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'sidekiq/testing'
 
 class ProfileTest < ActiveSupport::TestCase
   setup do
@@ -154,5 +153,52 @@ class ProfileTest < ActiveSupport::TestCase
     assert_no_difference('PersonLinkWorker.jobs.size') do
       refute Profile.new.authenticate_orcid('0009-0006-0987-5702')
     end
+  end
+
+  test 'visible' do
+    visible = Profile.visible
+    assert_includes visible, profiles(:one)
+    assert_includes visible, profiles(:two)
+    refute_includes visible, profiles(:basic_user_profile)
+    refute_includes visible, profiles(:banned_user_profile)
+  end
+
+  test 'starting_with' do
+    regi = Profile.starting_with('regi')
+    assert_includes regi, profiles(:one)
+    refute_includes regi, profiles(:two)
+
+    user = Profile.starting_with('user')
+    assert_includes user, profiles(:one)
+    refute_includes user, profiles(:two)
+
+    bla = Profile.starting_with('bla')
+    refute_includes bla, profiles(:one)
+    refute_includes bla, profiles(:two)
+
+    ad = Profile.starting_with('ad')
+    refute_includes ad, profiles(:two)
+    assert_includes ad, profiles(:three)
+    assert_includes ad, profiles(:admin_trainer_profile)
+  end
+
+  test 'query' do
+    josi = Profile.query('josi')
+    assert_equal 1, josi.length
+    assert_includes josi, profiles(:trainer_one_profile).becomes(Profile) # Need to cast back to Profile because it is a Trainer otherwise
+
+    # Excludes unauthenticated orcids
+    unauth = profiles(:trainer_two_profile)
+    assert_includes Profile.starting_with('luci'), unauth
+    unauth_q = Profile.query('luci')
+    assert_equal 0, unauth_q.length
+
+    # Excludes non-visible:
+    banned = profiles(:banned_user_profile)
+    banned.update!(firstname: 'Banned')
+    assert banned.authenticate_orcid('0009-0006-0987-5702')
+    assert_includes Profile.starting_with('banned'), banned
+    banned_q = Profile.query('Banned')
+    assert_equal 0, banned_q.length
   end
 end

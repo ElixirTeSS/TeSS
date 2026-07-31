@@ -157,6 +157,8 @@ class Event < ApplicationRecord
   validates :presence, inclusion: { in: presences.keys, allow_blank: true }
   validates :keywords, length: { maximum: 20 }
   validate :allowed_url
+  validates :origin_uri, url: { allow_blank: true }
+
   clean_array_fields(:keywords, :fields, :event_types, :target_audience,
                      :eligibility, :host_institutions, :sponsors)
   update_suggestions(:keywords, :target_audience, :host_institutions)
@@ -388,7 +390,7 @@ class Event < ApplicationRecord
       redis = Redis.new(url: TeSS::Config.redis_url)
       if redis.exists?(location)
         self.latitude, self.longitude = JSON.parse(redis.get(location))
-        Rails.logger.info("Re-using: #{location}")
+        Rails.logger.info("Reusing: #{location}")
       end
     rescue Redis::BaseError => e
       raise e unless Rails.env.production?

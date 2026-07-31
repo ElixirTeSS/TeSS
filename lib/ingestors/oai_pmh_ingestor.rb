@@ -22,8 +22,11 @@ module Ingestors
 
     def read(source_url)
       client = OAI::Client.new source_url, headers: { 'From' => config[:mail], 'User-Agent' => config[:user_agent] }
+
+      tess_instance = client.identify.descriptions.any? { |d| d.get_elements('//tess-instance').any? }
+
       found_bioschemas = begin
-        read_oai_rdf(client)
+        read_oai_rdf(client, tess_instance: tess_instance)
       rescue OAI::ArgumentException
         false
       end
@@ -75,7 +78,7 @@ module Ingestors
       @messages << "found #{count} records"
     end
 
-    def read_oai_rdf(client)
+    def read_oai_rdf(client, tess_instance: false)
       provider_events = []
       provider_materials = []
       totals = Hash.new(0)
@@ -86,6 +89,17 @@ module Ingestors
         output = parse_bioschemas(bioschemas_xml)
         next unless output
 
+        extra_metadata = {}
+        if tess_instance
+          origin_uri = metadata_tag.at_xpath('//rdf:RDF/*/@rdf:about', 'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')&.value
+          extra_metadata[:origin_uri] = origin_uri
+        end
+
+        extra_metadata.each do |key, value|
+          output[:resources][:events].each { |r| r[key] ||= value }
+          output[:resources][:materials].each { |r| r[key] ||= value }
+        end
+
         provider_events += output[:resources][:events]
         provider_materials += output[:resources][:materials]
         output[:totals].each do |key, value|
@@ -94,11 +108,11 @@ module Ingestors
       end
 
       if totals.keys.any?
-        bioschemas_summary = "Bioschemas summary:\n"
+        bioschemas_summary = ["Bioschemas summary:\n"]
         totals.each do |type, count|
-          bioschemas_summary << "\n - #{type}: #{count}"
+          bioschemas_summary << " - #{type}: #{count}"
         end
-        @messages << bioschemas_summary
+        @messages << bioschemas_summary.join("\n")
       end
 
       @bioschemas_manager.deduplicate(provider_events).each do |event_params|

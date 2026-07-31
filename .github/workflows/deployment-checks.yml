@@ -36,7 +36,7 @@ jobs:
         ports:
           - 6379:6379
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         name: Set up Ruby
       - uses: ruby/setup-ruby@v1
         with:
@@ -49,7 +49,7 @@ jobs:
           cp config/ingestion.example.yml config/ingestion.yml
           bundle exec rake db:setup
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '20.x'
           cache: 'yarn'

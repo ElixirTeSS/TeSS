@@ -225,10 +225,10 @@ class ScraperTest < ActiveSupport::TestCase
       scraper.run
     end
 
-    assert logfile_contains(logfile, 'Run Scraper failed with')
-    assert logfile_contains(logfile, 'in `block in run')
-    assert logfile_contains(logfile, 'in `map')
-    assert logfile_contains(logfile, 'in `run')
+    assert logfile_contains(logfile, 'Run Scraper failed with: unknown attribute')
+    assert logfile_contains(logfile, "in 'block in Scraper#run'")
+    assert logfile_contains(logfile, "in 'Array#map'")
+    assert logfile_contains(logfile, "in 'Scraper#run'")
   end
 
   test 'does not scrape disabled or unapproved sources' do

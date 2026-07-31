@@ -356,7 +356,7 @@ var EventsMap = {
             var getTab = function () {
                 var tab = window.location.hash;
                 if (tab) {
-                    return tab.substring(1) /* stip hash */
+                    return tab.substring(1) /* strip hash */
                 } else {
                     return ''
                 }

@@ -1,0 +1,12 @@
+<% unless resource.origin_uri.blank? %>
+  <h4 class="nav-heading"><%= t('exchange.title') %></h4>
+  <div class="nav-block" id="origin-info">
+    <p>
+      <%= t('exchange.info', resource_type: resource.model_name.human) %>
+    </p>
+
+    <p>
+      <%= external_link_button t('exchange.link'), resource.origin_uri %>
+    </p>
+  </div>
+<% end %>

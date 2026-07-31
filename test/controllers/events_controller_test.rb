@@ -1767,6 +1767,21 @@ class EventsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'should link back to original entry if origin URI set' do
+    get :show, params: { id: @event }
+    assert_response :success
+
+    assert_select '#origin-info', count: 0
+
+    uri = 'https://some-tess-instance.org/events/123'
+    @event.update(origin_uri: uri)
+
+    get :show, params: { id: @event }
+    assert_response :success
+
+    assert_select '#origin-info a[href=?]', uri
+  end
+
   test 'event_time_data provides JSON for an event, event time zone' do
     get :event_time_data, params: { event_ids: [@event.id] }, format: :json
 
@@ -1925,5 +1940,4 @@ class EventsControllerTest < ActionController::TestCase
     p = div.at_css('p.timezone')
     assert_includes p.text, 'Mountain Daylight Time'
   end
-
 end

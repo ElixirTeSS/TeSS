@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'sidekiq/testing'
 
 class GeocodingWorkerTest < ActiveSupport::TestCase
   test 'get coordinates for an event' do

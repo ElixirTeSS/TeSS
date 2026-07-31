@@ -7,6 +7,7 @@
   end
 %>
 <li class="masonry-brick media-item long">
+  <%= space_tag(material) %>
   <%= link_to material_path(material, **link_params), class: 'link-overlay' do %>
     <%= item_order_badge(collection_item) if show_order && collection_item %>
 
@@ -17,6 +18,7 @@
           <%= scrape_status_icon(material) %>
           <%= suggestion_icon(material) %>
         <% end %>
+        <%= exchange_icon(material) %>
       </div>
       <div class="sub-heading">
         <%= display_attribute_no_label(material, :resource_type) { |values| values.join(', ') } %>

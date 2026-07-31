@@ -1,0 +1,106 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://oai-pmh.tesshub.space/oai-pmh?verb=Identify
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101 Firefox/102.0
+      From:
+      - test@example.com
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 22 Jul 2026 09:37:47 GMT
+      Content-Type:
+      - text/xml; charset=utf-8
+      Content-Length:
+      - '1229'
+      Connection:
+      - keep-alive
+      Server:
+      - cloudflare
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Vary:
+      - Accept,Origin,Accept-Encoding
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Xss-Protection:
+      - '0'
+      Feature-Policy:
+      - camera 'none'; gyroscope 'none'; microphone 'none'; usb 'none'; fullscreen
+        'self'; payment 'none'
+      X-Request-Id:
+      - d0398130-56e7-4e4a-afb9-926d2f97a4a7
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Runtime:
+      - '0.016690'
+      X-Content-Type-Options:
+      - nosniff
+      Content-Security-Policy:
+      - 'default-src ''self'' https:; font-src ''self'' https: data:; img-src ''self''
+        https: data:; object-src ''none''; script-src ''self'' https: ''unsafe-inline'';
+        style-src ''self'' https: ''unsafe-inline'''
+      X-Powered-By:
+      - Phusion Passenger(R) 6.0.18
+      Etag:
+      - W/"0bcac93baeefbfbe7c7335e2fb044adf-gzip"
+      Status:
+      - 200 OK
+      Nel:
+      - '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}'
+      Report-To:
+      - '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=tgOwpWlqq7CGsthz3Gbpkvrxzfa63OAWYsItZtDASLiXdjA16f%2B2b%2B1Mv9vfjbyA4l0c6xk6BnljhdR1oSOJOAFhudUujuVZ%2B8v53ANz0eqhB%2BsYt5QIQtuN%2F9eMJx3df4uDL6mChQU%3D"}]}'
+      Cf-Cache-Status:
+      - DYNAMIC
+      Cf-Ray:
+      - a1f177feba4f467f-LHR
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <?xml-stylesheet type="text/xsl" href="/oai2xhtml.xsl"?>
+        <OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+          <responseDate>2026-07-22T09:37:47Z</responseDate>
+          <request verb="Identify">https://tesshub.space/oai-pmh</request>
+          <Identify>
+            <repositoryName>TeSSHub</repositoryName>
+            <baseURL>https://tesshub.space/oai-pmh</baseURL>
+            <protocolVersion>2.0</protocolVersion>
+            <adminEmail>contact@example.com</adminEmail>
+            <earliestDatestamp>2026-07-21T12:59:13Z</earliestDatestamp>
+            <deletedRecord>transient</deletedRecord>
+            <granularity>YYYY-MM-DDThh:mm:ssZ</granularity>
+            <description>
+              <oai-identifier xmlns="http://www.openarchives.org/OAI/2.0/oai-identifier" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai-identifier http://www.openarchives.org/OAI/2.0/oai-identifier.xsd">
+                <scheme>oai</scheme>
+                <repositoryIdentifier>tesshub.space</repositoryIdentifier>
+                <delimiter>:</delimiter>
+                <sampleIdentifier>oai:tesshub.space:142</sampleIdentifier>
+              </oai-identifier>
+            </description>
+            <description>
+              <tess-instance xmlns="http://tess.elixir-europe.org/xmlns" />
+            </description>
+          </Identify>
+        </OAI-PMH>
+  recorded_at: Wed, 22 Jul 2026 09:37:47 GMT
+recorded_with: VCR 6.2.0

@@ -34,7 +34,7 @@ module Fairsharing
       assert_equal @token, @redis.hget(Fairsharing::Client::REDIS_KEY, 'token')
     end
 
-    test 'should re-use token from @redis' do
+    test 'should reuse token from @redis' do
       set_cached_token('abcdefg', 1_669_997_273)
 
       VCR.use_cassette('fairsharing/get_token') do
@@ -48,7 +48,7 @@ module Fairsharing
       assert_equal 'abcdefg', @redis.hget(Fairsharing::Client::REDIS_KEY, 'token')
     end
 
-    test 'should not re-use token from @redis if expired' do
+    test 'should not reuse token from @redis if expired' do
       set_cached_token('abcdefg', 3.days.ago.to_i)
 
       VCR.use_cassette('fairsharing/get_token') do

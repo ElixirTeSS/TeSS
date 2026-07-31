@@ -29,7 +29,8 @@ module ApplicationHelper
     private: { icon: 'fa-eye-slash', message: 'This resource is private' },
     missing: { icon: 'fa-chain-broken', message: 'This resource has been offline for over three days' },
     check: { icon: 'fa-check', message: 'This resource is enabled' },
-    cross: { icon: 'fa-times', message: 'This resource has been disabled' }
+    cross: { icon: 'fa-times', message: 'This resource has been disabled' },
+    exchanged: { icon: 'fa-exchange', message: 'This resource originated from another TeSS registry' },
   }.freeze
 
   # Countries that have priority in the country selection menu. Using ISO 3166-1 Alpha2 code.
@@ -91,6 +92,11 @@ module ApplicationHelper
     elsif event.expired?
       "<span class='event-expired-icon pull-right'>#{icon_for(:expired, size)}</span>".html_safe
     end
+  end
+
+  def exchange_icon(resource, size = nil)
+    return unless resource.origin_uri.present?
+    "<span class='exchange-icon pull-right'>#{icon_for(:exchanged, size)}</span>".html_safe
   end
 
   def icon_for(type, size = nil, options = {})
@@ -251,8 +257,8 @@ module ApplicationHelper
   end
 
   def info_button(title, opts = {}, &block)
-    classes = 'btn btn-default has-popover'
-    classes << " #{opts[:class]}" if opts[:class]
+    classes = %w(btn btn-default has-popover)
+    classes << opts[:class] if opts[:class]
     title_text = opts[:hide_text] ? '' : title
     content_tag(:a, tabindex: 0, class: classes,
                     data: { toggle: 'popover', placement: 'bottom',
@@ -300,7 +306,7 @@ module ApplicationHelper
         options['data-tab-history-update-url'] = true
       end
 
-      text << " (#{count})" if count
+      text += " (#{count})" if count
 
       link_to("##{href}", options) do
         content_tag(:i, nil, class: icon, 'aria-hidden': 'true') + ' ' + text
@@ -441,7 +447,7 @@ module ApplicationHelper
     else
       ''
       # end + "TeSS (Training eSupport System)"
-    end + TeSS::Config.site['title']
+    end + (Space.current_space.default? ? TeSS::Config.site['title'] : Space.current_space.title)
   end
 
   # Renders a title on the page (by default in an H2 tag, pass a "tag" option with a symbol to change) as well as

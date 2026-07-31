@@ -1,0 +1,29 @@
+name: Gem audit
+
+on:
+  push:
+    paths:
+      - 'Gemfile*'
+  pull_request:
+    paths:
+      - 'Gemfile*'
+  schedule:
+    - cron: '0 9 * * 1'
+      timezone: 'Europe/London'
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install imagemagick
+      - name: Check out code
+        uses: actions/checkout@v6
+      - name: Install Ruby & gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Audit gems
+        run: bundle exec bundle-audit check --update

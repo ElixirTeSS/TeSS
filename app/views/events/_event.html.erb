@@ -1,6 +1,7 @@
 <% learning_path_topic_item ||= nil %>
 <% collection_item ||= learning_path_topic_item %>
 <li class="masonry-brick media-item long">
+  <%= space_tag(event) %>
   <%= link_to event, class: 'link-overlay with-left-icon' do %>
     <%= item_order_badge(collection_item) if collection_item %>
     <div class="with-left-icon">
@@ -19,6 +20,7 @@
             <% end %>
 
             <%= event_status_icon(event) %>
+            <%= exchange_icon(event) %>
           </div>
           <% if event.event_types.any? %>
             <% event.event_types.each do |t| %>

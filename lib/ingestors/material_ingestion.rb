@@ -6,7 +6,6 @@ module Ingestors
       if material.is_a?(Hash)
         c = MaterialsController.new
         c.params = { material: material }
-        c.send(:material_params)
         material = OpenStruct.new(c.send(:material_params))
       end
       material = handle_auto_parsing(material)
