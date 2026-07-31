@@ -19,7 +19,7 @@
     <label class="control-label">Members</label>
     <p class="help-block">
       <i class="glyphicon glyphicon-info-sign"></i>
-      Search and add members below - <strong style="color: black;">admins cannot be added as members</strong> since they have all rights on them by default. Check <strong>Owner</strong> to grant ownership.
+      Search and add members below - check <strong>Owner</strong> to grant ownership.
     </p>
 
     <%# Sentinel: guarantees group[user_ids] key is always present in params %>
@@ -41,7 +41,7 @@
     %>
 
     <div data-role="autocompleter-group"
-         data-url="<%= users_path(format: :json, exclude_admins: true) %>"
+         data-url="<%= users_path(format: :json) %>"
          data-prefix="<%= form_field_name %>"
          data-label-field="name"
          data-id-field="id"

@@ -14,7 +14,6 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     @users = User.visible
-    @users = @users.where.not(id: User.with_role('admin').select(:id)) if params[:exclude_admins].to_s == 'true'
     @users = @users.with_query(params[:q].chomp('*')) if params[:q].present?
     @users = @users.paginate(page: params[:page], per_page: 50)
 

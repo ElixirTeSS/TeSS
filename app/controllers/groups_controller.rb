@@ -5,6 +5,7 @@
 # objects.
 class GroupsController < ApplicationController
   before_action :set_group, only: %i[ show edit update destroy ]
+  before_action :set_breadcrumbs
 
   # GET /groups
   #
@@ -95,13 +96,9 @@ class GroupsController < ApplicationController
     #           update (+:title+, +:user_ids+, +:owner_ids+).
     def group_params
       permitted = params.require(:group).permit(:title, user_ids: [], owner_ids: [])
-      permitted[:user_ids] = non_admin_user_ids(permitted[:user_ids]) if permitted.key?(:user_ids)
-      permitted[:owner_ids] = non_admin_user_ids(permitted[:owner_ids]) if permitted.key?(:owner_ids)
+      permitted[:user_ids] = permitted[:user_ids] if permitted.key?(:user_ids)
+      permitted[:owner_ids] = permitted[:owner_ids] if permitted.key?(:owner_ids)
       permitted
-    end
-
-    def non_admin_user_ids(user_ids)
-      User.where(id: user_ids).where.not(id: User.with_role('admin').select(:id)).pluck(:id)
     end
 
     # Synchronizes the +owner+ flag on each of +@group+'s memberships based

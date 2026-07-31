@@ -1,10 +1,3 @@
-<%
-  @breadcrumbs = [
-    { name: 'Home', url: root_path },
-    { name: 'Groups', url: groups_path },
-    { name: @group.title }
-  ]
-%>
 <% content_for :title, @group.title %>
 
 <div class="wrapper collapsing-wrapper">
@@ -22,7 +15,7 @@
       </span>
     </h4>
     <div class="nav-block">
-      <% memberships = @group.group_memberships.includes(:user) rescue @group.group_memberships %>
+      <% memberships = @group.group_memberships.includes(:user) %> <%# rescue @group.group_memberships %>
       <% if memberships.any? %>
         <% memberships.each do |membership| %>
           <p style="margin-bottom: 0.5rem;">

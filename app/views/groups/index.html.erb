@@ -1,6 +1,3 @@
-<%
-  @breadcrumbs = [{ name: 'Home', url: root_path }, { name: 'Groups' }]
-%>
 <% content_for :title, "Groups" %>
 
 <div class="page-header">
@@ -11,11 +8,17 @@
   <div id="content">
     <div class="content-actions">
       <div class="content-viewer-actions"></div>
-      <div class="content-manager-actions">
-        <%= link_to new_group_path, class: 'btn btn-primary' do %>
-          <i class="glyphicon glyphicon-plus"></i> New group
-        <% end %>
-      </div>
+      <% if policy(:group).create? %>
+        <div class="content-manager-actions">
+          <%= link_to new_group_path, class: 'btn btn-primary' do %>
+            <i class="glyphicon glyphicon-plus"></i> New group
+          <% end %>
+        </div>
+      <% end %>
+      <!-- Info -->
+      <%= info_button("What are groups in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
+        <%= render_markdown(groups_info) %>
+      <% end %>
     </div>
 
 

@@ -182,10 +182,10 @@ class ApplicationController < ActionController::Base
       unless policy(Space.current_space).shown?
         if current_user
           flash[:alert] = "You are not authorized to access this page."
-          redirect_to TeSS::Config.base_url, allow_other_host: true
+          raise Pundit::NotAuthorizedError
         else
-          flash[:alert] = "Sign in to access this page."
-          redirect_to TeSS::Config.base_url + '/users/sign_in', allow_other_host: true
+          flash[:alert] = "You need to sign in to access this page."
+          raise Pundit::NotAuthorizedError
         end
       end
     end
