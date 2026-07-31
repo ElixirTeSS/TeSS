@@ -2,6 +2,7 @@
 
   <%# SIDEBAR %>
   <div class="collapsing-sidebar" id="sidebar">
+    <%= render partial: 'common/space_info', locals: { resource: @source } %>
     <%= render partial: "content_providers/partials/content_provider_info",
                locals: { content_provider: @source.content_provider } %>
   </div>

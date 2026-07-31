@@ -1193,3 +1193,5 @@ en:
     title: Original entry
     info: "This %{resource_type} originated from another TeSS registry. For complete, up-to-date information, please visit the original entry:"
     link: Go to original entry
+  other_space:
+    link: View in space

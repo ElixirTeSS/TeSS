@@ -7,6 +7,7 @@
   end
 %>
 <li class="masonry-brick media-item long">
+  <%= space_tag(material) %>
   <%= link_to material_path(material, **link_params), class: 'link-overlay' do %>
     <%= item_order_badge(collection_item) if show_order && collection_item %>
 
