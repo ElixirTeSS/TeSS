@@ -28,6 +28,12 @@ $navbar-default-link-color: #fff;
   background-color: #000;
   background-image: linear-gradient(#000 10%, #333);
   color: #fff;
+  display: flex;
+  justify-content: center;
+
+  > div {
+    max-width: 1400px;
+  }
 
   input {
     color: $text-color;
@@ -49,5 +55,12 @@ ul.promo-blocks {
 
   li {
     width: 100% !important;
+    h4 {
+      color: lighten($brand-primary, 10%) !important;
+    }
+
+    p {
+      color: #fff;
+    }
   }
 }
