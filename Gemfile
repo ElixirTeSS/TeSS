@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org', cooldown: 14
 
-gem 'rails', '8.1.3'
+gem 'rails', '8.1.3.1'
 
 gem 'active_model_serializers'
 gem 'activerecord-session_store'
