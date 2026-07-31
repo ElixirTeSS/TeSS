@@ -188,11 +188,11 @@ class Event < ApplicationRecord
   end
 
   def start_local
-    set_to_local start
+    set_to_local(start)
   end
 
   def end_local
-    set_to_local self.end
+    set_to_local(self.end)
   end
 
   def started?
@@ -524,8 +524,12 @@ class Event < ApplicationRecord
   end
 
   def set_to_local(datetime)
-    datetime.asctime.in_time_zone(timezone)
-  rescue StandardError
+    # Fallback to UTC when no timezone
+    return datetime&.in_time_zone unless timezone
+
+    time = datetime&.in_time_zone(timezone)
+    return time if time
+
     datetime
   end
 

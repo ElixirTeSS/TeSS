@@ -64,6 +64,7 @@ Rails.application.routes.draw do
     collection do
       get :count
       get :calendar, format: %i[js html]
+      get :event_time_data
       post :preview
     end
     member do

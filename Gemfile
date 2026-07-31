@@ -17,6 +17,7 @@ gem 'country_select'
 gem 'devise'
 gem 'devise_invitable'
 gem 'eventbrite_sdk'
+gem 'ffi-icu'
 gem 'font-awesome-sass', '~> 4.7.0' # Prefer V4 icon styles
 gem 'friendly_id'
 gem 'geocoder'

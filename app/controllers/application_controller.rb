@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   include PublicActivity::StoreController
 
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :timezone_from_params_or_session
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -14,11 +15,13 @@ class ApplicationController < ActionController::Base
 
   # Should allow token authentication for API calls
   acts_as_token_authentication_handler_for User, except: [:index, :show, :embed, :calendar, :check_exists, :handle_error, :count,
-                                                          :redirect] #only: [:new, :create, :edit, :update, :destroy]
+                                                          :redirect, :event_time_data]
+  #only: [:new, :create, :edit, :update, :destroy]
 
   # User auth should be required in the web interface as well; it's here rather than in routes so that it
   # doesn't override the token auth, above.
-  before_action :authenticate_user!, except: [:index, :show, :embed, :calendar, :check_exists, :handle_error, :count, :redirect]
+  before_action :authenticate_user!, except: [:index, :show, :embed, :calendar, :check_exists,
+                                              :handle_error, :count, :redirect, :event_time_data]
   before_action :set_current_space
   before_action :set_current_user
 
@@ -160,4 +163,18 @@ class ApplicationController < ActionController::Base
   def allow_embedding
     response.headers.delete 'X-Frame-Options'
   end
+
+  def timezone_from_params_or_session
+    # TODO? have a list of acceptable time zones, maybe via config?
+    tz = params[:tz] || session['tz']
+
+    session['tz'] = if (tz.blank? || tz == 'reset')
+                      nil
+                    elsif ActiveSupport::TimeZone[tz].present?
+                      tz
+                    end
+
+    true
+  end
+
 end

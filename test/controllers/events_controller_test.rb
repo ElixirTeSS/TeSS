@@ -8,6 +8,7 @@ class EventsControllerTest < ActionController::TestCase
   setup do
     mock_images
     @event = events(:one)
+    @event2 = events(:calendar_event)
     @material = materials(:good_material)
     @collection = collections(:two)
     u = users(:regular_user)
@@ -381,6 +382,67 @@ class EventsControllerTest < ActionController::TestCase
     assert_not_equal @event.user, users(:collaborative_user)
     patch :update, params: { id: @event, event: @updated_event }
     assert_response :forbidden
+  end
+
+  test 'should allow user to edit/create events in the specified timezone on the webpage' do
+    sign_in users(:admin)
+    event = events(:training_event) # Has non-trivial timezone
+
+    # Time zone is Melbourne
+    assert_equal event.timezone, "Melbourne"
+
+    # These are UTC
+    assert_equal event.start.to_s, "2021-09-20 23:15:00 UTC"
+    assert_equal event.end.to_s, "2021-09-21 01:00:00 UTC"
+
+    get :edit, params: { id: event }
+    assert_response :success
+
+    # Time zone in the form is Melbourne
+    timezone_select = css_select '#event_timezone'
+    value = timezone_select.search('option[@selected="selected"]').first.attr('value')
+    assert_equal value, 'Melbourne'
+
+    # These are Melbourne time
+    start_select = css_select '#event_start'
+    value = start_select.first.attr('value')
+    assert_equal value, '2021-09-21 09:15:00 +1000'
+
+    end_select = css_select '#event_end'
+    value = end_select.first.attr('value')
+    assert_equal value, '2021-09-21 11:00:00 +1000'
+
+    # Update this in Melbourne timezone
+    # Both start and end are 1 minute later than about Melbourne times
+    patch :update, params: {
+            id: event,
+            event: {
+              start: '2021-09-21 09:16:00',
+              end: '2021-09-21 11:01:00'
+            }
+          }
+    event.reload
+
+    # These are UTC
+    assert_equal event.start.to_s, "2021-09-20 23:16:00 UTC"
+    assert_equal event.end.to_s, "2021-09-21 01:01:00 UTC"
+
+    # Check create, set one extra minute later in Melbourne timezone
+    assert_difference('Event.count') do
+      post :create, params: { event: { description: "Create time/timezone test",
+                                       title: "Create time/timezone test",
+                                       url: 'https://www.example.com/time/timezone/test',
+                                       timezone: 'Melbourne',
+                                       # These are Melbourne time
+                                       start: '2021-09-21 09:17:00',
+                                       end: '2021-09-21 11:02:00' } }
+    end
+    event = Event.find_by(title: 'Create time/timezone test')
+    assert_not_nil event
+
+    # These are UTC
+    assert_equal event.start.to_s, "2021-09-20 23:17:00 UTC"
+    assert_equal event.end.to_s, "2021-09-21 01:02:00 UTC"
   end
 
   # DESTROY TESTS
@@ -1718,5 +1780,164 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :success
 
     assert_select '#origin-info a[href=?]', uri
+  end
+
+  test 'event_time_data provides JSON for an event, event time zone' do
+    get :event_time_data, params: { event_ids: [@event.id] }, format: :json
+
+    assert_response :success
+    json =  JSON.parse(response.body)
+
+    assert_equal json.count, 1
+    assert_equal json.first.keys, ['id', 'html']
+    assert_equal json.first['id'], "#event-time-#{@event.id}"
+
+    html = Nokogiri::HTML(json.first['html'])
+    div = html.at_css("div#event-time-#{@event.id}")
+    assert_equal div['class'], 'time-with-zone'
+    assert_equal div['data-event-id'], "#{@event.id}"
+
+    # Time (has zero duration)
+    p = div.at_css('p.date')
+    assert_includes p.text, 'Date'
+    assert_includes p.text, '23 November 2015 @ 10:16'
+
+    # Timezone UTC (text goes through ICU for I18n)
+    p = div.at_css('p.timezone')
+    assert_includes p.text, 'Timezone'
+    assert_includes p.text, 'Coordinated Universal Time'
+  end
+
+  test 'event_time_data provides JSON for two events, event timezone' do
+    get :event_time_data, params: { event_ids: [@event.id, @event2.id] }, format: :json
+
+    assert_response :success
+    json =  JSON.parse(response.body)
+
+    assert_equal json.count, 2
+    ids = json.map { |e| e['id'] }
+    assert_includes ids, "#event-time-#{@event.id}"
+    assert_includes ids, "#event-time-#{@event2.id}"
+
+    # event(:one)
+    html = Nokogiri::HTML(json.find do |e|
+                            e['id'] == "#event-time-#{@event.id}"
+                          end['html'])
+    div = html.at_css("div#event-time-#{@event.id}")
+    p = div.at_css('p.date')
+    assert_includes p.text, '23 November 2015 @ 10:16'
+    p = div.at_css('p.timezone')
+    assert_includes p.text, 'Coordinated Universal Time'
+
+    # event(:calendar_event)
+    html = Nokogiri::HTML(json.find do |e|
+                            e['id'] == "#event-time-#{@event2.id}"
+                          end['html'])
+    div = html.at_css("div#event-time-#{@event2.id}")
+    p = div.at_css('p.date')
+    assert_includes p.text, '21 September 2021 @ 09:15 - 11:00'
+    p = div.at_css('p.timezone')
+    assert_includes p.text, 'Australian Eastern Standard Time'
+  end
+
+  test 'event_time_data provides JSON for two events, browser timezone' do
+    # More complicated ...
+    # Since browser timezone sent, this also returns a div to render the controls
+    # Does not change timezones of events though
+    get :event_time_data, params: { event_ids: [@event.id, @event2.id],
+                                    browser_timezone: 'America/Edmonton'}, format: :json
+
+    assert_response :success
+    json =  JSON.parse(response.body)
+
+    assert_equal json.count, 3
+    ids = json.map { |e| e['id'] }
+    assert_includes ids, "#event-time-#{@event.id}"
+    assert_includes ids, "#event-time-#{@event2.id}"
+    assert_includes ids, "#timezone-controls"
+
+    # This doesn't change (same as previous test)
+    # event(:one)
+    html = Nokogiri::HTML(json.find do |e|
+                            e['id'] == "#event-time-#{@event.id}"
+                          end['html'])
+    div = html.at_css("div#event-time-#{@event.id}")
+    p = div.at_css('p.date')
+    assert_includes p.text, '23 November 2015 @ 10:16'
+    p = div.at_css('p.timezone')
+    assert_includes p.text, 'Coordinated Universal Time'
+
+    # event(:calendar_event)
+    html = Nokogiri::HTML(json.find do |e|
+                            e['id'] == "#event-time-#{@event2.id}"
+                          end['html'])
+    div = html.at_css("div#event-time-#{@event2.id}")
+    p = div.at_css('p.date')
+    assert_includes p.text, '21 September 2021 @ 09:15 - 11:00'
+    p = div.at_css('p.timezone')
+    assert_includes p.text, 'Australian Eastern Standard Time'
+
+    # timezone controls will have an option for event and browser timezones
+    html = Nokogiri::HTML(json.find do |e|
+                            e['id'] == "#timezone-controls"
+                          end['html'])
+    div = html.at_css("div#timezone-controls")
+    # Where ajax calls go
+    assert_includes div['data-event-time-data-url'], 'events/event_time_data'
+
+    # The selected option is event timezone
+    span = div.at_css("span.timezone-display-value")
+    assert_includes span.text, 'the timezone in which each event occurs'
+
+    # The radio items
+    # The event timezone choice (selected)
+    input = div.at_css('input#event-timezone-choice')
+    assert_equal input['checked'], 'checked'
+    label = div.at_css('label[for="event-timezone-choice"]')
+    assert_includes label.text, 'the timezone in which the event occurs'
+
+    # The browser timezone choice (unselected)
+    input = div.at_css('input#browser-timezone-choice')
+    assert_nil input['checked']
+    label = div.at_css('label[for="browser-timezone-choice"]')
+    assert_includes label.text, 'Mountain Daylight Time'
+    assert_includes label.text, 'detected from your browser'
+  end
+
+  test 'event_time_data provides JSON for two events, alternate timezone' do
+    # This actually changes timezones of events
+    # does not re-render controls
+    get :event_time_data, params: { event_ids: [@event.id, @event2.id],
+                                    tz: 'America/Edmonton'}, format: :json
+
+    assert_response :success
+    json =  JSON.parse(response.body)
+
+    assert_equal json.count, 2
+    ids = json.map { |e| e['id'] }
+    assert_includes ids, "#event-time-#{@event.id}"
+    assert_includes ids, "#event-time-#{@event2.id}"
+
+    # event(:one)
+    html = Nokogiri::HTML(json.find do |e|
+                            e['id'] == "#event-time-#{@event.id}"
+                          end['html'])
+    div = html.at_css("div#event-time-#{@event.id}")
+    p = div.at_css('p.date')
+    # 10:16 GMT == 03:16 Mountain time
+    assert_includes p.text, '23 November 2015 @ 03:16'
+    p = div.at_css('p.timezone')
+    assert_includes p.text, 'Mountain Daylight Time'
+
+    # event(:calendar_event)
+    html = Nokogiri::HTML(json.find do |e|
+                            e['id'] == "#event-time-#{@event2.id}"
+                          end['html'])
+    div = html.at_css("div#event-time-#{@event2.id}")
+    p = div.at_css('p.date')
+    # 21 Sept 09:15 Melbourne == 20 Sept 17:15 Mountain == 20 Sept 23:15 GMT
+    assert_includes p.text, '20 September 2021 @ 17:15 - 19:00'
+    p = div.at_css('p.timezone')
+    assert_includes p.text, 'Mountain Daylight Time'
   end
 end

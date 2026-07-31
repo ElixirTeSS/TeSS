@@ -222,6 +222,8 @@ GEM
     faraday-net_http (3.4.2)
       net-http (~> 0.5)
     ffi (1.15.5)
+    ffi-icu (0.5.3)
+      ffi (~> 1.0, >= 1.0.9)
     font-awesome-sass (4.7.0)
       sass (>= 3.2)
     friendly_id (5.5.0)
@@ -872,6 +874,7 @@ DEPENDENCIES
   devise
   devise_invitable
   eventbrite_sdk
+  ffi-icu
   font-awesome-sass (~> 4.7.0)
   friendly_id
   geocoder
