@@ -1,0 +1,53 @@
+@import "bootstrap/mixins";
+//////////////////////////////
+// Design-specific variables
+//////////////////////////////
+@import "mixins/modern_base";
+
+//////////////////////////////
+// Bootstrap variable tweaks
+//////////////////////////////
+$navbar-default-color: #fff;
+$navbar-default-bg: #000;
+$navbar-default-link-color: #fff;
+
+@import "../application";
+
+.navbar {
+  border-radius: 0 !important;
+}
+
+.unified-header .navbar-brand img {
+  padding: 0 10px 10px 10px;
+}
+
+.tesshub-front {
+  margin-left: calc(min((-100vw + 1400px) / 2, 0px) - 15px);
+  margin-top: -30px;
+  width: 100vw;
+  background-color: #000;
+  background-image: linear-gradient(#000 10%, #333);
+  color: #fff;
+
+  input {
+    color: $text-color;
+  }
+}
+
+#welcome_text {
+  position: relative;
+
+  h1 {
+    color: #fff;
+  }
+}
+
+
+ul.promo-blocks {
+  gap: 10px !important;
+  flex-direction: column !important;
+
+  li {
+    width: 100% !important;
+  }
+}
