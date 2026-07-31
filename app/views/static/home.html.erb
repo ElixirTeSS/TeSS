@@ -25,13 +25,15 @@
 <% if current_space.default? %>
   <%= render partial: 'communities/banner' if TeSS::Config.site.dig('home_page', 'communities') %>
 
-  <div class="row tesshub-front">
-    <div class="col-md-8">
-      <%= render partial: 'static/home/welcome' %>
-    </div>
+  <div class="tesshub-front">
+    <div class="row">
+      <div class="col-md-8">
+        <%= render partial: 'static/home/welcome' %>
+      </div>
 
-    <div class="col-md-4">
-      <%= render partial: 'static/home/promo_blocks' if TeSS::Config.site.dig('home_page', 'promo_blocks') %>
+      <div class="col-md-4">
+        <%= render partial: 'static/home/promo_blocks' if TeSS::Config.site.dig('home_page', 'promo_blocks') %>
+      </div>
     </div>
   </div>
 
