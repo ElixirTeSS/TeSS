@@ -1,6 +1,9 @@
 require 'icalendar'
 require 'rails/html/sanitizer'
 require 'redis'
+require 'json/ld'
+require 'rdf'
+require 'rdf/rdfxml'
 
 class Event < ApplicationRecord
   include PublicActivity::Common
