@@ -44,7 +44,7 @@ class Space < ApplicationRecord
     # record:: the Space instance being validated.
     def validate(record)
     if record.is_private && !(record.group_ids.length > 0)
-        record.errors.add(:base, "If the space is private, you must add required groups.")
+        record.errors.add(:base, t('private_space.needs_groups_in_form'))
       end
     end
   end

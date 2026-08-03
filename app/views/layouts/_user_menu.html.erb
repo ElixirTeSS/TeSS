@@ -43,8 +43,8 @@
 
       <% if is_admin || is_curator || is_owner_in_any_group %>
         <li class="dropdown-item">
-          <%= link_to groups_path, title: "View groups" do %>
-            <i class="glyphicon glyphicon-th"></i> <%= "View groups" %>
+          <%= link_to groups_path, title: t('menu.user.view_groups') do %>
+            <i class="glyphicon glyphicon-th"></i> <%= t('menu.user.view_groups') %>
           <% end %>
         </li>
       <% end %>

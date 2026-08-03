@@ -3,46 +3,46 @@
 <div class="wrapper collapsing-wrapper">
   <%# SIDEBAR %>
   <div id="sidebar" class="collapsing-sidebar">
-    <h4 class="nav-heading">Group</h4>
+    <h4 class="nav-heading"><%= t('group.show.group') %></h4>
     <div class="nav-block">
       <h5><%= @group.title %></h5>
     </div>
 
     <h4 class="nav-heading">
-      Members
+      <%= t('group.show.members') %>
       <span class="badge" style="background:#2a6ebb; margin-left: 4px;">
         <%= @group.group_memberships.count %>
       </span>
     </h4>
     <div class="nav-block">
-      <% memberships = @group.group_memberships.includes(:user) %> <%# rescue @group.group_memberships %>
+      <% memberships = @group.group_memberships.includes(:user) %>
       <% if memberships.any? %>
         <% memberships.each do |membership| %>
           <p style="margin-bottom: 0.5rem;">
             <% if membership.owner? %>
-              <i class="glyphicon glyphicon-star" style="color: #E9822C;" title="Owner"></i>
+              <i class="glyphicon glyphicon-star color-accent" title="<%= t('group.show.owner') %>"></i>
             <% else %>
-              <i class="glyphicon glyphicon-user" style="color: #aaa;"></i>
+              <i class="glyphicon glyphicon-user text-secondary"></i>
             <% end %>
             &nbsp;<strong><%= membership.user.name %></strong>
             <% if membership.owner? %>
-              <br><span class="text-muted" style="padding-left: 20px; font-size: 0.85em;">Owner</span>
+              <br><span class="text-muted" style="padding-left: 20px; font-size: 0.85em;"><%= t('group.show.owner') %></span>
             <% end %>
           </p>
         <% end %>
       <% else %>
-        <span class="empty">No members yet.</span>
+        <span class="empty"><%= t('group.show.no_members') %></span>
       <% end %>
     </div>
 
-    <h4 class="nav-heading">Quick stats</h4>
+    <h4 class="nav-heading"><%= t('group.show.stats.title') %></h4>
     <div class="nav-block">
       <p>
-        <strong>Total members</strong><br/>
+        <strong><%= t('group.show.stats.total') %></strong><br/>
         <%= @group.group_memberships.count %>
       </p>
       <p>
-        <strong>Owners</strong><br/>
+        <strong><%= t('group.show.stats.owners') %></strong><br/>
         <%= @group.group_memberships.select(&:owner?).count %>
       </p>
     </div>
@@ -54,22 +54,16 @@
       <div class="content-viewer-actions"></div>
       <div class="content-manager-actions">
         <% if policy(@group).update? %>
-          <%= link_to edit_group_path(@group), class: 'btn btn-default' do %>
-            <i class="glyphicon glyphicon-pencil"></i> Edit
-          <% end %>
+          <%= edit_button(@group) %>
         <% end %>
-         <% if policy(@group).destroy? %>
-           <%= button_to @group, method: :delete,
-               class: 'btn btn-danger',
-               form: { data: { confirm: "Are you sure you want to delete this group?" } } do %>
-             <i class="glyphicon glyphicon-trash"></i> Delete
-           <% end %>
+        <% if policy(@group).destroy? %>
+          <%= delete_button(@group) %>
         <% end %>
       </div>
     </div>
 
     <%= link_to groups_path, class: 'btn btn-default' do %>
-      <i class="glyphicon glyphicon-arrow-left"></i> Back to groups
+      <i class="glyphicon glyphicon-arrow-left"></i> <%= t('group.show.back_to_groups') %>
     <% end %>
 
     <%# Members table %>
@@ -79,11 +73,11 @@
       <table class="table table-hover" style="margin-top: 1rem;">
         <thead>
           <tr>
-            <th>Name</th>
+            <th><%= t('group.show.table.name') %></th>
             <% if memberships.first.user.respond_to?(:email) %>
-              <th>Email</th>
+              <th><%= t('group.show.table.email') %></th>
             <% end %>
-            <th>Role</th>
+            <th><%= t('group.show.table.role') %></th>
           </tr>
         </thead>
         <tbody>
@@ -97,11 +91,11 @@
               <% end %>
               <td>
                 <% if membership.owner? %>
-                  <span class="label" style="background-color: #E9822C;">
-                    <i class="glyphicon glyphicon-star"></i> Owner
+                  <span class="label bg-accent">
+                    <i class="glyphicon glyphicon-star"></i> <%= t('group.show.table.owner') %>
                   </span>
                 <% else %>
-                  <span class="label label-default">Member</span>
+                  <span class="label label-default"><%= t('group.show.table.member') %></span>
                 <% end %>
               </td>
             </tr>
@@ -110,10 +104,10 @@
       </table>
     <% else %>
       <div class="well text-center" style="margin-top: 1rem;">
-        <i class="glyphicon glyphicon-user" style="font-size: 2rem; color: #aaa;"></i>
+        <i class="glyphicon glyphicon-user text-secondary" style="font-size: 2rem;"></i>
         <p class="text-muted" style="margin-top: 0.5rem;">
-          No members yet.
-          <%= link_to "Add members", edit_group_path(@group) %>.
+          <%= t('group.show.no_members') %>
+          <%= link_to t('group.show.add_members'), edit_group_path(@group) %>.
         </p>
       </div>
     <% end %>
@@ -123,14 +117,14 @@
     <%# Private spaces table %>
     <% spaces = @group.spaces.all %>
 
-    <h4 style="margin-top:120px;margin-bottom:25px;">Spaces which require this group to have access to:</h4>
+    <h4 style="margin-top:120px;margin-bottom:25px;"><%= t('group.show.spaces.title') %></h4>
 
     <% if spaces.any? %>
       <table class="table table-hover" style="margin-top: 1rem;">
         <thead>
           <tr>
-            <th>Space</th>
-            <th>Other groups which have access</th>
+            <th><%= t('group.show.spaces.space') %></th>
+            <th><%= t('group.show.spaces.other_groups') %></th>
           </tr>
         </thead>
         <tbody>
@@ -153,9 +147,9 @@
       </table>
     <% else %>
       <div class="well text-center" style="margin-top: 1rem;">
-        <i class=" 	glyphicon glyphicon-th-large" style="font-size: 2rem; color: #aaa;"></i>
+        <i class="glyphicon glyphicon-th-large text-secondary" style="font-size: 2rem;"></i>
         <p class="text-muted" style="margin-top: 0.5rem;">
-          This group does not give access to any private space
+          <%= t('group.show.spaces.no_access') %>
         </p>
       </div>
     <% end %>

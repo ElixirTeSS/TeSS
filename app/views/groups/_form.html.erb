@@ -4,22 +4,17 @@
   <%# --- Title --- %>
   <div class="form-group <%= 'has-error' if group.errors[:title].any? %>">
     <%= f.label :title, class: "control-label" %>
-    <%= f.text_field :title, class: "form-control input-lg", placeholder: "Group title" %>
+    <%= f.text_field :title, class: "form-control input-lg", placeholder: t('group.form.placeholder') %>
     <% if group.errors[:title].any? %>
       <span class="help-block"><%= group.errors[:title].first %></span>
     <% end %>
   </div>
 
-  <%# --- Members ---
-      Re-uses the same autocompleter infrastructure as spaces/_form.html.erb.
-      Template: app/assets/javascripts/templates/autocompleter/group_member.hbs (new file).
-      The sentinel hidden field ensures group[user_ids] is submitted even when the list is empty.
-  %>
   <div class="form-group">
-    <label class="control-label">Members</label>
+    <label class="control-label"><%= t('group.form.members') %></label>
     <p class="help-block">
       <i class="glyphicon glyphicon-info-sign"></i>
-      Search and add members below - check <strong>Owner</strong> to grant ownership.
+      <%= t('group.form.member_explain') %>
     </p>
 
     <%# Sentinel: guarantees group[user_ids] key is always present in params %>
@@ -70,43 +65,6 @@
     <%= link_to "Cancel", :back, class: "btn btn-default" %>
   </div>
 <% end %>
-
-<style>
-  /* Member list rows */
-  .group-member-list { margin-top: 6px; }
-
-  .group-member-list li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 6px 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background: #f9f9f9;
-    margin-bottom: 4px;
-  }
-
-  .group-member-list li.is-owner {
-    background: #fff6ee;
-    border-color: #f0c89a;
-  }
-
-  .group-member-name  { font-weight: 600; color: #2a6ebb; flex: 1 1 auto; }
-  .group-member-email { font-size: 0.85em; color: #888; flex: 1 1 auto; }
-
-  .group-member-owner-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-weight: normal;
-    margin: 0;
-    white-space: nowrap;
-    cursor: pointer;
-    color: #555;
-  }
-  .group-member-owner-label .glyphicon-star            { color: #ccc; transition: color 0.15s; }
-  .group-member-owner-label input:checked ~ .glyphicon-star { color: #E9822C; }
-</style>
 
 <script>
   /* Owner-checkbox: toggle .is-owner highlight on the <li> */
