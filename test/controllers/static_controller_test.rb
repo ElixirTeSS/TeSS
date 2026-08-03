@@ -813,4 +813,40 @@ class StaticControllerTest < ActionController::TestCase
     get :home
     assert_select 'head title', text: 'TeSS Test Instance'
   end
+
+  test 'includes og and twitter meta tags' do
+    get :home
+    assert_response :success
+
+    assert_select 'meta[name="twitter:card"][content=?]', 'summary_large_image'
+    assert_select 'meta[name="twitter:site"][content=?]', '@test_handle'
+    assert_select 'meta[name="twitter:title"][content=?]', 'TeSS Test Instance'
+    assert_select 'meta[name="twitter:description"][content*=?]', "Search the portal"
+
+    assert_select 'meta[property="og:url"][content=?]', 'http://test.host/'
+    assert_select 'meta[property="og:title"][content=?]', 'TeSS Test Instance'
+    assert_select 'meta[property="og:description"][content*=?]', "Search the portal"
+  end
+
+  test 'includes og and twitter meta tags for space' do
+    mock_images
+    space = spaces(:plants)
+    space.update!(image_url: 'http://example.com/goblet.png', description: 'Plants in space')
+
+    with_host(space.host) do
+      get :home
+      assert_response :success
+
+      assert_select 'meta[name="twitter:card"][content=?]', 'summary_large_image'
+      assert_select 'meta[name="twitter:site"]', count: 0
+      assert_select 'meta[name="twitter:image"][content*=?]', 'goblet.png'
+      assert_select 'meta[name="twitter:title"][content=?]', 'TeSS Plants Community'
+      assert_select 'meta[name="twitter:description"][content*=?]', "Plants in space"
+
+      assert_select 'meta[property="og:url"][content=?]','http://plants.mytess.training/'
+      assert_select 'meta[property="og:image"][content*=?]', 'goblet.png'
+      assert_select 'meta[property="og:title"][content=?]', 'TeSS Plants Community'
+      assert_select 'meta[property="og:description"][content*=?]', "Plants in space"
+    end
+  end
 end

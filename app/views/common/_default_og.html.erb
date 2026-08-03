@@ -1,12 +1,18 @@
+<% title = Space.current_space.default? ? TeSS::Config.site['title'] : Space.current_space.title %>
+<% image = Space.current_space.default? ? TeSS::Config.site['logo_open_graph'] : Space.current_space.image&.url %>
+<% image ||= TeSS::Config.site['logo'] %>
+<% description = strip_tags(Space.current_space.default? ? t('home.subtitle') : render_sanitized_markdown(Space.current_space.description)).strip %>
+<% twitter = TeSS::Config.twitter_handle if Space.current_space.default? %>
+
 <% # default twitter meta tags -%>
 <%= tag(:meta, name: "twitter:card",        content: 'summary_large_image') %>
-<%= tag(:meta, name: "twitter:site",        content: TeSS::Config.twitter_handle) unless TeSS::Config.twitter_handle.blank? %>
-<%= tag(:meta, name: "twitter:image",       content: asset_url(TeSS::Config.site['logo'])) %>
-<%= tag(:meta, name: "twitter:title",       content: TeSS::Config.site['title']) %>
-<%= tag(:meta, name: "twitter:description", content: strip_tags(t('home.subtitle'))) %>
+<%= tag(:meta, name: "twitter:site",        content: twitter) if twitter.present? %>
+<%= tag(:meta, name: "twitter:image",       content: asset_url(image)) if image.present? %>
+<%= tag(:meta, name: "twitter:title",       content: title) %>
+<%= tag(:meta, name: "twitter:description", content: description) if description.present? %>
 
 <% # default OpenGraph meta tags -%>
 <%= tag(:meta, property: "og:url",          content: request.original_url) %>
-<%= tag(:meta, property: "og:image",        content: asset_url(TeSS::Config.site['logo_open_graph'])) %>
-<%= tag(:meta, property: "og:title",        content: TeSS::Config.site['title']) %>
-<%= tag(:meta, property: "og:description",  content: strip_tags(t('home.subtitle'))) %>
+<%= tag(:meta, property: "og:image",        content: asset_url(image)) if image.present? %>
+<%= tag(:meta, property: "og:title",        content: title) %>
+<%= tag(:meta, property: "og:description",  content: description) if description.present? %>

@@ -4,7 +4,7 @@ default: &default
   sender_email: no-reply@example.com
   solr_enabled: false
   default_role: registered_user
-  twitter_handle: '@handle'
+  twitter_handle: '@test_handle'
   announcement_message:
   prevent_robot_indexing: false
   require_cookie_consent: true
