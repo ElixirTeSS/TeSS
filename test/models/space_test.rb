@@ -39,7 +39,7 @@ class SpaceTest < ActiveSupport::TestCase
 
     invalid_private_space_no_groups = Space.create(user: user, title: 'hello', host: 'space.host', is_private: true)
     refute invalid_private_space_no_groups.valid?
-    assert invalid_private_space_no_groups.errors.added?(:base, t('private_space.needs_groups_in_form'))
+    assert invalid_private_space_no_groups.errors.added?(:base, I18n.t('private_space.needs_groups_in_form'))
 
     valid = Space.new(user: user, title: 'hello', host: 'space.host')
     assert valid.valid?
