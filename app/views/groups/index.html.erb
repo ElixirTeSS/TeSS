@@ -25,7 +25,7 @@
 
     <% if @groups.empty? %>
       <div class="well well-lg text-center" style="margin-top: 2rem;">
-        <i class="glyphicon glyphicon-user" style="font-size: 3rem; color: #aaa;"></i>
+        <i class="glyphicon glyphicon-user text-secondary" style="font-size: 3rem;"></i>
         <p class="text-muted" style="margin-top: 1rem;">No groups have been created yet.</p>
         <%= link_to "Create the first group", new_group_path, class: 'btn btn-primary' %>
       </div>
@@ -48,7 +48,7 @@
 
               <% if owners.any? %>
                 &nbsp;&middot;&nbsp;
-                <i class="glyphicon glyphicon-star" style="color: #E9822C;"></i>
+                <i class="glyphicon glyphicon-star color-accent"></i>
                 <% owner_names = owners.map { |m| m.user.name } %>
                 <%= owner_names.first(2).join(", ") %><%= " +#{owner_names.size - 2} more" if owner_names.size > 2 %>
               <% end %>
