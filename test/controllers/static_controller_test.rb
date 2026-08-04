@@ -24,7 +24,7 @@ class StaticControllerTest < ActionController::TestCase
     end
 
     assert_select 'ul.nav.navbar-nav' do
-      assert_select 'li a[href=?]', about_path
+      #assert_select 'li a[href=?]', about_path
       assert_select 'li a[href=?]', events_path
       assert_select 'li a[href=?]', materials_path
       assert_select 'li a[href=?]', workflows_path
@@ -54,7 +54,7 @@ class StaticControllerTest < ActionController::TestCase
     end
 
     assert_select 'ul.nav.navbar-nav' do
-      assert_select 'li a[href=?]', about_path
+      #assert_select 'li a[href=?]', about_path
       assert_select 'li a[href=?]', events_path, count: 0
       assert_select 'li a[href=?]', materials_path, count: 0
       assert_select 'li a[href=?]', workflows_path, count: 0
@@ -161,7 +161,7 @@ class StaticControllerTest < ActionController::TestCase
       assert_select 'ul.nav.navbar-nav' do
         assert_select 'li:nth-child(1) a[href=?]', materials_path
         assert_select 'li:nth-child(2) a[href=?]', events_path
-        assert_select 'li a[href=?]', about_path
+        # assert_select 'li a[href=?]', about_path
         assert_select 'li a[href=?]', workflows_path
         assert_select 'li a[href=?]', elearning_materials_path
         assert_select 'li a[href=?]', collections_path
@@ -178,9 +178,9 @@ class StaticControllerTest < ActionController::TestCase
 
       assert_select 'ul.nav.navbar-nav' do
         assert_select 'li:nth-child(1) a[href=?]', content_providers_path
-        assert_select 'li:nth-child(2) a[href=?]', about_path
-        assert_select 'li:nth-child(3) a[href=?]', materials_path
-        assert_select 'li:nth-child(4) a[href=?]', trainers_path
+        #assert_select 'li:nth-child(2) a[href=?]', about_path
+        assert_select 'li:nth-child(2) a[href=?]', materials_path
+        assert_select 'li:nth-child(3) a[href=?]', trainers_path
         assert_select 'li a[href=?]', events_path
         assert_select 'li a[href=?]', workflows_path
         assert_select 'li a[href=?]', elearning_materials_path
@@ -203,8 +203,8 @@ class StaticControllerTest < ActionController::TestCase
         assert_select 'li a[href=?]', collections_path
         assert_select 'li a[href=?]', nodes_path
         assert_select 'li.dropdown.directory-menu' do
-          assert_select 'li:nth-child(1) a[href=?]', about_path
-          assert_select 'li:nth-child(2) a[href=?]', materials_path
+          #assert_select 'li:nth-child(1) a[href=?]', about_path
+          assert_select 'li:nth-child(1) a[href=?]', materials_path
         end
       end
     end
@@ -589,7 +589,7 @@ class StaticControllerTest < ActionController::TestCase
 
         # These should still appear because they're not disabled
         assert_select 'ul.nav.navbar-nav' do
-          assert_select 'li a[href=?]', about_path
+          #assert_select 'li a[href=?]', about_path
           assert_select 'li a[href=?]', elearning_materials_path
           assert_select 'li a[href=?]', workflows_path
           assert_select 'li a[href=?]', collections_path
@@ -621,7 +621,7 @@ class StaticControllerTest < ActionController::TestCase
 
       # All features should appear in the default space
       assert_select 'ul.nav.navbar-nav' do
-        assert_select 'li a[href=?]', about_path
+        #assert_select 'li a[href=?]', about_path
         assert_select 'li a[href=?]', events_path
         assert_select 'li a[href=?]', materials_path
         assert_select 'li a[href=?]', elearning_materials_path
@@ -695,7 +695,7 @@ class StaticControllerTest < ActionController::TestCase
 
         # All globally enabled features should appear
         assert_select 'ul.nav.navbar-nav' do
-          assert_select 'li a[href=?]', about_path
+          #assert_select 'li a[href=?]', about_path
           assert_select 'li a[href=?]', events_path
           assert_select 'li a[href=?]', materials_path
           assert_select 'li a[href=?]', elearning_materials_path

@@ -288,6 +288,9 @@ default: &default
     space:
       primary: '#260252'
       secondary: '#5c29b1'
+    tesshub:
+      primary: '#047eaa'
+      secondary: '#f47d21'
 development:
   <<: *default
 

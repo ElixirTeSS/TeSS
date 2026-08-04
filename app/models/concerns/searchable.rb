@@ -27,6 +27,8 @@ module Searchable
         # Disjunction clause
         active_facets = {}
 
+        selected_facets = selected_facets.merge(static_facets)
+
         normal_facets = selected_facets.except(*Facets.special)
 
         any do
@@ -106,6 +108,10 @@ module Searchable
         end
 
       end
+    end
+
+    def static_facets
+      Space.current_space&.default? ? { 'across_all_spaces' => 'true' } : {}
     end
   end
 

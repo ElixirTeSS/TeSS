@@ -41,15 +41,14 @@
 
         <%# Menu -%>
         <%
-          params = current_space&.default? ? { across_all_spaces: true } : {}
           tabs = [
             #{ feature: 'about', link: about_path },
-            { feature: 'events', link: events_path(**params) },
-            { feature: 'materials', link: materials_path(**params) },
-            { feature: 'elearning_materials', link: elearning_materials_path(**params) },
-            { feature: 'learning_paths', link: learning_paths_path(**params) },
-            { feature: 'workflows', link: workflows_path(**params) },
-            { feature: 'collections', link: collections_path(**params) },
+            { feature: 'events', link: events_path },
+            { feature: 'materials', link: materials_path },
+            { feature: 'elearning_materials', link: elearning_materials_path },
+            { feature: 'learning_paths', link: learning_paths_path },
+            { feature: 'workflows', link: workflows_path },
+            { feature: 'collections', link: collections_path },
             { feature: 'trainers', link: trainers_path },
             { feature: 'content_providers', link: content_providers_path },
             { feature: 'nodes', link: nodes_path },

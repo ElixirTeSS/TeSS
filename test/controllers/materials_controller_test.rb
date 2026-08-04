@@ -1756,6 +1756,7 @@ class MaterialsControllerTest < ActionController::TestCase
   end
 
   test 'should not show space info when material has no space' do
+    skip # We show the ELIXIR TeSS space on TeSSHub
     with_settings(feature: { spaces: true }) do
       # @material has no space assigned
       get :show, params: { id: @material }

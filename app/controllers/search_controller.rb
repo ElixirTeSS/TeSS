@@ -14,7 +14,7 @@ class SearchController < ApplicationController
         model = model_name.constantize
         @results[model_name.underscore.pluralize.to_sym] = Sunspot.search(model) do
           if Facets.applicable?(:across_all_spaces, model)
-            Facets.across_all_spaces(self, !!params[:across_all_spaces], current_user)
+            Facets.across_all_spaces(self, !!Material.static_facets[:across_all_spaces], current_user)
           end
 
           fulltext search_params
