@@ -72,6 +72,9 @@ module Searchable
 
         fulltext search_params
         active_facets = {}
+
+        selected_facets = selected_facets.merge(static_facets)
+
         normal_facets = selected_facets.except(*Facets.special)
 
         any do
@@ -126,6 +129,10 @@ module Searchable
           facet ff, exclude: active_facets[ff]
         end
       end
+    end
+
+    def static_facets
+      Space.current_space&.default? ? { 'across_all_spaces' => 'true' } : {}
     end
   end
 
