@@ -240,11 +240,11 @@ module Ingestors
     end
 
     def responsible_for?(existing_resource, new_resource, source)
-      # Stay with existing source if there is any, to not constantly change metadata back and fourth.
-      # Switch responsibility if higher number of considered metadata fields or number of metadata fields 
-      # are the same but significantly longer description is available from new source.
-      # This prefers a source closest to the original one because it is likely the first one and switches 
-      # source when originally scraped simple metadata is extended manually at an intermediate source.
+      # Stay with the existing source if there is one, to avoid constantly changing metadata back and forth.
+      # Switch responsibility if the new source provides a higher number of considered metadata fields, or
+      # if the considered field count is the same but a significantly longer description is available.
+      # This prefers a source closest to the original one (likely the first) and switches sources when
+      # originally scraped simple metadata is extended manually at an intermediate source.
       # When there are no external changes, the source can only switch a limited number of times.
 
       return true unless source && existing_resource
