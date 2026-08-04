@@ -713,15 +713,15 @@ class EventTest < ActiveSupport::TestCase
     provider_1 = content_providers(:goblet)
     provider_2 = content_providers(:iann)
     provider_3 = content_providers(:two)
-    e1a = provider_1.events.create!(title: 'Event1a', url: 'https://example.com/events/1a', user: user)
-    e1b = provider_1.events.create!(title: 'Event1b', url: 'https://example.com/events/1b', user: user)
-    e1c = provider_1.events.create!(title: 'Event1c', url: 'https://example.com/events/1c', user: user)
-    e2a = provider_2.events.create!(title: 'Event2a', url: 'https://example.com/events/2a', user: user)
-    e2b = provider_2.events.create!(title: 'Event2b', url: 'https://example.com/events/2b', user: user)
-    e2c = provider_2.events.create!(title: 'Event2c', url: 'https://example.com/events/2c', user: user)
-    e3a = provider_3.events.create!(title: 'Event3a', url: 'https://example.com/events/3a', user: user)
-    e3b = provider_3.events.create!(title: 'Event3b', url: 'https://example.com/events/3b', user: user)
-    e3c = provider_3.events.create!(title: 'Event3c', url: 'https://example.com/events/3c', user: user)
+    e1a = provider_1.events.create!(title: 'Event1a', url: 'https://example.com/events/1a', user:)
+    e1b = provider_1.events.create!(title: 'Event1b', url: 'https://example.com/events/1b', user:)
+    e1c = provider_1.events.create!(title: 'Event1c', url: 'https://example.com/events/1c', user:)
+    e2a = provider_2.events.create!(title: 'Event2a', url: 'https://example.com/events/2a', user:)
+    e2b = provider_2.events.create!(title: 'Event2b', url: 'https://example.com/events/2b', user:)
+    e2c = provider_2.events.create!(title: 'Event2c', url: 'https://example.com/events/2c', user:)
+    e3a = provider_3.events.create!(title: 'Event3a', url: 'https://example.com/events/3a', user:)
+    e3b = provider_3.events.create!(title: 'Event3b', url: 'https://example.com/events/3b', user:)
+    e3c = provider_3.events.create!(title: 'Event3c', url: 'https://example.com/events/3c', user:)
 
     even_single_mix = Event.from_varied_providers([e1a, e1b, e1c, e2a, e2b, e2c, e3a, e3b, e3c], 3)
     assert_equal 3, even_single_mix.length
@@ -775,6 +775,41 @@ class EventTest < ActiveSupport::TestCase
     assert_equal 'http://mygoblet.org', bioschemas[:provider].first['url']
   end
 
+  test 'serializes event to oai_dc xml' do
+    event = events(:one)
+    material = materials(:good_material)
+    event.materials << material unless event.materials.include?(material)
+
+    parsed = Nokogiri::XML(event.to_oai_dc)
+    ns = {
+      'dc' => 'http://purl.org/dc/elements/1.1/',
+      'oai_dc' => 'http://www.openarchives.org/OAI/2.0/oai_dc/'
+    }
+
+    assert_equal 'oai_dc', parsed.root.namespace.prefix
+    assert_equal event.title, parsed.at_xpath('//dc:title', ns).text
+    assert_equal event.url, parsed.at_xpath('//dc:identifier', ns).text
+
+    dc_types = parsed.xpath('//dc:type', ns).map(&:text)
+    assert_includes dc_types, 'http://purl.org/dc/dcmitype/Event'
+    assert_includes dc_types, 'https://schema.org/Event'
+
+    relations = parsed.xpath('//dc:relation', ns).map(&:text)
+    assert_includes relations, material.doi
+  end
+
+  test 'serializes event to rdf xml' do
+    event = events(:two)
+    parsed = Nokogiri::XML(event.to_rdf)
+    ns = {
+      'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+      'sdo' => 'http://schema.org/'
+    }
+
+    assert_includes parsed.xpath('//sdo:name', ns).map(&:text), event.title
+    assert_includes parsed.xpath('//sdo:url/@rdf:resource', ns).map(&:value), event.url
+  end
+
   test 'does not destroy and recreate ontology term links' do
     e = events(:scraper_user_event)
 
@@ -822,7 +857,6 @@ class EventTest < ActiveSupport::TestCase
     person1 = Person.new(resource: @event, name: 'Alice Wonder')
     person2 = Person.new(resource: @event, name: 'Bob Builder')
 
-
     assert_not_includes @event.contributors.map(&:name), person1.name
 
     @event.contributors = [person1, person2]
@@ -851,7 +885,6 @@ class EventTest < ActiveSupport::TestCase
   test 'should set instructors from array of Person objects' do
     person1 = Person.new(resource: @event, name: 'Alice Wonder')
     person2 = Person.new(resource: @event, name: 'Bob Builder')
-
 
     assert_not_includes @event.instructors.map(&:name), person1.name
 
