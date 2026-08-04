@@ -1,9 +1,10 @@
 <% theme_colour = space.theme_colour %>
+<% text_colour = space.is_a?(ElixirTessSpace) ? '#047EAA' : theme_colour %>
 <% cache(space, expires_in: 6.hours) do %>
   <li class="masonry-brick media-item long">
-    <%= link_to space, class: 'link-overlay', style: (theme_colour ? "border-color: #{theme_colour}" : nil) do %>
+    <%= link_to space, class: 'link-overlay', style: (theme_colour ? "border-color: #{text_colour}" : nil) do %>
       <%= image_tag get_image_url_for(space), class: "media-image listing_image pull-right space-logo", style: (theme_colour ? "background-color: #{theme_colour}" : nil) %>
-      <h4 class="mb-2 mt-3" style="<%= theme_colour ? "color: #{theme_colour}" : ''-%>">
+      <h4 class="mb-2 mt-3" style="<%= theme_colour ? "color: #{text_colour}" : ''-%>">
         <%= space.title %>
       </h4>
 
