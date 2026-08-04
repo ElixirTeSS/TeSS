@@ -64,4 +64,8 @@ class GlobalSpace
   def feature_enabled?(feature)
     TeSS::Config.feature[feature]
   end
+
+  def registration_enabled?
+    false
+  end
 end

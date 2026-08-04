@@ -11,9 +11,8 @@
     <% content_for :buttons do %>
       <%= link_to new_learning_path_topic_path, class: 'btn btn-primary' do %>
         Create topic
-      <% end %>
-
-    <% end %>
+      <% end if current_space.registration_enabled? %>
+  <% end %>
 
     <%= render partial: "search/common/search_panel", locals: { resources: @learning_path_topics_results,
                                                                 resource_type: LearningPathTopic } %>
