@@ -6,7 +6,7 @@
   <ul class="catalogue<%= ' catalogue-even' if features.count.even? %>">
     <% features.each do |feature| %>
       <li class="resource-type">
-        <%= link_to polymorphic_path(feature, across_all_spaces: true), class: 'link-overlay' do %>
+        <%= link_to polymorphic_path(feature), class: 'link-overlay' do %>
           <div class="resource-type-title">
             <%= image_tag("#{theme_path}/icons/#{feature.dasherize}-icon.svg", alt: feature.titleize) %>
             <h3><%= t("features.#{feature}.long").titleize %></h3>
