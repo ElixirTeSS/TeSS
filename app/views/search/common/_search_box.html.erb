@@ -4,11 +4,13 @@ Parameters
 %>
 
 <% placeholder ||= "Search..." %>
+<% across_all_spaces ||= current_space.default? %>
 
 <div class="searchbox-sm">
   <%= form_tag resource_path, role: 'form', method: :get, enforce_utf8: false do %>
     <div class="searchbox-wrapper">
       <%= text_field_tag 'q', params[:q], class: 'searchbox-field', placeholder: placeholder %>
+      <%= hidden_field_tag 'across_all_spaces', across_all_spaces %>
       <button type="submit" class="searchbox-btn">
         <i class="icon icon-h4 search-icon"></i>
       </button>
