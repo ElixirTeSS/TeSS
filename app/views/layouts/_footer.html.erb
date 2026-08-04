@@ -33,6 +33,11 @@
         <div class="footer-item">
           <%= link_to t('footer.about', title: TeSS::Config.site['title_short']), about_path %>
         </div>
+        <% unless current_space.default? %>
+          <div class="footer-item">
+            <%= link_to 'Back to TeSSHub', 'https://tesshub.org' %>
+          </div>
+        <% end %>
         <% if TeSS::Config.feature['spaces'] %>
           <div class="footer-item">
             <%= link_to t('footer.browse_spaces'), spaces_path %>
