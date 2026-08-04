@@ -36,6 +36,11 @@
       <% end %>
 
       <% @feature_count = 0 %>
+      <!-- Join-->
+      <div id="join_tesshub" class="<%= next_about_block(@feature_count += 1) %>">
+        <h3><%= t('about.headings.join_tesshub') %></h3>
+        <p><%== t 'about.join_tesshub' %></p>
+      </div>
 
       <!-- EVENTS-->
       <% if feature_enabled?('events') %>

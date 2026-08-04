@@ -45,3 +45,35 @@ en:
       search:
         title: "Cross-space search"
         description: "Search and browse across all TeSSHub spaces from a unified interface."
+  about:
+    sidebar:
+      join_tesshub: Joining the hub
+    headings:
+      join_tesshub: Joining the hub
+    join_tesshub:
+      Interested in onboarding your community into %{site_name}? Fill out our registration form 
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSeNPKIsL3Ot-a5XHMogeTIe3duft6bdK4Q-elFmgw26fT6GZQ/viewform" target="_blank">here</a>. 
+      More details to come.
+    registry: >
+      %{site_name} is a hub of training catalogues, open to researchers from any scientific discipline or research-adjacent community across the world.    
+      %{site_name} provides both a focused view of training content relevant to specific communities, whilst also
+      providing a general cross-community search interface for querying over the pooled collection of resources.
+    mtessx: >
+      %{site_name} was developed as part of the <a href='https://elixirtess.github.io/mTeSS-X' target='_blank'>mTeSS-X Project</a> 
+      (Multi-space Training e-Support System with eXchange), which aims to overcome the fragmentation of training 
+      resources across Research Infrastructures and the European Science Clusters.
+    history: >
+      %{site_name} is based on the <a href='https://github.com/ElixirTeSS/TeSS' target='_blank'>TeSS platform</a>, 
+      originally developed as part of <a href='https://elixir-europe.org/' target='_blank'>ELIXIR</a>,
+      Europe's distributed infrastructure for life-science data.
+  us:
+    team: >
+      <h5>Leadership</h5>
+      <ul><li>Carole Goble</li><li>Oliver Knodel</li></ul>
+      <h5>Project Management</h5>
+      <ul><li>Munazah Andrabi</li><li>Phil Reed</li></ul>
+      <h5>Software Engineering</h5>
+      <ul><li>Finn Bacall</li><li>Martin Voigt</li><li>Kenneth Rioja</li></ul>
+      <h5>Partners</h5>
+      <ul><li>Maria Doyle</li><li>Hedi Peterson</li></ul>
+    cite: Coming soon
