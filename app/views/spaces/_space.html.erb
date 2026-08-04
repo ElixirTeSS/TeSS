@@ -1,4 +1,4 @@
-<% theme_colour = TeSS::Config.themes[space.theme]&.dig('primary') %>
+<% theme_colour = space.theme_colour %>
 <% cache(space, expires_in: 6.hours) do %>
   <li class="masonry-brick media-item long">
     <%= link_to space, class: 'link-overlay', style: (theme_colour ? "border-color: #{theme_colour}" : nil) do %>

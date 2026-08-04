@@ -167,6 +167,10 @@ class Space < ApplicationRecord
     other.is_a?(Space) && self.id == other.id
   end
 
+  def theme_colour
+    TeSS::Config.themes[theme]&.dig('primary')
+  end
+
   private
 
   # Validation callback ensuring every entry in +disabled_features+ is a

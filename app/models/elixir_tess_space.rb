@@ -1,4 +1,34 @@
 class ElixirTessSpace < Space
+  class Image
+    def url
+      TeSS::Config.site['logo']
+    end
+  end
+
+  def image?
+    true
+  end
+
+  def image
+    Image.new
+  end
+
+  def host
+    'tess.elixir-europe.org'
+  end
+
+  def title
+    'ELIXIR TeSS'
+  end
+
+  def theme
+    'default'
+  end
+
+  def theme_colour
+    '#FFFFFF'
+  end
+
   def model_name
     Space.model_name
   end
