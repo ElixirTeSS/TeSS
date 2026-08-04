@@ -301,6 +301,25 @@ class IngestorTest < ActiveSupport::TestCase
     assert_equal sources(:second_source), event.last_scraped_by_source
   end
 
+  test 'claims responsibility for legacy records without a last scraped source' do
+    user = users(:scraper_user)
+    source = sources(:first_source)
+    provider = source.content_provider
+
+    event = events(:responsibility_candidate_event)
+    event.update_column(:last_scraped_by_id, nil)
+
+    ingestor = Ingestors::Ingestor.new
+    ingestor.instance_variable_set(:@events, [build_ingested_event(event)])
+
+    assert_no_difference('provider.events.count') do
+      ingestor.write(user, provider, source: source)
+    end
+
+    event.reload
+    assert_equal source, event.last_scraped_by_source
+  end
+
   def run_filter(source_filter)
     source = Source.create!(url: 'https://somewhere.com/stuff', method: 'bioschemas',
                             enabled: true, approval_status: 'approved',

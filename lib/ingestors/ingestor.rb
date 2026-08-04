@@ -248,6 +248,7 @@ module Ingestors
       # When there are no external changes, the source can only switch a limited number of times.
 
       return true unless source && existing_resource
+      return true if existing_resource.last_scraped_by_source.nil?
       return true if existing_resource.last_scraped_by_source == source
 
       considered_fields = %i[title url doi description resource_type prerequisites keywords start end sponsors venue city county postcode cost_value target_audience contact language]
