@@ -83,6 +83,10 @@ class Space < ApplicationRecord
     (host == domain || host.ends_with?(".#{domain}"))
   end
 
+  def theme_colour
+    TeSS::Config.themes[theme]&.dig('primary')
+  end
+
   private
 
   def disabled_features_valid?

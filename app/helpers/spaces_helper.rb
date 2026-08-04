@@ -5,9 +5,11 @@ module SpacesHelper
   end
 
   def space_tag(resource)
-    if TeSS::Config.feature['spaces'] && resource.space && !resource.space.default? && resource.space != current_space
+    space = resource.space
+    space ||= ElixirTessSpace.new
+    if TeSS::Config.feature['spaces'] && space && resource.space != current_space
       content_tag(:span, class: 'label label-info space-tag', style: 'position: absolute; right: -5px; top: -5px;') do
-        content_tag(:i, '', class: 'fa fa-share-square') + ' ' + resource.space.title
+        content_tag(:i, '', class: 'fa fa-share-square') + ' ' + space.title
       end
     end
   end

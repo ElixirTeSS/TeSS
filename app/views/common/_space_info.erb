@@ -1,6 +1,10 @@
-<% space = resource.space %>
-<% if TeSS::Config.feature['spaces'] && space && !space.default? && space != current_space %>
-  <% theme_colour = TeSS::Config.themes[space.theme]&.dig('primary') %>
+<%
+  space = resource.space
+  space ||= ElixirTessSpace.new
+%>
+
+<% if TeSS::Config.feature['spaces'] && space && space != current_space %>
+  <% theme_colour = space.theme_colour %>
   <h4 class="nav-heading"><%= Space.model_name.human %></h4>
   <div class="nav-block" id="space-info">
     <p>
