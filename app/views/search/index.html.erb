@@ -30,7 +30,8 @@
             <% end %>
           </div>
 
-          <%= link_to "View all results & filter", polymorphic_path(model, q: params[:q]), class: 'btn btn-xs btn-default' %>
+          <% search_params = params.to_unsafe_h.slice(:q, :across_all_spaces) %>
+          <%= link_to "View all results & filter", polymorphic_path(model, **search_params), class: 'btn btn-xs btn-default' %>
 
           <% if results_for_model.results.count > 0 %>
             <%= render partial: 'common/masonry_grid', locals: { objects: results_for_model.results } %>
