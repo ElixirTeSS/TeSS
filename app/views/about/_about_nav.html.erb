@@ -5,6 +5,7 @@
     <li class="about-page-category">
       <%= link_to t('about.sidebar.what_is', title: TeSS::Config.site['title_short']), about_path %>
     </li>
+    <li><%= about_nav_link(t('about.sidebar.join_tesshub'), about_path, 'join_tesshub') %></li>
     <li><%= about_nav_link(t('about.sidebar.what_we_catalogue'), about_path, 'events') %></li>
     <li><%= about_nav_link(t('about.sidebar.subscribing_to_notifications'),
             about_path, 'subscribe') %></li>
@@ -12,6 +13,7 @@
             about_path, 'widget') %></li>
   </ul>
 
+  <% unless current_space.default? %>
   <!-- REGISTERING YOUR RESOURCES -->
   <ul class="nav nav-stacked <%= show_active(show, 'registering') %>">
     <li class="about-page-category">
@@ -35,6 +37,7 @@
       <li><%= about_nav_link(t('about.sidebar.registering_learning_paths'), registering_learning_paths_path, 'register_paths') %></li>
       <li><%= about_nav_link(t('about.sidebar.viewing_learning_paths'), registering_learning_paths_path, 'viewing') %></li>
     </ul>
+  <% end %>
   <% end %>
 
   <!-- DEVELOPERS -->
