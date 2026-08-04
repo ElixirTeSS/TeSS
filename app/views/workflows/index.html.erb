@@ -11,7 +11,7 @@
     <% content_for :buttons do %>
       <%= link_to new_workflow_path, class: 'btn btn-primary' do %>
         <%= t('register.buttons.workflows')%>
-      <% end %>
+      <% end if current_space.registration_enabled? %>
       <%= info_button("What are workflows in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
         <%= render_markdown(workflows_info) %>
       <% end %>

@@ -171,6 +171,10 @@ class Space < ApplicationRecord
     TeSS::Config.themes[theme]&.dig('primary')
   end
 
+  def registration_enabled?
+    true
+  end
+
   private
 
   # Validation callback ensuring every entry in +disabled_features+ is a

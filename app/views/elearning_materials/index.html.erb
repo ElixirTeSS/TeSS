@@ -17,7 +17,7 @@
       <!-- Register button -->
       <%= link_to new_material_path, class: 'btn btn-primary' do %>
         Register training material
-      <% end %>
+      <% end if current_space.registration_enabled? %>
       <!-- Info -->
       <%= info_button("What are e-learning materials in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
         <%= render_markdown(elearning_materials_info) %>

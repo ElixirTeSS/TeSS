@@ -68,4 +68,8 @@ class GlobalSpace
   def ==(other)
     other.is_a?(self.class)
   end
+
+  def registration_enabled?
+    false
+  end
 end

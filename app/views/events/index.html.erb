@@ -16,7 +16,7 @@
       <!-- Register button -->
       <%= link_to new_event_path, class: 'btn btn-primary' do %>
         <%= t('register.buttons.events') %>
-      <% end %>
+      <% end if current_space.registration_enabled? %>
       <!-- Info -->
       <%= info_button("What are events in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>
         <%= render_markdown(events_info) %>
