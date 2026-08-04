@@ -178,7 +178,7 @@ module Ingestors
     def set_resource_defaults(resource, source: nil)
       resource.scraper_record = true
       resource.last_scraped = Time.now
-      resource.last_scraped_by_source = source if source
+      resource.last_scraped_by_source = source if source&.persisted?
 
       resource
     end
@@ -250,7 +250,7 @@ module Ingestors
       return true unless source && existing_resource
       return true if existing_resource.last_scraped_by_source == source
 
-      considered_fields = %i[title url doi description resource_type keywords start end sponsors venue city county postcode cost_value target_audience contact language]
+      considered_fields = %i[title url doi description resource_type prerequisites keywords start end sponsors venue city county postcode cost_value target_audience contact language]
       existing_fields_count = considered_fields.count { |f| existing_resource[f].present? }
       new_fields_count = considered_fields.count { |f| new_resource[f].present? }
       return true if new_fields_count > existing_fields_count

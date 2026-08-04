@@ -1,6 +1,6 @@
 class AddLastScrapedByToScrapableModels < ActiveRecord::Migration[8.1]
   def change
-    add_column :events, :last_scraped_by_id, :bigint
-    add_column :materials, :last_scraped_by_id, :bigint
+    add_reference :events, :last_scraped_by, foreign_key: { to_table: :sources, on_delete: :nullify }, index: true
+    add_reference :materials, :last_scraped_by, foreign_key: { to_table: :sources, on_delete: :nullify }, index: true
   end
 end
