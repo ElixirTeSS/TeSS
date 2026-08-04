@@ -288,6 +288,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_154329) do
   create_table "groups_spaces", id: false, force: :cascade do |t|
     t.bigint "group_id", null: false
     t.bigint "space_id", null: false
+    t.index ["group_id"], name: "index_groups_spaces_on_group_id"
+    t.index ["space_id"], name: "index_groups_spaces_on_space_id"
   end
 
   create_table "learning_path_topic_items", force: :cascade do |t|
