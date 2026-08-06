@@ -89,6 +89,7 @@ group :development do
   gem 'listen'
   gem 'puma'
   gem 'web-console'
+  gem 'rdoc', '>= 8.0'
 end
 
 group :test do
