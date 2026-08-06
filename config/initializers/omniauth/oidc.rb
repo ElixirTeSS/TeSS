@@ -1,7 +1,9 @@
 # OpenID Connect configuration
 unless Rails.application.config.secrets.dig(:oidc, :client_id).blank?
-  redirect_uri = Rails.application.config.secrets.oidc[:redirect_uri].presence ||
+  redirect_uris = TessOmniauthRedirectUris.normalize(
+    Rails.application.config.secrets.oidc[:redirect_uri],
     "#{TeSS::Config.base_url.chomp('/')}/users/auth/oidc/callback"
+  )
 
   Devise.omniauth :openid_connect, {
     name: :oidc,
@@ -12,11 +14,11 @@ unless Rails.application.config.secrets.dig(:oidc, :client_id).blank?
     scope: [:openid, :email, :profile],
     response_type: :code,
     discovery: true,
-    extra_redirect_uris: Rails.application.config.secrets.oidc[:extra_redirect_uris],
+    redirect_uris: redirect_uris,
     client_options: {
       identifier: Rails.application.config.secrets.oidc[:client_id],
       secret: Rails.application.config.secrets.oidc[:secret],
-      redirect_uri: redirect_uri
+      redirect_uri: redirect_uris.first
     }
   }
 end

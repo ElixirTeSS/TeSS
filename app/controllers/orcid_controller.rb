@@ -42,10 +42,15 @@ class OrcidController < ApplicationController
 
   def set_oauth_client
     config = Rails.application.config.secrets.orcid
+    redirect_uris = TessOmniauthRedirectUris.normalize(
+      config[:redirect_uri],
+      orcid_callback_url(host: TeSS::Config.base_uri.host)
+    )
+
     @oauth2_client ||= Rack::OAuth2::Client.new(
       identifier: config[:client_id],
       secret: config[:secret],
-      redirect_uri: config[:redirect_uri].presence || orcid_callback_url(host: TeSS::Config.base_uri.host),
+      redirect_uri: TessOmniauthRedirectUris.resolve_for_host(redirect_uris, request.host),
       authorization_endpoint: '/oauth/authorize',
       token_endpoint: '/oauth/token',
       host: config[:host].presence || (Rails.env.production? ? 'orcid.org' : 'sandbox.orcid.org')

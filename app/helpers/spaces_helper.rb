@@ -21,21 +21,31 @@ module SpacesHelper
   end
 
   def omniauth_providers_for_space(space = current_space)
-    host = space&.host || TeSS::Config.base_uri.host
+    host = space.try(:host) || TeSS::Config.base_uri.host
 
     Devise.omniauth_configs.select do |_provider, config|
-      default_redirect_uri = config.options.dig(:client_options, :redirect_uri)
-      extra_redirect_uris = Array(config.options[:extra_redirect_uris])
-
-      [default_redirect_uri, *extra_redirect_uris].compact_blank.any? do |uri|
-        URI.parse(uri).host == host
-      rescue URI::InvalidURIError
-        false
+      Array(config.options[:redirect_uris]).any? do |uri|
+        TessOmniauthRedirectUris.valid_login_domain?(URI.parse(uri).host, host)
       end
     end
   end
 
   def space_supports_omniauth?(space = current_space)
     omniauth_providers_for_space(space).any?
+  end
+
+  # ORCID auth requires same-site cookies, so only allow default space
+  # or spaces under the configured base domain.
+  def space_supports_orcid_auth?(space = current_space)
+    host = space.try(:host) || TeSS::Config.base_uri.host
+    config = Rails.application.config.secrets.orcid
+    redirect_uris = TessOmniauthRedirectUris.normalize(
+      config[:redirect_uri],
+      "#{TeSS::Config.base_url.chomp('/')}/orcid/callback"
+    )
+
+    redirect_uris.any? do |uri|
+      TessOmniauthRedirectUris.valid_login_domain?(URI.parse(uri).host, host)
+    end
   end
 end

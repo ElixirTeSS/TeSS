@@ -51,7 +51,10 @@ class LoginTest < ActionDispatch::IntegrationTest
     omniauth_configs = {
       oidc: OpenStruct.new(options: {
         client_options: { redirect_uri: 'https://training.gobrails.test/users/auth/oidc/callback' },
-        extra_redirect_uris: ['https://space.mytess.training/users/auth/oidc/callback']
+        redirect_uris: [
+          'https://training.gobrails.test/users/auth/oidc/callback',
+          'https://space.mytess.training/users/auth/oidc/callback'
+        ]
       })
     }
 

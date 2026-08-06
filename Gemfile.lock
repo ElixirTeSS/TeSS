@@ -904,6 +904,7 @@ DEPENDENCIES
   private_address_check
   pry-byebug
   public_activity
+  public_suffix
   puma
   pundit
   rack-cors
