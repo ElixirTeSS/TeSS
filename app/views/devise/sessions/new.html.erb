@@ -5,7 +5,7 @@
     <% end %>
   </div>
   <div class="form-middle">
-    <% if resource_class.omniauth_providers.any? && devise_mapping.omniauthable? %>
+    <% if space_supports_omniauth? && devise_mapping.omniauthable? %>
       <div class="h4"><%= t('authentication.omniauth.title') %></div>
       <p><%= t('authentication.omniauth.description') %></p>
       <%= render partial: 'devise/sessions/omniauth_options' %>

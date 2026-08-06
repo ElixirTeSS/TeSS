@@ -1,19 +1,22 @@
 # Secondary OpenID Connect configuration
 unless Rails.application.config.secrets.dig(:oidc2, :client_id).blank?
+  redirect_uri = Rails.application.config.secrets.oidc2[:redirect_uri].presence ||
+    "#{TeSS::Config.base_url.chomp('/')}/users/auth/oidc2/callback"
+
   Devise.omniauth :openid_connect, {
     name: :oidc2,
     label: Rails.application.config.secrets.oidc2[:label],
     logo: Rails.application.config.secrets.oidc2[:logo],
     issuer: Rails.application.config.secrets.oidc2[:issuer],
-    strategy_class: OmniAuth::Strategies::OpenIDConnect,
+    strategy_class: OmniAuth::Strategies::HostRedirectOpenIDConnect,
     scope: [:openid, :email, :profile],
     response_type: :code,
     discovery: true,
+    extra_redirect_uris: Rails.application.config.secrets.oidc2[:extra_redirect_uris],
     client_options: {
       identifier: Rails.application.config.secrets.oidc2[:client_id],
       secret: Rails.application.config.secrets.oidc2[:secret],
-      redirect_uri: Rails.application.config.secrets.oidc2[:redirect_uri].presence ||
-        "#{TeSS::Config.base_url.chomp('/')}/users/auth/oidc2/callback"
+      redirect_uri: redirect_uri
     }
   }
 end

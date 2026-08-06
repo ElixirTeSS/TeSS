@@ -1,6 +1,6 @@
-<% if TeSS::Config.feature["login_through_oidc_only"] && Devise.omniauth_configs.size == 1 %>
+<% if TeSS::Config.feature["login_through_oidc_only"] && omniauth_providers_for_space.size == 1 %>
 <li>
-  <% provider, config = Devise.omniauth_configs.first %>
+  <% provider, config = omniauth_providers_for_space.first %>
   <%= omniauth_login_link(provider, config) %>
 </li>
 <% else %>
@@ -10,7 +10,7 @@
   </a>
   <ul class="dropdown-menu dropdown-menu-right">
     <% if space_supports_omniauth? %>
-      <% Devise.omniauth_configs.each do |provider, config| -%>
+      <% omniauth_providers_for_space.each do |provider, config| -%>
         <li class="dropdown-item"><%= omniauth_login_link(provider, config) %></li>
       <% end %>
     <% end %>

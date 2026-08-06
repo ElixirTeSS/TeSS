@@ -47,6 +47,35 @@ class LoginTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'sign in page uses space-aware omniauth link on a supported alternate host' do
+    omniauth_configs = {
+      oidc: OpenStruct.new(options: {
+        client_options: { redirect_uri: 'https://training.gobrails.test/users/auth/oidc/callback' },
+        extra_redirect_uris: ['https://space.mytess.training/users/auth/oidc/callback']
+      })
+    }
+
+    Devise.stub(:omniauth_configs, omniauth_configs) do
+      with_host('space.mytess.training') do
+        get '/users/sign_in'
+
+        assert_response :success
+        assert_select "a[href='/users/auth/oidc?space_id=#{spaces(:astro).id}']"
+      end
+    end
+  end
+
+  test 'sign in page hides omniauth links on an unsupported host' do
+    with_host('space.mytess.training') do
+      get '/users/sign_in'
+
+      assert_response :success
+      assert_select "a[href^='/users/auth/oidc']", false
+      assert_select "a[href^='/users/auth/oidc2']", false
+      assert_select "a[href^='/users/auth/elixir_aai']", false
+    end
+  end
+
   test 'clears legacy cookie (without domain) on login' do
     user = users(:regular_user)
     post '/users/sign_in', params: { 'user[login]' => user.username, 'user[password]' => 'hello' }
