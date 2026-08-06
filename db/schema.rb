@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_10_154329) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_29_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -205,6 +205,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_154329) do
     t.string "keywords", default: [], array: true
     t.string "language"
     t.date "last_scraped"
+    t.bigint "last_scraped_by_id"
     t.decimal "latitude", precision: 10, scale: 6
     t.text "learning_objectives"
     t.decimal "longitude", precision: 10, scale: 6
@@ -234,6 +235,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_154329) do
     t.integer "user_id"
     t.text "venue"
     t.boolean "visible", default: true
+    t.index ["last_scraped_by_id"], name: "index_events_on_last_scraped_by_id"
     t.index ["presence"], name: "index_events_on_presence"
     t.index ["slug"], name: "index_events_on_slug", unique: true
     t.index ["space_id"], name: "index_events_on_space_id"
@@ -393,6 +395,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_154329) do
     t.string "fields", default: [], array: true
     t.string "keywords", default: [], array: true
     t.date "last_scraped"
+    t.bigint "last_scraped_by_id"
     t.text "learning_objectives"
     t.string "licence", default: "notspecified"
     t.string "origin_uri"
@@ -415,6 +418,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_154329) do
     t.string "version"
     t.boolean "visible", default: true
     t.index ["content_provider_id"], name: "index_materials_on_content_provider_id"
+    t.index ["last_scraped_by_id"], name: "index_materials_on_last_scraped_by_id"
     t.index ["slug"], name: "index_materials_on_slug", unique: true
     t.index ["space_id"], name: "index_materials_on_space_id"
     t.index ["user_id"], name: "index_materials_on_user_id"
@@ -711,6 +715,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_154329) do
   add_foreign_key "content_providers", "users"
   add_foreign_key "event_materials", "events"
   add_foreign_key "event_materials", "materials"
+  add_foreign_key "events", "sources", column: "last_scraped_by_id", on_delete: :nullify
   add_foreign_key "events", "spaces"
   add_foreign_key "events", "users"
   add_foreign_key "group_memberships", "groups"
@@ -722,6 +727,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_154329) do
   add_foreign_key "learning_paths", "users"
   add_foreign_key "llm_interactions", "events"
   add_foreign_key "materials", "content_providers"
+  add_foreign_key "materials", "sources", column: "last_scraped_by_id", on_delete: :nullify
   add_foreign_key "materials", "spaces"
   add_foreign_key "materials", "users"
   add_foreign_key "node_links", "nodes"
