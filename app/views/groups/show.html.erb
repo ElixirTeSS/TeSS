@@ -15,9 +15,8 @@
       </span>
     </h4>
     <div class="nav-block">
-      <% memberships = @group.group_memberships.includes(:user) %>
-      <% if memberships.any? %>
-        <% memberships.each do |membership| %>
+      <% if @memberships.any? %>
+        <% @memberships.each do |membership| %>
           <p style="margin-bottom: 0.5rem;">
             <% if membership.owner? %>
               <i class="glyphicon glyphicon-star color-accent" title="<%= t('group.show.owner') %>"></i>
@@ -67,24 +66,23 @@
     <% end %>
 
     <%# Members table %>
-    <% memberships = @group.group_memberships.includes(:user) rescue @group.group_memberships %>
 
-    <% if memberships.any? %>
+    <% if @memberships.any? %>
       <table class="table table-hover" style="margin-top: 1rem;">
         <thead>
           <tr>
             <th><%= t('group.show.table.name') %></th>
-            <% if memberships.first.user.respond_to?(:email) %>
+            <% if @memberships.first.user.respond_to?(:email) %>
               <th><%= t('group.show.table.email') %></th>
             <% end %>
             <th><%= t('group.show.table.role') %></th>
           </tr>
         </thead>
         <tbody>
-          <% memberships.each do |membership| %>
+          <% @memberships.each do |membership| %>
             <tr class="<%= membership.owner? ? 'warning' : '' %>">
               <td>
-                <%= link_to membership.user.name, membership.user rescue membership.user.name %>
+                <%= link_to membership.user.name, membership.user %>
               </td>
               <% if membership.user.respond_to?(:email) %>
                 <td class="text-muted"><%= membership.user.email %></td>

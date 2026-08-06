@@ -19,6 +19,7 @@ class GroupsController < ApplicationController
   # Shows a single group. Requires authorization via GroupPolicy#show?.
   def show
     authorize @group
+    @memberships = @group.group_memberships.includes(:user)
   end
 
   # GET /groups/new
