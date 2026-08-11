@@ -21,10 +21,21 @@ $navbar-default-link-color: #fff;
   padding: 0 10px 10px 10px;
 }
 
+/* Unset the main container's max-width, but only on the front page (so we can have the full-width background) */
+/* Then re-add it to the child sections */
+#main-container:has(.tesshub-front) {
+  max-width: unset;
+  padding: 0;
+
+  section {
+    max-width: 1400px;
+    margin: auto;
+  }
+}
+
 .tesshub-front {
-  margin-left: calc(min((-100vw + 1400px) / 2, 0px) - 15px);
-  margin-top: -30px;
-  width: 100vw;
+  margin: -30px auto 0;
+  width: 100%;
   background-color: #000;
   background-image: linear-gradient(#000 10%, #333);
   color: #fff;
