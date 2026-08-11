@@ -1,7 +1,7 @@
 class ElixirTessSpace < Space
   class Image
     def url
-      TeSS::Config.site['logo']
+      'elixir/elixir-tess.svg'
     end
   end
 
