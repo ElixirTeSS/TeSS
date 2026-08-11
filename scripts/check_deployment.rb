@@ -1,5 +1,5 @@
 output = `curl --verbose --silent http://localhost:3000/ 2>&1`
-if $?.success? && output.include?('Browse the catalogue')
+if $?.success? && output.include?('"welcome-text"')
   exit 0
 else
   puts "::group::Docker logs"
