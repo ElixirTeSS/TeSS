@@ -4,6 +4,7 @@
                locals: { topic_link: @learning_path_topic_link,
                          topic_item: @learning_path_topic_item } if @learning_path_topic_link && @learning_path_topic_item %>
     <%= render partial: 'common/origin_info', locals: { resource: @material } %>
+    <%= render partial: 'common/space_info', locals: { resource: @material } %>
     <%= render partial: 'content_providers/partials/content_provider_info', locals: { content_provider: @material.content_provider } %>
     <%= render partial: 'nodes/partials/associated_node_info', locals: { associated_nodes: @material.associated_nodes } %>
     <%= render(partial: 'users/partials/user_info', locals: { user: @material.user }) if current_user.try(:is_admin?) %>

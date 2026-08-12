@@ -1,5 +1,6 @@
 <div class="wrapper collapsing-wrapper">
   <div class="collapsing-sidebar" id="sidebar">
+    <%= render partial: 'common/space_info', locals: { resource: @collection } %>
     <%= render partial: 'collections/partials/collection_info', locals: { collection: @collection } %>
   </div>
 

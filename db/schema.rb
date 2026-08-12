@@ -269,6 +269,29 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_154329) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
+  create_table "group_memberships", id: false, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "group_id", null: false
+    t.boolean "owner", default: false, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["group_id"], name: "index_group_memberships_on_group_id"
+    t.index ["user_id"], name: "index_group_memberships_on_user_id"
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "title"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "groups_spaces", id: false, force: :cascade do |t|
+    t.bigint "group_id", null: false
+    t.bigint "space_id", null: false
+    t.index ["group_id"], name: "index_groups_spaces_on_group_id"
+    t.index ["space_id"], name: "index_groups_spaces_on_space_id"
+  end
+
   create_table "learning_path_topic_items", force: :cascade do |t|
     t.text "comment"
     t.datetime "created_at", null: false
@@ -537,6 +560,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_154329) do
     t.bigint "image_file_size"
     t.datetime "image_updated_at"
     t.text "image_url"
+    t.boolean "is_private"
     t.string "theme"
     t.string "title"
     t.datetime "updated_at", null: false
@@ -689,6 +713,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_154329) do
   add_foreign_key "event_materials", "materials"
   add_foreign_key "events", "spaces"
   add_foreign_key "events", "users"
+  add_foreign_key "group_memberships", "groups"
+  add_foreign_key "group_memberships", "users"
   add_foreign_key "learning_path_topic_links", "learning_paths"
   add_foreign_key "learning_path_topics", "spaces"
   add_foreign_key "learning_paths", "content_providers"

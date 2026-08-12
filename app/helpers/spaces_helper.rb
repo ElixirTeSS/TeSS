@@ -4,6 +4,14 @@ module SpacesHelper
     I18n.t('info.spaces.description')
   end
 
+  def space_tag(resource)
+    if TeSS::Config.feature['spaces'] && resource.space && !resource.space.default? && resource.space != current_space
+      content_tag(:span, class: 'label label-info space-tag', style: 'position: absolute; right: -5px; top: -5px;') do
+        content_tag(:i, '', class: 'fa fa-share-square') + ' ' + resource.space.title
+      end
+    end
+  end
+
   def space_feature_options
     Space::FEATURES.select do |f|
       TeSS::Config.feature[f]

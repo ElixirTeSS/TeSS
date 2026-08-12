@@ -3,6 +3,12 @@
 A multi-space enabled TeSS will set the current space based on the Host header of the incoming request 
 (if there is a Space defined with that host, otherwise it will fallback to the default space).
 
+There is the possibility to make a space private. That means the resources from this space are not accessible from outside the space - and so not visible in the main catalogue even with the toggle to see resources from all spaces.
+The private space access is controlled by a group system: a user needs to be in at least one of the defined list of groups of the space. That means that to create a private space you need to already have existing groups.
+
+If a private space is destroyed, every resource in it is destroyed too.
+If a public space is destroyed, all resources are nullified (except space_roles which are destroyed).
+
 # Development
 
 To allow your local development server to respond to requests to these hosts, 
