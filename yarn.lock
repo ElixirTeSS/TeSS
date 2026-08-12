@@ -26,10 +26,10 @@ delegate@^3.1.2:
   resolved "https://registry.yarnpkg.com/delegate/-/delegate-3.2.0.tgz#b66b71c3158522e8ab5744f720d8ca0c2af59166"
   integrity sha512-IofjkYBZaZivn0V8nnsMJGBr4jVLxHDheKSW88PyxS5QC4Vo9ZbZVvhzlSxY87fVq3STR6r+4cGepyHkcWOQSw==
 
-devbridge-autocomplete@^1.4.9:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/devbridge-autocomplete/-/devbridge-autocomplete-1.5.0.tgz#b630ef596f00ab511e2d41ae91788368e968ee01"
-  integrity sha512-yz6W76PyXS9DtuyYbQtVcpxtkI8pQ02EQwZeNWnqUJXmM5jSmsPFKmpFEBneImcHwYJrMf3+6m86Hj2MRPELGQ==
+devbridge-autocomplete@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/devbridge-autocomplete/-/devbridge-autocomplete-2.0.1.tgz#611a92122892a04a76c17a71f9f904bb6f6283be"
+  integrity sha512-Y4ftxTnLVjfDfGXbhaIh3l6jrYQJuTQDLH1WoPkzd3XMKJo5eYFv83I53wXRxeuO3L2WWAYZA+oa0t5eiSMx0A==
 
 entities@~2.1.0:
   version "2.1.0"
