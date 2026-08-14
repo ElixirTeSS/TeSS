@@ -5,8 +5,6 @@ require 'test_helper'
 class CdsVideosIngestorTest < ActiveSupport::TestCase
   setup do
     @ingestor = Ingestors::CdsVideosIngestor.new
-    @user = users(:regular_user)
-    @content_provider = content_providers(:portal_provider)
 
     # API record
     webmock('https://videos.cern.ch/api/record/3023615', 'cdsvideos/cds.ingestor.json')
@@ -52,9 +50,9 @@ class CdsVideosIngestorTest < ActiveSupport::TestCase
     assert_equal '2026-03-18', sample.date_published
     assert_equal ['Noemi Caraban'], sample.authors
     assert_equal ['Dorda Ulrich'], sample.contributors
-    assert_equal 'Video – Lectures', sample.resource_type
+    assert_equal ['Video – Lectures'], sample.resource_type
     
-    expected_keywords = 'Ulrich Dorda, Beam cooling, high-intensity beams, beam quality, hadron beams, cooling techniques, beam emittance, stochastic cooling, electron cooling, ionization cooling'
+    expected_keywords = ['Ulrich Dorda', 'Beam cooling', 'high-intensity beams', 'beam quality', 'hadron beams', 'cooling techniques', 'beam emittance', 'stochastic cooling', 'electron cooling', 'ionization cooling']
     assert_equal expected_keywords, sample.keywords
 
     assert_match 'After presenting the motivation for an Accelerator Driven System', sample.description

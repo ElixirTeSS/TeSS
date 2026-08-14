@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 require 'json'
-require 'httparty'
-require 'nokogiri'
 
 module Ingestors
   class CdsVideosIngestor < Ingestor # rubocop:disable Style/Documentation
@@ -21,8 +19,6 @@ module Ingestors
     # Then read all pages while running `to_material()`
     # Else for a single material, go direct with `to_material()`
     def read(source_url)
-      @verbose = false
-
       api_url = to_api(source_url)
 
       if source_url.include?('search')
@@ -80,22 +76,25 @@ module Ingestors
 
     # Sets material hash keys and values and add them to material
     def to_material(data)
-      metadata = data['metadata']&.transform_keys! { |k| k == '_cds' ? 'cds' : k }
+      metadata = (data['metadata'] || {}).transform_keys { |k| k == '_cds' ? 'cds' : k }
 
       material = OpenStruct.new
-      material.title = metadata.dig('title', 'title').titleize
+      material.title = metadata.dig('title', 'title').to_s.titleize
       material.url = "#{CDS_VIDEOS_RECORD_URL}#{data['id']}"
       material.description = get_description(metadata)
-      material.keywords = metadata['keywords'][0..9]&.map { |k| k['name'] }&.join(', ') || ''
+      material.keywords = Array(metadata['keywords']).first(10).map { |k| k['name'] }.compact
       material.licence = metadata.dig('copyright', 'holder') == 'CERN' ? 'other-at' : 'notspecified'
       material.status = 'Active'
       material.contact = get_contact(metadata)
-      material.version = metadata['report_number'][0]
+      material.version = Array(metadata['report_number']).first
       material.date_created = metadata['date']
       material.date_published = metadata['publication_date']
       material.authors = get_authors(metadata)
       material.contributors = get_contributors(metadata)
-      material.resource_type = "#{metadata['type'].titleize} – #{metadata['category'].titleize}"
+      type = metadata['type']
+      category = metadata['category']
+      resource_type = [type, category].compact.map { |v| v.to_s.titleize }.join(' – ')
+      material.resource_type = resource_type.present? ? [resource_type] : []
       material
     end
 
