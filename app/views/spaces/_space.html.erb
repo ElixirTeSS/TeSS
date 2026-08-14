@@ -5,6 +5,9 @@
       <%= image_tag get_image_url_for(space), class: "media-image listing_image pull-right space-logo", style: (theme_colour ? "background-color: #{theme_colour}" : nil) %>
       <h4 class="mb-2 mt-3" style="<%= theme_colour ? "color: #{theme_colour}" : ''-%>">
         <%= space.title %>
+        <% if space.is_private %>
+          <i class='glyphicon glyphicon-lock' style="font-size: 18px; margin-left: 5px"></i>
+        <% end %>
       </h4>
 
       <span class="muted"><%= space.url %></span>
