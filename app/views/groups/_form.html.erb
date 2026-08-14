@@ -1,0 +1,85 @@
+<%= form_with(model: group) do |f| %>
+  <%= render partial: 'common/error_summary', locals: { resource: group } %>
+
+  <%# --- Title --- %>
+  <div class="form-group <%= 'has-error' if group.errors[:title].any? %>">
+    <%= f.label :title, class: "control-label" %>
+    <%= f.text_field :title, class: "form-control input-lg", placeholder: t('group.form.placeholder') %>
+    <% if group.errors[:title].any? %>
+      <span class="help-block"><%= group.errors[:title].first %></span>
+    <% end %>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label"><%= t('group.form.members') %></label>
+    <p class="help-block">
+      <i class="glyphicon glyphicon-info-sign"></i>
+      <%= t('group.form.member_explain') %>
+    </p>
+
+    <%# Sentinel: guarantees group[user_ids] key is always present in params %>
+    <input type="hidden" name="group[user_ids][]" value="" />
+
+    <%
+      form_field_name = "group[user_ids]"
+      existing_json = group.group_memberships.includes(:user).map do |m|
+        {
+          item: {
+            id:    m.user_id,
+            name:  m.user.name,
+            email: m.user.try(:email).to_s,
+            owner: m.owner?
+          },
+          prefix: form_field_name
+        }
+      end.to_json
+    %>
+
+    <div data-role="autocompleter-group"
+         data-url="<%= users_path(format: :json) %>"
+         data-prefix="<%= form_field_name %>"
+         data-label-field="name"
+         data-id-field="id"
+         data-transform-function="users"
+         data-template="autocompleter/group_member">
+
+      <script type="application/json" data-role="autocompleter-existing">
+        <%= existing_json.html_safe %>
+      </script>
+
+      <%# Sentinel inside the widget (mirrors what _autocompleter.html.erb does) %>
+      <input type="hidden" name="<%= form_field_name %>[]" value="" />
+
+      <ul data-role="autocompleter-list" class="list-unstyled group-member-list"></ul>
+
+      <input type="text"
+             data-role="autocompleter-input"
+             autocomplete="off"
+             class="form-control"
+             placeholder="Search for a user to add…">
+    </div>
+  </div>
+
+  <div class="form-group" style="border-top: 1px solid #e5e5e5; padding-top: 1rem; margin-top: 0.5rem;">
+    <%= f.submit class: "btn btn-primary", id: "submit-btn" %>
+    <%= link_to "Cancel", :back, class: "btn btn-default" %>
+  </div>
+<% end %>
+
+<script>
+  /* Owner-checkbox: toggle .is-owner highlight on the <li> */
+  document.addEventListener("change", function (e) {
+    if (e.target.classList.contains("group-owner-checkbox")) {
+      var li = e.target.closest("li");
+      if (li) li.classList.toggle("is-owner", e.target.checked);
+    }
+  });
+
+  /* Apply .is-owner on page load for pre-checked rows (edit form) */
+  document.addEventListener("turbolinks:load", function () {
+    document.querySelectorAll(".group-owner-checkbox:checked").forEach(function (chk) {
+      var li = chk.closest("li");
+      if (li) li.classList.add("is-owner");
+    });
+  });
+</script>

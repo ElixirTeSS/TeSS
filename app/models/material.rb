@@ -123,6 +123,7 @@ class Material < ApplicationRecord
   validates :url, url: true
   validates :other_types, presence: true, if: proc { |m| m.resource_type.include?('other') }
   validates :keywords, length: { maximum: 20 }
+  validates :origin_uri, url: { allow_blank: true }
 
   clean_array_fields(:keywords, :fields,
                      :target_audience, :resource_type, :subsets)

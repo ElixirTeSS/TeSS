@@ -980,11 +980,11 @@ components:
         latitude:
           type: string
           nullable: true
-          description: The latitude co-ordinate of the event.
+          description: The latitude coordinate of the event.
         longitude:
           type: string
           nullable: true
-          description: The longitude co-ordinate of the event.
+          description: The longitude coordinate of the event.
         created-at:
           type: string
           description: The date the event was first created on TeSS.
@@ -1240,7 +1240,7 @@ components:
         licence:
           type: string
           nullable: true
-          description: The licence chosen to determine how the material may be re-used.
+          description: The licence chosen to determine how the material may be reused.
         difficulty-level:
           nullable: true
           type: string
@@ -1556,7 +1556,7 @@ components:
             type: string
         licence:
           type: string
-          description: The licence chosed to determine how the workflow may be re-used.
+          description: The licence chosen to determine how the workflow may be reused.
         difficulty-level:
           type: string
           description: The difficulty level comprehension of the workflow requires.

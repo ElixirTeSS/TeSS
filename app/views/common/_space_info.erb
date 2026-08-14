@@ -1,0 +1,18 @@
+<% space = resource.space %>
+<% if TeSS::Config.feature['spaces'] && space && !space.default? && space != current_space %>
+  <% theme_colour = TeSS::Config.themes[space.theme]&.dig('primary') %>
+  <h4 class="nav-heading"><%= Space.model_name.human %></h4>
+  <div class="nav-block" id="space-info">
+    <p>
+      <%= link_to(image_tag(get_image_url_for(space), class: 'medium-avatar', style: (theme_colour ? "background-color: #{theme_colour}" : nil)), space.url, target: :_blank) %>
+    </p>
+
+    <p>
+      <%= link_to space.title, space.url, class: 'h5', target: :_blank %>
+    </p>
+
+    <p>
+      <%= external_link_button t('other_space.link'), polymorphic_url(resource, host: space.host) %>
+    </p>
+  </div>
+<% end %>

@@ -50,6 +50,8 @@ class User < ApplicationRecord
            as: :owner
 
   has_and_belongs_to_many :editables, class_name: "ContentProvider"
+  has_many :group_memberships, dependent: :destroy
+  has_many :groups, through: :group_memberships
 
   has_many :collaborations, dependent: :destroy
   has_many :space_roles, dependent: :destroy
@@ -383,6 +385,14 @@ class User < ApplicationRecord
 
   def has_role_in_any_space?(role)
     space_roles.where(key: role).any?
+  end
+
+  def is_group_owner?(group)
+    group.group_memberships.find_by(user: self)&.owner
+  end
+
+  def is_owner_in_any_group?
+    group_memberships.where(owner: true).exists?
   end
 
   # Get user's registrations

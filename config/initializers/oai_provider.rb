@@ -12,12 +12,27 @@ class OAIRDF < OAI::Provider::Metadata::Format
   end
 end
 
+module OAI::Provider::Response
+  class RecordResponse < Base
+    private
+
+    # Allow for a custom identifier to be used in the record without affecting the query (which happens with `identifier_field`)
+    def identifier_for(record)
+      "#{provider.prefix}:#{record.respond_to?(:oai_identifier) ? record.oai_identifier : record.send(provider.model.identifier_field)}"
+    end
+  end
+end
+
 class TrainingProvider < OAI::Provider::Base
   repository_name TeSS::Config.site['title']
   repository_url "#{TeSS::Config.base_url}/oai-pmh"
   record_prefix "oai:#{URI(TeSS::Config.base_url).host}"
   admin_email TeSS::Config.contact_email
-  sample_id '142' # so that example id is oai:domain:142
+  sample_id 'materials/142' # so that example id is oai:domain:materials/142
+  extra_description %(
+     <description>
+       <tess-instance xmlns="http://tesshub.org/xmlns" />
+     </description>)
 
   register_format(OAIRDF.instance)
 end

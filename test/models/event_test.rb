@@ -267,7 +267,7 @@ class EventTest < ActiveSupport::TestCase
   test 'enqueues a geocoding worker after creating an event' do
     assert_difference('GeocodingWorker.jobs.size', 1) do
       parameters = @mandatory.merge({ user: users(:regular_user), title: 'New event', url: 'http://example.com',
-                                      online: false, description: 'event to test enqueing of geocoding worker',
+                                      online: false, description: 'event to test enqueuing of geocoding worker',
                                       venue: 'A place', city: 'Manchester', country: 'UK', postcode: 'M16 0TH' })
       event = Event.create(parameters)
       assert event.errors[:url].empty?

@@ -109,7 +109,7 @@
      indexed: true if this field should be indexed (searchable or sortable)
      stored: true if this field should be retrievable
      compressed: [false] if this field should be stored using gzip compression
-       (this will only apply if the field type is compressable; among
+       (this will only apply if the field type is compressible; among
        the standard field types, only TextField and StrField are)
      multiValued: true if this field may contain multiple values per document
      omitNorms: (expert) set to true to omit the norms associated with

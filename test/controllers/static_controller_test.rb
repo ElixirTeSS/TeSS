@@ -311,12 +311,39 @@ class StaticControllerTest < ActionController::TestCase
     end
   end
 
-  test 'should show featured trainer' do
+  test 'should show featured trainer (legacy boolean value set to `true`)' do
     with_settings({ site: { home_page: { featured_trainer: true } } }) do
       get :home
       assert_select 'section#featured_trainer', count: 1
       assert_select 'section#featured_trainer h2', count: 1
       assert_select 'section#featured_trainer li', count: 1
+    end
+  end
+
+  test 'should not show featured trainer (legacy boolean value set to `false`)' do
+    with_settings({ site: { home_page: { featured_trainer: false } } }) do
+      get :home
+      assert_select 'section#featured_trainer', count: 0
+      assert_select 'section#featured_trainer h2', count: 0
+      assert_select 'section#featured_trainer li', count: 0
+    end
+  end
+
+  test 'should show featured trainer (positive int case)' do
+    with_settings({ site: { home_page: { featured_trainer: 2 } } }) do
+      get :home
+      assert_select 'section#featured_trainer', count: 1
+      assert_select 'section#featured_trainer h2', count: 1
+      assert_select 'section#featured_trainer li', count: 2
+    end
+  end
+
+  test 'should not show featured trainer (nil case)' do
+    with_settings({ site: { home_page: { featured_trainer: nil } } }) do
+      get :home
+      assert_select 'section#featured_trainer', count: 0
+      assert_select 'section#featured_trainer h2', count: 0
+      assert_select 'section#featured_trainer li', count: 0
     end
   end
 
@@ -799,5 +826,18 @@ class StaticControllerTest < ActionController::TestCase
         assert_select "a[href=\"/users/auth/oidc?space_id=#{space.id}\"]", count: 0
       end
     end
+  end
+
+  test 'shows space title in head when looking at a space' do
+    space = spaces(:plants)
+    with_host(space.host) do
+      get :home
+      assert_select 'head title', text: 'TeSS Plants Community'
+    end
+  end
+
+  test 'shows regular title in head when in default space' do
+    get :home
+    assert_select 'head title', text: 'TeSS Test Instance'
   end
 end
