@@ -12,6 +12,19 @@
 
       <span class="muted"><%= space.url %></span>
 
+      <br>
+
+      <% if space.administrators.any? %>
+        <span class="muted">Administrators: <%= space.administrators.pluck(:username).join(", ") %></span>
+        <br>
+      <% end %>
+
+      <% if space.is_private %>
+        <div class="muted" style="display: inline;">
+          Groups authorized: <%= space.groups.pluck(:title).join(", ") %>
+        </div>
+      <% end %>
+
       <% if space.materials.length > 0 %>
         <div><strong><%= pluralize(space.materials.length, 'training material') %></strong></div>
       <% end %>
