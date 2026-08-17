@@ -220,12 +220,12 @@ en:
       %{site_name} is committed to the FAIR principles: making data findable, accessible, interoperable and re-usable.
       As such, all content in %{site_name} is available under the CC BY 4.0 licence, and can be accessed through our API
       and widgets. The %{site_name} codebase is also available to re-use under the BSD Licence, and can be found on GitHub.
-    code_license: >
-      <a href="https://github.com/ElixirTeSS/TeSS/blob/master/LICENSE", target="_blank">BSD 3-Clause<i class="icon icon-md arrow-top-right-icon"></i></a>
+    code_license: > # IT MUST STAY BSD 3-Clause LICENSE FOR EVERY TESS INSTANCE
+      <a href="%{repository}/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">BSD 3-Clause<i class="icon icon-md arrow-top-right-icon"></i></a>
     data_license: >
-      <a href="https://creativecommons.org/licenses/by/4.0/", target="_blank">CC-BY 4.0<i class="icon icon-md arrow-top-right-icon"></i></a>
+      <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">%{data_license}<i class="icon icon-md arrow-top-right-icon"></i></a>
     contributions: >
-      <a href="https://github.com/ElixirTeSS/TeSS/blob/master/CONTRIBUTING.md", target="_blank">contributions<i class="icon icon-md arrow-top-right-icon"></i></a>
+      <a href="%{repository}/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">contributions<i class="icon icon-md arrow-top-right-icon"></i></a>
     gmaps_countries: >
       'United Kingdom', 'Spain', 'Portugal', 'France', 'Belgium', 'Ireland', 'Estonia', 'Finland',
       'Germany', 'Austria', 'Italy', 'Hungary', 'Czech Republic', 'Estonia', 'Denmark',
