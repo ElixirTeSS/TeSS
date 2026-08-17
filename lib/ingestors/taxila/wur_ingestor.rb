@@ -1,5 +1,6 @@
 require 'csv'
 require 'nokogiri'
+require 'json'
 
 module Ingestors
   module Taxila
@@ -25,60 +26,24 @@ module Ingestors
 
       private
 
-      def process_wur(url)
-        docs = Nokogiri::XML(open_url(url, raise: true)).xpath('//item')
-        docs.each do |event_item|
-          begin
-            event = OpenStruct.new
-            event.event_types = ['workshops_and_courses']
-            event_item.element_children.each do |element|
-              case element.name
-              when 'title'
-                event.title = element.text
-              when 'link'
-                event.url = element.text
-                # only include events which have this in their path
-                next unless event.url.include?('activity') || event.url.include?('Research-Results')
-              when 'creator'
-                # event.creator = element.text
-                # no creator field. Not sure needs one
-              when 'description'
-                event.description = convert_description element.text
-              when 'location'
-                event.venue = element.text
-                loc = element.text.split(',')
-                event.city = loc.first.strip
-                event.country = loc.last.strip
-              when 'provider'
-                event.organizer = element.text
-              when 'startdate', 'courseDate'
-                event.start = element.text.to_s
-              when 'enddate', 'courseEndDate'
-                event.end = element.text.to_s
-              when 'latitude'
-                event.latitude = element.text
-              when 'longitude'
-                event.longitude = element.text
-              when 'pubDate'
-                # Not really needed
-              else
-                # chuck away
-              end
-            end
-          end
-          # Now fetch the page to get the event date (until it is added to the RSS feed)
-          unless event.start and !event.url.starts_with('https://')
-            # should we do more against data exfiltration? URI.open is a known hazard
-            page = Nokogiri::XML(open_url(event.url, raise: true))
-            event.start, event.end = parse_dates(page.xpath('//th[.="Date"]').first&.parent&.xpath('td')&.last&.text&.strip, 'Amsterdam')
-            # in this case also grab the venue
-            event.venue = page.xpath('//th[.="Venue"]').first&.parent&.xpath('td')&.last&.text
-            unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/wur.yml')
-              sleep 1
-            end
-          end
+      def process_wur(_url)
+        url = 'https://www.wur.nl/en/news-insights/activities-at-wur'
+        html = open_url(url, raise: true).read
 
+        extract_activities(html).each do |activity|
+          event = OpenStruct.new
+          event.title = activity['title']
+          event.url = "https://www.wur.nl#{activity['path']}"
+          event.description = activity['summary']
+          event.event_types = ['workshops_and_courses']
+
+          location = activity['filterCriteria']&.find { |f| f['label'] == 'Location' }
+          event.venue = location && location['value']
+
+          event.start = Time.zone.parse(activity['date']) if activity['date']
+          event.end = activity['endDate'] ? Time.zone.parse(activity['endDate']) : event.start
           event.set_default_times
+
           event.source = 'WUR'
           event.timezone = 'Amsterdam'
 
@@ -86,6 +51,58 @@ module Ingestors
         rescue Exception => e
           @messages << "Extract event fields failed with: #{e.message}"
         end
+      end
+
+      def extract_activities(html)
+        chunks = html.scan(/self\.__next_f\.push\(\[1,"(.*?)"\]\)/m).flatten
+        payload = chunks.map { |chunk| JSON.parse("\"#{chunk}\"") }.join
+
+        activities = []
+        payload.to_enum(:scan, /\{"id":\d+,"title":"[^"]*"/).each do
+          match = Regexp.last_match
+          object_str = extract_balanced_json(payload, match.begin(0))
+          next unless object_str
+
+          begin
+            object = JSON.parse(object_str)
+          rescue JSON::ParserError
+            next
+          end
+          activities << object if object['path']&.include?('/activity/')
+        end
+        activities
+      end
+
+      # Pulls out the JSON object starting at `start`, tracking brace depth
+      # so that nested objects (filterCriteria, gtm, headerMedia, ...) don't
+      # cause it to stop early.
+      def extract_balanced_json(str, start)
+        depth = 0
+        in_string = false
+        escaped = false
+        i = start
+        while i < str.length
+          char = str[i]
+          if in_string
+            if escaped
+              escaped = false
+            elsif char == '\\'
+              escaped = true
+            elsif char == '"'
+              in_string = false
+            end
+          else
+            case char
+            when '"' then in_string = true
+            when '{' then depth += 1
+            when '}'
+              depth -= 1
+              return str[start..i] if depth.zero?
+            end
+          end
+          i += 1
+        end
+        nil
       end
     end
   end

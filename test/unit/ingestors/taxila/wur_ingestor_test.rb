@@ -14,7 +14,7 @@ class WurIngestorTest < ActiveSupport::TestCase
 
   test 'can ingest events from wur' do
     source = @content_provider.sources.build(
-      url: 'https://www.wur.nl/en/Resources-1/RSS/Calendar.htm',
+      url: 'https://www.wur.nl/en/news-insights/activities-at-wur',
       method: 'wur',
       enabled: true
     )
@@ -22,12 +22,12 @@ class WurIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::Taxila::WurIngestor.new
 
     # check event doesn't
-    new_title = 'Genetic Diversity - key to transitions in agriculture and forestry'
-    new_url = 'https://www.wur.nl/en/activity/genetic-diversity-key-to-transitions-in-agriculture-and-forestry-1.htm'
+    new_title = 'Prying Genomes: Providing a molecular foundation for oyster restoration'
+    new_url = 'https://www.wur.nl/en/activity/prying-genomes-providing-molecular-foundation-oyster-restoration'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 24 do
+    assert_difference 'Event.count', 62 do
       freeze_time(2016) do
         VCR.use_cassette("ingestors/wur") do
           ingestor.read(source.url)
@@ -36,9 +36,9 @@ class WurIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 24, ingestor.events.count
+    assert_equal 62, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 24, ingestor.stats[:events][:added]
+    assert_equal 62, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -51,7 +51,8 @@ class WurIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'WUR', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal Time.zone.parse('Wed, 15 Mar 2023 11:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Wed, 15 Mar 2023 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal 'Omnia - Building 105', event.venue
+    assert_equal Time.zone.parse('2026-08-24 09:00:00'), event.start
+    assert_equal Time.zone.parse('2026-08-24 17:00:00'), event.end
   end
 end

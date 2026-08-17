@@ -22,12 +22,12 @@ class OscmIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::Taxila::OscmIngestor.new
 
     # check event doesn't
-    new_title = 'FAIR Coffee lecture - Mariëlle Prevoo (pre-announcement)'
-    new_url = 'https://www.openscience-maastricht.nl/events/fair-coffee-lecture-marielle-prevoo-pre-announcement/'
+    new_title = 'FAIR Coffee lecture - Mariëlle Prevoo'
+    new_url = 'https://www.openscience-maastricht.nl/events/fair-coffee-lecture-marielle-prevoo/'
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference 'Event.count', 4 do
+    assert_difference 'Event.count', 10 do
       freeze_time(2019) do
         VCR.use_cassette("ingestors/oscm") do
           ingestor.read(source.url)
@@ -36,9 +36,9 @@ class OscmIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 4, ingestor.events.count
+    assert_equal 10, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 4, ingestor.stats[:events][:added]
+    assert_equal 10, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -49,7 +49,7 @@ class OscmIngestorTest < ActiveSupport::TestCase
     assert_equal new_url, event.url
 
     # check other fields
-    assert_equal 'FAIR Coffee lecture - Mariëlle Prevoo (pre-announcement)', event.title
+    assert_equal 'FAIR Coffee lecture - Mariëlle Prevoo', event.title
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'OSCM', event.source
     assert event.online?
