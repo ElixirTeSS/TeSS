@@ -4,7 +4,7 @@ module SpaceRedirect
   private
 
   def redirect_to_space(path, space)
-    if space&.is_subdomain?
+    if space&.valid_login_domain?(request.host)
       port_part = ''
       port_part = ":#{request.port}" if (request.protocol == "http://" && request.port != 80) ||
         (request.protocol == "https://" && request.port != 443)

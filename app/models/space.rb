@@ -146,15 +146,15 @@ class Space < ApplicationRecord
     (FEATURES - disabled_features)
   end
 
-  # Checks whether this space's host is the given domain, or a subdomain of
-  # it.
+  # Checks whether a cookie set for the given domain can be read by this
+  # space's host.
   #
-  # domain:: the domain to compare against; defaults to
-  #          <tt>TeSS::Config.base_uri.domain</tt>.
+  # login_host:: the domain to compare against; defaults to
+  #          <tt>TeSS::Config.base_uri.host</tt>.
   #
   # Returns:: +true+ or +false+.
-  def is_subdomain?(domain = TeSS::Config.base_uri.domain)
-    (host == domain || host.ends_with?(".#{domain}"))
+  def valid_login_domain?(login_host = TeSS::Config.base_uri.host)
+    TessOmniauthRedirectUris.valid_login_domain?(host, login_host)
   end
 
   # Equality by id: two Space instances are equal if they are both Space

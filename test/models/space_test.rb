@@ -169,14 +169,21 @@ class SpaceTest < ActiveSupport::TestCase
     assert_equal [], @space.disabled_features
   end
 
-  test 'is_subdomain?' do
-    assert @space.is_subdomain?('mytess.training')
-    refute @space.is_subdomain?('amytess.training')
-    refute @space.is_subdomain?('mytess.com')
-    refute @space.is_subdomain?('mytess.training.com')
-    refute @space.is_subdomain?('space.mytess.training')
-    refute @space.is_subdomain?
-    assert Space.new(host: 'test.example.com').is_subdomain?
+  test 'valid_login_domain?' do
+    assert @space.valid_login_domain?('mytess.training')
+    refute @space.valid_login_domain?('amytess.training')
+    refute @space.valid_login_domain?('mytess.com')
+    refute @space.valid_login_domain?('mytess.training.com')
+
+    # Any host under the same registerable domain is valid.
+    assert @space.valid_login_domain?('space.mytess.training')
+
+    # github.io is a public suffix, so each <user>.github.io is a separate registerable domain.
+    github_space = Space.new(host: 'foo.github.io')
+    assert github_space.valid_login_domain?('foo.github.io')
+    refute github_space.valid_login_domain?('bar.github.io')
+
+    refute Space.new(host: 'test.example.com').valid_login_domain?(nil)
   end
 
   test 'with_current_space' do
