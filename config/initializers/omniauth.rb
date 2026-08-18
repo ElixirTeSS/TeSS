@@ -1,10 +1,6 @@
 module TessOmniauthRedirectUris
   module_function
 
-  def normalize(redirect_uri, fallback)
-    redirect_uri.blank? ? [fallback] : Array(redirect_uri)
-  end
-
   def valid_login_domain?(space_host, login_host)
     return false if space_host.blank? || login_host.blank?
 

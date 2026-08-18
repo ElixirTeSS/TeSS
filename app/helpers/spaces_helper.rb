@@ -34,15 +34,10 @@ module SpacesHelper
     omniauth_providers_for_space(space).any?
   end
 
-  # ORCID auth requires same-site cookies, so only allow default space
-  # or spaces under the configured base domain.
   def space_supports_orcid_auth?(space = current_space)
     host = space.try(:host) || TeSS::Config.base_uri.host
     config = Rails.application.config.secrets.orcid
-    redirect_uris = TessOmniauthRedirectUris.normalize(
-      config[:redirect_uri],
-      "#{TeSS::Config.base_url.chomp('/')}/orcid/callback"
-    )
+    redirect_uris = Array(config[:redirect_uri].presence || "#{TeSS::Config.base_url.chomp('/')}/orcid/callback")
 
     redirect_uris.any? do |uri|
       TessOmniauthRedirectUris.valid_login_domain?(URI.parse(uri).host, host)
