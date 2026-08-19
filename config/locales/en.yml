@@ -50,7 +50,7 @@ en:
       <br><a href="%{base_url}">Return to the main application</a>
     needs_sign_in: >
       You need to sign in to the main application to access this page.
-      <br><a href="%{base_url}">Return to the main application</a>
+      <br><a href="%{base_url}/users/sign_in">Sign in to the main application</a>
     needs_groups_in_form: If the space is private, you must add required groups.
   group:
     show:
