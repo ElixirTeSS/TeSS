@@ -119,6 +119,17 @@ scraper_user_event:
   postcode: 1010
   organizer: AnOrganizer
 
+responsibility_candidate_event:
+  title: Responsibility Candidate Event
+  url: https://example.org/responsibility-candidate-event
+  description: baseline description
+  user: scraper_user
+  content_provider: another_portal_provider
+  start: 2021-01-31 13:00:00
+  end: 2021-01-31 14:00:00
+  scraper_record: true
+  last_scraped_by_source: second_source
+
 event_with_external_resource:
   title: External Resource Event
   url: http://myurl.com
