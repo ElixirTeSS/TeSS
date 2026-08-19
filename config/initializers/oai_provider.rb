@@ -42,6 +42,12 @@ class MultiModel < OAI::Provider::Model
     end
 
     scopes = model_scopes
+    scopes = scopes.map do |s|
+      fields = s.model.reflect_on_all_associations.select do |assoc|
+        assoc.macro.in?([:has_many, :belongs_to])
+      end.map(&:name)
+      s.includes(*fields)
+    end
     scopes = scopes.select { |scope| scope.model.model_name.route_key == options[:set] } if options[:set]
     scopes = scopes.map { |scope| scope.where("#{timestamp_field} >= ?", options[:from]) } if options[:from]
     scopes = scopes.map { |scope| scope.where("#{timestamp_field} < ?", options[:until] + 1.second) } if options[:until]
