@@ -25,7 +25,8 @@ class MultiModel < OAI::Provider::Model
   def sets
     model_scopes.map do |scope|
       n = scope.model.model_name
-      OAI::Set.new({ spec: n.route_key, name: n.plural.titleize, description: "Set of all training #{n.plural.humanize.downcase}" })
+      description = I18n.t("subscriptions.oai_pmh.set_descriptions.#{n.route_key}", default: n.plural.humanize.downcase)
+      OAI::Set.new({ spec: n.route_key, name: n.plural.titleize, description: description })
     end
   end
 
