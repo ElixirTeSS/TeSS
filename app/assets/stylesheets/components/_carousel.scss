@@ -1,0 +1,68 @@
+.multi-item-carousel {
+  .carousel-inner {
+    > .item {
+      transition: 500ms ease-in-out left;
+
+      > div {
+        display: flex;
+        justify-content: center;
+
+        > a {
+          min-width: 150px;
+          width: 150px;
+          height: 150px;
+          @include floating-card;
+          border-radius: 150px;
+          margin: 15px;
+          background-color: white;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &:hover, &:focus {
+            background-color: #e8f3f6;
+            border: 1px solid #e8f3f6;
+            box-shadow: none;
+          }
+
+          img {
+            width: 100px;
+          }
+        }
+      }
+    }
+
+    .active {
+      &.left {
+        left: -33%;
+      }
+
+      &.right {
+        left: 33%;
+      }
+    }
+
+    .next {
+      left: 33%;
+    }
+
+    .prev {
+      left: -33%;
+    }
+
+    @media all and (transform-3d), (-webkit-transform-3d) {
+      > .item {
+        transition: 500ms ease-in-out left;
+        transition: 500ms ease-in-out all;
+        backface-visibility: visible;
+        transform: none !important;
+      }
+    }
+  }
+
+  .carousel-control.right, .carousel-control.left {
+    background-image: none;
+    width: 30px;
+  }
+}

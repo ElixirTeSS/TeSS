@@ -1,0 +1,90 @@
+#sidebar {
+  width: $sidebar-width;
+  margin-right: $layout-spacing-base * 2;
+  margin-top: $layout-spacing-base;
+  flex-shrink: 0;
+
+  .sidebar-group {
+    background: $panel-bg;
+    @include floating-card;
+    border-radius: 6px;
+    > ul {
+      @include unstyled-ul;
+    }
+  }
+
+  &.collapsing-sidebar {
+    @media (max-width: $screen-sm-max) {
+      width: 100%;
+      border-right: none;
+    }
+  }
+
+  &.popout-sidebar {
+    @media (max-width: $screen-sm-max) {
+      padding: 25px;
+      width: calc(100% - 40px);
+      position: absolute;
+      z-index: $zindex-modal;
+      background: $panel-bg;
+      border-bottom: 1px solid $panel-default-border;
+      border-radius: $border-radius-large;
+      top: 0;
+      left: 20px;
+      display: none;
+
+      &.open {
+        display: block;
+      }
+    }
+  }
+
+  // Sidebar facet styles
+  table tr td.h4 {
+    padding-left: 10px;
+  }
+
+  table tr td {
+    padding-left: 20px;
+  }
+
+  table tr td a {
+    color: #000;
+    padding: 3px;
+    text-decoration: none;
+  }
+
+  table tr td a:hover {
+    background-color: #b0c3c9;
+    color: #fff;
+    padding: 3px;
+    text-decoration: none;
+  }
+
+  .clear-filters-btn {
+    float: right;
+    margin: 5px 0;
+  }
+}
+
+.sidebar-backdrop {
+  @media (min-width: $screen-md-min) {
+    display: none;
+  }
+}
+
+#sidebar-toggle {
+  display: none;
+
+  @media (max-width: $screen-sm-max) {
+    display: inline;
+  }
+}
+
+#sidebar-header {
+  display: none;
+
+  @media (max-width: $screen-sm-max) {
+    display: block;
+  }
+}
