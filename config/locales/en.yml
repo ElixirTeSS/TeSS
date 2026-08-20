@@ -1086,6 +1086,9 @@ en:
         can be used for exchanging content between different TeSS instances. 
         See the <a href="https://elixirtess.github.io/docs/" target="_blank" rel="noopener">TeSS documentation</a> 
         for more details.
+      set_descriptions:
+        materials: 'Set of all training materials'
+        events: 'Set of all training events'
     unsubscribe:
       success: 'You have successfully unsubscribed.'
     frequency_options:
