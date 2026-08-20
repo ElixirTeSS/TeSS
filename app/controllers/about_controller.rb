@@ -21,11 +21,15 @@ class AboutController < ApplicationController
 
   def check_external_link
     if TeSS::Config.site['about_us_link'].present?
-      action_name_map = { 
-        'tess' => '/', 'registering' => '/content/intro-content/', 
-        'learning_paths' => '/content/learning-paths/', 'developers' => '/developers/code-data/', 'us' => '/overview/about' 
+      base = TeSS::Config.site['about_us_link'].to_s.chomp('/')
+      action_name_map = {
+        'tess' => '/',
+        'registering' => '/content/intro-content/',
+        'learning_paths' => '/content/learning-paths/',
+        'developers' => '/developers/code-data/',
+        'us' => '/overview/about/'
       }
-      redirect_to "#{TeSS::Config.site['about_us_link']}#{action_name_map[action_name]}", allow_other_host: true
+      redirect_to "#{base}#{action_name_map.fetch(action_name)}", allow_other_host: true
     end
   end
 end
