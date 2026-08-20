@@ -64,7 +64,7 @@
 
         <%= menu_group(pull: 'right') do %>
           <% main_tabs.each do |t| %>
-            <%= menu_item t("features.#{t[:feature]}.short"), t[:link], (TeSS::Config.site['about_us_link'].present? ? { target: '_blank' } : {}) %>
+            <%= menu_item t("features.#{t[:feature]}.short"), t[:link], (t[:feature] == 'about' && TeSS::Config.site['about_us_link'].present? ? { target: '_blank', rel: 'noopener' } : {}) %>
           <% end %>
 
           <% if directory_tabs.present? %>
