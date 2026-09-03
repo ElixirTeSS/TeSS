@@ -1,3 +1,6 @@
 <%= info_box('What are learning paths?') do %>
-    <%= render_markdown(learning_paths_info) %>
+  <%= render_markdown(learning_paths_info) %>
+
+  <h5><%= t('register.learning_paths.elixir.title') %></h5>
+  <%== I18n.t('register.learning_paths.elixir.info') %>
 <% end %>

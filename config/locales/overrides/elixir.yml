@@ -1,0 +1,14 @@
+en:
+  register:
+    learning_paths:
+      elixir:
+        title: ELIXIR Learning Paths
+        info: |
+          If you would like to create an ELIXIR Learning Path, 
+          please complete <a href='https://forms.cloud.microsoft/e/yyBC4fuz9T' target='_blank'>this form</a>. 
+          ELIXIR Learning Paths follow a Standard Operating Procedure (SOP) to ensure quality, consistency, and long-term 
+          sustainability. 
+          Further details about the process are available
+          <a href='https://zenodo.org/records/21822148' target='_blank'>here</a>.<p>
+          <p>After you submit the form, a member of the ELIXIR Learning Paths Editorial Board will contact you to discuss 
+          your proposal and outline the next steps.
