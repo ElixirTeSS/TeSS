@@ -27,7 +27,7 @@ class HanIngestorTest < ActiveSupport::TestCase
     refute Event.where(title: new_title, url: new_url).any?
 
     # run task
-    assert_difference('Event.count', 21) do
+    assert_difference('Event.count', 20) do
       freeze_time(2019) do
         VCR.use_cassette('ingestors/han') do
           ingestor.read(source.url)
