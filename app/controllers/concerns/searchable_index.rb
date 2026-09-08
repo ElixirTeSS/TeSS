@@ -66,7 +66,7 @@ module SearchableIndex
     # If the model uses an alias, use that for the search instead
     @model = controller_name.classify.constantize
 
-    @facet_params = params.permit(*@model.facet_keys_with_multiple).to_h
+    @facet_params = params.slice(*@model.facet_keys_with_multiple).permit!.to_h
     @search_params = params[:q] || ''
     @sort_by = params[:sort].blank? ? 'default' : params[:sort]
   end
@@ -133,14 +133,14 @@ module SearchableIndex
   # Returns:: the permitted pagination parameters (+:page+, +:page_number+,
   #           +:per_page+, +:page_size+).
   def pagination_params
-    params.permit(:page, :page_number, :per_page, :page_size)
+    params.slice(:page, :page_number, :per_page, :page_size).permit!
   end
 
   # Returns:: the permitted search and facet parameters for +@model+,
   #           merged with the pagination parameter keys, suitable for
   #           building pagination/self links.
   def search_and_facet_params
-    params.permit(*(@model.search_and_facet_keys | [:page_size, :page_number, :page, :per_page]))
+    params.slice(*@model.search_and_facet_keys, :page_size, :page_number, :page, :per_page).permit!
   end
 
   def limit_filters

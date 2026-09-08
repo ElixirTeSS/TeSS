@@ -245,7 +245,7 @@ class UsersControllerTest < ActionController::TestCase
 
     # update profile data
     profile = { public: false, email: 'fake@email.com', orcid: '', website: '', location: '',
-                experience: 'expert', image_url: nil, expertise_technical: ['java', 'python', 'ruby'] }
+                experience: 'expert', expertise_technical: ['java', 'python', 'ruby'] }
     patch :update, params: { id: user, user: { profile_attributes: profile } }
     assert_redirected_to user_path(assigns(:user))
 
@@ -266,7 +266,7 @@ class UsersControllerTest < ActionController::TestCase
     sign_in user
 
     # check validation for public fields
-    profile_new = { public: true, first_name: '', last_name: '', description: '', website: '' }
+    profile_new = { public: true, firstname: '', surname: '', description: '', website: '' }
     patch :update, params: { id: user, user: { profile_attributes: profile_new } }
     assert_response :success
 

@@ -234,14 +234,14 @@ class LearningPathsControllerTest < ActionController::TestCase
     assert_empty assigns(:learning_path).topic_links
   end
 
-  test 'should modify items in learning_path' do
+  test 'should modify topic order in learning_path' do
     sign_in @learning_path.user
 
     l1 = @learning_path.topic_links[0]
     l2 = @learning_path.topic_links[1]
 
     assert_no_difference('LearningPathTopicLink.count') do
-      patch :update, params: { id: @learning_path.id, learning_path: { items_attributes: {
+      patch :update, params: { id: @learning_path.id, learning_path: { topic_links_attributes: {
         '1': { id: l1.id, order: 0 },
         '2': { id: l2.id, order: 500 }
       } } }

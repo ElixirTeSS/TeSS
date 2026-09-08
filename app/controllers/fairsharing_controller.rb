@@ -15,6 +15,6 @@ class FairsharingController < ApplicationController
   end
 
   def search_params
-    params.permit(:query, :page, :type)
+    params.slice(:query, :page, :type).permit!
   end
 end

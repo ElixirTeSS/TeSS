@@ -243,7 +243,7 @@ class MaterialsControllerTest < ActionController::TestCase
 
           # optional attributes
           content_provider_id: test_provider.id,
-          events: test_material.events,
+          event_ids: test_material.event_ids,
           target_audience: test_material.target_audience,
           resource_type: test_material.resource_type,
           other_types: test_material.other_types,
@@ -253,8 +253,8 @@ class MaterialsControllerTest < ActionController::TestCase
           date_published: test_material.date_published,
           doi: test_material.doi,
           subsets: test_material.subsets,
-          authors: test_material.authors.map { |person| { role: person.role, name: person.name, orcid: person.orcid } },
-          contributors: test_material.contributors.map { |person| { role: person.role, name: person.name, orcid: person.orcid } },
+          authors: test_material.authors.map { |person| { name: person.name, orcid: person.orcid } },
+          contributors: test_material.contributors.map { |person| { name: person.name, orcid: person.orcid } },
           prerequisites: test_material.prerequisites,
           syllabus: test_material.syllabus,
           learning_objectives: test_material.learning_objectives

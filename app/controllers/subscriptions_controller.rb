@@ -58,10 +58,9 @@ class SubscriptionsController < ApplicationController
   private
 
   def subscription_params
-    type = subscribable_type
-    permitted_facets = type&.facet_fields || []
-    p = params.require(:subscription).permit(:frequency, :subscribable_type)
-    p.merge(query: params[:q], facets: params.permit(*permitted_facets))
+    permitted_facets = subscribable_type&.facet_fields || []
+    facet_params = params.slice(*permitted_facets).permit!
+    params.require(:subscription).permit(:frequency, :subscribable_type).merge(query: params.delete(:q), facets: facet_params)
   end
 
   def subscribable_type

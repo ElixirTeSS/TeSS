@@ -2,7 +2,7 @@
 module SearchHelper
 
   def search_and_facet_params
-    params.permit(*@model.search_and_facet_keys)
+    params.slice(*@model.search_and_facet_keys, :page_size, :page_number, :page, :per_page).permit!
   end
 
   def clear_filters_path
