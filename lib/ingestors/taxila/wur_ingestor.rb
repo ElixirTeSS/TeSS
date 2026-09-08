@@ -26,8 +26,7 @@ module Ingestors
 
       private
 
-      def process_wur(_url)
-        url = 'https://www.wur.nl/en/news-insights/activities-at-wur'
+      def process_wur(url)
         html = open_url(url, raise: true).read
 
         extract_activities(html).each do |activity|
