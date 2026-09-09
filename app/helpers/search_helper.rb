@@ -1,3 +1,5 @@
+require 'base64'
+
 # The helper for searches
 module SearchHelper
 
@@ -46,7 +48,7 @@ module SearchHelper
       link = url_for(parameters)
 
       if TeSS::Config.obfuscate_filters
-        content_tag('span', html_options.merge('data-filter-link': Base64.urlsafe_encode64(link)), &content)
+        content_tag('span', html_options.merge('data-filter-link': Base64.urlsafe_encode64(link, padding: false)), &content)
       else
         link_to(link, html_options, &content)
       end
