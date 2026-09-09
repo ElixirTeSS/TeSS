@@ -1842,4 +1842,22 @@ class MaterialsControllerTest < ActionController::TestCase
       end
     end
   end
+
+  test 'filters can be obfuscated' do
+    Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
+      with_settings(solr_enabled: true, obfuscate_filters: false) do
+        get :index
+
+        assert_select 'a.facet-option[href=?]', materials_path(target_audience: 'Fish')
+        assert_select 'span.facet-option', count: 0
+      end
+
+      with_settings(solr_enabled: true, obfuscate_filters: true) do
+        get :index
+
+        assert_select 'a.facet-option[href=?]', materials_path(target_audience: 'Fish'), count: 0
+        assert_select 'span.facet-option[data-filter-link]'
+      end
+    end
+  end
 end

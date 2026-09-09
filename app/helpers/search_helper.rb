@@ -43,7 +43,13 @@ module SearchHelper
 
       content_tag(:span, html_options, &content)
     else
-      link_to parameters, html_options, &content
+      link = url_for(parameters)
+
+      if TeSS::Config.obfuscate_filters
+        content_tag('span', html_options.merge('data-filter-link': Base64.urlsafe_encode64(link)), &content)
+      else
+        link_to(link, html_options, &content)
+      end
     end
   end
 

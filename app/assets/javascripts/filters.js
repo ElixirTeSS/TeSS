@@ -16,6 +16,23 @@ document.addEventListener("turbolinks:load", function() {
         }
     });
 
+    // Turn obfuscated filter links into real ones
+    $('span.facet-option').each(function () {
+        const span = $(this)[0];
+        const a = document.createElement('a');
+        a.href = atob(span.dataset['filterLink'].replace(/-/g, '+').replace(/_/g, '/'));
+        // Copy attributes
+        for (const attr of span.attributes) {
+            if (attr.name !== 'data-filter-link') {
+                a.setAttribute(attr.name, attr.value);
+            }
+        }
+        // Move child elements
+        while (span.firstChild) {
+            a.appendChild(span.firstChild);
+        }
+        span.replaceWith(a);
+    });
 });
 
 function updateShowMore($el) {
