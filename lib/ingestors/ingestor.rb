@@ -19,7 +19,7 @@ module Ingestors
     end
 
     # accessor methods
-    attr_reader :messages, :stats, :events, :materials
+    attr_reader :messages, :stats, :events, :materials, :providers
     attr_accessor :token, :ingesting_content_provider
 
     def self.config
