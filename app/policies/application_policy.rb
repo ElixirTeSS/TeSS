@@ -96,28 +96,26 @@ class ApplicationPolicy
   end
 
   # Determines whether the record should be visible to the current user,
-  # based on the private/public status of its associated space.
+  # considering space privacy and resource approval status.
   #
   # Rules:
-  # * if the record has no associated space, it is always shown;
-  # * if the associated space is not private, it is always shown;
-  # * otherwise, an authenticated user is shown the record only if they are
-  #   an admin, or belong to at least one of the space's groups (and only
-  #   when the space in question is the current space, or the record *is*
-  #   the space itself).
+  # * Space accessibility:
+  #   - Public records or records outside private spaces are accessible.
+  #   - Private space records are accessible only to authenticated admins 
+  #     or members of the space's groups (in the current space scope).
+  # * Approval status (when `material_under_admin_approval` is enabled):
+  #   - Approved records follow space accessibility rules.
+  #   - Unapproved records require BOTH space accessibility AND one of:
+  #     * Site administrator privileges;
+  #     * Space administrator privileges;
+  #     * Record ownership (@record.user_id == @user.id).
   #
   # Returns:: +true+ or +false+.
   def shown?
-    return true if @space == nil
-    return true if !@space.is_private
-    return false unless @user # and so if space is private
-    if @space == Space.current_space || @record == @space
-      user_groups  = @user.groups.pluck(:id)
-      space_groups = @space.groups.pluck(:id)
-      return @user.is_admin? || @user.groups.where(id: @space.groups).any?
-    end
+    return false unless space_accessible?
+    return true unless approval_enabled? && @record.respond_to?(:approved?) && !@record.approved?
 
-    return false
+    unapproved_accessible?
   end
 
   # Default Pundit policy scope class.
@@ -167,6 +165,29 @@ class ApplicationPolicy
     return false if @user.nil?
     roles.any? { |r| @user.has_role?(r) } ||
       (@space && roles.any? { |r| @user.has_space_role?(@space, r) })
+  end
+
+  def space_accessible?
+    return true if @space == nil
+    return true if !@space.is_private
+    return false unless @user # and so if space is private
+    if @space == Space.current_space || @record == @space
+      return @user.is_admin? || @user.groups.where(id: @space.groups).any?
+    end
+
+    return false
+  end
+
+  def approval_enabled?
+    TeSS::Config.feature['material_under_admin_approval']
+  end
+
+  def unapproved_accessible?
+    return false unless @user
+
+    @user.is_admin? ||
+      (@record.respond_to?(:user_id) && @record.user_id == @user.id) ||
+      (@space&.respond_to?(:admin?) && @space.admin?(@user))
   end
 
 end

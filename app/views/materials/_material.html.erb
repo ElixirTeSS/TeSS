@@ -6,47 +6,21 @@
     show_order = true
   end
 %>
+<li class="masonry-brick media-item long">
+  <%= space_tag(material) %>
+  <%= link_to material_path(material, **link_params), class: 'link-overlay' do %>
+    <%= item_order_badge(collection_item) if show_order && collection_item %>
 
-<% if policy(material).show? && TeSS::Config.feature['material_under_admin_approval'] %>
-  <li class="masonry-brick media-item long">
-    <%= space_tag(material) %>
-    <%= link_to material_path(material, **link_params), class: 'link-overlay' do %>
-      <%= item_order_badge(collection_item) if show_order && collection_item %>
-
-      <div class="masonry-brick-heading">
-        <div class="masonry-icons">
-          <% if current_user&.is_admin? %>
-            <%= missing_icon(material) %>
-            <%= scrape_status_icon(material) %>
-            <%= suggestion_icon(material) %>
-          <% end %>
-          <%= approval_requested_icon(material) %>
-          <%= not_approved_icon(material) %>
-        </div>
-        <div class="sub-heading">
-          <%= display_attribute_no_label(material, :resource_type) { |values| values.join(', ') } %>
-        </div>
-        <h4><%= material.title %></h4>
-      </div>
-
-      <div class="clearfix">
-        <div class="pull-right">
-          <% if material.has_node? -%>
-            <%= elixir_node_icon %>
-          <% end -%>
-          <% if controller_name != 'content_providers' && material.content_provider %>
-            <%= image_tag(material.content_provider.image.url, class: 'provider-avatar') %>
-          <% end %>
-        </div>
-
-        <% competency = display_difficulty_level(material.difficulty_level) %>
-        <% if competency %>
-          <div class="font-size-lg"><%= competency %></div>
+    <div class="masonry-brick-heading">
+      <div class="masonry-icons">
+        <% if current_user&.is_admin? %>
+          <%= missing_icon(material) %>
+          <%= scrape_status_icon(material) %>
+          <%= suggestion_icon(material) %>
         <% end %>
-
-        <%# What is this? %>
-        <%= keywords_and_topics(material, limit: 10) %> 
         <%= exchange_icon(material) %>
+        <%= approval_requested_icon(material) %>
+        <%= not_approved_icon(material) %>
       </div>
       <div class="sub-heading">
         <%= display_attribute_no_label(material, :resource_type) { |values| values.join(', ') } %>
@@ -54,8 +28,24 @@
       <h4><%= material.title %></h4>
     </div>
 
+    <div class="clearfix">
+      <div class="pull-right">
+        <% if material.has_node? -%>
+          <%= elixir_node_icon %>
+        <% end -%>
+        <% if controller_name != 'content_providers' && material.content_provider %>
+          <%= image_tag(material.content_provider.image.url, class: 'provider-avatar') %>
+        <% end %>
+      </div>
 
-      <%= item_comment(collection_item) if collection_item %>
-    <% end %>
-  </li>
-<% end %>
+      <% competency = display_difficulty_level(material.difficulty_level) %>
+      <% if competency %>
+        <div class="font-size-lg"><%= competency %></div>
+      <% end %>
+
+      <%= keywords_and_topics(material, limit: 10) %>
+    </div>
+
+    <%= item_comment(collection_item) if collection_item %>
+  <% end %>
+</li>

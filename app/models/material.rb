@@ -316,7 +316,11 @@ class Material < ApplicationRecord
   private
 
   def set_approval_status
-    # sets to `:requested` by default, otherwise admin chooses
+    # sets to `:approved` when the feature is off
+    unless TeSS::Config.feature['material_under_admin_approval']
+      self.approval_status = :approved
+    end
+    # sets to `:requested` by default when the feature is on
     if self.class.approval_required?
       self.approval_status = :requested
     end
