@@ -18,8 +18,7 @@ class MaterialsController < ApplicationController
 
   def index
     elearning = @facet_params[:resource_type] == 'e-learning' && feature_enabled?('elearning_materials')
-    approved_materials = @materials.select(&:approved?)
-    @bioschemas = approved_materials.flat_map(&:to_bioschemas)
+    @bioschemas = @materials.select { |m| policy(m).show? }.flat_map(&:to_bioschemas)
     respond_to do |format|
       format.html { render elearning ? 'elearning_materials/index' : 'index' }
       format.json
@@ -200,7 +199,7 @@ class MaterialsController < ApplicationController
                   external_resources_attributes: %i[id url title _destroy],
                   external_resources: %i[url title],
                   event_ids: [], locked_fields: []]
-    permitted << :approval_status if policy(@material || Material).approve?
+    permitted << :approval_status if User.current_user&.is_admin?
 
     params.require(:material).permit(permitted)
   end

@@ -171,7 +171,7 @@ module MaterialsHelper
   end
 
   def approval_options_for_select_material
-    Material::APPROVAL_STATUS.values.map { |status| [t("material.approval_status.#{status}"), status] }
+    Material::APPROVAL_STATUS.values.map { |status| [t("materials.approval_status.#{status}"), status] }
   end
 
   def material_enabled_badge(enabled)

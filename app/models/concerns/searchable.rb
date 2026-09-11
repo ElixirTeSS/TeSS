@@ -142,6 +142,7 @@ module Searchable
           end
         end
 
+        # Filters by approval_status for unauthenticated requests (regardless of whether the feature is enabled or disabled) 
         if name == 'Material' && TeSS::Config.feature['material_under_admin_approval'] && !user&.is_admin?
           any_of do
             with(:approval_status, I18n.t('materials.approval_status.approved'))
