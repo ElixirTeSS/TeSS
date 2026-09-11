@@ -142,6 +142,13 @@ module Searchable
           end
         end
 
+        if name == 'Material' && TeSS::Config.feature['material_under_admin_approval'] && !user&.is_admin?
+          any_of do
+            with(:approval_status, I18n.t('materials.approval_status.approved'))
+            with(:user_id, user.id) if user.present?
+          end
+        end
+
         facet_fields.each do |ff|
           facet ff, exclude: active_facets[ff]
         end
