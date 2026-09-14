@@ -2,6 +2,8 @@ require 'test_helper'
 
 class ApplicationHelperTest < ActionView::TestCase
 
+  MockFacet = Struct.new(:field_name, :rows)
+
   setup do
     @old_material = materials(:bad_material)
     @old_material.last_scraped = Time.parse('1912-04-14 23:40')
@@ -18,6 +20,15 @@ class ApplicationHelperTest < ActionView::TestCase
     @failing_material = materials(:failing_material)
     @failing_material.title = 'Fail!'
     @monitor = @failing_material.create_link_monitor(url: @failing_material.url, code: 404, fail_count: 5)
+
+    @controller = MaterialsController.new
+    @facet_standard = MockFacet.new('keywords', ['row1'])
+    @facet_curation = MockFacet.new('approval_status', ['row1'])
+    @facet_ignored   = MockFacet.new('user', ['row1'])
+    @facet_empty     = MockFacet.new('topics', [])
+    @all_facets = [@facet_standard, @facet_curation, @facet_ignored, @facet_empty]
+    @resources = Minitest::Mock.new
+    @resources.expect(:facets, @all_facets)
   end
 
   test "icon should be correct for material scraped today" do
@@ -149,5 +160,56 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal(scrape_status_icon(@old_iann_event, 'large'),nil)
   end
 =end
+
+  test "approval_requested_icon returns eye icon when record approval is requested" do
+    with_settings(feature: { material_under_admin_approval: true }) do
+        @new_material.update!(approval_status: :requested)
+        expected_result = "<span class='fresh-icon pull-right'>#{icon_for(:approval_requested, 'large')}</span>".html_safe
+        assert_equal(approval_requested_icon(@new_material, 'large'), expected_result)
+        assert_match /fresh-icon/, expected_result
+        assert_match /fa-eye/, expected_result
+    end
+  end
+
+  test "not_approved_icon returns fa-ban icon when record is not approved" do
+    with_settings(feature: { material_under_admin_approval: true }) do
+        @new_material.update!(approval_status: :not_approved)
+        expected_result = "<span class='fresh-icon pull-right'>#{icon_for(:not_approved, 'large')}</span>".html_safe
+        assert_equal(not_approved_icon(@new_material, 'large'), expected_result)
+        assert_match /fresh-icon/, expected_result
+        assert_match /fa-ban/, expected_result
+    end
+  end
+
+  test "available_facets returns non-empty, non-curation, non-ignored facets" do
+    TeSS::Config.stub(:solr_facets, nil) do
+      results = available_facets(@resources)
+
+      assert_includes results, @facet_standard
+      refute_includes results, @facet_curation
+      refute_includes results, @facet_ignored
+      refute_includes results, @facet_empty
+    end
+  end
+
+  test "curation_facets returns only non-empty curation facets" do
+    TeSS::Config.stub(:solr_facets, nil) do
+      results = curation_facets(@resources)
+
+      assert_includes results, @facet_curation
+      refute_includes results, @facet_standard
+      refute_includes results, @facet_ignored
+      refute_includes results, @facet_empty
+    end
+  end
+
+  test "respects configured solr_facets for controller" do
+    config_mock = { 'materials' => ['approval_status', 'keywords'] }
+    @resources.expect(:facets, @all_facets)
+
+    TeSS::Config.stub(:solr_facets, config_mock) do
+      assert_equal [@facet_standard], available_facets(@resources)
+    end
+  end
 
 end

@@ -18,7 +18,7 @@ class MaterialsController < ApplicationController
 
   def index
     elearning = @facet_params[:resource_type] == 'e-learning' && feature_enabled?('elearning_materials')
-    @bioschemas = @materials.select { |m| policy(m).show? }.flat_map(&:to_bioschemas)
+    @bioschemas = @materials.select { |m| policy(m).show? }.flat_map(&:to_bioschemas) # `policy(m).show?` allows to display JSON-LD metadata of materials that are visible in the UI to the user, whether unauth, basic, curator or admin
     respond_to do |format|
       format.html { render elearning ? 'elearning_materials/index' : 'index' }
       format.json

@@ -310,7 +310,7 @@ class Material < ApplicationRecord
   end
 
   def self.approval_required?
-    TeSS::Config.feature['material_under_admin_approval'] && !User.current_user&.is_admin? ## CHANGE IT 
+    TeSS::Config.feature['material_under_admin_approval'] && !User.current_user&.is_admin?
   end
 
   private

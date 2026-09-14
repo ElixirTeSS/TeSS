@@ -662,21 +662,11 @@ module ApplicationHelper
   end
 
   def available_facets(resources)
-    if (selected_facets = TeSS::Config.solr_facets&.fetch(controller_name, nil))
-      indices = selected_facets.map { |name| resources.facets.index { |f| f.field_name.to_s == name } }.compact
-      resources.facets.values_at(*indices)
-    else
-      resources.facets
-    end.select { |f| f.rows.any? && !IGNORED_FILTERS.include?(f.field_name.to_s) && !CURATION_FILTERS.include?(f.field_name.to_s) }
+    filter_facets(resources) { |name| !IGNORED_FILTERS.include?(name) && !CURATION_FILTERS.include?(name) }
   end
 
   def curation_facets(resources)
-    if (selected_facets = TeSS::Config.solr_facets&.fetch(controller_name, nil))
-      indices = selected_facets.map { |name| resources.facets.index { |f| f.field_name.to_s == name } }.compact
-      resources.facets.values_at(*indices)
-    else
-      resources.facets
-    end.select { |f| f.rows.any? && CURATION_FILTERS.include?(f.field_name.to_s) }
+    filter_facets(resources) { |name| CURATION_FILTERS.include?(name) }
   end
 
   def render_language_name(code)
@@ -766,4 +756,22 @@ module ApplicationHelper
       [[prefix, value]]
     end
   end
+
+  def filter_facets(resources)
+    raw_facets = resources.facets
+    selected_names = TeSS::Config.solr_facets&.fetch(controller_name, nil)
+
+    facets = if selected_names
+              indices = selected_names.map { |name| raw_facets.index { |f| f.field_name.to_s == name } }.compact
+              raw_facets.values_at(*indices)
+            else
+              raw_facets
+            end
+
+    facets.select do |f|
+      name = f.field_name.to_s
+      f.rows.any? && yield(name)
+    end
+  end
+
 end
