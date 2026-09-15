@@ -1,3 +1,6 @@
+<% is_admin = current_user.is_admin? %>
+<% is_curator = current_user.is_curator? %>
+
 <div class="wrapper">
   <% if TeSS::Config.solr_enabled %>
     <div id="sidebar" class="popout-sidebar">
@@ -17,6 +20,11 @@
       <!-- Register button -->
       <%= link_to new_material_path, class: 'btn btn-primary' do %>
         <%= t('register.buttons.materials') %>
+      <% end %>
+      <% if TeSS::Config.feature['material_under_admin_approval'] && (is_admin || is_curator) %>
+        <%= link_to curate_materials_path, class: 'btn btn-default center' do %>
+          <%= t('menu.user.curate_materials', default: 'Curate Materials') %>
+        <% end %>
       <% end %>
       <!-- Info -->
       <%= info_button("What are materials in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>

@@ -1,0 +1,62 @@
+<% filter_params = params.permit(:status, :content_provider_id).to_h %>
+
+<div class="page-header">
+  <h2>Material Curation Queue</h2>
+
+  <div class="form-inline">
+    <div class="form-group">
+      <%= label_tag 'status', 'Approval Status:' %>
+      <%= select_tag 'status',
+                     options_for_select([['Requested', 'requested'], ['Not Approved', 'not_approved'], ['Approved', 'approved'], ['All', 'all']], @status),
+                     onchange: "window.location = '#{curate_materials_path}?' + $.param($.extend(#{filter_params.to_json}, { status: this.value }));",
+                     class: 'form-control input-sm' %>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag 'content_provider_id', 'Provider:' %>
+      <%= select_tag 'content_provider_id',
+                     options_from_collection_for_select(ContentProvider.order(:title), :id, :title, params[:content_provider_id]),
+                     include_blank: 'All Providers',
+                     onchange: "window.location = '#{curate_materials_path}?' + $.param($.extend(#{filter_params.to_json}, { content_provider_id: this.value }));",
+                     class: 'form-control input-sm' %>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Activity Sidebar -->
+  <div class="col-sm-4 col-sm-push-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">Recent Approval Activity</div>
+      <div class="panel-body">
+        <% activities = recent_material_approvals %>
+        <% if activities.any? %>
+          <ul class="list-unstyled">
+            <% activities.each do |activity| %>
+              <% next unless activity.trackable %>
+              <li style="margin-bottom: 8px;">
+                <strong><%= link_to activity.trackable.title, activity.trackable, target: '_blank' %></strong><br/>
+                <%= material_approval_badge(activity.parameters[:new]) %>
+                <small class="text-muted">
+                  by <%= activity.owner.try(:username) || 'System' %> <%= time_ago_in_words(activity.created_at) %> ago
+                </small>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <span class="text-muted">No recent approval activity.</span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resource Cards -->
+  <div class="col-sm-8 col-sm-pull-4">
+    <% if @materials.any? %>
+      <%= render partial: 'curator/resource_card', collection: @materials, as: :resource %>
+      <%= render partial: 'search/common/pagination_bar', locals: { resources: @materials } %>
+    <% else %>
+      <div class="alert alert-info">No materials found matching this criteria.</div>
+    <% end %>
+  </div>
+</div>

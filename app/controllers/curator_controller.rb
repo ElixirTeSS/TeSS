@@ -1,6 +1,6 @@
 # The controller for actions related to the curator model
 class CuratorController < ApplicationController
-  CURATION_ACTIONS = %w(material.add_term event.add_term material.reject_term event.reject_term)
+  CURATION_ACTIONS = %w(material.add_term event.add_term material.reject_term event.reject_term material.approval_status_changed).freeze
 
   before_action :check_curator
   before_action :set_breadcrumbs, :only => [:topic_suggestions]
@@ -57,6 +57,27 @@ class CuratorController < ApplicationController
     end
   end
 
+  def materials
+    @status = params[:status].presence || 'requested'
+    @materials = Material.all
+
+    if @status != 'all'
+      @materials = @materials.where(approval_status: Material::APPROVAL_STATUS_CODES[@status.to_sym] || @status)
+    end
+
+    if params[:content_provider_id].present?
+      @materials = @materials.where(content_provider_id: params[:content_provider_id])
+    end
+
+    @materials = @materials.includes(:user, :content_provider)
+                           .order(updated_at: :desc, created_at: :desc)
+                           .paginate(page: params[:page], per_page: params[:per_page] || 20)
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
   private
 
   def action_count_for(action)
@@ -68,4 +89,11 @@ class CuratorController < ApplicationController
       handle_error(:forbidden, 'This page is only visible to curators.')
     end
   end
+
+  def recent_material_approvals
+    PublicActivity::Activity.where(trackable_type: 'Material', key: 'material.approval_status_changed')
+                            .order(created_at: :desc)
+                            .limit(10)
+  end
+  helper_method :recent_material_approvals
 end

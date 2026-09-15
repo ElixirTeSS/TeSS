@@ -159,6 +159,7 @@ Rails.application.routes.draw do
 
   get 'curate/topic_suggestions' => 'curator#topic_suggestions'
   get 'curate/users' => 'curator#users'
+  get 'curate/materials' => 'curator#materials', as: :curate_materials
   get 'curate' => 'curator#index'
 
   get 'fairsharing/search' => 'fairsharing#search'

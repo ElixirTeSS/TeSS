@@ -68,6 +68,14 @@
         </li>
       <% end %>
 
+      <% if TeSS::Config.feature['material_under_admin_approval'] && (is_admin || is_curator) %>
+        <li class="dropdown-item">
+          <%= link_to curate_materials_path do %>
+            <i class="fa fa-check-square-o"></i> <%= t('menu.user.curate_materials', default: 'Curate Materials') %>
+          <% end %>
+        </li>
+      <% end %>
+
       <% if is_admin %>
         <li class="dropdown-item">
           <%= link_to rails_admin_path, title: t('menu.user.view_admin_console') do %>
