@@ -179,7 +179,7 @@ class ApplicationPolicy
   end
 
   def approval_enabled?
-    TeSS::Config.feature['material_under_admin_approval']
+    TeSS::Config.feature['material_under_admin_approval'] || TeSS::Config.feature['event_under_admin_approval']
   end
 
   def unapproved_accessible?

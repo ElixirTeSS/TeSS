@@ -163,4 +163,23 @@ module EventsHelper
       end
     end
   end
+
+  def approval_options_for_select_event
+    Event::APPROVAL_STATUS.values.map { |status| [t("events.approval_status.#{status}"), status] }
+  end
+
+  def event_enabled_badge(enabled)
+    content_tag(:span, enabled ? 'Enabled' : 'Disabled', class: "label label-#{enabled ? 'success' : 'danger'}")
+  end
+
+  def event_approval_badge(status)
+    case status.to_sym
+    when :not_approved
+      content_tag(:span, t("events.approval_status.#{status}"), class: 'label label-danger')
+    when :requested
+      content_tag(:span, t("events.approval_status.#{status}"), class: 'label label-warning')
+    when :approved
+      content_tag(:span, t("events.approval_status.#{status}"), class: 'label label-success')
+    end
+  end
 end

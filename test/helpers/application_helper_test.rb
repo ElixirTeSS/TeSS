@@ -161,7 +161,7 @@ class ApplicationHelperTest < ActionView::TestCase
   end
 =end
 
-  test "approval_requested_icon returns eye icon when record approval is requested" do
+  test "approval_requested_icon returns eye icon when material approval is requested" do
     with_settings(feature: { material_under_admin_approval: true }) do
         @new_material.update!(approval_status: :requested)
         expected_result = "<span class='fresh-icon pull-right'>#{icon_for(:approval_requested, 'large')}</span>".html_safe
@@ -171,11 +171,31 @@ class ApplicationHelperTest < ActionView::TestCase
     end
   end
 
-  test "not_approved_icon returns fa-ban icon when record is not approved" do
+  test "not_approved_icon returns fa-ban icon when material is not approved" do
     with_settings(feature: { material_under_admin_approval: true }) do
         @new_material.update!(approval_status: :not_approved)
         expected_result = "<span class='fresh-icon pull-right'>#{icon_for(:not_approved, 'large')}</span>".html_safe
         assert_equal(not_approved_icon(@new_material, 'large'), expected_result)
+        assert_match /fresh-icon/, expected_result
+        assert_match /fa-ban/, expected_result
+    end
+  end
+
+  test "approval_requested_icon returns eye icon when event approval is requested" do
+    with_settings(feature: { event_under_admin_approval: true }) do
+        @old_event.update!(approval_status: :requested)
+        expected_result = "<span class='fresh-icon pull-right'>#{icon_for(:approval_requested, 'large')}</span>".html_safe
+        assert_equal(approval_requested_icon(@old_event, 'large'), expected_result)
+        assert_match /fresh-icon/, expected_result
+        assert_match /fa-eye/, expected_result
+    end
+  end
+
+  test "not_approved_icon returns fa-ban icon when event is not approved" do
+    with_settings(feature: { event_under_admin_approval: true }) do
+        @old_event.update!(approval_status: :not_approved)
+        expected_result = "<span class='fresh-icon pull-right'>#{icon_for(:not_approved, 'large')}</span>".html_safe
+        assert_equal(not_approved_icon(@old_event, 'large'), expected_result)
         assert_match /fresh-icon/, expected_result
         assert_match /fa-ban/, expected_result
     end

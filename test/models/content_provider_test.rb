@@ -124,7 +124,7 @@ class ContentProviderTest < ActiveSupport::TestCase
     with_settings(feature: { spaces: false }) do
       assert Space.current_space.default?
       materials = content_provider.materials.in_current_space
-      assert_equal 10, materials.length
+      assert_equal 12, materials.length
       assert_includes materials, materials(:plant_space_material)
       assert_includes materials, materials(:good_material)
     end

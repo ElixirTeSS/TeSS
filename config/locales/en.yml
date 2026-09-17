@@ -672,6 +672,12 @@ en:
     show_past_events:
       one: Show %{count} past event
       other: Show %{count} past events
+    info:
+      approval_notice: This event will need to be approved by an administrator before being public.
+    approval_status:
+      not_approved: Not approved
+      requested: Requested
+      approved: Approved
   materials:
     hints:
       authors: >
@@ -1006,6 +1012,8 @@ en:
       assign_scientific_topics: "Assign scientific topics to %{title} resources"
       curate_topics: 'Curate topics'
       curate_users: 'Curate users'
+      curate_materials: 'Curate materials'
+      curate_events: 'Curate events'
       curate_resources: 'Curate resources'
       view_admin_console: 'View the administrator console'
       admin_console: 'Admin console'

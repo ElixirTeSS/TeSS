@@ -113,11 +113,7 @@ module Searchable
             when 'ContentProvider'
               order_by(:count, :desc)
             when 'Material'
-              if TeSS::Config.feature['material_under_admin_approval']
-                order_by(:approval_status, :asc)
-              else
-                order_by(:created_at, :desc)
-              end
+              order_by(:approval_status, :asc)
             else
               order_by(:sort_title, :asc)
           end
@@ -146,6 +142,14 @@ module Searchable
         if name == 'Material' && TeSS::Config.feature['material_under_admin_approval'] && !user&.is_admin?
           any_of do
             with(:approval_status, I18n.t('materials.approval_status.approved'))
+            with(:user_id, user.id) if user.present?
+          end
+        end
+
+        # Filters by approval_status for unauthenticated requests (regardless of whether the feature is enabled or disabled) 
+        if name == 'Event' && TeSS::Config.feature['event_under_admin_approval'] && !user&.is_admin?
+          any_of do
+            with(:approval_status, I18n.t('events.approval_status.approved'))
             with(:user_id, user.id) if user.present?
           end
         end

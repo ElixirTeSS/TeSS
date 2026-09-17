@@ -16,4 +16,17 @@ class EventPolicy < ScrapedResourcePolicy
     manage?
   end
 
+  def approve?
+    user_has_role?(:admin)
+  end
+
+  def request_approval?
+    approval_enabled? && manage?
+  end
+
+  private
+
+  def approval_enabled?
+    TeSS::Config.feature['event_under_admin_approval']
+  end
 end

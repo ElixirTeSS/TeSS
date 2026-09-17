@@ -68,10 +68,10 @@
         </li>
       <% end %>
 
-      <% if TeSS::Config.feature['material_under_admin_approval'] && (is_admin || is_curator) %>
+      <% if (TeSS::Config.feature['material_under_admin_approval'] || TeSS::Config.feature['event_under_admin_approval']) && (is_admin || is_curator) %>
         <li class="dropdown-item">
-          <%= link_to curate_materials_path do %>
-            <i class="fa fa-check-square-o"></i> <%= t('menu.user.curate_materials', default: 'Curate Materials') %>
+          <%= link_to curate_resources_path do %>
+            <i class="fa fa-check-square-o"></i> <%= t('menu.user.curate_resources', default: 'Curate Resources') %>
           <% end %>
         </li>
       <% end %>

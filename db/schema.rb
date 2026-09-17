@@ -235,6 +235,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_29_120000) do
     t.integer "user_id"
     t.text "venue"
     t.boolean "visible", default: true
+    t.string "approval_status"
     t.index ["last_scraped_by_id"], name: "index_events_on_last_scraped_by_id"
     t.index ["presence"], name: "index_events_on_presence"
     t.index ["slug"], name: "index_events_on_slug", unique: true

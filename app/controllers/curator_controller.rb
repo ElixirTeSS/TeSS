@@ -1,6 +1,10 @@
 # The controller for actions related to the curator model
 class CuratorController < ApplicationController
-  CURATION_ACTIONS = %w(material.add_term event.add_term material.reject_term event.reject_term material.approval_status_changed).freeze
+  CURATION_ACTIONS = %w(material.add_term event.add_term material.reject_term event.reject_term material.approval_status_changed event.approval_status_changed).freeze
+  CURATABLE_TYPES = {
+    'materials' => Material,
+    'events'    => Event
+  }.freeze
 
   before_action :check_curator
   before_action :set_breadcrumbs, :only => [:topic_suggestions]
@@ -57,25 +61,77 @@ class CuratorController < ApplicationController
     end
   end
 
-  def materials
+  def resources
     @status = params[:status].presence || 'requested'
-    @materials = Material.all
+    @type = params[:type].presence || 'all'
+    @space_id = params[:space_id].presence
+    @user_id = params[:user_id].presence
 
-    if @status != 'all'
-      @materials = @materials.where(approval_status: Material::APPROVAL_STATUS_CODES[@status.to_sym] || @status)
+    target_classes = @type == 'all' ? CURATABLE_TYPES.values : [CURATABLE_TYPES[@type]].compact
+
+    records = target_classes.flat_map do |klass|
+      scope = klass.all
+      scope = scope.where(approval_status: klass::APPROVAL_STATUS_CODES[@status.to_sym] || @status) if @status != 'all'
+      scope = scope.where(content_provider_id: params[:content_provider_id]) if params[:content_provider_id].present?
+      scope = scope.where(user_id: @user_id) if @user_id.present? && klass.reflect_on_association(:user)
+      
+      if @space_id.present? && klass.reflect_on_association(:space)
+        scope = if @space_id == 'default' && Space.respond_to?(:default)
+                  scope.where(space_id: [Space.default&.id, nil])
+                else
+                  scope.where(space_id: @space_id)
+                end
+      end
+
+      scope.includes(:user, :content_provider, (:space if klass.reflect_on_association(:space))).to_a
     end
 
-    if params[:content_provider_id].present?
-      @materials = @materials.where(content_provider_id: params[:content_provider_id])
+    sorted_records = records.sort_by(&:updated_at).reverse
+
+    page = params[:page] || 1
+    per_page = params[:per_page] || 20
+    @resources = WillPaginate::Collection.create(page, per_page, sorted_records.size) do |pager|
+      pager.replace(sorted_records[pager.offset, pager.per_page] || [])
     end
 
-    @materials = @materials.includes(:user, :content_provider)
-                           .order(updated_at: :desc, created_at: :desc)
-                           .paginate(page: params[:page], per_page: params[:per_page] || 20)
+    respond_to(&:html)
+  end
 
-    respond_to do |format|
-      format.html
+  def bulk_approve
+    status = params[:status].presence || 'requested'
+    type = params[:type].presence || 'all'
+    action = params[:approve_action] # 'approve' or 'reject'
+    new_status = action == 'reject' ? 'not_approved' : 'approved'
+    user_id = params[:user_id].presence
+
+    target_classes = type == 'all' ? CURATABLE_TYPES.values : [CURATABLE_TYPES[type]].compact
+
+    updated_count = 0
+    target_classes.each do |klass|
+      scope = klass.all
+      scope = scope.where(approval_status: klass::APPROVAL_STATUS_CODES[status.to_sym] || status) if status != 'all'
+      scope = scope.where(content_provider_id: params[:content_provider_id]) if params[:content_provider_id].present?
+      scope = scope.where(user_id: user_id) if user_id.present? && klass.reflect_on_association(:user)
+
+      if params[:space_id].present? && klass.reflect_on_association(:space)
+        scope = if params[:space_id] == 'default' && Space.respond_to?(:default)
+                  scope.where(space_id: [Space.default&.id, nil])
+                else
+                  scope.where(space_id: params[:space_id])
+                end
+      end
+
+      # Run updates record-by-record to trigger callbacks (logs, public activity, etc.)
+      scope.find_each do |resource|
+        next unless policy(resource).approve?
+        if resource.update(approval_status: new_status)
+          updated_count += 1
+        end
+      end
     end
+
+    redirect_to params[:redirect_to].presence || curate_resources_path,
+      notice: "#{updated_count} resource(s) successfully #{new_status.humanize.downcase}."
   end
 
   private
@@ -90,10 +146,11 @@ class CuratorController < ApplicationController
     end
   end
 
-  def recent_material_approvals
-    PublicActivity::Activity.where(trackable_type: 'Material', key: 'material.approval_status_changed')
+  def recent_resource_approvals
+    keys = CURATABLE_TYPES.values.map { |k| "#{k.name.underscore}.approval_status_changed" }
+    PublicActivity::Activity.where(trackable_type: CURATABLE_TYPES.values.map(&:name), key: keys)
                             .order(created_at: :desc)
                             .limit(10)
   end
-  helper_method :recent_material_approvals
+  helper_method :recent_resource_approvals
 end

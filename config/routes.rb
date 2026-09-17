@@ -73,6 +73,7 @@ Rails.application.routes.draw do
       post :add_data
       post :reject_term
       post :reject_data
+      post :request_approval
       get :report
       patch :report, to: 'events#update_report'
       get :clone
@@ -160,6 +161,9 @@ Rails.application.routes.draw do
   get 'curate/topic_suggestions' => 'curator#topic_suggestions'
   get 'curate/users' => 'curator#users'
   get 'curate/materials' => 'curator#materials', as: :curate_materials
+  get 'curate/events' => 'curator#events', as: :curate_events
+  get 'curate/resources' => 'curator#resources', as: :curate_resources
+  post '/curate/resources/bulk_approve', to: 'curator#bulk_approve', as: :bulk_approve_curate_resources
   get 'curate' => 'curator#index'
 
   get 'fairsharing/search' => 'fairsharing#search'

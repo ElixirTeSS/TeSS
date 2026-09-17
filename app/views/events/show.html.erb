@@ -48,6 +48,23 @@
         </div>
         <% if @event.persisted? %>
           <div class="content-manager-actions">
+            <% if policy(@event).update? && TeSS::Config.feature['event_under_admin_approval'] %>
+              <p>
+                <strong>Approval status:</strong>
+                <%= event_approval_badge(@event.approval_status) %>
+              </p>
+
+              <% if !@event.not_approved? && !@event.approval_requested? && !@event.approved? && !policy(@event).approve? %>
+                <%= link_to 'Request Approval', request_approval_event_path(@event),
+                            data: { confirm: 'Are you sure you wish to submit this event for approval? You will not be able to modify it afterwards.'},
+                            method: :post, class: 'btn btn-primary' %>
+              <% end %>
+
+              <% if policy(@event).approve? && !@event.approved? %>
+                <%= link_to 'Approve', event_path(@event, event: { approval_status: 'approved' }),
+                            method: :put, class: 'btn btn-success' %>
+              <% end %>
+            <% end %>
             <% if policy(@event).update? %>
               <%= link_to 'Clone', clone_event_path(@event), class: 'btn btn-default' %>
               <%= edit_button(@event) %>
