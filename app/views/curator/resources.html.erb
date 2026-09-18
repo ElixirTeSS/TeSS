@@ -60,9 +60,16 @@
       <div class="form-inline">
         <%= label_tag 'space_id', 'Space:' %>
         <% 
+          spaces_scope = if current_user.is_admin?
+                          Space.all
+                        else
+                          admin_space_ids = current_user.space_roles.where(key: 'admin').select(:space_id)
+                          Space.where(is_private: [false, nil]).or(Space.where(id: admin_space_ids))
+                        end
+
           space_options = []
           space_options << ['Default Space', 'default'] if Space.respond_to?(:default) && Space.default
-          space_options += Space.where.not(id: Space.default&.id).order(:title).map { |s| [s.title, s.id] }
+          space_options += spaces_scope.where.not(id: Space.default&.id).order(:title).map { |s| [s.title, s.id] }
         %>
         <%= select_tag 'space_id',
                       options_for_select(space_options, params[:space_id]),

@@ -67,6 +67,14 @@ class CuratorController < ApplicationController
     @space_id = params[:space_id].presence
     @user_id = params[:user_id].presence
 
+    # Resolve spaces accessible to current_user
+    accessible_space_ids = unless current_user.is_admin?
+      admin_space_ids = current_user.space_roles.where(key: 'admin').select(:space_id)
+      Space.where(is_private: [false, nil])
+          .or(Space.where(id: admin_space_ids))
+          .pluck(:id)
+    end
+
     target_classes = @type == 'all' ? CURATABLE_TYPES.values : [CURATABLE_TYPES[@type]].compact
 
     records = target_classes.flat_map do |klass|
@@ -74,13 +82,18 @@ class CuratorController < ApplicationController
       scope = scope.where(approval_status: klass::APPROVAL_STATUS_CODES[@status.to_sym] || @status) if @status != 'all'
       scope = scope.where(content_provider_id: params[:content_provider_id]) if params[:content_provider_id].present?
       scope = scope.where(user_id: @user_id) if @user_id.present? && klass.reflect_on_association(:user)
-      
-      if @space_id.present? && klass.reflect_on_association(:space)
-        scope = if @space_id == 'default' && Space.respond_to?(:default)
-                  scope.where(space_id: [Space.default&.id, nil])
-                else
-                  scope.where(space_id: @space_id)
-                end
+
+      if klass.reflect_on_association(:space)
+        # Restrict non-admins to accessible spaces + unassigned (nil) resources
+        scope = scope.where(space_id: accessible_space_ids + [nil]) unless current_user.is_admin?
+
+        if @space_id.present?
+          scope = if @space_id == 'default' && Space.respond_to?(:default)
+                    scope.where(space_id: [Space.default&.id, nil])
+                  else
+                    scope.where(space_id: @space_id)
+                  end
+        end
       end
 
       scope.includes(:user, :content_provider, (:space if klass.reflect_on_association(:space))).to_a
