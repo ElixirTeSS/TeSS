@@ -112,6 +112,7 @@ class ApplicationPolicy
   #
   # Returns:: +true+ or +false+.
   def shown?
+    return true if global_admin_role?
     return false unless space_accessible?
     return true unless approval_enabled? && @record.respond_to?(:approved?) && !@record.approved?
 
@@ -167,12 +168,16 @@ class ApplicationPolicy
       (@space && roles.any? { |r| @user.has_space_role?(@space, r) })
   end
 
+  def global_admin_role?
+    curators_and_admin
+  end
+
   def space_accessible?
     return true if @space == nil
     return true if !@space.is_private
     return false unless @user # and so if space is private
     if @space == Space.current_space || @record == @space
-      return @user.is_admin? || @user.groups.where(id: @space.groups).any?
+      return @user.groups.where(id: @space.groups).any?
     end
 
     return false
@@ -185,9 +190,7 @@ class ApplicationPolicy
   def unapproved_accessible?
     return false unless @user
 
-    @user.is_admin? ||
-      (@record.respond_to?(:user_id) && @record.user_id == @user.id) ||
-      (@space&.respond_to?(:admin?) && @space.admin?(@user))
+    (@record.respond_to?(:user_id) && @record.user_id == @user.id) ||
+    (@space&.respond_to?(:admin?) && @space.admin?(@user))
   end
-
 end

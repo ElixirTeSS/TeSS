@@ -16,7 +16,7 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    @bioschemas = @events.select { |m| policy(m).show? }.flat_map(&:to_bioschemas) # `policy(m).show?` allows to display JSON-LD metadata of events that are visible in the UI to the user, whether unauth, basic, curator or admin
+    @bioschemas = @events.select { |e| policy(e).show? }.flat_map(&:to_bioschemas) # `policy(m).show?` allows to display JSON-LD metadata of events that are visible in the UI to the user, whether unauth, basic, curator or admin
     @past_events_count = 0
     if TeSS::Config.solr_enabled && @events.none? && @facet_params[:include_expired] != 'true' && request.format.html?
       @past_events_count = Event.search_and_filter(current_user,

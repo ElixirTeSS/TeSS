@@ -4,15 +4,11 @@ class MaterialPolicy < ScrapedResourcePolicy
   end
 
   def clone?
-    manage?
+    curators_and_admin
   end
 
   def approve?
-    user_has_role?(:admin)
-  end
-
-  def request_approval?
-    approval_enabled? && manage?
+    curators_and_admin
   end
 
   private

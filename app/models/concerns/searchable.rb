@@ -130,7 +130,7 @@ module Searchable
 
         if name == 'Trainer' || name == 'Profile'
           any_of { with(:public, true) }
-        elsif has_public && !user&.is_admin?
+        elsif has_public && !(user&.is_admin? || user&.is_curator?)
           any_of do
             with(:public, true)
             with(:user_id, user.id) if user
@@ -139,7 +139,7 @@ module Searchable
         end
 
         # Filters by approval_status for unauthenticated requests (regardless of whether the feature is enabled or disabled) 
-        if name == 'Material' && TeSS::Config.feature['material_under_admin_approval'] && !user&.is_admin?
+        if name == 'Material' && TeSS::Config.feature['material_under_admin_approval'] && !(user&.is_admin? || user&.is_curator?)
           any_of do
             with(:approval_status, I18n.t('materials.approval_status.approved'))
             with(:user_id, user.id) if user.present?
@@ -147,7 +147,7 @@ module Searchable
         end
 
         # Filters by approval_status for unauthenticated requests (regardless of whether the feature is enabled or disabled) 
-        if name == 'Event' && TeSS::Config.feature['event_under_admin_approval'] && !user&.is_admin?
+        if name == 'Event' && TeSS::Config.feature['event_under_admin_approval'] && !(user&.is_admin? || user&.is_curator?)
           any_of do
             with(:approval_status, I18n.t('events.approval_status.approved'))
             with(:user_id, user.id) if user.present?
