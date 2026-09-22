@@ -30,6 +30,7 @@ default: &default
     repository: ''
     supported_by: 'elixir_supported_by'
     widget_example: 'elixir_widget_example'
+    about_us_link:
     gmaps_api_key: ''
   mailer:
     delivery_method: test
