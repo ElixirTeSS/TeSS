@@ -61,4 +61,64 @@ class TrainersControllerTest < ActionController::TestCase
     assert_not_nil external_resource
     assert_equal external_resource.url, json_event['mentions'].first['url']
   end
+
+  test 'should show bip-scholar embed div when trainers feature is enabled' do
+    with_settings(feature: { trainers: true }) do
+      get :show, params: { id: @trainer }
+      assert_response :success
+      assert_select 'div.bip-scholar-embed[data-orcid="' + @trainer.orcid + '"]'
+    end
+  end
+
+  test 'should not show bip-scholar embed div when trainers feature is disabled' do
+    with_settings(feature: { trainers: false }) do
+      assert_raises ActionController::RoutingError do
+        get :show, params: { id: @trainer }
+      end
+    end
+  end
+
+  test 'should show default fallback message when no profile found and empty_mode is default' do
+    BipScholarHelper.stub :fetch_score, nil do
+      get :show, params: { id: @trainer }
+      assert_response :success
+
+      assert_select 'div.bip-scholar-no-profile', text: /No BIP! Scholar profile found/
+    end
+  end
+
+  test 'should show bip-scholar embed in compact layout' do
+    fake_data = {
+      'work_types_num' => [12, 3, 4, 1],
+      'citations_num' => 5,
+      'popular_works_count' => 1,
+      'influential_works_count' => 2,
+      'h_index' => 3,
+      'academic_age' => 10,
+      'openness' => { 'open_percentage' => 80 }
+    }
+    BipScholarHelper.stub :fetch_score, fake_data do
+      html = @controller.render_to_string(
+        partial: 'common/bip_scholar_infographics',
+        locals: { orcid: @trainer.orcid, layout: 'compact', empty_mode: 'default' }
+      )
+      doc = Nokogiri::HTML(html)
+
+      assert_equal 1, doc.css('a.bip-scholar-badge.bip-scholar-badge--compact').size
+    end
+  end
+
+  test 'should show nothing when empty_mode is silent' do
+    BipScholarHelper.stub :fetch_score, nil do
+      # Simulates passing empty_mode: 'silent' in view partial render
+      html = @controller.render_to_string(
+            partial: 'common/bip_scholar_infographics',
+            locals: { orcid: @trainer.orcid, layout: 'default', empty_mode: 'silent' }
+          )
+      doc = Nokogiri::HTML(html)
+
+      assert_equal 0, doc.css('div.bip-scholar-no-profile').size
+      assert_equal 0, doc.css('a.bip-scholar-badge').size
+    end
+  end
 end
