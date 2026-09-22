@@ -29,6 +29,16 @@
       <div class="my-3">
         <%= display_attribute(@space, :url) %>
 
+        <% if @space.administrators.any? %>
+          <p><div class="text-primary">Administrators:</div> <%= @space.administrators.pluck(:username).join(", ") %></p>
+        <% end %>
+
+        <% if @space.is_private %>
+          <div style="display: inline;">
+            <span class="text-primary">Groups authorized:</span> <%= @space.groups.pluck(:title).join(", ") %>
+          </div>
+        <% end %>
+
         <div class="description">
           <%= render_markdown @space.description %>
         </div>
