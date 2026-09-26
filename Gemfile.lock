@@ -671,7 +671,7 @@ GEM
       faraday (>= 1)
       faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
-    rubyzip (3.3.0)
+    rubyzip (3.4.0)
     safely_block (0.4.0)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
