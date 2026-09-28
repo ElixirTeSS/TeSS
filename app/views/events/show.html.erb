@@ -48,10 +48,10 @@
         </div>
         <% if @event.persisted? %>
           <div class="content-manager-actions">
-            <% if policy(@event).approve? %>
+            <% if policy(@event).update? %>
               <p>
                 <strong>Approval status:</strong>
-                <%= event_approval_badge(@event.approval_status) %>
+                <%= resource_approval_badge(@event.approval_status) %>
               </p>
 
               <% if !@event.not_approved? && !@event.approval_requested? && !@event.approved? && !policy(@event).approve? %>

@@ -99,13 +99,28 @@
 
                 <% if TeSS::Config.feature['spaces'] %>
                   <% if resource.respond_to?(:space) && resource.space %>
-                    | Space: <%= link_to resource.space.title, space_path(resource.space), target: '_blank' %>
+                    | 
+                    <% if resource.space.is_private %>
+                      <i class="fa fa-lock"></i>
+                      Private 
+                    <% end %>
+                    Space: <%= link_to resource.space.title, space_path(resource.space), target: '_blank' %>
                   <% else %>
                     | Space: Default
                   <% end %>
                 <% end %>
                 <br/>
-                <%= material_approval_badge(activity.parameters[:new]) %>
+                <%
+                  raw_params = activity.parameters
+                  params_hash = if raw_params.is_a?(Hash)
+                                  raw_params.with_indifferent_access
+                                elsif raw_params.is_a?(String)
+                                  (JSON.parse(raw_params) rescue YAML.safe_load(raw_params) rescue {}).with_indifferent_access
+                                else
+                                  {}
+                                end
+                %>
+                <%= resource_approval_badge(params_hash[:new]) %>
                 <small class="text-muted">
                   by <%= activity.owner.try(:username) || 'System' %> <%= time_ago_in_words(activity.created_at) %> ago
                 </small>

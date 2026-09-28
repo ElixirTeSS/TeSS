@@ -36,7 +36,7 @@
               <% next unless activity.trackable %>
               <li style="margin-bottom: 8px;">
                 <strong><%= link_to activity.trackable.title, activity.trackable, target: '_blank' %></strong><br/>
-                <%= material_approval_badge(activity.parameters[:new]) %>
+                <%= resource_approval_badge(activity.parameters[:new]) %>
                 <small class="text-muted">
                   by <%= activity.owner.try(:username) || 'System' %> <%= time_ago_in_words(activity.created_at) %> ago
                 </small>

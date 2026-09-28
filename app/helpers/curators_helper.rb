@@ -65,4 +65,15 @@ module CuratorsHelper
       Space.where(id: admin_space_ids).order(:title).map { |s| [s.title, s.id] }
     end
   end
+
+  def resource_approval_badge(status)
+    case status.to_sym
+    when :not_approved
+      content_tag(:span, t("resources.approval_status.#{status}"), class: 'label label-danger')
+    when :requested
+      content_tag(:span, t("resources.approval_status.#{status}"), class: 'label label-warning')
+    when :approved
+      content_tag(:span, t("resources.approval_status.#{status}"), class: 'label label-success')
+    end
+  end
 end

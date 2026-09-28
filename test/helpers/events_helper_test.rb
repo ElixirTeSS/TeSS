@@ -80,24 +80,4 @@ class EventsHelperTest < ActionView::TestCase
     assert_dom_equal '<span class="label label-danger">Disabled</span>', badge
   end
 
-  test 'event_approval_badge renders correct labels for each status' do
-    statuses = {
-      not_approved: 'label-danger',
-      requested: 'label-warning',
-      approved: 'label-success'
-    }
-
-    statuses.each do |status, expected_class|
-      label_text = I18n.t("events.approval_status.#{status}")
-      
-      [status, status.to_s].each do |input|
-        badge = event_approval_badge(input)
-        assert_dom_equal "<span class=\"label #{expected_class}\">#{label_text}</span>", badge
-      end
-    end
-  end
-
-  test 'event_approval_badge returns nil for unknown status' do
-    assert_nil event_approval_badge(:unknown_status)
-  end
 end

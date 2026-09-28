@@ -790,6 +790,11 @@ en:
       all_topics: All topics
       select_topic: Select a topic...
       search_for_topics: Search for topics...
+  resources:
+    approval_status:
+      not_approved: Not approved
+      requested: Requested
+      approved: Approved
   profile:
     user:
       disclaimer: >

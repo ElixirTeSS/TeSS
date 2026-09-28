@@ -39,10 +39,10 @@
           </div>
           <% if @material.persisted? %>
             <div class="content-manager-actions">
-              <% if policy(@material).approve? %>
+              <% if policy(@material).update? %>
                 <p>
                   <strong>Approval status:</strong>
-                  <%= material_approval_badge(@material.approval_status) %>
+                  <%= resource_approval_badge(@material.approval_status) %>
                 </p>
 
                 <% if !@material.not_approved? && !@material.approval_requested? && !@material.approved? && !policy(@material).approve? %>

@@ -5,7 +5,7 @@
 
     <%= respond_to?("#{resource.model_name.singular}_approval_badge") ? 
           send("#{resource.model_name.singular}_approval_badge", resource.approval_status) : 
-          material_approval_badge(resource.approval_status) %>
+          resource_approval_badge(resource.approval_status) %>
 
     <div class="pull-right curate-resource-buttons">
       <% unless resource.approved? %>
@@ -41,7 +41,12 @@
             | Provider: <%= link_to resource.content_provider.title, resource.content_provider, target: '_blank' %>
           <% end %>
           <% if resource.respond_to?(:space) && resource.space %>
-            | Space: <%= link_to resource.space.title, space_path(resource.space), target: '_blank' %>
+            | 
+            <% if resource.space.is_private %>
+              <i class="fa fa-lock"></i>
+              Private 
+            <% end %>
+            Space: <%= link_to resource.space.title, space_path(resource.space), target: '_blank' %>
           <% else %>
             | Space: Default
           <% end %>
