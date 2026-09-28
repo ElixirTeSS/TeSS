@@ -1,32 +1,30 @@
 <div class="panel panel-default curate-resource" id="<%= dom_id(resource) %>">
   <div class="panel-heading">
-  <span class="label label-default"><%= resource.class.model_name.human %></span>
-  <strong><%= link_to resource.title, resource, target: '_blank' %></strong>
+    <span class="label label-default"><%= resource.class.model_name.human %></span>
+    <strong><%= link_to resource.title, resource, target: '_blank' %></strong>
 
-  <%= respond_to?("#{resource.model_name.singular}_approval_badge") ? 
-        send("#{resource.model_name.singular}_approval_badge", resource.approval_status) : 
-        material_approval_badge(resource.approval_status) %>
+    <%= respond_to?("#{resource.model_name.singular}_approval_badge") ? 
+          send("#{resource.model_name.singular}_approval_badge", resource.approval_status) : 
+          material_approval_badge(resource.approval_status) %>
 
     <div class="pull-right curate-resource-buttons">
-      <% if policy(resource).approve? %>
-        <% unless resource.approved? %>
-          <%= link_to 'Approve', 
-            polymorphic_path(resource, 
-              resource.class.model_name.param_key => { approval_status: 'approved' }, 
-              redirect_to: request.fullpath), 
-            method: :put, 
-            class: 'btn btn-xs btn-success', 
-            data: { confirm: 'Approve this resource?' } %>
-        <% end %>
-        <% unless resource.not_approved? %>
-          <%= link_to 'Reject', 
-            polymorphic_path(resource, 
-              resource.class.model_name.param_key => { approval_status: 'not_approved' }, 
-              redirect_to: request.fullpath), 
-            method: :put, 
-            class: 'btn btn-xs btn-danger', 
-            data: { confirm: 'Reject this resource?' } %>
-        <% end %>
+      <% unless resource.approved? %>
+        <%= link_to 'Approve', 
+                    polymorphic_path(resource, 
+                      resource.class.model_name.param_key => { approval_status: 'approved' }, 
+                      redirect_to: request.fullpath), 
+                    method: :put, 
+                    class: 'btn btn-xs btn-success', 
+                    data: { confirm: 'Approve this resource?' } %>
+      <% end %>
+      <% unless resource.not_approved? %>
+        <%= link_to 'Reject', 
+                    polymorphic_path(resource, 
+                      resource.class.model_name.param_key => { approval_status: 'not_approved' }, 
+                      redirect_to: request.fullpath), 
+                    method: :put, 
+                    class: 'btn btn-xs btn-danger', 
+                    data: { confirm: 'Reject this resource?' } %>
       <% end %>
     </div>
   </div>
@@ -40,12 +38,12 @@
             by <%= link_to resource.user.username, resource.user, target: '_blank' %>
           <% end %>
           <% if resource.respond_to?(:content_provider) && resource.content_provider %>
-          | Provider: <%= link_to resource.content_provider.title, resource.content_provider, target: '_blank' %>
+            | Provider: <%= link_to resource.content_provider.title, resource.content_provider, target: '_blank' %>
           <% end %>
           <% if resource.respond_to?(:space) && resource.space %>
-          | Space: <%= link_to resource.space.title, space_path(resource.space), target: '_blank' %>
+            | Space: <%= link_to resource.space.title, space_path(resource.space), target: '_blank' %>
           <% else %>
-          | Space: Default
+            | Space: Default
           <% end %>
         </p>
 

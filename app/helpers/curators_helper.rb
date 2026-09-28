@@ -52,4 +52,17 @@ module CuratorsHelper
 
     content_tag(:span, text, class: css_class)
   end
+
+  def curator_space_options(user)
+    is_global = user.is_admin? || user.is_curator?
+
+    if is_global
+      options = []
+      options << ['Default Space', 'default'] if Space.respond_to?(:default) && Space.default
+      options + Space.where.not(id: Space.default&.id).order(:title).map { |s| [s.title, s.id] }
+    else
+      admin_space_ids = user.space_roles.where(key: 'admin').pluck(:space_id)
+      Space.where(id: admin_space_ids).order(:title).map { |s| [s.title, s.id] }
+    end
+  end
 end

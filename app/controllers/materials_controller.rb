@@ -200,7 +200,7 @@ class MaterialsController < ApplicationController
                   external_resources_attributes: %i[id url title _destroy],
                   external_resources: %i[url title],
                   event_ids: [], locked_fields: []]
-    permitted << :approval_status if User.current_user&.is_admin?
+    permitted << :approval_status if User.current_user&.can_approve_resources?
 
     params.require(:material).permit(permitted)
   end

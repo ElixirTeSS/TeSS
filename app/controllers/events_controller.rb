@@ -268,7 +268,7 @@ class EventsController < ApplicationController
                   external_resources: %i[url title], material_ids: [],
                   llm_interaction_attributes: %i[id scrape_or_process model prompt input output needs_processing _destroy],
                   locked_fields: [], instructors: [:name, :orcid], contributors: [:name, :orcid]]
-    permitted << :approval_status if User.current_user&.is_admin?
+    permitted << :approval_status if User.current_user&.can_approve_resources?
 
     params.require(:event).permit(permitted)
   end

@@ -90,6 +90,10 @@ class ApplicationPolicy
     user_has_role?(:curator, :admin, :scraper_user)
   end
 
+  def user_can_approve_resources?
+    @user&.can_approve_resources?
+  end
+
   # Returns:: the default Pundit policy scope for the record's class.
   def scope
     Pundit.policy_scope!(user, record.class)
@@ -112,11 +116,13 @@ class ApplicationPolicy
   #
   # Returns:: +true+ or +false+.
   def shown?
-    return true if global_admin_role?
-    return false unless space_accessible?
-    return true unless approval_enabled? && @record.respond_to?(:approved?) && !@record.approved?
+    return true if @user&.is_admin?          # Resource is always shown to admin
+    return false unless space_accessible?   # If the resource can be shown in the space continue
+    return true unless approval_enabled? && # If there is the approval feature enabled continue
+      @record.respond_to?(:approved?) &&
+      !@record.approved?
 
-    unapproved_accessible?
+    unapproved_accessible?                  # Who can still access the unapproved resource
   end
 
   # Default Pundit policy scope class.
@@ -137,6 +143,26 @@ class ApplicationPolicy
     # Returns:: the unfiltered +scope+.
     def resolve
       scope
+    end
+
+    def resolve_curatable
+      return scope.none unless user
+      return scope.all if user.is_admin?
+      
+      return scope.none unless scope.reflect_on_association(:space)
+
+      admin_space_ids = user.space_roles.where(key: 'admin').pluck(:space_id)
+
+      if user.is_curator?
+        # Public spaces (or no space) + private spaces where user is admin
+        scope.left_outer_joins(:space)
+             .where(spaces: { is_private: [false, nil] })
+             .or(scope.where(space_id: admin_space_ids))
+      else
+        # Space admins can only see their explicit spaces
+        return scope.none if admin_space_ids.empty?
+        scope.where(space_id: admin_space_ids)
+      end
     end
   end
 
@@ -165,19 +191,17 @@ class ApplicationPolicy
   def user_has_role?(*roles)
     return false if @user.nil?
     roles.any? { |r| @user.has_role?(r) } ||
-      (@space && roles.any? { |r| @user.has_space_role?(@space, r) })
+      (@space && roles.any? { |r| @user&.has_space_role?(@space, r) })
   end
 
-  def global_admin_role?
-    curators_and_admin
-  end
-
+  # Can the resource be shown in the space?
   def space_accessible?
-    return true if @space == nil
-    return true if !@space.is_private
-    return false unless @user # and so if space is private
+    return true if @user&.has_space_role?(@space, 'admin')  # Continue if it is the admin space
+    return true if @space == nil                            # Continue if we're in the default space
+    return true if !@space.is_private                       # Continue if the space is not private 
+    return false unless @user
     if @space == Space.current_space || @record == @space
-      return @user.groups.where(id: @space.groups).any?
+      return @user.groups.where(id: @space.groups).any?     # Continue if the user is part of the space
     end
 
     return false
@@ -187,10 +211,14 @@ class ApplicationPolicy
     TeSS::Config.feature['material_under_admin_approval'] || TeSS::Config.feature['event_under_admin_approval']
   end
 
+  # Who can still access the resource when it is unapproved?
   def unapproved_accessible?
     return false unless @user
 
-    (@record.respond_to?(:user_id) && @record.user_id == @user.id) ||
-    (@space&.respond_to?(:admin?) && @space.admin?(@user))
+    space = @record.respond_to?(:space) ? @record.space : @space
+
+    return true if @user.is_curator?                                            # Resource can be shown to a general curator
+    return true if @record.respond_to?(:user_id) && @record.user_id == @user.id # Resource can be shown to its owner
+    return true if space.present? && @user&.has_space_role?(space, 'admin')     # Resource can be shown to its space admin
   end
 end

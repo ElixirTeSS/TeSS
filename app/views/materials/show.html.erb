@@ -39,7 +39,7 @@
           </div>
           <% if @material.persisted? %>
             <div class="content-manager-actions">
-              <% if policy(@material).update? && TeSS::Config.feature['material_under_admin_approval'] %>
+              <% if policy(@material).approve? %>
                 <p>
                   <strong>Approval status:</strong>
                   <%= material_approval_badge(@material.approval_status) %>

@@ -48,7 +48,7 @@
         </div>
         <% if @event.persisted? %>
           <div class="content-manager-actions">
-            <% if policy(@event).update? && TeSS::Config.feature['event_under_admin_approval'] %>
+            <% if policy(@event).approve? %>
               <p>
                 <strong>Approval status:</strong>
                 <%= event_approval_badge(@event.approval_status) %>
