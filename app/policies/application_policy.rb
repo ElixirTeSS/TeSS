@@ -99,24 +99,26 @@ class ApplicationPolicy
     Pundit.policy_scope!(user, record.class)
   end
 
-  # Determines whether the record should be visible to the current user,
+# Determines whether the record should be visible to the current user,
   # considering space privacy and resource approval status.
   #
   # Rules:
+  # * Site administrator privileges: Always visible.
   # * Space accessibility:
   #   - Public records or records outside private spaces are accessible.
-  #   - Private space records are accessible only to authenticated admins 
-  #     or members of the space's groups (in the current space scope).
-  # * Approval status (when `material_under_admin_approval` is enabled):
-  #   - Approved records follow space accessibility rules.
+  #   - Private space records are accessible to authenticated site admins,
+  #     space admins, or members of the space's assigned groups.
+  # * Approval status (when approval feature is enabled):
+  #   - Approved records follow standard space accessibility rules.
   #   - Unapproved records require BOTH space accessibility AND one of:
   #     * Site administrator privileges;
-  #     * Space administrator privileges;
-  #     * Record ownership (@record.user_id == @user.id).
+  #     * Curator privileges;
+  #     * Record ownership (@record.user_id == @user.id);
+  #     * Space administrator privileges for the record's space.
   #
   # Returns:: +true+ or +false+.
   def shown?
-    return true if @user&.is_admin?          # Resource is always shown to admin
+    return true if @user&.is_admin?         # Resource is always shown to admin
     return false unless space_accessible?   # If the resource can be shown in the space continue
     return true unless approval_enabled? && # If there is the approval feature enabled continue
       @record.respond_to?(:approved?) &&
@@ -145,6 +147,15 @@ class ApplicationPolicy
       scope
     end
 
+    # Determines the database scope of records a user is authorized to curate/approve.
+    #
+    # Rules:
+    # * Site administrators: All records across all spaces.
+    # * Curators: Records in public spaces (or with no space) + private spaces where they hold space admin roles.
+    # * Space administrators: Records strictly within their assigned spaces.
+    # * Non-admin / Regular users: No records (empty relation).
+    #
+    # Returns:: +ActiveRecord::Relation+.
     def resolve_curatable
       return scope.none unless user
       return scope.all if user.is_admin?
