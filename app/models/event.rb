@@ -176,7 +176,7 @@ class Event < ApplicationRecord
   validates :approval_status, inclusion: { in: APPROVAL_STATUS.values }
   before_create :set_approval_status
   before_update :log_approval_status_change
-  before_update :reset_approval_status
+  before_update :reset_approval_status, if: :approval_required_and_content_changed?
 
   clean_array_fields(:keywords, :fields, :event_types, :target_audience,
                      :eligibility, :host_institutions, :sponsors)
@@ -692,13 +692,17 @@ class Event < ApplicationRecord
     end
   end
 
-  # kept for legacy purposes
+  def approval_required_and_content_changed?
+    return false unless self.class.approval_required?
+    return false if approval_status_changed? # Avoid triggering on status changes itself
+
+    # Ignore standard system/audit columns
+    ignored_columns = %w[updated_at created_at approval_status user_id]
+    (changed - ignored_columns).any?
+  end
+
   def reset_approval_status
-    if self.class.approval_required?
-      if url_changed?
-        self.approval_status = :requested
-      end
-    end
+    self.approval_status = :requested
   end
 
   def log_approval_status_change

@@ -2,8 +2,8 @@
 <% is_global = current_user.is_admin? || current_user.is_curator? %>
 
 <div class="page-header">
-  <div class="pull-right">
-    <% if @resources.any? %>
+  <% if @resources.any? %>
+    <div class="curator-floating-actions">
       <%= link_to bulk_approve_curate_resources_path(filter_params.merge(approve_action: 'approve', redirect_to: request.fullpath)),
                   method: :post,
                   class: 'btn btn-success',
@@ -17,8 +17,8 @@
                   data: { confirm: "Reject ALL #{@resources.total_entries} filtered resources?" } do %>
         <i class="fa fa-times-circle"></i> Reject All Filtered (<%= @resources.total_entries %>)
       <% end %>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 
   <h2>Curate Resources</h2>
 
