@@ -93,7 +93,10 @@ module Ingestors
     # ttl: time-to-live in seconds (default 7 days)
     def cache_fetch(key, url)
       Rails.cache.fetch(key, expires_in: TTL, skip_nil: true) do
-        JSON.parse(open_url(url).read)
+        response = open_url(url)
+        next nil unless response
+
+        JSON.parse(response.read)
       end
     end
 
