@@ -120,6 +120,7 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.friendly.find(params[:id])
+    @user.build_profile unless @user.profile
   end
 
   # Need to do this before `user_params` is called, to ensure policy(@user).change_role? works
