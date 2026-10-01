@@ -14,7 +14,7 @@ class UtwenteIngestorTest < ActiveSupport::TestCase
 
   test 'can ingest events from utwente' do
     source = @content_provider.sources.build(
-      url: 'https://www.utwente.nl/en/events/?categories=417878',
+      url: 'https://www.utwente.nl/en/about-us/news-events-ceremonies/events/',
       method: 'utwente',
       enabled: true
     )
@@ -22,12 +22,12 @@ class UtwenteIngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::Taxila::UtwenteIngestor.new
 
     # check event doesn't
-    new_title = 'Risk & Resilience Festival'
-    new_url = 'https://www.utwente.nl/en/events/2023/11/925436/risk-resilience-festival'
+    new_title = 'Let’s make peace work'
+    new_url = 'https://www.utwente.nl/en/about-us/news-events-ceremonies/events/2026/9/996952/lets-make-peace-work'
     refute Event.where(title: new_title, url: new_url).any?
 
-    # run task
-    assert_difference 'Event.count', 1 do
+    # run task, cassette covers 2 pages (skip: 0, then skip: 10) to exercise pagination
+    assert_difference 'Event.count', 2 do
       freeze_time(2019) do
         VCR.use_cassette('ingestors/utwente') do
           ingestor.read(source.url)
@@ -36,9 +36,9 @@ class UtwenteIngestorTest < ActiveSupport::TestCase
       end
     end
 
-    assert_equal 1, ingestor.events.count
+    assert_equal 2, ingestor.events.count
     assert ingestor.materials.empty?
-    assert_equal 1, ingestor.stats[:events][:added]
+    assert_equal 2, ingestor.stats[:events][:added]
     assert_equal 0, ingestor.stats[:events][:updated]
     assert_equal 0, ingestor.stats[:events][:rejected]
 
@@ -51,8 +51,11 @@ class UtwenteIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'University of Twente', event.organizer
-    assert_equal Time.zone.parse('Thu, 09 Nov 2023 09:00:00 +0000'), event.start
-    assert_equal Time.zone.parse('Thu, 09 Nov 2023 17:00:00 +0000'), event.end
-    assert_equal 'Waaier', event.venue
+    assert_equal Time.zone.parse('Tue, 22 Sep 2026 19:30:00 +0000'), event.start
+    assert_equal Time.zone.parse('Tue, 22 Sep 2026 21:00:00 +0000'), event.end
+    assert_equal 'Vrijhof - Amphitheater', event.venue
+
+    # second page came through too
+    assert Event.where(title: 'Founding Father of ASML – Martin van den Brink').any?
   end
 end
