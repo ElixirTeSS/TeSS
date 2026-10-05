@@ -63,7 +63,7 @@ class TrainersControllerTest < ActionController::TestCase
   end
 
   test 'should show bip-scholar embed div when trainers feature is enabled' do
-    with_settings(feature: { trainers: true }) do
+    with_settings(feature: { trainers: true, bip_scholar_infographics: { enabled: true, layout: 'default', empty_mode: 'default'} }) do
       get :show, params: { id: @trainer }
       assert_response :success
       assert_select 'div.bip-scholar-embed[data-orcid="' + @trainer.orcid + '"]'
@@ -79,11 +79,13 @@ class TrainersControllerTest < ActionController::TestCase
   end
 
   test 'should show default fallback message when no profile found and empty_mode is default' do
-    BipScholarHelper.stub :fetch_score, nil do
-      get :show, params: { id: @trainer }
-      assert_response :success
+    with_settings(feature: { trainers: true, bip_scholar_infographics: { enabled: true, layout: 'default', empty_mode: 'default'} }) do
+      BipScholarHelper.stub :fetch_score, nil do
+        get :show, params: { id: @trainer }
+        assert_response :success
 
-      assert_select 'div.bip-scholar-no-profile', text: /No BIP! Scholar profile found/
+        assert_select 'div.bip-scholar-no-profile', text: /No BIP! Scholar profile found/
+      end
     end
   end
 
