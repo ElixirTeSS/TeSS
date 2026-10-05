@@ -25,7 +25,12 @@
       </div>
 
       <!-- BIP!Scholar Profile -->
-      <%= render 'common/bip_scholar_infographics', orcid: @trainer.orcid, layout: 'default', empty_mode: 'default' %>
+      <% if TeSS::Config.feature['bip_scholar_infographics']['enabled'] %>
+        <%= render 'common/bip_scholar_infographics',
+          orcid: @trainer.orcid,
+          layout: TeSS::Config.feature['bip_scholar_infographics']['layout'],
+          empty_mode: TeSS::Config.feature['bip_scholar_infographics']['empty_mode'] %>
+      <% end %>
     <% end %>
 
     <!-- Field:  description -->
