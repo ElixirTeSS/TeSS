@@ -1,0 +1,146 @@
+<% filter_params = params.permit(:status, :type, :content_provider_id, :space_id, :user_id).to_h %>
+<% is_global = current_user.is_admin? || current_user.is_curator? %>
+
+<div class="page-header">
+  <% if @resources.any? %>
+    <div class="curator-floating-actions">
+      <%= link_to bulk_approve_curate_resources_path(filter_params.merge(approve_action: 'approve', redirect_to: request.fullpath)),
+                  method: :post,
+                  class: 'btn btn-success',
+                  data: { confirm: "Approve ALL #{@resources.total_entries} filtered resources?" } do %>
+        <i class="fa fa-check-circle"></i> Approve All Filtered (<%= @resources.total_entries %>)
+      <% end %>
+
+      <%= link_to bulk_approve_curate_resources_path(filter_params.merge(approve_action: 'reject', redirect_to: request.fullpath)),
+                  method: :post,
+                  class: 'btn btn-danger',
+                  data: { confirm: "Reject ALL #{@resources.total_entries} filtered resources?" } do %>
+        <i class="fa fa-times-circle"></i> Reject All Filtered (<%= @resources.total_entries %>)
+      <% end %>
+    </div>
+  <% end %>
+
+  <h2>Curate Resources</h2>
+
+  <h3>Filters</h3>
+  <div class="form-group">
+    <%= link_to curate_resources_path, class: 'btn btn-default btn-sm', title: 'Reset all filters' do %>
+      <i class="fa fa-undo"></i> Reset Filters
+    <% end %>
+  </div>
+
+  <div class="form-inline">
+    <%= label_tag 'type', 'Type:' %>
+    <%= select_tag 'type',
+                   options_for_select([['All Types', 'all'], ['Materials', 'materials'], ['Events', 'events']], @type),
+                   onchange: "window.location = '#{curate_resources_path}?' + $.param($.extend(#{filter_params.to_json}, { type: this.value, page: 1 }));",
+                   class: 'form-control input-sm' %>
+  </div>
+
+  <div class="form-inline">
+    <%= label_tag 'user_id', 'User:' %>
+    <%= select_tag 'user_id',
+                   options_from_collection_for_select(User.order(:username), :id, :username, params[:user_id]),
+                   include_blank: 'All Users',
+                   onchange: "window.location = '#{curate_resources_path}?' + $.param($.extend(#{filter_params.to_json}, { user_id: this.value, page: 1 }));",
+                   class: 'form-control input-sm' %>
+  </div>
+
+  <% if TeSS::Config.feature['sources'] %>
+    <div class="form-inline">
+      <%= label_tag 'content_provider_id', 'Provider:' %>
+      <%= select_tag 'content_provider_id',
+                     options_from_collection_for_select(ContentProvider.order(:title), :id, :title, params[:content_provider_id]),
+                     include_blank: 'All Providers',
+                     onchange: "window.location = '#{curate_resources_path}?' + $.param($.extend(#{filter_params.to_json}, { content_provider_id: this.value, page: 1 }));",
+                     class: 'form-control input-sm' %>
+    </div>
+  <% end %>
+
+  <% if TeSS::Config.feature['spaces'] %>
+    <div class="form-inline">
+      <%= label_tag 'space_id', 'Space:' %>
+      <%= select_tag 'space_id',
+                     options_for_select(curator_space_options(current_user), params[:space_id]),
+                     include_blank: (is_global ? 'All Spaces' : 'All My Spaces'),
+                     onchange: "window.location = '#{curate_resources_path}?' + $.param($.extend(#{filter_params.to_json}, { space_id: this.value, page: 1 }));",
+                     class: 'form-control input-sm' %>
+    </div>
+  <% end %>
+
+  <div class="form-inline">
+    <%= label_tag 'status', 'Approval status:' %>
+    <%= select_tag 'status',
+                   options_for_select([['Requested', 'requested'], ['Not Approved', 'not_approved'], ['Approved', 'approved'], ['All', 'all']], @status),
+                   onchange: "window.location = '#{curate_resources_path}?' + $.param($.extend(#{filter_params.to_json}, { status: this.value, page: 1 }));",
+                   class: 'form-control input-sm' %>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Activity List -->
+  <div class="col-sm-4 col-sm-push-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">Recent Approval Activity</div>
+      <div class="panel-body">
+        <% activities = recent_resource_approvals %>
+        <% if activities.any? %>
+          <ul class="list-unstyled">
+            <% activities.each do |activity| %>
+              <% resource = activity.trackable %>
+              <% next unless resource %>
+              <li style="margin-bottom: 8px;">
+                <span class="label label-default"><%= activity.trackable_type %></span>
+                <strong><%= link_to resource.title, resource, target: '_blank' %></strong>
+
+                <% if TeSS::Config.feature['sources'] && resource.respond_to?(:content_provider) && resource.content_provider %>
+                  | Provider: <%= link_to resource.content_provider.title, resource.content_provider, target: '_blank' %>
+                <% end %>
+
+                <% if TeSS::Config.feature['spaces'] %>
+                  <% if resource.respond_to?(:space) && resource.space %>
+                    | 
+                    <% if resource.space.is_private %>
+                      <i class="fa fa-lock"></i>
+                      Private 
+                    <% end %>
+                    Space: <%= link_to resource.space.title, space_path(resource.space), target: '_blank' %>
+                  <% else %>
+                    | Space: Default
+                  <% end %>
+                <% end %>
+                <br/>
+                <%
+                  raw_params = activity.parameters
+                  params_hash = if raw_params.is_a?(Hash)
+                                  raw_params.with_indifferent_access
+                                elsif raw_params.is_a?(String)
+                                  (JSON.parse(raw_params) rescue YAML.safe_load(raw_params) rescue {}).with_indifferent_access
+                                else
+                                  {}
+                                end
+                %>
+                <%= resource_approval_badge(params_hash[:new]) %>
+                <small class="text-muted">
+                  by <%= activity.owner.try(:username) || 'System' %> <%= time_ago_in_words(activity.created_at) %> ago
+                </small>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <span class="text-muted">No recent approval activity.</span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resource Cards -->
+  <div class="col-sm-8 col-sm-pull-4">
+    <% if @resources.any? %>
+      <%= render partial: 'curator/resource_card', collection: @resources, as: :resource %>
+      <%= render partial: 'search/common/pagination_bar', locals: { resources: @resources } %>
+    <% else %>
+      <div class="alert alert-info">No resources found matching this criteria.</div>
+    <% end %>
+  </div>
+</div>

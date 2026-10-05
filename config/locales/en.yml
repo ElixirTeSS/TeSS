@@ -672,6 +672,12 @@ en:
     show_past_events:
       one: Show %{count} past event
       other: Show %{count} past events
+    info:
+      approval_notice: This event will need to be approved by an administrator before being public.
+    approval_status:
+      not_approved: Not approved
+      requested: Requested
+      approved: Approved
   materials:
     hints:
       authors: >
@@ -731,6 +737,12 @@ en:
         A specific iteration or release of the training material document, labeled to track updates 
         (for example, v1.0, v2.1).
       visible: 'Whether this material should be shown or hidden from the materials page.'
+    info:
+      approval_notice: This material will need to be approved by an administrator before being public.
+    approval_status:
+      not_approved: Not approved
+      requested: Requested
+      approved: Approved
   learning_paths:
     hints:
       authors: >
@@ -778,6 +790,11 @@ en:
       all_topics: All topics
       select_topic: Select a topic...
       search_for_topics: Search for topics...
+  resources:
+    approval_status:
+      not_approved: Not approved
+      requested: Requested
+      approved: Approved
   profile:
     user:
       disclaimer: >
@@ -1000,6 +1017,9 @@ en:
       assign_scientific_topics: "Assign scientific topics to %{title} resources"
       curate_topics: 'Curate topics'
       curate_users: 'Curate users'
+      curate_materials: 'Curate materials'
+      curate_events: 'Curate events'
+      curate_resources: 'Curate resources'
       view_admin_console: 'View the administrator console'
       admin_console: 'Admin console'
       log_out: 'Log out'

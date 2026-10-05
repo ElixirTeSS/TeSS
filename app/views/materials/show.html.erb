@@ -40,6 +40,23 @@
           <% if @material.persisted? %>
             <div class="content-manager-actions">
               <% if policy(@material).update? %>
+                <p>
+                  <strong>Approval status:</strong>
+                  <%= resource_approval_badge(@material.approval_status) %>
+                </p>
+
+                <% if !@material.not_approved? && !@material.approval_requested? && !@material.approved? && !policy(@material).approve? %>
+                  <%= link_to 'Request Approval', request_approval_material_path(@material),
+                              data: { confirm: 'Are you sure you wish to submit this material for approval? You will not be able to modify it afterwards.'},
+                              method: :post, class: 'btn btn-primary' %>
+                <% end %>
+
+                <% if policy(@material).approve? && !@material.approved? %>
+                  <%= link_to 'Approve', material_path(@material, material: { approval_status: 'approved' }),
+                              method: :put, class: 'btn btn-success' %>
+                <% end %>
+              <% end %>
+              <% if policy(@material).update? %>
                 <%= link_to 'Clone', clone_material_path(@material), class: 'btn btn-default' %>
                 <%= edit_button(@material) %>
               <% end %>

@@ -3,6 +3,26 @@ require 'test_helper'
 class CuratorControllerTest < ActionController::TestCase
   include Devise::Test::ControllerHelpers
 
+  setup do
+    @admin = users(:admin)
+    sign_in @admin
+
+    @user = users(:regular_user)
+    @another_user = users(:another_regular_user)
+
+    @requested_material = materials(:requested_material)
+    @approved_material = materials(:approved_material)
+    @default_space = Space.default
+
+    @requested_astro_space_material = materials(:requested_astro_space_material)
+    @astro_space = spaces(:astro)
+
+    @curator = users(:curator)
+    @space_admin = users(:private_space_owner)
+    @private_space = spaces(:private_space)
+    @private_material = materials(:requested_private_material)
+  end
+
   test 'should get topic suggestions if curator' do
     sign_in users(:curator)
     e1 = add_topic_suggestions(events(:one), ['Genomics', 'Animals'])
@@ -222,6 +242,144 @@ class CuratorControllerTest < ActionController::TestCase
     [event, material, workflow, collection, provider, source, node].each do |resource|
       assert_select '.curate-user a[href=?]', @controller.polymorphic_path(resource), { text: resource.title },
                     "#{@controller.polymorphic_path(resource)} not found!, \nBody:\n#{response.body}"
+    end
+  end
+
+  test 'should get resources queue with default requested status' do
+    get :resources
+    assert_response :success
+    assert_not_nil assigns(:resources)
+    assert_includes assigns(:resources), @requested_material
+    refute_includes assigns(:resources), @approved_material
+  end
+
+  test 'should filter resources by type and status' do
+    get :resources, params: { type: 'materials', status: 'approved' }
+    assert_response :success
+    assert_includes assigns(:resources), @approved_material
+    refute_includes assigns(:resources), @requested_material
+  end
+
+  test 'should filter resources by user_id' do
+    get :resources, params: { user_id: @user.id, status: 'all' }
+    assert_response :success
+    assert_includes assigns(:resources), @requested_material
+
+    get :resources, params: { user_id: @another_user.id, status: 'all' }
+    assert_response :success
+    refute_includes assigns(:resources), @requested_material
+  end
+
+  test 'should bulk approve requested resources' do
+    assert_equal :requested, @requested_material.reload.approval_status
+
+    post :bulk_approve, params: { status: 'requested', type: 'materials', approve_action: 'approve' }
+
+    assert_redirected_to curate_resources_path
+    assert_equal :approved, @requested_material.reload.approval_status
+    assert_equal :approved, @requested_astro_space_material.reload.approval_status
+    assert_equal '3 resource(s) successfully approved.', flash[:notice]
+  end
+
+  test 'should bulk reject requested resources' do
+    post :bulk_approve, params: { status: 'requested', type: 'materials', approve_action: 'reject' }
+
+    assert_redirected_to curate_resources_path
+    assert_equal :not_approved, @requested_material.reload.approval_status
+    assert_equal :not_approved, @requested_astro_space_material.reload.approval_status
+    assert_equal '3 resource(s) successfully not approved.', flash[:notice]
+  end
+
+  test 'should honor user_id filter during bulk approve' do
+    post :bulk_approve, params: { status: 'requested', type: 'materials', user_id: @another_user.id, approve_action: 'approve' }
+
+    assert_redirected_to curate_resources_path
+    assert_equal :requested, @requested_material.reload.approval_status
+    assert_equal '0 resource(s) successfully approved.', flash[:notice]
+  end
+
+  test 'should filter resources by default space_id' do
+    get :resources, params: { space_id: 'default', status: 'requested' }
+
+    assert_response :success
+    assert_includes assigns(:resources), @requested_material
+    refute_includes assigns(:resources), @requested_astro_space_material
+  end
+
+  test 'should filter resources by explicit space_id' do
+    get :resources, params: { space_id: @astro_space.id, status: 'requested' }
+
+    assert_response :success
+    assert_includes assigns(:resources), @requested_astro_space_material
+    refute_includes assigns(:resources), @requested_material
+  end
+
+  test 'should bulk approve resources scoped by default space' do
+    post :bulk_approve, params: {
+      status: 'requested',
+      type: 'materials',
+      space_id: 'default',
+      approve_action: 'approve'
+    }
+
+    assert_redirected_to curate_resources_path
+    assert_equal :approved, @requested_material.reload.approval_status
+    assert_equal :requested, @requested_astro_space_material.reload.approval_status
+  end
+
+  test 'should bulk approve resources scoped by explicit space_id' do
+    post :bulk_approve, params: {
+      status: 'requested',
+      type: 'materials',
+      space_id: @astro_space.id,
+      approve_action: 'approve'
+    }
+
+    assert_redirected_to curate_resources_path
+    assert_equal :approved, @requested_astro_space_material.reload.approval_status
+    assert_equal :requested, @requested_material.reload.approval_status
+  end
+
+  test 'curator can bulk approve visible public resources but not inaccessible private space resources' do
+    sign_in @curator
+    with_settings(feature: { spaces:true, material_under_admin_approval: true }) do
+
+      assert_equal :requested, @requested_material.reload.approval_status
+      assert_equal :requested, @requested_astro_space_material.reload.approval_status
+      assert_equal :requested, @private_material.reload.approval_status
+
+      post :bulk_approve, params: { status: 'requested', type: 'materials', approve_action: 'approve' }
+
+      assert_redirected_to curate_resources_path
+      assert_equal :approved, @requested_material.reload.approval_status
+      assert_equal :approved, @requested_astro_space_material.reload.approval_status
+      assert_equal :requested, @private_material.reload.approval_status
+      assert_equal '2 resource(s) successfully approved.', flash[:notice]
+    end
+  end
+
+  test 'private space admin can bulk approve and reject only resources in their private space' do
+    # Ensure user has space admin role so check_curator passes
+    @space_admin.space_roles.find_or_create_by!(space: @private_space, key: 'admin')
+
+    sign_in @space_admin
+
+    with_settings(feature: { spaces:true, material_under_admin_approval: true }) do
+      # Test Bulk Approve
+      post :bulk_approve, params: { status: 'requested', type: 'materials', approve_action: 'approve' }
+
+      assert_redirected_to curate_resources_path
+      assert_equal :approved, @private_material.reload.approval_status
+      assert_equal :requested, @requested_material.reload.approval_status
+      assert_equal '1 resource(s) successfully approved.', flash[:notice]
+
+      # Test Bulk Reject
+      post :bulk_approve, params: { status: 'approved', type: 'materials', approve_action: 'reject' }
+
+      assert_redirected_to curate_resources_path
+      assert_equal :not_approved, @private_material.reload.approval_status
+      assert_equal :requested, @requested_material.reload.approval_status
+      assert_equal '1 resource(s) successfully not approved.', flash[:notice]
     end
   end
 

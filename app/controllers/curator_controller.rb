@@ -1,11 +1,14 @@
 # The controller for actions related to the curator model
 class CuratorController < ApplicationController
-  CURATION_ACTIONS = %w(material.add_term event.add_term material.reject_term event.reject_term)
+  CURATION_ACTIONS = %w(material.add_term event.add_term material.reject_term event.reject_term material.approval_status_changed event.approval_status_changed).freeze
+  CURATABLE_TYPES = {
+    'materials' => Material,
+    'events'    => Event
+  }.freeze
 
   before_action :check_curator
   before_action :set_breadcrumbs, :only => [:topic_suggestions]
 
-  # Hacky stub to make breadcrumbs work
   def index
    redirect_to '/curate/topic_suggestions'
   end
@@ -57,15 +60,88 @@ class CuratorController < ApplicationController
     end
   end
 
+  def resources
+    @status = params[:status].presence || 'requested'
+    @type = params[:type].presence || 'all'
+
+    target_classes = @type == 'all' ? CURATABLE_TYPES.values : [CURATABLE_TYPES[@type]].compact
+    records = target_classes.flat_map { |klass| fetch_curatable_records(klass) }
+    sorted_records = records.sort_by(&:updated_at).reverse
+
+    page = params[:page] || 1
+    per_page = params[:per_page] || 20
+    @resources = WillPaginate::Collection.create(page, per_page, sorted_records.size) do |pager|
+      pager.replace(sorted_records[pager.offset, pager.per_page] || [])
+    end
+
+    respond_to(&:html)
+  end
+
+  def bulk_approve
+    status = params[:status].presence || 'requested'
+    type = params[:type].presence || 'all'
+    action = params[:approve_action]
+    new_status = action == 'reject' ? 'not_approved' : 'approved'
+    target_classes = type == 'all' ? CURATABLE_TYPES.values : [CURATABLE_TYPES[type]].compact
+
+    updated_count = 0
+    target_classes.each do |klass|
+      fetch_curatable_records(klass).each do |resource|
+        updated_count += 1 if resource.update(approval_status: new_status)
+      end
+    end
+
+    redirect_to params[:redirect_to].presence || curate_resources_path,
+                notice: "#{updated_count} resource(s) successfully #{new_status.humanize.downcase}."
+  end
+
   private
 
   def action_count_for(action)
     return PublicActivity::Activity.where(key: action).group_by{|logs| logs.owner}.sort_by{|user, logs| -logs.count}.map{|user,logs| [user, logs.count]}.to_h
   end
 
+  def fetch_curatable_records(klass)
+    scope = ApplicationPolicy::Scope.new(pundit_user, klass).resolve_curatable
+
+    # Default to 'requested' if params[:status] is blank
+    status = params[:status].presence || 'requested'
+    if status != 'all'
+      status_code = klass::APPROVAL_STATUS_CODES[status.to_sym] || status
+      scope = scope.where(approval_status: status_code)
+    end
+
+    scope = scope.where(content_provider_id: params[:content_provider_id]) if params[:content_provider_id].present?
+    scope = scope.where(user_id: params[:user_id]) if params[:user_id].present? && klass.reflect_on_association(:user)
+
+    if params[:space_id].present? && klass.reflect_on_association(:space)
+      if params[:space_id] == 'default' && Space.respond_to?(:default)
+        scope = scope.where(space_id: [Space.default&.id, nil])
+      else
+        scope = scope.where(space_id: params[:space_id])
+      end
+    end
+
+    scope.includes(:user, :content_provider, (:space if klass.reflect_on_association(:space)))
+  end
+
   def check_curator
-    unless current_user && (current_user.is_admin? || current_user.is_curator?)
+    unless current_user && (current_user.is_admin? || current_user.is_curator? || current_user.has_role_in_any_space?('admin'))
       handle_error(:forbidden, 'This page is only visible to curators.')
     end
   end
+
+  def recent_resource_approvals
+    activity_ids = CURATABLE_TYPES.values.flat_map do |klass|
+      allowed_ids = ApplicationPolicy::Scope.new(pundit_user, klass).resolve_curatable.pluck(:id)
+      key = "#{klass.name.underscore}.approval_status_changed"
+      PublicActivity::Activity.where(trackable_type: klass.name, trackable_id: allowed_ids, key: key).pluck(:id)
+    end
+
+    PublicActivity::Activity.where(id: activity_ids)
+                            .includes(:owner, trackable: [:content_provider, :space])
+                            .order(created_at: :desc)
+                            .limit(10)
+  end
+  helper_method :recent_resource_approvals
 end

@@ -181,6 +181,16 @@
   <!-- Field: Instructors -->
   <%= render partial: "common/people_form", locals: { f: f, field_name: 'instructors', role: 'instructor' } %>
 
+  <!-- Field: Approval -->
+  <% if policy(@event).approve? %>
+    <%= f.input :approval_status,
+                label: 'Approval Status',
+                collection: approval_options_for_select_event,
+                include_blank: false %>
+  <% end %>
+
+  <hr>
+  <!-- Form Buttons -->
   <div class="form-group">
     <%= f.submit(class: 'btn btn-primary') %>
     <%= link_to 'Back', :back, class: 'btn btn-default' %>

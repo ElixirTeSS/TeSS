@@ -86,20 +86,36 @@ module Searchable
 
         if sort_by && sort_by != 'default'
           case sort_by
-          when 'early'   then order_by(:start, :asc)
-          when 'late'    then order_by(:start, :desc)
-          when 'rel'     then nil
-          when 'mod'     then order_by(:updated_at, :desc)
-          when 'new'     then order_by(:created_at, :desc)
-          when 'finished' then order_by(:finished_at, :desc)
-          else                order_by(:sort_title, sort_by.to_sym)
+          when 'early'
+              # Sort by start date asc
+              order_by(:start, :asc)
+            when 'late'
+              # Sort by start date desc
+              order_by(:start, :desc)
+            when 'rel'
+              # Sort by relevance
+            when 'mod'
+              # Sort by last modified
+              order_by(:updated_at, :desc)
+            when 'new'
+              # Sort by newest
+              order_by(:created_at, :desc)
+            when 'finished'
+              # Sort by last finished
+              order_by(:finished_at, :desc)
+            else
+              order_by(:sort_title, sort_by.to_sym)
           end
         else
           case name
-          when 'Event'           then order_by(:start, :asc)
-          when 'ContentProvider' then order_by(:count, :desc)
-          when 'Material'        then order_by(:created_at, :desc)
-          else                        order_by(:sort_title, :asc)
+            when 'Event'
+              order_by(:start, :asc)
+            when 'ContentProvider'
+              order_by(:count, :desc)
+            when 'Material'
+              order_by(:approval_status, :asc)
+            else
+              order_by(:sort_title, :asc)
           end
         end
 
@@ -114,11 +130,27 @@ module Searchable
 
         if name == 'Trainer' || name == 'Profile'
           any_of { with(:public, true) }
-        elsif has_public && !user&.is_admin?
+        elsif has_public && !(user&.is_admin? || user&.is_curator?)
           any_of do
             with(:public, true)
             with(:user_id, user.id) if user
             with(:collaborator_ids, user.id) if user && has_collaborators
+          end
+        end
+
+        # Filters by approval_status for unauthenticated requests (regardless of whether the feature is enabled or disabled) 
+        if name == 'Material' && TeSS::Config.feature['material_under_admin_approval'] && !(user&.is_admin? || user&.is_curator?)
+          any_of do
+            with(:approval_status, I18n.t('materials.approval_status.approved'))
+            with(:user_id, user.id) if user.present?
+          end
+        end
+
+        # Filters by approval_status for unauthenticated requests (regardless of whether the feature is enabled or disabled) 
+        if name == 'Event' && TeSS::Config.feature['event_under_admin_approval'] && !(user&.is_admin? || user&.is_curator?)
+          any_of do
+            with(:approval_status, I18n.t('events.approval_status.approved'))
+            with(:user_id, user.id) if user.present?
           end
         end
 

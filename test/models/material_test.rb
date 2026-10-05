@@ -20,6 +20,10 @@ class MaterialTest < ActiveSupport::TestCase
     assert_not_nil @user
     assert_not_nil @event
     assert_not_nil @material
+
+    @not_approved_material = materials(:not_approved_material)
+    @requested_material = materials(:requested_material)
+    @approved_material = materials(:approved_material)
   end
 
   test 'should update optionals' do
@@ -767,5 +771,67 @@ class MaterialTest < ActiveSupport::TestCase
 
     @material.origin_uri = 'ftp://tess-instance.org/materials/123'
     refute @material.valid?
+  end
+
+  test '.approved scope returns only approved materials' do
+    approved = Material.approved
+    assert_includes approved, @approved_material
+    refute_includes approved, @not_approved_material
+    refute_includes approved, @requested_material
+  end
+
+  test '.approval_requested scope returns only requested materials' do
+    requested = Material.approval_requested
+    assert_includes requested, @requested_material
+    refute_includes requested, @approved_material
+    refute_includes requested, @not_approved_material
+  end
+
+  test 'approval status predicate methods work correctly' do
+    assert @not_approved_material.not_approved?
+    refute @not_approved_material.approved?
+    refute @not_approved_material.approval_requested?
+
+    assert @requested_material.approval_requested?
+    refute @requested_material.approved?
+    refute @requested_material.not_approved?
+
+    assert @approved_material.approved?
+    refute @approved_material.not_approved?
+    refute @approved_material.approval_requested?
+  end
+
+  test 'request_approval updates status to requested and saves record' do
+    assert_changes -> { @not_approved_material.reload.approval_status }, to: :requested do
+      @not_approved_material.request_approval
+    end
+  end
+
+  test 'initializes approval_status as approved when feature flag is disabled' do
+    with_settings(feature: { material_under_admin_approval: false }) do
+      material = Material.create!(title: 'Test', url: 'https://example.org/test2', user: users(:regular_user), description: 'bla')
+      assert_equal :approved, material.reload.approval_status
+    end
+  end
+
+  test 'initializes approval_status as requested when feature flag is enabled' do
+    with_settings(feature: { material_under_admin_approval: true }) do
+      material = Material.create!(title: 'Test', url: 'https://example.org/test2', user: users(:regular_user), description: 'bla')
+      assert_equal :requested, material.reload.approval_status
+    end
+  end
+
+  test 'resets status to requested on update when url changes and feature is enabled' do
+    with_settings(feature: { material_under_admin_approval: true }) do
+      @approved_material.update!(url: 'https://example.org/updated-url')
+      assert_equal :requested, @approved_material.reload.approval_status
+    end
+  end
+
+  test 'does not reset status on url change when feature is disabled' do
+    with_settings(feature: { material_under_admin_approval: false }) do
+      @approved_material.update!(url: 'https://example.org/updated-url-2')
+      assert_equal :approved, @approved_material.reload.approval_status
+    end
   end
 end

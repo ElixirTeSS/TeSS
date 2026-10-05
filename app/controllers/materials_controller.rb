@@ -1,7 +1,7 @@
 # The controller for actions related to the Materials model
 class MaterialsController < ApplicationController
   before_action :ensure_feature_enabled
-  before_action :set_material, only: %i[show edit update destroy update_collections clone
+  before_action :set_material, only: %i[show edit update destroy update_collections request_approval clone
                                         add_term reject_term add_data reject_data]
   before_action :set_breadcrumbs
   before_action :set_learning_path_navigation, only: :show
@@ -18,7 +18,7 @@ class MaterialsController < ApplicationController
 
   def index
     elearning = @facet_params[:resource_type] == 'e-learning' && feature_enabled?('elearning_materials')
-    @bioschemas = @materials.flat_map(&:to_bioschemas)
+    @bioschemas = @materials.select { |m| policy(m).show? }.flat_map(&:to_bioschemas) # `policy(m).show?` allows to display JSON-LD metadata of materials that are visible in the UI to the user, whether unauth, basic, curator or admin
     respond_to do |format|
       format.html { render elearning ? 'elearning_materials/index' : 'index' }
       format.json
@@ -116,7 +116,8 @@ class MaterialsController < ApplicationController
     respond_to do |format|
       if @material.update(material_params)
         @material.create_activity(:update, owner: current_user) if @material.log_update_activity?
-        format.html { redirect_to @material, notice: 'Material was successfully updated.' }
+        redirect_path = params[:redirect_to].presence || @material
+        format.html { redirect_to redirect_path, notice: 'Material was successfully updated.' }
         format.json { render :show, status: :ok, location: @material }
       else
         format.html { render :edit }
@@ -156,6 +157,24 @@ class MaterialsController < ApplicationController
     redirect_to @material
   end
 
+  # POST /materials/1/request_approval
+  def request_approval
+    authorize @material
+
+    if @material.approval_requested?
+      flash[:error] = 'Approval request has already been submitted.'
+    elsif @material.approved?
+      flash[:error] = 'Already approved.'
+    elsif @material.not_approved?
+      @material.request_approval
+      flash[:notice] = 'Approval request was sent successfully.'
+    end
+
+    respond_to do |format|
+      format.html { redirect_to @material }
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -165,22 +184,25 @@ class MaterialsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def material_params
-    params.require(:material).permit(:id, :title, :url, :contact, :description, :short_description,
-                                     :long_description, :doi, :licence,
-                                     :last_scraped, :scraper_record, :remote_created_date, :remote_updated_date,
-                                     :content_provider_id, :difficulty_level, :version, :status,
-                                     :date_created, :date_modified, :date_published, :other_types,
-                                     :prerequisites, :syllabus, :visible, :learning_objectives, :origin_uri, { subsets: [] },
-                                     { target_audience: [] },
-                                     { collection_ids: [] }, { keywords: [] }, { resource_type: [] },
-                                     { scientific_topic_names: [] }, { scientific_topic_uris: [] },
-                                     { operation_names: [] }, { operation_uris: [] },
-                                     { node_ids: [] }, { node_names: [] }, { fields: [] },
-                                     { authors: [:name, :orcid] }, { contributors: [:name, :orcid] }, # Structured
-                                     { authors: [] }, { contributors: [] }, # as strings
-                                     external_resources_attributes: %i[id url title _destroy],
-                                     external_resources: %i[url title],
-                                     event_ids: [], locked_fields: [])
+    permitted = [:id, :title, :url, :contact, :description, :short_description,
+                  :long_description, :doi, :licence,
+                  :last_scraped, :scraper_record, :remote_created_date, :remote_updated_date,
+                  :content_provider_id, :difficulty_level, :version, :status,
+                  :date_created, :date_modified, :date_published, :other_types,
+                  :prerequisites, :syllabus, :visible, :learning_objectives, :origin_uri, { subsets: [] },
+                  { target_audience: [] },
+                  { collection_ids: [] }, { keywords: [] }, { resource_type: [] },
+                  { scientific_topic_names: [] }, { scientific_topic_uris: [] },
+                  { operation_names: [] }, { operation_uris: [] },
+                  { node_ids: [] }, { node_names: [] }, { fields: [] },
+                  { authors: [:name, :orcid] }, { contributors: [:name, :orcid] }, # Structured
+                  { authors: [] }, { contributors: [] }, # as strings
+                  external_resources_attributes: %i[id url title _destroy],
+                  external_resources: %i[url title],
+                  event_ids: [], locked_fields: []]
+    permitted << :approval_status if User.current_user&.can_approve_resources?
+
+    params.require(:material).permit(permitted)
   end
 
   def set_learning_path_navigation

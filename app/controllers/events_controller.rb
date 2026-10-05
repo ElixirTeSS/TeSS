@@ -3,7 +3,7 @@ require 'tzinfo'
 # The controller for actions related to the Events model
 class EventsController < ApplicationController
   before_action :ensure_feature_enabled
-  before_action :set_event, only: %i[show edit clone update destroy update_collections add_term reject_term
+  before_action :set_event, only: %i[show edit clone update destroy update_collections request_approval add_term reject_term
                                      redirect report update_report add_data reject_data]
   before_action :set_breadcrumbs
   before_action :disable_pagination, only: :index, if: ->(controller) { controller.request.format.ics? or controller.request.format.csv? or controller.request.format.rss? }
@@ -16,7 +16,7 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    @bioschemas = @events.flat_map(&:to_bioschemas)
+    @bioschemas = @events.select { |e| policy(e).show? }.flat_map(&:to_bioschemas) # `policy(m).show?` allows to display JSON-LD metadata of events that are visible in the UI to the user, whether unauth, basic, curator or admin
     @past_events_count = 0
     if TeSS::Config.solr_enabled && @events.none? && @facet_params[:include_expired] != 'true' && request.format.html?
       @past_events_count = Event.search_and_filter(current_user,
@@ -177,7 +177,8 @@ class EventsController < ApplicationController
     respond_to do |format|
       if @event.update(event_params)
         @event.create_activity(:update, owner: current_user) if @event.log_update_activity?
-        format.html { redirect_to @event, notice: 'Event was successfully updated.' }
+        redirect_path = params[:redirect_to].presence || @event
+        format.html { redirect_to redirect_path, notice: 'Event was successfully updated.' }
         format.json { render :show, status: :ok, location: @event }
       else
         format.html { render :edit }
@@ -217,6 +218,24 @@ class EventsController < ApplicationController
     redirect_to @event
   end
 
+  # POST /events/1/request_approval
+  def request_approval
+    authorize @event
+
+    if @event.approval_requested?
+      flash[:error] = 'Approval request has already been submitted.'
+    elsif @event.approved?
+      flash[:error] = 'Already approved.'
+    elsif @event.not_approved?
+      @event.request_approval
+      flash[:notice] = 'Approval request was sent successfully.'
+    end
+
+    respond_to do |format|
+      format.html { redirect_to @event }
+    end
+  end
+
   def redirect
     @event.widget_logs.create(widget_name: params[:widget],
                               action: "#{controller_name}##{action_name}",
@@ -235,20 +254,23 @@ class EventsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def event_params
-    params.require(:event).permit(:external_id, :title, :subtitle, :url, :organizer, :last_scraped, :scraper_record,
-                                  :description, { scientific_topic_names: [] }, { scientific_topic_uris: [] },
-                                  { operation_names: [] }, { operation_uris: [] }, { event_types: [] },
-                                  { keywords: [] }, { fields: [] }, :start, :end, :duration, { sponsors: [] },
-                                  :online, :venue, :city, :county, :country, :postcode, :latitude, :longitude,
-                                  :timezone, :content_provider_id, { collection_ids: [] }, { node_ids: [] },
-                                  { node_names: [] }, { target_audience: [] }, { eligibility: [] }, :visible,
-                                  { host_institutions: [] }, :capacity, :contact, :recognition, :learning_objectives,
-                                  :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency, :language,
-                                  :presence, :origin_uri,
-                                  external_resources_attributes: %i[id url title _destroy],
-                                  external_resources: %i[url title], material_ids: [],
-                                  llm_interaction_attributes: %i[id scrape_or_process model prompt input output needs_processing _destroy],
-                                  locked_fields: [], instructors: [:name, :orcid], contributors: [:name, :orcid])
+    permitted = [:external_id, :title, :subtitle, :url, :organizer, :last_scraped, :scraper_record,
+                  :description, { scientific_topic_names: [] }, { scientific_topic_uris: [] },
+                  { operation_names: [] }, { operation_uris: [] }, { event_types: [] },
+                  { keywords: [] }, { fields: [] }, :start, :end, :duration, { sponsors: [] },
+                  :online, :venue, :city, :county, :country, :postcode, :latitude, :longitude,
+                  :timezone, :content_provider_id, { collection_ids: [] }, { node_ids: [] },
+                  { node_names: [] }, { target_audience: [] }, { eligibility: [] }, :visible,
+                  { host_institutions: [] }, :capacity, :contact, :recognition, :learning_objectives,
+                  :prerequisites, :tech_requirements, :cost_basis, :cost_value, :cost_currency, :language,
+                  :presence, :origin_uri,
+                  external_resources_attributes: %i[id url title _destroy],
+                  external_resources: %i[url title], material_ids: [],
+                  llm_interaction_attributes: %i[id scrape_or_process model prompt input output needs_processing _destroy],
+                  locked_fields: [], instructors: [:name, :orcid], contributors: [:name, :orcid]]
+    permitted << :approval_status if User.current_user&.can_approve_resources?
+
+    params.require(:event).permit(permitted)
   end
 
   def event_report_params
