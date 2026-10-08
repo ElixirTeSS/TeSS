@@ -153,8 +153,10 @@ class Scraper
           ", added[#{source.resources_added}]" +
           ", updated[#{source.resources_updated}]" +
           ", rejected[#{source.resources_rejected}]", 2
-      log "Source URL[#{source.url}] content providers added[#{source.content_providers_added}]" +
-          ", rejected[#{source.content_providers_rejected}]", 2
+      if source.content_provider&.content_provider_type == 'Portal'
+        log "Source URL[#{source.url}] content providers added[#{source.content_providers_added}]" +
+            ", rejected[#{source.content_providers_rejected}]", 2
+      end
     end
   rescue StandardError => e
     output << "\n**Failed:** #{e.message}"

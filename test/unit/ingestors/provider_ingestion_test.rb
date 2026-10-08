@@ -17,12 +17,12 @@ class ProviderIngestionTest < ActiveSupport::TestCase
       @provider,
       { name: 'A different name', url: existing.url }
     ]
-    assert_equal existing, @ingestor.find_provider_by_extracted_urls(candidates)
-    assert_nil @ingestor.find_provider_by_extracted_urls(candidates.first(2))
+    assert_equal existing, @ingestor.find_or_build_provider(candidates)
+    assert_nil @ingestor.find_or_build_provider(candidates.first(2))
 
     stub_request(:get, @provider[:url]).to_return(body: '')
     different_url = @provider.merge(name: existing.title)
-    provider = @ingestor.find_provider_by_extracted_urls([different_url])
+    provider = @ingestor.find_or_build_provider([different_url])
     assert provider.new_record?
     assert_nil ContentProvider.check_exists(provider)
   end
@@ -32,7 +32,7 @@ class ProviderIngestionTest < ActiveSupport::TestCase
     other = { name: 'Other provider', url: 'https://other-provider.example.org' }
     other_request = stub_request(:get, other[:url]).to_return(body: '<meta property="og:description" content="Rich metadata">')
 
-    assert_equal @provider[:url], @ingestor.find_provider_by_extracted_urls([@provider, other]).url
+    assert_equal @provider[:url], @ingestor.find_or_build_provider([@provider, other]).url
     assert_not_requested other_request
   end
 
@@ -64,7 +64,7 @@ class ProviderIngestionTest < ActiveSupport::TestCase
     assert_equal ['training', 'FAIR data'], provider.keywords
     assert_nil provider.image_url
     assert_not_requested homepage
-    assert_same provider, @ingestor.find_provider_by_extracted_urls([@provider])
+    assert_same provider, @ingestor.find_or_build_provider([@provider])
     assert_requested :get, registry_url, times: 1
   end
 
@@ -76,7 +76,7 @@ class ProviderIngestionTest < ActiveSupport::TestCase
     stub_request(:get, empty_url).to_return(body: '')
     stub_request(:get, @provider[:url]).to_return(body: '<meta property="og:description" content="Homepage description">')
 
-    provider = @ingestor.find_provider_by_extracted_urls([
+    provider = @ingestor.find_or_build_provider([
       @provider.merge(see_also: [@provider[:url], 'not a URL', failed_url, empty_url])
     ])
     assert_equal 'Homepage description', provider.description
@@ -86,7 +86,7 @@ class ProviderIngestionTest < ActiveSupport::TestCase
 
     @ingestor = Ingestors::BioschemasIngestor.new
     stub_request(:get, @provider[:url]).to_return(status: 404)
-    provider = @ingestor.find_provider_by_extracted_urls([@provider])
+    provider = @ingestor.find_or_build_provider([@provider])
     assert_nil provider.description
     assert_equal 1, @ingestor.messages.grep(/Couldn't open URL/).size
     assert_empty @ingestor.messages.grep(/Couldn't read content provider metadata/)
@@ -101,16 +101,64 @@ class ProviderIngestionTest < ActiveSupport::TestCase
         assert_equal :keywords, field
         ['training']
       }) do
-        provider = @ingestor.find_provider_by_extracted_urls([@provider])
+        provider = @ingestor.find_or_build_provider([@provider])
         assert_equal ['training'], provider.keywords
         refute provider.respond_to?(:target_audience)
       end
     end
   end
 
+  test 'metadata omits blank descriptions and missing or invalid images without losing keywords' do
+    [nil, '', '/relative-logo.png', 'javascript:alert(1)', 'not a URL'].each do |image|
+      image_tag = %(<meta property="og:image" content="#{image}">) unless image.nil?
+      stub_request(:get, @provider[:url]).to_return(
+        body: %(<meta property="og:description" content=" ">#{image_tag}<meta name="keywords" content="training, FAIR data">)
+      )
+
+      metadata = @ingestor.send(:scrape_og_metadata, @provider[:url])
+
+      assert_equal({ keywords: ['training', 'FAIR data'] }, metadata)
+    end
+
+    stub_request(:get, @provider[:url]).to_return(body: '')
+    assert_empty @ingestor.send(:scrape_og_metadata, @provider[:url])
+  end
+
+  test 'metadata retains a valid absolute image URL and description' do
+    stub_request(:get, @provider[:url]).to_return(
+      body: '<meta property="og:description" content="Training"><meta property="og:image" content="https://images.example.org/logo.png">'
+    )
+
+    assert_equal({ description: 'Training', image_url: 'https://images.example.org/logo.png' },
+                 @ingestor.send(:scrape_og_metadata, @provider[:url]))
+  end
+
+  test 'metadata read failures are reported and preserve homepage fallback' do
+    failed_url = 'https://registry.example.org/failed'
+    stub_request(:get, @provider[:url]).to_return(body: '<meta property="og:description" content="Homepage description">')
+    errors = [
+      URI::InvalidURIError.new('invalid URI'),
+      IOError.new('read failed'),
+      SocketError.new('lookup failed'),
+      Errno::ECONNRESET.new,
+      Net::ReadTimeout.new,
+      OpenSSL::SSL::SSLError.new('TLS failed'),
+      OpenURI::HTTPRedirect.new('redirect failed', StringIO.new, 'https://redirect.example.org')
+    ]
+
+    errors.each do |error|
+      original_open_url = @ingestor.method(:open_url)
+      @ingestor.stub(:open_url, ->(url) { url == failed_url ? raise(error) : original_open_url.call(url) }) do
+        metadata = @ingestor.send(:fetch_provider_metadata, [failed_url, @provider[:url]])
+        assert_equal({ description: 'Homepage description' }, metadata)
+      end
+      assert_includes @ingestor.messages.last, "Couldn't read content provider metadata from #{failed_url}: #{error.class}:"
+    end
+  end
+
   test 'providers are only listed and written when referenced after filtering' do
     stub_request(:get, @provider[:url]).to_return(body: '')
-    provider = @ingestor.find_provider_by_extracted_urls([@provider])
+    provider = @ingestor.find_or_build_provider([@provider])
     assert_empty @ingestor.providers
     add_material(provider)
     existing = content_providers(:organisation_provider)
@@ -142,7 +190,7 @@ class ProviderIngestionTest < ActiveSupport::TestCase
 
   test 'a referenced provider is created even when its material fails validation' do
     stub_request(:get, @provider[:url]).to_return(body: '')
-    provider = @ingestor.find_provider_by_extracted_urls([@provider])
+    provider = @ingestor.find_or_build_provider([@provider])
     add_material(provider, description: nil)
 
     assert_difference('ContentProvider.count') do

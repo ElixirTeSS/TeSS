@@ -22,6 +22,7 @@ module Ingestors
 
     def read(source_url)
       @bioschemas_manager.ingesting_content_provider = ingesting_content_provider
+      # TODO: derive provider_metadata_host from source.url when ingestors always have a Source in a follow-up PR.
       @bioschemas_manager.provider_metadata_host = URI.parse(source_url).host
       client = OAI::Client.new source_url, headers: { 'From' => config[:mail], 'User-Agent' => config[:user_agent] }
 

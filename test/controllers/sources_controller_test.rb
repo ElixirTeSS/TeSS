@@ -76,8 +76,9 @@ class SourcesControllerTest < ActionController::TestCase
     assert_select 'strong', { count: 1, text: 'No results found' }
   end
 
-  test 'registered should see content provider counts for the last run' do
+  test 'registered should see content provider counts for the last portal run' do
     sign_in users(:regular_user)
+    @source.content_provider.update!(content_provider_type: 'Portal')
     @source.update!(finished_at: Time.current, content_providers_added: 2, content_providers_rejected: 1)
 
     get :show, params: { id: @source }
@@ -86,6 +87,18 @@ class SourcesControllerTest < ActionController::TestCase
     assert_select 'strong', { count: 1, text: 'Content Providers:' }
     assert_select 'li', text: /Added: 2/
     assert_select 'li', text: /Rejected: 1/
+  end
+
+  test 'registered should not see content provider counts for a non-portal run' do
+    sign_in users(:regular_user)
+    @source.content_provider.update!(content_provider_type: 'Organisation')
+    @source.update!(finished_at: Time.current)
+
+    get :show, params: { id: @source }
+
+    assert_response :success
+    assert_select 'strong', { count: 1, text: 'Resources:' }
+    assert_select 'strong', { count: 0, text: 'Content Providers:' }
   end
 
   # NEW Tests
@@ -710,7 +723,7 @@ class SourcesControllerTest < ActionController::TestCase
       assert_select 'h4', /Imaged provider/
       assert_select 'a[href=?]', providers.first[:url]
       assert_select 'form[action=?]', preview_content_providers_path, count: 2
-      assert_select 'img.card-avatar[src=?]', 'http://example.com/logo.png'
+      assert_select 'img.provider-logo[src=?]', 'http://example.com/logo.png'
     end
     assert_select '#materials' do
       assert_select 'input[name="material[content_provider][url]"][value=?]', providers.first[:url]

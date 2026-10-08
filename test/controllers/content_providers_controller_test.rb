@@ -73,6 +73,8 @@ class ContentProvidersControllerTest < ActionController::TestCase
     sign_in users(:regular_user)
     get :new
     assert_response :success
+    assert_select '.content_provider_content_provider_type .help-block',
+                  text: I18n.t('content_providers.hints.content_provider_type')
   end
 
   test 'should get new page for logged in users only' do
@@ -106,13 +108,15 @@ class ContentProvidersControllerTest < ActionController::TestCase
     sign_in @content_provider.user
     get :edit, params: { id: @content_provider }
     assert_response :success
+    assert_select '.content_provider_content_provider_type .help-block',
+                  text: I18n.t('content_providers.hints.content_provider_type')
     assert_select 'input#content_provider_locked_fields_title.field-lock[data-autolock="true"]', count: 1
   end
 
   test 'content provider edit supports providers alias for automatic field locking' do
     sign_in @content_provider.user
 
-    with_settings(automatic_field_locking: %w[providers]) do
+    with_settings(automatic_field_locking: %w[content_providers]) do
       get :edit, params: { id: @content_provider }
       assert_response :success
       assert_select 'input#content_provider_locked_fields_title.field-lock[data-autolock="true"]', count: 1

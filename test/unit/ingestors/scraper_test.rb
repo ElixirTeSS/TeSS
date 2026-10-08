@@ -24,7 +24,7 @@ class ScraperTest < ActiveSupport::TestCase
       provider: { '@type' => 'Organization', name: 'Imported provider', url: 'https://provider.example.org' }
     }.to_json)
     stub_request(:get, 'https://provider.example.org').to_return(body: '')
-    scraper = Scraper.new({ sources: [] })
+    scraper = Scraper.new({ sources: [], loglevel: 2 })
 
     assert_difference('ContentProvider.count') do
       assert_difference('Material.count') { scraper.scrape(source, user) }
@@ -35,6 +35,7 @@ class ScraperTest < ActiveSupport::TestCase
     assert_equal 1, source.records_written
     assert_equal 1, source.resources_added
     refute_includes source.log, '**Failed:**'
+    assert_includes scraper.log_file.string, 'content providers added[1], rejected[0]'
 
     assert_no_difference('ContentProvider.count') do
       assert_no_difference('Material.count') { scraper.scrape(source, user) }
@@ -44,6 +45,31 @@ class ScraperTest < ActiveSupport::TestCase
     assert_equal 0, source.resources_added
     assert_equal 1, source.resources_updated
     assert_equal 1, source.records_written
+    assert_includes scraper.log_file.string, 'content providers added[0], rejected[0]'
+  end
+
+  test 'non-portal runs omit provider logging and still log resource counts' do
+    user = users(:scraper_user)
+    source = Source.create!(url: 'https://source.example.org',
+                            method: 'bioschemas', enabled: true,
+                            content_provider: content_providers(:organisation_provider),
+                            user:, approval_status: 'approved')
+    stub_request(:get, source.url).to_return(body: {
+      '@context' => 'http://schema.org', '@type' => 'LearningResource',
+      name: 'Imported material', description: 'Training material',
+      url: 'https://material.example.org',
+      provider: { '@type' => 'Organization', name: 'Ignored provider', url: 'https://provider.example.org' }
+    }.to_json)
+    scraper = Scraper.new({ sources: [], loglevel: 2 })
+
+    assert_no_difference('ContentProvider.count') do
+      assert_difference('Material.count') { scraper.scrape(source, user) }
+    end
+    assert_includes scraper.log_file.string, 'resources read[1], added[1], updated[0], rejected[0]'
+    refute_includes scraper.log_file.string, 'content providers added['
+    refute_includes source.reload.log, '**Failed:**'
+    assert_equal 0, source.content_providers_added
+    assert_equal 0, source.content_providers_rejected
   end
 
   def run

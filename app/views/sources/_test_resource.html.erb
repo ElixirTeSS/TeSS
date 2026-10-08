@@ -2,7 +2,7 @@
 
 <div class="list-card bulk-import-row<%= ' new' unless existing -%>">
   <% if resource.is_a?(ContentProvider) %>
-    <%= image_tag(display_image_url_for(resource), class: 'card-avatar', alt: resource.title) %>
+    <%= image_tag(display_image_url_for(resource), class: 'provider-logo', alt: resource.title) %>
   <% end %>
   <h4>
     <% if existing %>

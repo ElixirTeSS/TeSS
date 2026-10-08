@@ -4,13 +4,8 @@ module Ingestors
   module ProviderIngestion
     include AutoParsing
 
-    OG_METADATA_MAP = {
-      'og:description' => :description,
-      'og:image' => :image_url
-    }.freeze
-
-    def find_provider_by_extracted_urls(extracted_providers)
-      candidates = (extracted_providers || []).reject do |candidate|
+    def find_or_build_provider(candidates)
+      candidates = (candidates || []).reject do |candidate|
         candidate[:url].blank? || known_node_name?(candidate[:name])
       end
 
@@ -80,11 +75,7 @@ module Ingestors
         urls = registry_urls + other_urls
       end
       urls.each do |url|
-        metadata = if @provider_metadata_cache.key?(url)
-                     @provider_metadata_cache[url]
-                   else
-                     @provider_metadata_cache[url] = scrape_og_metadata(url)
-                   end
+        metadata = scrape_og_metadata(url)
         return metadata if metadata.present?
       end
 
@@ -96,22 +87,19 @@ module Ingestors
       return {} if source.nil?
 
       doc = Nokogiri::HTML(source.read)
-      metadata = {}
-
-      OG_METADATA_MAP.each do |property, attribute|
-        content = doc.at("meta[property='#{property}']")&.[]('content')
-        metadata[attribute] = content if content.present?
-      end
-
-      metadata[:image_url] = nil unless valid_http_url?(metadata[:image_url])
-      metadata.compact!
+      description = doc.at("meta[property='og:description']")&.[]('content')
+      image = doc.at("meta[property='og:image']")&.[]('content')
+      metadata = {
+        description: description.presence,
+        image_url: (image if valid_http_url?(image))
+      }.compact
 
       keywords = doc.at("meta[name='keywords']")&.[]('content')
       metadata[:keywords] = keywords.split(',').map(&:strip).reject(&:blank?).first(20) if keywords.present?
 
       metadata
     rescue URI::InvalidURIError, IOError, SocketError, SystemCallError, Timeout::Error,
-           OpenSSL::SSL::SSLError, OpenURI::HTTPError, OpenURI::HTTPRedirect, Nokogiri::SyntaxError => e
+           OpenSSL::SSL::SSLError, OpenURI::HTTPError => e
       @messages << "Couldn't read content provider metadata from #{url}: #{e.class}: #{e.message}"
       {}
     end

@@ -186,8 +186,7 @@ module TeSS
       return false if setting.blank?
       return true if setting == true
 
-      target = resource.is_a?(ContentProvider) ? 'providers' : resource.model_name.route_key
-      Array(setting).include?(target)
+      Array(setting).include?(resource.model_name.route_key)
     end
   end
 

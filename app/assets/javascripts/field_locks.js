@@ -2,7 +2,7 @@ const FieldLocks = {
     init() {
         $(document).on('input change', '.form-group :input', function () {
             const input = $(this);
-            if (input.is('.field-lock, .field-lock-ignore, .destroy-attribute')) return;
+            if (input.is('.field-lock, .auto-lock-ignore, .destroy-attribute')) return;
 
             const group = input.closest('.form-group');
             const lockGroup = group.find('input[type=checkbox].field-lock').length

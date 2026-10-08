@@ -18,7 +18,7 @@
   </div>
 
   <%= f.input :content_provider_type, label: 'Type', collection: ContentProvider::PROVIDER_TYPE, include_blank: false,
-              field_lock: true %>
+              hint: t('content_providers.hints.content_provider_type'), field_lock: true %>
 
   <% if current_user.is_admin? %>
     <%= f.autocompleter :user, url: users_path, transform_function: 'users', template: 'autocompleter/content_provider_owner',

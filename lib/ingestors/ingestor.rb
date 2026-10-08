@@ -19,11 +19,11 @@ module Ingestors
       @events = []
       @materials = []
       @provider_cache = {}
-      @provider_metadata_cache = {}
     end
 
     # accessor methods
     attr_reader :messages, :stats, :events, :materials
+    # TODO: derive provider_metadata_host from source.url when ingestors always have a Source in a follow-up PR.
     attr_accessor :token, :ingesting_content_provider, :provider_metadata_host
 
     def self.config

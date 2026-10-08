@@ -165,7 +165,7 @@ class MaterialsControllerTest < ActionController::TestCase
   test 'material edit can disable automatic field locking for materials' do
     sign_in users(:regular_user)
 
-    with_settings(automatic_field_locking: %w[events providers]) do
+    with_settings(automatic_field_locking: %w[events content_providers]) do
       get :edit, params: { id: @material }
       assert_response :success
       assert_select 'input#material_locked_fields_title.field-lock[data-autolock="false"]', count: 1

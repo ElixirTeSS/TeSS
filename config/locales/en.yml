@@ -831,6 +831,10 @@ en:
       events: 'Events'
       materials: 'Materials'
       any: 'Any'
+  content_providers:
+    hints:
+      content_provider_type: >-
+        Only Portal providers attempt to ingest providers from external sources, other providers are assigned directly as provider to ingested events and materials.
   sources:
     info:
       approval_notice: This source will need to be approved by an administrator before being ingested.

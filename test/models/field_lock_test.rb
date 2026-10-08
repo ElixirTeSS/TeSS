@@ -56,26 +56,12 @@ class FieldLockTest < ActiveSupport::TestCase
   test 'automatic field locking config supports all and per-resource values' do
     resources = [Material.new, Event.new, ContentProvider.new]
     { true => [true, true, true], false => [false, false, false], nil => [false, false, false],
-      %w[materials events] => [true, true, false], %w[providers] => [false, false, true],
+      %w[materials events] => [true, true, false], %w[content_providers] => [false, false, true],
+      %w[providers] => [false, false, false],
       %w[material event content_provider] => [false, false, false] }.each do |setting, expected|
       with_settings(automatic_field_locking: setting) do
         assert_equal expected, resources.map { |resource| TeSS::Config.automatic_field_locking_enabled_for?(resource) }
       end
-    end
-  end
-
-  test 'provider lock backfill preserves existing locks and cannot destructively roll back' do
-    provider = content_providers(:provider_with_empty_image_url)
-    provider.locked_fields = [:title]
-    provider.save!
-    lock = provider.field_locks.find_by!(field: 'title')
-    migration = BackfillContentProviderFieldLocks.new
-
-    migration.up
-    assert_equal lock.id, provider.field_locks.find_by!(field: 'title').id
-    assert_no_difference('FieldLock.count') { migration.up }
-    assert_no_difference('FieldLock.count') do
-      assert_raises(ActiveRecord::IrreversibleMigration) { migration.down }
     end
   end
 

@@ -18,6 +18,7 @@ module Ingestors
 
     def read(source_url)
       @verbose = false
+      # TODO: derive provider_metadata_host from source.url when ingestors always have a Source in a follow-up PR.
       self.provider_metadata_host = URI.parse(source_url).host
       sources = parse_sitemap(source_url)
 
@@ -58,6 +59,7 @@ module Ingestors
     end
 
     def read_content(content, url: nil)
+      # TODO: derive provider_metadata_host from source.url when ingestors always have a Source in a follow-up PR.
       self.provider_metadata_host ||= URI.parse(url).host if url.present?
       output = {
         resources: {
@@ -169,10 +171,11 @@ module Ingestors
       score
     end
 
+    # This method is reused by the oai_pmh_ingestor
     def convert_params(params)
       params[:description] = convert_description(params[:description]) if params.key?(:description)
       if ingesting_content_provider&.content_provider_type == 'Portal'
-        provider = find_provider_by_extracted_urls(params[:providers])
+        provider = find_or_build_provider(params[:providers])
         params[:content_provider] = provider if provider
       end
       params.delete(:providers)
