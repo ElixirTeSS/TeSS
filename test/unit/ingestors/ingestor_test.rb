@@ -98,13 +98,14 @@ class IngestorTest < ActiveSupport::TestCase
     refute event.activities.find_by!(key: 'event.create').parameters.key?(:source)
   end
 
-  test 'legacy write accepts an explicit provider and a nil source without saving a dummy Source' do
+  test 'write uses the assigned source provider and never saves an unsaved Source' do
     ingestor = Ingestors::Ingestor.new
     provider = content_providers(:organisation_provider)
+    ingestor.source = Source.new(method: 'bioschemas', content_provider: provider)
     ingestor.add_material(title: 'Legacy material', description: 'Training', url: 'https://material.example.org/legacy')
 
     assert_no_difference('Source.count') do
-      assert_difference('Material.count') { ingestor.write(users(:scraper_user), provider, source: nil) }
+      assert_difference('Material.count') { ingestor.write(users(:scraper_user)) }
     end
     assert ingestor.source.new_record?
     material = ingestor.materials.first
@@ -144,6 +145,7 @@ class IngestorTest < ActiveSupport::TestCase
                              content_provider: provider, user: users(:admin))
 
     ingestor = Ingestors::Ingestor.new
+    ingestor.source = @source
 
     # Fake an event that was read ... no language set
     ingestor.instance_variable_set(:@events,
@@ -152,7 +154,7 @@ class IngestorTest < ActiveSupport::TestCase
                                                    start: '2021-01-31 13:00:00',
                                                    end: '2021-01-31 14:00:00')])
     assert_difference('provider.events.count', 1) do
-      ingestor.write(user, provider, source: @source)
+      ingestor.write(user)
     end
     event = Event.find_by(title: 'Some course')
     assert_equal(event.language, 'fr')
@@ -169,6 +171,7 @@ class IngestorTest < ActiveSupport::TestCase
                              content_provider: provider, user: users(:admin))
 
     ingestor = Ingestors::Ingestor.new
+    ingestor.source = @source
 
     # Fake an event that was read ... with language set
     ingestor.instance_variable_set(:@events,
@@ -178,7 +181,7 @@ class IngestorTest < ActiveSupport::TestCase
                                                    end: '2021-01-31 14:00:00',
                                                    language: 'de')])
     assert_difference('provider.events.count', 1) do
-      ingestor.write(user, provider, source: @source)
+      ingestor.write(user)
     end
     event = Event.find_by(title: 'Some german course')
     assert_equal(event.language, 'de')
@@ -194,6 +197,7 @@ class IngestorTest < ActiveSupport::TestCase
                              content_provider: provider, user: users(:admin))
 
     ingestor = Ingestors::Ingestor.new
+    ingestor.source = @source
 
     # Fake an event that was read ... with language set
     ingestor.instance_variable_set(:@events,
@@ -203,7 +207,7 @@ class IngestorTest < ActiveSupport::TestCase
                                                    end: '2021-01-31 14:00:00',
                                                    language: 'de')])
     assert_difference('provider.events.count', 1) do
-      ingestor.write(user, provider, source: @source)
+      ingestor.write(user)
     end
     event = Event.find_by(title: 'Some other course')
     assert_equal(event.language, 'de')
@@ -222,6 +226,7 @@ class IngestorTest < ActiveSupport::TestCase
                               enabled: true, approval_status: 'approved',
                               content_provider: provider, user: users(:admin))
       ingestor = Ingestors::Ingestor.new
+      ingestor.source = @source
       new_event = OpenStruct.new(url: 'https://some-course.net',
                                   title: 'Yet another event',
                                   start: '2021-01-31 13:00:00',
@@ -235,7 +240,7 @@ class IngestorTest < ActiveSupport::TestCase
         ingestor.add_material(new_material)
         assert_difference('provider.events.count', 1) do
           assert_difference('provider.materials.count', 1) do
-            ingestor.write(user, provider, source: @source)
+            ingestor.write(user)
           end
         end
       end
@@ -264,6 +269,7 @@ class IngestorTest < ActiveSupport::TestCase
                               enabled: true, approval_status: 'approved',
                               content_provider: provider, user: users(:admin))
       ingestor = Ingestors::Ingestor.new
+      ingestor.source = @source
       new_event = OpenStruct.new(url: 'https://some-course.net',
                                   title: 'Yet another event',
                                   start: '2021-01-31 13:00:00',
@@ -281,7 +287,7 @@ class IngestorTest < ActiveSupport::TestCase
         ingestor.add_material(new_material)
         assert_difference('provider.events.count', 1) do
           assert_difference('provider.materials.count', 1) do
-            ingestor.write(user, provider, source: @source)
+            ingestor.write(user)
           end
         end
       end
@@ -309,6 +315,7 @@ class IngestorTest < ActiveSupport::TestCase
                              content_provider: provider, user: users(:admin))
 
     ingestor = Ingestors::Ingestor.new
+    ingestor.source = @source
 
     # Fake an event that was read ... no language set
     ingestor.instance_variable_set(:@events,
@@ -317,7 +324,7 @@ class IngestorTest < ActiveSupport::TestCase
                                                    start: '2021-01-31 13:00:00',
                                                    end: '2021-01-31 14:00:00')])
     assert_difference('provider.events.count', 1) do
-      ingestor.write(user, provider, source: @source)
+      ingestor.write(user)
     end
     event = Event.find_by(title: 'Yet another course')
     assert_nil(event.language)
@@ -333,7 +340,8 @@ class IngestorTest < ActiveSupport::TestCase
                                    [events(:passing_import_filters_event), events(:passing_contains_import_filters_event), events(:failing_import_filters_event)])
     ingestor.instance_variable_set(:@materials,
                                    [materials(:passing_import_filters_material), materials(:passing_contains_import_filters_material), materials(:failing_import_filters_material)])
-    ingestor.filter(source)
+    ingestor.source = source
+    ingestor.filter
     ingestor
   end
 
@@ -402,7 +410,8 @@ class IngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::Ingestor.new
     ingestor.instance_variable_set(:@materials,
                                    [materials(:passing_import_filters_material), materials(:failing_import_filters_material)])
-    ingestor.filter(source)
+    ingestor.source = source
+    ingestor.filter
     
     assert_includes(ingestor.instance_variable_get(:@materials), materials(:passing_import_filters_material))
     refute_includes(ingestor.instance_variable_get(:@materials), materials(:failing_import_filters_material))
@@ -416,7 +425,8 @@ class IngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::Ingestor.new
     ingestor.instance_variable_set(:@materials,
                                    [materials(:passing_import_filters_material), materials(:failing_import_filters_material)])
-    ingestor.filter(source)
+    ingestor.source = source
+    ingestor.filter
     
     refute_includes(ingestor.instance_variable_get(:@materials), materials(:passing_import_filters_material))
     assert_includes(ingestor.instance_variable_get(:@materials), materials(:failing_import_filters_material))
@@ -507,6 +517,7 @@ class IngestorTest < ActiveSupport::TestCase
                              space: space, content_provider: provider, user: users(:admin))
 
     ingestor = Ingestors::Ingestor.new
+    ingestor.source = @source
 
     ingestor.instance_variable_set(:@events,
                                    [OpenStruct.new(url: 'https://some-course.ca',
@@ -514,7 +525,7 @@ class IngestorTest < ActiveSupport::TestCase
                                                    start: '2021-01-31 13:00:00',
                                                    end: '2021-01-31 14:00:00')])
     assert_difference('provider.events.count', 1) do
-      ingestor.write(user, provider, source: @source)
+      ingestor.write(user)
     end
     event = Event.find_by(title: 'Some course')
     assert_equal space, event.space
@@ -570,24 +581,26 @@ class IngestorTest < ActiveSupport::TestCase
     event = OpenStruct.new(url: 'http://example.com/cool-course-summer', title: 'A different title')
 
     ingestor = Ingestors::Ingestor.new
+    ingestor.source = Source.new(method: 'bioschemas', content_provider: provider)
     ingestor.instance_variable_set(:@events, [event])
     assert_no_difference('provider.events.count') do
       assert_no_difference('PublicActivity::Activity.where(key: "event.create").count') do
         assert_difference('PublicActivity::Activity.where(key: "event.update").count', 1) do
           assert_difference('PublicActivity::Activity.where(key: "event.update_parameter").count', 1) do # Title is changed
-            ingestor.write(user, provider)
+            ingestor.write(user)
           end
         end
       end
     end
 
     ingestor = Ingestors::Ingestor.new
+    ingestor.source = Source.new(method: 'bioschemas', content_provider: provider)
     ingestor.instance_variable_set(:@events, [event])
     assert_no_difference('provider.events.count') do
       assert_no_difference('PublicActivity::Activity.where(key: "event.create").count') do
         assert_no_difference('PublicActivity::Activity.where(key: "event.update").count') do
           assert_no_difference('PublicActivity::Activity.where(key: "event.update_parameter").count') do
-            ingestor.write(user, provider) # Nothing changed so don't log
+            ingestor.write(user) # Nothing changed so don't log
           end
         end
       end

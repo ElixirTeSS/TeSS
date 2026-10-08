@@ -21,6 +21,8 @@ class WurIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::WurIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = 'Genetic Diversity - key to transitions in agriculture and forestry'
     new_url = 'https://www.wur.nl/en/activity/genetic-diversity-key-to-transitions-in-agriculture-and-forestry-1.htm'
@@ -31,7 +33,7 @@ class WurIngestorTest < ActiveSupport::TestCase
       freeze_time(2016) do
         VCR.use_cassette("ingestors/wur") do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

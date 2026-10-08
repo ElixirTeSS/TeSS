@@ -21,6 +21,8 @@ class OdisseiIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::OdisseiIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = 'ODISSEI Conference 2024'
     new_url = 'https://odissei-data.nl/event/odissei-conference-2024/'
@@ -31,7 +33,7 @@ class OdisseiIngestorTest < ActiveSupport::TestCase
       freeze_time(2019) do
         VCR.use_cassette('ingestors/odissei') do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

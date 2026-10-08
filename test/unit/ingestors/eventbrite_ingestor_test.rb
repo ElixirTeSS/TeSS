@@ -26,7 +26,7 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     assert_difference 'Event.count', 13 do
       freeze_time(2019) do
         ingestor.read(source.url)
-        ingestor.write(@user, @content_provider)
+        ingestor.write(@user)
       end
     end
 

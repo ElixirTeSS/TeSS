@@ -24,13 +24,14 @@ module Ingestors
 
     # accessor methods
     attr_reader :messages, :stats, :events, :materials, :source
+    # `token`/`@token` are kept for backwards compatibility with ingestors
+    # maintained outside this repository that read or override them directly.
     attr_accessor :token
 
     def source=(value)
       raise ArgumentError, 'Ingestor source must be a Source' unless value.is_a?(Source)
 
       @source = value
-      # Keep legacy ingestors that read @token directly compatible.
       @token = value.token || ''
     end
 
@@ -51,7 +52,7 @@ module Ingestors
       raise NotImplementedError
     end
 
-    def filter(source = self.source)
+    def filter
       material_count = @materials.length
       event_count = @events.length
 
@@ -62,9 +63,8 @@ module Ingestors
       @messages << "#{@events.length} of #{event_count} events passed the filters" if @events.length != event_count
     end
 
-    def write(user, provider = nil, source: self.source)
-      self.source = source || Source.new unless source.equal?(self.source)
-      provider ||= self.source.content_provider
+    def write(user)
+      provider = source.content_provider
       raise ArgumentError, 'A content provider is required to write ingested resources' unless provider
 
       filter

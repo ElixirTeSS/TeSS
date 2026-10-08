@@ -21,6 +21,8 @@ class HanIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::HanIngestor.new
 
+    ingestor.source = source
+
     # check events don't exist
     new_title = 'Synthetiseren en Karakteriseren van Moleculen'
     new_url = 'https://www.han.nl/opleidingen/module/synthetiseren-karakteriseren-moleculen/'
@@ -31,7 +33,7 @@ class HanIngestorTest < ActiveSupport::TestCase
       freeze_time(2019) do
         VCR.use_cassette('ingestors/han') do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

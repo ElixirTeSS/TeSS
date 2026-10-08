@@ -21,12 +21,14 @@ class CarpentriesIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::CarpentriesIngestor.new
 
+    ingestor.source = source
+
     # run task
     assert_difference 'Event.count', 2 do
       freeze_time(2024) do
         VCR.use_cassette('ingestors/carpentries_swc') do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

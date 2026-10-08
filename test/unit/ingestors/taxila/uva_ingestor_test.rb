@@ -21,6 +21,8 @@ class UvaIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::UvaIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = 'The Societal Impact of AI & Data Science'
     new_url = 'https://uba.uva.nl/en/shared/subsites/data-science-centre/en/events/2023/03/the-societal-impact-of-ai-and-data-science.html?origin=ht%2ByU3HqRAGnIsBBlkOh%2Fw'
@@ -31,7 +33,7 @@ class UvaIngestorTest < ActiveSupport::TestCase
       freeze_time(2016) do
         VCR.use_cassette("ingestors/uva") do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

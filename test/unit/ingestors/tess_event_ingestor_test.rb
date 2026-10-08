@@ -21,6 +21,8 @@ class TessEventIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::TessEventIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = 'WORKSHOP: Introduction to Metabarcoding using Qiime2'
     new_url = 'https://www.biocommons.org.au/events/metabarcoding-qiime2'
@@ -30,7 +32,7 @@ class TessEventIngestorTest < ActiveSupport::TestCase
     assert_difference 'Event.count', 2 do
       freeze_time(2019) do
         ingestor.read(source.url)
-        ingestor.write(@user, @content_provider)
+        ingestor.write(@user)
       end
     end
 

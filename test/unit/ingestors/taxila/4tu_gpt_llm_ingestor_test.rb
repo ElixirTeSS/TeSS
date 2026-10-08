@@ -22,6 +22,8 @@ class FourtuGptLlmIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::FourtuLlmIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = '4TU-meeting National Technology Strategy'
     refute Event.where(title: new_title).any?
@@ -45,7 +47,7 @@ class FourtuGptLlmIngestorTest < ActiveSupport::TestCase
           OpenAI::Client.stub(:new, mock_client) do
             with_settings({ llm_scraper: { model: 'chatgpt', model_version: 'GPT-3.5' } }) do
               ingestor.read(source.url)
-              ingestor.write(@user, @content_provider)
+              ingestor.write(@user)
             end
           end
         end

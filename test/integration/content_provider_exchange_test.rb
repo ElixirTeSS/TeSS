@@ -66,7 +66,7 @@ class ContentProviderExchangeTest < ActionDispatch::IntegrationTest
         assert_equal index.zero?, candidate.new_record?
 
         assert_difference('ContentProvider.count', index.zero? ? 1 : 0) do
-          assert_difference("#{klass.name}.count") { ingestor.write(user, portal) }
+          assert_difference("#{klass.name}.count") { ingestor.write(user) }
         end
         imported = klass.find_by!(url: resource_url)
         assert_equal candidate, imported.content_provider

@@ -4,7 +4,8 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
   setup do
     @ingestor = Ingestors::BioschemasIngestor.new
     @user = users(:regular_user)
-    @content_provider = content_providers(:portal_provider)
+    @content_provider = content_providers(:organisation_provider)
+    @ingestor.source = Source.new(method: 'bioschemas', content_provider: @content_provider)
     mock_timezone # System time zone should not affect test result
   end
 
@@ -19,7 +20,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_equal 0, @ingestor.materials.count
 
     assert_difference('Event.count', 23) do
-      @ingestor.write(@user, @content_provider)
+      @ingestor.write(@user)
     end
 
     sample = @ingestor.events.detect { |e| e.title == 'Neural Networks and Deep Learning' }
@@ -54,7 +55,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_includes messages, "\n - LearningResources: 3"
 
     assert_difference('Material.count', 3) do
-      @ingestor.write(@user, @content_provider)
+      @ingestor.write(@user)
     end
 
     assert_equal 3, @ingestor.stats[:materials][:added]
@@ -105,7 +106,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_includes messages, "Bioschemas not found in:\n\n - http://carpentries-incubator.github.io/python-testing/\n - https://hsf-training.github.io/hsf-training-scikit-hep-webpage/"
 
     assert_difference('Material.count', 1) do
-      @ingestor.write(@user, @content_provider)
+      @ingestor.write(@user)
     end
 
     assert_equal 1, @ingestor.stats[:materials][:added]
@@ -126,7 +127,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_equal 0, @ingestor.materials.count
 
     assert_difference('Event.count', 1) do
-      @ingestor.write(@user, @content_provider)
+      @ingestor.write(@user)
     end
 
     assert_equal 1, @ingestor.stats[:events][:added]
@@ -153,8 +154,9 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     added_event = @ingestor.events.detect { |e| e.title == 'Summer Course on Learning Stuff 2' }
     assert added_event
 
+    @ingestor.source = Source.new(method: 'bioschemas', content_provider: provider)
     assert_no_difference('Event.count') do
-      @ingestor.write(@user, provider)
+      @ingestor.write(@user)
     end
 
     assert_equal 0, @ingestor.stats[:events][:added]
@@ -185,7 +187,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
                                     }) do
       @ingestor.read('https://website.org/courseinstances.json')
       assert_difference('Event.count', 2) do
-        @ingestor.write(@user, @content_provider)
+        @ingestor.write(@user)
       end
     end
 
@@ -200,7 +202,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     @ingestor.read('https://website.org/ext_res.json')
     assert_difference('Material.count', 1) do
       assert_difference('ExternalResource.count', 2) do
-        @ingestor.write(@user, @content_provider)
+        @ingestor.write(@user)
       end
     end
 
@@ -214,10 +216,11 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     refute other.is_tool?
 
     new_ingestor = Ingestors::BioschemasIngestor.new
+    new_ingestor.source = Source.new(method: 'bioschemas', content_provider: @content_provider)
     new_ingestor.read('https://website.org/ext_res.json')
     assert_no_difference('Material.count') do
       assert_no_difference('ExternalResource.count') do
-        new_ingestor.write(@user, @content_provider)
+        new_ingestor.write(@user)
       end
     end
 

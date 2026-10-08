@@ -166,10 +166,10 @@ class ProviderIngestionTest < ActiveSupport::TestCase
     @ingestor.add_event(title: 'Existing provider event', url: 'https://events.example.org/one', content_provider: existing)
     assert_equal [existing, provider], @ingestor.providers
 
-    source = Source.new(source_filters: [SourceFilter.new(mode: 'block', property: 'title', value: 'Imported material')])
-    @ingestor.filter(source)
+    @ingestor.source.source_filters = [SourceFilter.new(mode: 'block', property: 'title', value: 'Imported material')]
+    @ingestor.filter
     assert_equal [existing], @ingestor.providers
-    assert_no_difference('ContentProvider.count') { @ingestor.write(@user, @portal) }
+    assert_no_difference('ContentProvider.count') { @ingestor.write(@user) }
   end
 
   test 'provider rejection uses the portal and does not inflate resource statistics' do
@@ -177,7 +177,7 @@ class ProviderIngestionTest < ActiveSupport::TestCase
     add_material(provider)
 
     assert_no_difference('ContentProvider.count') do
-      assert_difference('Material.count') { @ingestor.write(@user, @portal) }
+      assert_difference('Material.count') { @ingestor.write(@user) }
     end
     assert_equal @portal, @ingestor.materials.first.content_provider
     assert_equal({ added: 0, rejected: 1 }, @ingestor.stats[:content_providers])
@@ -195,7 +195,7 @@ class ProviderIngestionTest < ActiveSupport::TestCase
     add_material(provider, description: nil)
 
     assert_difference('ContentProvider.count') do
-      assert_no_difference('Material.count') { @ingestor.write(@user, @portal) }
+      assert_no_difference('Material.count') { @ingestor.write(@user) }
     end
     assert_equal 1, @ingestor.stats[:content_providers][:added]
     assert_equal 1, @ingestor.rejected

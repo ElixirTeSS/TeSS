@@ -21,6 +21,8 @@ class ZenodoIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::ZenodoIngestor.new
 
+    ingestor.source = source
+
     # check materials don't exist
     refute Material.where(title: 'My First Material', url: 'https://app.com/materials/material1.html').any?
 
@@ -28,7 +30,7 @@ class ZenodoIngestorTest < ActiveSupport::TestCase
     assert_difference('Material.count', 50) do
       freeze_time(2019) do
         ingestor.read(source.url)
-        ingestor.write(@user, @content_provider)
+        ingestor.write(@user)
       end
     end
 

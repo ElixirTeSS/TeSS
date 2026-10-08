@@ -21,6 +21,8 @@ class OsciIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::OsciIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = '12:00: Community Building for Citizen Science'
     new_url = 'https://osc-international.com/my-calendar/?format=calendar&month=9&yr=2024https://osc-international.com/mc-locations/vu-library-main-building/'
@@ -32,7 +34,7 @@ class OsciIngestorTest < ActiveSupport::TestCase
       freeze_time(2024) do
         VCR.use_cassette('ingestors/osci') do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end
