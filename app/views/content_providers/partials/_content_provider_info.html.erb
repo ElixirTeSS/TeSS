@@ -19,7 +19,7 @@ Variable that should be available
           url_opts = {}
         end
       %>
-      <%= link_to(image_tag(content_provider.image.url, class: 'medium-avatar'), url, **url_opts) %>
+      <%= link_to(image_tag(display_image_url_for(content_provider), class: 'medium-avatar', alt: content_provider.title), url, **url_opts) %>
     </p>
 
     <p>

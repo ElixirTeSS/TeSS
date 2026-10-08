@@ -235,8 +235,107 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
 
     result = @ingestor.convert_params(params)
 
-    assert_equal content_providers(:goblet).id, result[:content_provider_id]
+    assert_equal content_providers(:goblet), result[:content_provider]
     refute result.key?(:providers)
+  end
+
+  test 'accepts providers without description or image metadata' do
+    provider_url = 'https://plain-provider.example.org'
+    provider = { name: 'Plain provider', url: provider_url, see_also: [provider_url] }
+
+    @ingestor.stub(:open_url, StringIO.new('<html><head></head><body></body></html>')) do
+      assert_equal provider_url, @ingestor.find_provider_by_extracted_urls([provider]).url
+    end
+
+    @ingestor.add_event(title: 'Event', url: 'https://event.example.org',
+                        start: Time.current, content_provider: @ingestor.providers.first)
+
+    assert_difference('ContentProvider.count') do
+      @ingestor.write(@user, @content_provider)
+    end
+
+    assert_equal 'Plain provider', ContentProvider.find_by!(url: provider_url).title
+  end
+
+  test 'does not create providers that no resource references' do
+    provider_url = 'https://unreferenced-provider.example.org'
+    provider = { name: 'Unreferenced', url: provider_url, see_also: [provider_url] }
+
+    @ingestor.stub(:open_url, StringIO.new('<html><head></head><body></body></html>')) do
+      @ingestor.find_provider_by_extracted_urls([provider])
+    end
+
+    assert_no_difference('ContentProvider.count') do
+      @ingestor.write(@user, @content_provider)
+    end
+  end
+
+  test 'preserves numeric string content provider ids' do
+    provider = content_providers(:goblet)
+    @ingestor.add_event(title: 'Event', url: 'https://event.example.org',
+                        start: Time.current, content_provider_id: provider.id.to_s)
+
+    assert_equal provider.id.to_s, @ingestor.events.first.content_provider_id
+  end
+
+  test 'creates providers with description metadata during write' do
+    provider = { 'name' => 'New provider', 'url' => 'https://new-provider.example.org',
+                 'see_also' => ['https://new-provider.example.org/about'] }
+    html = '<meta property="og:description" content="Provider description">'
+
+    @ingestor.stub(:open_url, StringIO.new(html)) do
+      assert_equal provider['url'], @ingestor.find_provider_by_extracted_urls([provider]).url
+    end
+
+    @ingestor.add_event(title: 'Event', url: 'https://event.example.org',
+                        start: Time.current, content_provider: @ingestor.providers.first)
+
+    assert_difference('ContentProvider.count') do
+      @ingestor.write(@user, @content_provider)
+    end
+
+    created = ContentProvider.find_by!(url: provider['url'])
+    assert_equal 'New provider', created.title
+    assert_equal 'Provider description', created.description
+    assert_equal [created], @ingestor.providers
+  end
+
+  test 'ingests keywords from regular html meta tags during provider creation' do
+    provider = { 'name' => 'Keyword provider', 'url' => 'https://keyword-provider.example.org',
+                 'see_also' => ['https://keyword-provider.example.org/about'] }
+    html = <<~HTML
+      <html>
+        <head>
+          <meta property="og:description" content="Provider description">
+          <meta name="keywords" content="training, data science , FAIR data">
+        </head>
+        <body></body>
+      </html>
+    HTML
+
+    @ingestor.stub(:open_url, StringIO.new(html)) do
+      assert_equal provider['url'], @ingestor.find_provider_by_extracted_urls([provider]).url
+    end
+
+    @ingestor.add_event(title: 'Event', url: 'https://event.example.org',
+                        start: Time.current, content_provider: @ingestor.providers.first)
+
+    assert_difference('ContentProvider.count') do
+      @ingestor.write(@user, @content_provider)
+    end
+
+    created = ContentProvider.find_by!(url: provider['url'])
+    assert_equal ['training', 'data science', 'FAIR data'], created.keywords
+  end
+
+  test 'source test preview builds content providers' do
+    provider = ContentProvider.new(title: 'Preview provider', url: 'https://preview.example.org',
+                                   description: 'Preview description')
+
+    resource = Source.get_test_resource('content_providers', provider.attributes, user: User.get_default_user)
+
+    assert_instance_of ContentProvider, resource
+    assert_equal 'Preview provider', resource.title
   end
 
   test 'convert_params skips provider URL mapping for non-portal ingestions' do
@@ -249,7 +348,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
 
     result = @ingestor.convert_params(params)
 
-    refute result.key?(:content_provider_id)
+    refute result.key?(:content_provider)
     refute result.key?(:providers)
   end
 

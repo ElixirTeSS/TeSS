@@ -92,6 +92,20 @@ class ContentProvidersController < ApplicationController
     end
   end
 
+  # POST /content_providers/preview
+  def preview
+    @content_provider = User.get_default_user.content_providers.new(content_provider_params)
+
+    respond_to do |format|
+      if @content_provider.valid?
+        format.html { render :show }
+      else
+        flash[:error] = 'This resource is invalid.'
+        format.html { render 'bioschemas/test', status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

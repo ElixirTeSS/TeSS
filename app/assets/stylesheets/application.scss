@@ -918,6 +918,15 @@ input[type=checkbox].field-lock + label:before,
   .scraped-metadata p {
     margin: 0;
   }
+
+  .card-avatar {
+    float: left;
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    border-radius: 4px;
+    margin: 2px 14px 8px 0;
+  }
 }
 
 .user-list-avatar {

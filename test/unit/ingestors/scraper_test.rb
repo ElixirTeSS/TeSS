@@ -8,6 +8,29 @@ class ScraperTest < ActiveSupport::TestCase
     Source.destroy_all # use destroy_all instead of delete_all to delete related objects correctly
   end
 
+  test 'saves content provider ingestion counts on the source' do
+    user = users(:scraper_user)
+    source = Source.create!(url: 'https://source.example.org',
+                            method: 'bioschemas',
+                            enabled: true,
+                            content_provider: content_providers(:portal_provider),
+                            user:,
+                            approval_status: 'approved')
+    ingestor = Ingestors::Ingestor.new
+    ingestor.define_singleton_method(:read) { |_url| }
+    ingestor.define_singleton_method(:write) do |*_args, **_kwargs|
+      stats[:content_providers][:added] = 2
+      stats[:content_providers][:rejected] = 1
+    end
+
+    Ingestors::IngestorFactory.stub(:get_ingestor, ingestor) do
+      Scraper.new(sources: []).scrape(source, user)
+    end
+
+    assert_equal 2, source.reload.content_providers_added
+    assert_equal 1, source.content_providers_rejected
+  end
+
   def run
     with_dresa_dictionaries do
       super

@@ -706,4 +706,43 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_response :success
     assert_select 'a.btn[href=?]', new_content_provider_source_path(@content_provider), text: 'Add source', count: 0
   end
+
+  test 'should preview content provider' do
+    sign_in users(:regular_user)
+
+    assert_no_difference('ContentProvider.count') do
+      post :preview, params: { content_provider: { title: 'Potential provider',
+                                                   url: 'https://someprovider.com',
+                                                   description: 'A provider of things',
+                                                   keywords: ['genomics'] } }
+
+      assert_response :success
+      assert_select 'a.h5', text: 'Potential provider'
+      assert_select 'a[href=?]', 'https://someprovider.com'
+      assert_select '.nav-block', text: /genomics/
+    end
+  end
+
+  test 'should preview content provider with remote image' do
+    sign_in users(:regular_user)
+
+    assert_no_difference('ContentProvider.count') do
+      post :preview, params: { content_provider: { title: 'Imaged provider',
+                                                   url: 'https://someprovider.com',
+                                                   image_url: 'http://example.com/logo.png' } }
+
+      assert_response :success
+      assert_select 'img[src=?]', 'http://example.com/logo.png'
+    end
+  end
+
+  test 'should not preview invalid content provider' do
+    sign_in users(:regular_user)
+
+    assert_no_difference('ContentProvider.count') do
+      post :preview, params: { content_provider: { title: 'Missing URL' } }
+
+      assert_response :unprocessable_entity
+    end
+  end
 end

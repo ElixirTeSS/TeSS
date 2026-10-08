@@ -13,6 +13,26 @@ class IngestorTest < ActiveSupport::TestCase
     assert_equal expected, ingestor.convert_description(input)
   end
 
+  test 'tracks content providers added and rejected during ingestion' do
+    ingestor = Ingestors::Ingestor.new
+    ingestor.instance_variable_set(:@events, [
+      OpenStruct.new(content_provider: ContentProvider.new(
+        title: 'New ingested provider',
+        url: 'https://new-ingested-provider.example.org',
+        content_provider_type: 'Organisation'
+      )),
+      OpenStruct.new(content_provider: ContentProvider.new(
+        url: 'https://invalid-ingested-provider.example.org',
+        content_provider_type: 'Organisation'
+      ))
+    ])
+
+    ingestor.write_providers(users(:scraper_user))
+
+    assert_equal 1, ingestor.stats[:content_providers][:added]
+    assert_equal 1, ingestor.stats[:content_providers][:rejected]
+  end
+
   test 'sets event language from source default language' do
     user = users(:scraper_user)
     provider = content_providers(:portal_provider)
@@ -392,7 +412,7 @@ class IngestorTest < ActiveSupport::TestCase
                                    [OpenStruct.new(url: 'https://some-course.ca',
                                                    title: 'Some course',
                                                    start: '2021-01-31 13:00:00',
-                                                   end:'2021-01-31 14:00:00')])
+                                                   end: '2021-01-31 14:00:00')])
     assert_difference('provider.events.count', 1) do
       ingestor.write(user, provider, source: @source)
     end

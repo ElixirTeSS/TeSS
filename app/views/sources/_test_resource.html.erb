@@ -1,6 +1,9 @@
 <% existing = resource.class.check_exists(resource) %>
 
 <div class="list-card bulk-import-row<%= ' new' unless existing -%>">
+  <% if resource.is_a?(ContentProvider) %>
+    <%= image_tag(display_image_url_for(resource), class: 'card-avatar', alt: resource.title) %>
+  <% end %>
   <h4>
     <% if existing %>
       <%= link_to(existing, target: '_blank', class: 'btn btn-xs btn-default pull-right') do %>
@@ -22,7 +25,7 @@
     <% end %>
     <%= render partial: 'common/extra_metadata', locals: { resource: resource } %>
     <% if resource.valid? %>
-      <%= render partial: 'bioschemas/preview_button', locals: { resource: resource, resource_params: resource_params } %>
+      <%= render partial: 'bioschemas/preview_button', locals: { resource: resource, resource_params: resource_params } if preview_supported?(resource) %>
     <% else %>
       <div class="alert alert-danger">
         <i class="fa fa-exclamation-circle"></i> Errors: <%= resource.errors.full_messages.join(', ') %>

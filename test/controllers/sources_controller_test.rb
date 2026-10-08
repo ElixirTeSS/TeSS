@@ -76,6 +76,18 @@ class SourcesControllerTest < ActionController::TestCase
     assert_select 'strong', { count: 1, text: 'No results found' }
   end
 
+  test 'registered should see content provider counts for the last run' do
+    sign_in users(:regular_user)
+    @source.update!(finished_at: Time.current, content_providers_added: 2, content_providers_rejected: 1)
+
+    get :show, params: { id: @source }
+
+    assert_response :success
+    assert_select 'strong', { count: 1, text: 'Content Providers:' }
+    assert_select 'li', text: /Added: 2/
+    assert_select 'li', text: /Rejected: 1/
+  end
+
   # NEW Tests
   test 'public should not get new' do
     get :new, params: { content_provider_id: content_providers(:goblet) }
@@ -647,6 +659,54 @@ class SourcesControllerTest < ActionController::TestCase
     assert_select '#events' do
       assert_select 'h4', text: 'test 123'
       assert_select 'a[href=?]', 'https://tess.elixir-europe.org'
+    end
+  ensure
+    path = source.send(:test_results_path)
+    FileUtils.rm(path) if File.exist?(path)
+  end
+
+  test 'displays content providers in test results' do
+    source = sources(:unapproved_source)
+    user = source.user
+    sign_in user
+    provider = content_providers(:provider_with_empty_image_url)
+    source.test_results = {
+      events: [], materials: [],
+      content_providers: [provider.attributes],
+      messages: [], run_time: 120, finished_at: Time.now }
+    assert source.test_results
+
+    get :test_results, params: { id: source }, xhr: true
+
+    assert_response :success
+    assert_select 'h4', text: 'Last Test Results'
+    assert_select '#content_providers' do
+      assert_select 'h4', /#{Regexp.escape(provider.title)}/
+      assert_select 'a[href=?]', provider.url
+      assert_select 'form[action=?]', preview_content_providers_path
+    end
+  ensure
+    path = source.send(:test_results_path)
+    FileUtils.rm(path) if File.exist?(path)
+  end
+
+  test 'displays content provider image in test results' do
+    mock_images
+    source = sources(:unapproved_source)
+    user = source.user
+    sign_in user
+    source.test_results = {
+      events: [], materials: [],
+      content_providers: [{ title: 'Imaged provider', url: 'https://someprovider.com',
+                            image_url: 'http://example.com/logo.png' }],
+      messages: [], run_time: 120, finished_at: Time.now }
+    assert source.test_results
+
+    get :test_results, params: { id: source }, xhr: true
+
+    assert_response :success
+    assert_select '#content_providers' do
+      assert_select 'img.card-avatar[src=?]', 'http://example.com/logo.png'
     end
   ensure
     path = source.send(:test_results_path)

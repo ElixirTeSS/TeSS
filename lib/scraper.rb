@@ -147,10 +147,14 @@ class Scraper
       source.resources_added = ingestor.added
       source.resources_updated = ingestor.updated
       source.resources_rejected = ingestor.rejected
+      source.content_providers_added = ingestor.stats[:content_providers][:added]
+      source.content_providers_rejected = ingestor.stats[:content_providers][:rejected]
       log "Source URL[#{source.url}] resources read[#{source.records_read}]" +
           ", added[#{source.resources_added}]" +
           ", updated[#{source.resources_updated}]" +
           ", rejected[#{source.resources_rejected}]", 2
+      log "Source URL[#{source.url}] content providers added[#{source.content_providers_added}]" +
+          ", rejected[#{source.content_providers_rejected}]", 2
     end
   rescue StandardError => e
     output << "\n**Failed:** #{e.message}"

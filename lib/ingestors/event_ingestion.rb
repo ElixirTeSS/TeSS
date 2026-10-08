@@ -3,11 +3,13 @@ module Ingestors
     include AutoParsing
 
     def add_event(event)
+      provider = event[:content_provider] if event.respond_to?(:[])
       if event.is_a?(Hash)
         c = EventsController.new
         c.params = { event: event }
         event = OpenStruct.new(c.send(:event_params))
       end
+      event.content_provider = provider if provider
       event = handle_auto_parsing(event)
       event = handle_controlled_vocabulary(event)
       @events << event unless event.nil?

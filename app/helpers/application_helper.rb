@@ -207,6 +207,23 @@ module ApplicationHelper
     end
   end
 
+  # As `get_image_url_for`, but falls back to the remote image URL for unsaved
+  # records, whose images Paperclip has not written to storage yet.
+  def display_image_url_for(resource, style = nil)
+    if !resource.persisted? && resource.respond_to?(:image_url) && resource.image_url.present?
+      resource.image_url
+    elsif resource.respond_to?(:image?) && resource.image?
+      resource.image.url(style)
+    else
+      get_image_url_for(resource)
+    end
+  end
+
+  # True if the resource type has a preview page that test results can link to.
+  def preview_supported?(resource)
+    Rails.application.routes.url_helpers.respond_to?("preview_#{resource.class.model_name.route_key}_path")
+  end
+
   # Return icon classes for model name (could be symbol or string)
   def icon_class_for_model(model)
     case model.to_s

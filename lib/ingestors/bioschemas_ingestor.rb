@@ -171,28 +171,12 @@ module Ingestors
     def convert_params(params)
       params[:description] = convert_description(params[:description]) if params.key?(:description)
       if ingesting_content_provider&.content_provider_type == 'Portal'
-        provider_id = find_provider_id_by_extracted_urls(params[:providers])
-        params[:content_provider_id] = provider_id if provider_id
+        provider = find_provider_by_extracted_urls(params[:providers])
+        params[:content_provider] = provider if provider
       end
       params.delete(:providers)
 
       params
-    end
-
-    private
-
-    def find_provider_id_by_extracted_urls(providers)
-      Array(providers).each do |provider_hash|
-        next unless provider_hash.is_a?(Hash)
-
-        provider_url = provider_hash[:url] || provider_hash['url']
-        next if provider_url.blank?
-
-        provider = ContentProvider.find_by(url: provider_url)
-        return provider.id if provider
-      end
-
-      nil
     end
   end
 end

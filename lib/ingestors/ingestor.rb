@@ -6,12 +6,14 @@ module Ingestors
   class Ingestor
     include EventIngestion
     include MaterialIngestion
+    include ProviderIngestion
 
     def initialize
       @messages = []
       @stats = {
         events: { processed: 0, added: 0, updated: 0, rejected: 0 },
-        materials: { processed: 0, added: 0, updated: 0, rejected: 0 }
+        materials: { processed: 0, added: 0, updated: 0, rejected: 0 },
+        content_providers: { added: 0, rejected: 0 }
       }
       @token = ''
       @events = []
@@ -19,7 +21,7 @@ module Ingestors
     end
 
     # accessor methods
-    attr_reader :messages, :stats, :events, :materials, :providers
+    attr_reader :messages, :stats, :events, :materials
     attr_accessor :token, :ingesting_content_provider
 
     def self.config
@@ -48,6 +50,7 @@ module Ingestors
 
     def write(user, provider, source: nil)
       filter(source) if source
+      write_providers(user)
       write_resources(Event, @events, user, provider, source:)
       @messages << stats_summary(:events)
       write_resources(Material, @materials, user, provider, source:)
@@ -188,17 +191,16 @@ module Ingestors
         @stats[key][:processed] += 1
 
         # check for matched events
+        attached_provider = resource.content_provider if resource.respond_to?(:content_provider)
+        fields = resource.to_h.except(:content_provider)
+        resource = type.new(fields) unless resource.is_a?(type)
         resource.user_id ||= user.id
-        resource.content_provider_id ||= provider.id
+        resource.content_provider_id ||= attached_provider&.id || provider.id
         resource.space_id ||= source&.space_id
         existing_resource = find_existing(type, resource)
 
         update = existing_resource
-        resource = if update
-                     update_resource(existing_resource, resource.to_h)
-                   else
-                     type.new(resource.to_h)
-                   end
+        resource = update_resource(existing_resource, fields) if update
 
         resource.language ||= source&.default_language if resource.has_attribute?(:language) && resource.new_record?
 
@@ -237,7 +239,7 @@ module Ingestors
     end
 
     def find_existing(type, resource)
-      type.check_exists(resource.to_h)
+      type.check_exists(resource)
     end
 
     def update_resource(existing_resource, fields)

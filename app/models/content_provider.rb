@@ -90,7 +90,7 @@ class ContentProvider < ApplicationRecord
   end
 
   def self.check_exists(content_provider_params)
-    given_content_provider = self.new(content_provider_params)
+    given_content_provider = content_provider_params.is_a?(ContentProvider) ? content_provider_params : new(content_provider_params)
     content_provider = nil
 
     if given_content_provider.url.present?

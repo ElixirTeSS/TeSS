@@ -13,6 +13,7 @@ class SourceTestWorker
     results = {
       events: [],
       materials: [],
+      content_providers: [],
       messages: []
     }
     start_time = Time.now
@@ -26,6 +27,7 @@ class SourceTestWorker
       results = {
         events: ingestor.events,
         materials: ingestor.materials,
+        content_providers: ingestor.providers,
         messages: ingestor.messages
       }
     rescue StandardError => e

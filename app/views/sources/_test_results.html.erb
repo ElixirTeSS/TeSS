@@ -17,13 +17,13 @@
 
 <h5>Resources found:</h5>
 <% results_count = 0 %>
-<% ['events', 'materials'].each do |type| %>
+<% ['events', 'materials', 'content_providers'].each do |type| %>
   <% resources = test_results[type.to_sym] || [] %>
   <% results_count += resources.count %>
   <% sample = resources.sample(sample_size) %>
   <% next if resources.none? %>
 
-  <%= collapsible_panel(pluralize(resources.count, type.singularize), type) do %>
+  <%= collapsible_panel(pluralize(resources.count, type.singularize.humanize.downcase), type) do %>
     <% if sample.count < resources.count %>
       Showing <%= pluralize(sample.count, 'sample') %>
     <% end %>
