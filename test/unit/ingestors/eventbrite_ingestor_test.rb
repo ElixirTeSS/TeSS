@@ -16,7 +16,7 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     # enable source
     source = sources(:eventbrite_source)
     ingestor = Ingestors::EventbriteIngestor.new
-    ingestor.token = source.token
+    ingestor.source = source
     refute_nil source
     refute_nil source.token
     # set enabled

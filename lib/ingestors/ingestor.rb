@@ -9,6 +9,7 @@ module Ingestors
     include ProviderIngestion
 
     def initialize
+      @source = Source.new
       @messages = []
       @stats = {
         events: { processed: 0, added: 0, updated: 0, rejected: 0 },
@@ -22,9 +23,20 @@ module Ingestors
     end
 
     # accessor methods
-    attr_reader :messages, :stats, :events, :materials
-    # TODO: derive provider_metadata_host from source.url when ingestors always have a Source in a follow-up PR.
-    attr_accessor :token, :ingesting_content_provider, :provider_metadata_host
+    attr_reader :messages, :stats, :events, :materials, :source
+    attr_accessor :token
+
+    def source=(value)
+      raise ArgumentError, 'Ingestor source must be a Source' unless value.is_a?(Source)
+
+      @source = value
+      # Keep legacy ingestors that read @token directly compatible.
+      @token = value.token || ''
+    end
+
+    def source_host
+      URI.parse(source.url).host if source.url.present?
+    end
 
     def self.config
       raise NotImplementedError
@@ -39,7 +51,7 @@ module Ingestors
       raise NotImplementedError
     end
 
-    def filter(source)
+    def filter(source = self.source)
       material_count = @materials.length
       event_count = @events.length
 
@@ -50,12 +62,16 @@ module Ingestors
       @messages << "#{@events.length} of #{event_count} events passed the filters" if @events.length != event_count
     end
 
-    def write(user, provider, source: nil)
-      filter(source) if source
+    def write(user, provider = nil, source: self.source)
+      self.source = source || Source.new unless source.equal?(self.source)
+      provider ||= self.source.content_provider
+      raise ArgumentError, 'A content provider is required to write ingested resources' unless provider
+
+      filter
       write_providers(user)
-      write_resources(Event, @events, user, provider, source:)
+      write_resources(Event, @events, user, provider)
       @messages << stats_summary(:events)
-      write_resources(Material, @materials, user, provider, source:)
+      write_resources(Material, @materials, user, provider)
       @messages << stats_summary(:materials)
     end
 
@@ -187,7 +203,7 @@ module Ingestors
       resource
     end
 
-    def write_resources(type, resources, user, provider, source: nil)
+    def write_resources(type, resources, user, provider)
       resources.each_with_index do |resource, i|
         key = type.model_name.collection.to_sym
         @stats[key][:processed] += 1
@@ -195,19 +211,19 @@ module Ingestors
         fields = resource.to_h.except(:content_provider)
         fields[:user_id] ||= user.id
         fields[:content_provider_id] ||= resource.try(:content_provider)&.id || provider.id
-        fields[:space_id] ||= source&.space_id
+        fields[:space_id] ||= source.space_id
         existing_resource = find_existing(type, fields)
 
         update = existing_resource
         resource = update ? update_resource(existing_resource, fields) : type.new(fields)
 
-        resource.language ||= source&.default_language if resource.has_attribute?(:language) && resource.new_record?
+        resource.language ||= source.default_language if resource.has_attribute?(:language) && resource.new_record?
 
         resource = set_resource_defaults(resource)
         if resource.valid?
           resource.save!
           activity_params = {}
-          if source
+          if source.persisted?
             activity_params[:source] = {
               id: source.id,
               url: source.url,

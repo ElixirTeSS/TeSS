@@ -5,7 +5,7 @@ class ProviderIngestionTest < ActiveSupport::TestCase
     @ingestor = Ingestors::BioschemasIngestor.new
     @portal = content_providers(:portal_provider)
     @user = users(:scraper_user)
-    @ingestor.ingesting_content_provider = @portal
+    @ingestor.source = Source.new(content_provider: @portal, method: 'bioschemas')
     @provider = { name: 'Imported provider', url: 'https://provider.example.org' }
   end
 
@@ -39,6 +39,7 @@ class ProviderIngestionTest < ActiveSupport::TestCase
   test 'sitemap registry metadata takes precedence across page hosts and repeated providers are reused' do
     registry_url = 'https://REGISTRY.example.org/content_providers/provider'
     source_url = 'https://registry.example.org/sitemap.txt'
+    @ingestor.source.url = source_url
     pages = %w[https://mirror.example.org/one https://mirror.example.org/two]
     stub_request(:get, source_url).to_return(body: pages.join("\n"))
     pages.each_with_index do |page, index|
@@ -69,7 +70,7 @@ class ProviderIngestionTest < ActiveSupport::TestCase
   end
 
   test 'unavailable or empty registry metadata falls back to the homepage with useful diagnostics' do
-    @ingestor.provider_metadata_host = 'registry.example.org'
+    @ingestor.source.url = 'https://registry.example.org/sitemap.txt'
     failed_url = 'https://registry.example.org/failed'
     empty_url = 'https://registry.example.org/empty'
     stub_request(:get, failed_url).to_timeout

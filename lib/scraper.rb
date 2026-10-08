@@ -119,11 +119,7 @@ class Scraper
       output << "**Method:** #{source.ingestor_title}"
 
       # get ingestor
-      ingestor = Ingestors::IngestorFactory.get_ingestor(source.method)
-      ingestor.ingesting_content_provider = source.content_provider
-
-      # set token
-      ingestor.token = source.token
+      ingestor = Ingestors::IngestorFactory.get_ingestor(source)
 
       # read records
       ingestor.read(source.url)
@@ -134,7 +130,7 @@ class Scraper
       end
 
       # write resources
-      ingestor.write(user, source.content_provider, source: source)
+      ingestor.write(user)
       unless ingestor.messages.blank?
         output << "\n## Writing"
         output += ingestor.messages

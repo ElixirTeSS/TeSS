@@ -72,7 +72,7 @@ class Source < ApplicationRecord
   end
 
   def ingestor_class
-    Ingestors::IngestorFactory.get_ingestor(method)
+    Ingestors::IngestorFactory.get_ingestor(self)
   end
 
   def self.facet_fields

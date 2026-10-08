@@ -70,8 +70,9 @@ module Ingestors
         valid
       end
       # A source-registry link takes precedence over the provider's website.
-      if provider_metadata_host
-        registry_urls, other_urls = urls.partition { |url| URI.parse(url).host.casecmp?(provider_metadata_host) }
+      host = source_host
+      if host
+        registry_urls, other_urls = urls.partition { |url| URI.parse(url).host.casecmp?(host) }
         urls = registry_urls + other_urls
       end
       urls.each do |url|

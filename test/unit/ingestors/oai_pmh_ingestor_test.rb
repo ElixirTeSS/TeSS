@@ -135,7 +135,7 @@ class OaiPmhIngestorTest < ActiveSupport::TestCase
   end
 
   test 'should read bioschemas' do
-    @ingestor.ingesting_content_provider = @content_provider
+    @ingestor.source = Source.new(url: @oai_pmh_url, method: 'oai_pmh', content_provider: @content_provider)
     stub_request(:get, 'https://example.org/content_providers/provider').to_return(status: 404)
     stub_request(:get, 'https://provider.example.org').to_return(
       body: '<meta property="og:description" content="Provider description">'
@@ -178,6 +178,7 @@ class OaiPmhIngestorTest < ActiveSupport::TestCase
 
     @ingestor.read(@oai_pmh_url)
 
+    assert_same @ingestor.source, @ingestor.instance_variable_get(:@bioschemas_manager).source
     assert_equal 1, @ingestor.materials.length
     result = @ingestor.materials.first
     assert_equal 'bioschemas title', result.title

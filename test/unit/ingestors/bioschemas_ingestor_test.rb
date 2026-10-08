@@ -225,7 +225,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
   end
 
   test 'convert_params maps extracted provider URL for portal ingestions' do
-    @ingestor.ingesting_content_provider = content_providers(:portal_provider)
+    @ingestor.source = Source.new(content_provider: content_providers(:portal_provider))
     params = {
       providers: [
         { name: 'No match', url: 'https://example.org/no-match' },
@@ -240,7 +240,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
   end
 
   test 'convert_params skips provider URL mapping for non-portal ingestions' do
-    @ingestor.ingesting_content_provider = content_providers(:organisation_provider)
+    @ingestor.source = Source.new(content_provider: content_providers(:organisation_provider))
     params = {
       providers: [
         { name: 'Goblet', url: 'http://mygoblet.org' }

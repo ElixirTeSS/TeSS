@@ -1,6 +1,126 @@
 require 'test_helper'
 
 class IngestorTest < ActiveSupport::TestCase
+  test 'ingestors always have distinct unsaved Sources and reject invalid replacements' do
+    ingestor = Ingestors::Ingestor.new
+    other = Ingestors::IngestorFactory.get_ingestor(Source.new(method: 'event_rss'))
+
+    assert_instance_of Source, ingestor.source
+    assert_instance_of Source, other.source
+    assert ingestor.source.new_record?
+    refute_same ingestor.source, other.source
+    assert_equal '', ingestor.token
+    assert_nil ingestor.source_host
+
+    [nil, 'not a Source'].each do |invalid|
+      assert_raises(ArgumentError) { ingestor.source = invalid }
+      assert_instance_of Source, ingestor.source
+    end
+  end
+
+  test 'factory requires a Source and assigns its context without saving it' do
+    source = Source.new(method: 'event_rss', url: 'https://registry.example.org/feed', token: 'source-token',
+                        content_provider: content_providers(:portal_provider))
+    ingestor = nil
+
+    assert_no_difference('Source.count') do
+      ingestor = Ingestors::IngestorFactory.get_ingestor(source)
+    end
+
+    assert_instance_of Ingestors::EventRSSIngestor, ingestor
+    assert_same source, ingestor.source
+    assert_equal 'source-token', ingestor.token
+    assert_equal 'registry.example.org', ingestor.source_host
+    assert source.new_record?
+
+    assert_raises(ArgumentError) { Ingestors::IngestorFactory.get_ingestor }
+    [nil, 'event_rss'].each do |invalid|
+      assert_raises(ArgumentError) { Ingestors::IngestorFactory.get_ingestor(invalid) }
+    end
+    error = assert_raises(RuntimeError) do
+      Ingestors::IngestorFactory.get_ingestor(Source.new(method: 'not-a-method'))
+    end
+    assert_equal 'Invalid method: [not-a-method]', error.message
+  end
+
+  test 'Source ingestor lookup returns an ingestor with that same Source' do
+    source = sources(:first_source)
+    ingestor = source.ingestor_class
+
+    assert_same source, ingestor.source
+    assert_equal source.method, ingestor.config[:key]
+    assert_equal ingestor.config[:title], source.ingestor_title
+  end
+
+  test 'source assignment provides tokens to legacy ingestors and does not cache the hostname' do
+    ingestor = Ingestors::Ingestor.new
+    source = Source.new(url: 'https://registry.example.org/sitemap.txt', token: 'source-token')
+    ingestor.source = source
+
+    assert_same source, ingestor.source
+    assert_equal 'source-token', ingestor.token
+    assert_equal 'source-token', ingestor.instance_variable_get(:@token)
+    assert_equal 'registry.example.org', ingestor.source_host
+
+    source.url = 'https://another.example.org'
+    assert_equal 'another.example.org', ingestor.source_host
+
+    ingestor.source = Source.new
+    assert_equal '', ingestor.token
+    assert_nil ingestor.source_host
+    ingestor.token = 'legacy-override'
+    assert_equal 'legacy-override', ingestor.token
+  end
+
+  test 'unsaved source supplies provider filters and defaults without being saved or logged as a persisted source' do
+    ingestor = Ingestors::Ingestor.new
+    provider = content_providers(:organisation_provider)
+    source = Source.new(url: 'https://registry.example.org', method: 'bioschemas',
+                        content_provider: provider, default_language: 'fr', space: spaces(:plants),
+                        source_filters: [SourceFilter.new(mode: 'block', property: 'title', value: 'Blocked')])
+    ingestor.source = source
+    ingestor.add_event(title: 'Imported event', description: 'Training', url: 'https://event.example.org',
+                       start: 1.day.from_now, end: 2.days.from_now)
+    ingestor.add_event(title: 'Blocked', description: 'Training', url: 'https://event.example.org/blocked')
+
+    source.stub(:valid?, -> { flunk 'An unsaved ingestion Source must not be validated' }) do
+      assert_no_difference('Source.count') do
+        assert_difference('Event.count') { ingestor.write(users(:scraper_user)) }
+      end
+    end
+
+    assert source.new_record?
+    assert_equal 1, ingestor.events.size
+    event = ingestor.events.first
+    assert_equal provider, event.content_provider
+    assert_equal 'fr', event.language
+    assert_equal spaces(:plants), event.space
+    refute event.activities.find_by!(key: 'event.create').parameters.key?(:source)
+  end
+
+  test 'legacy write accepts an explicit provider and a nil source without saving a dummy Source' do
+    ingestor = Ingestors::Ingestor.new
+    provider = content_providers(:organisation_provider)
+    ingestor.add_material(title: 'Legacy material', description: 'Training', url: 'https://material.example.org/legacy')
+
+    assert_no_difference('Source.count') do
+      assert_difference('Material.count') { ingestor.write(users(:scraper_user), provider, source: nil) }
+    end
+    assert ingestor.source.new_record?
+    material = ingestor.materials.first
+    assert_equal provider, material.content_provider
+    refute material.activities.find_by!(key: 'material.create').parameters.key?(:source)
+  end
+
+  test 'write rejects missing provider context before persisting anything' do
+    ingestor = Ingestors::Ingestor.new
+    ingestor.add_material(title: 'Unattributed', description: 'Training', url: 'https://material.example.org/unattributed')
+
+    assert_no_difference('Material.count') do
+      assert_raises(ArgumentError) { ingestor.write(users(:scraper_user)) }
+    end
+  end
+
   test 'convert HTML descriptions to markdown where appropriate' do
     ingestor = Ingestors::Ingestor.new
 

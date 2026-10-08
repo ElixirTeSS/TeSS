@@ -55,7 +55,7 @@ class ContentProviderExchangeTest < ActionDispatch::IntegrationTest
 
       exports.each_with_index do |(klass, export_url, resource_url, expected_rejections), index|
         ingestor = Ingestors::BioschemasIngestor.new
-        ingestor.ingesting_content_provider = portal
+        ingestor.source = Source.new(url: export_url, method: 'bioschemas', content_provider: portal)
         ingestor.read(export_url)
         assert_empty ingestor.messages.grep(/error occurred/)
         assert_equal 1 + expected_rejections, ingestor.ingested
