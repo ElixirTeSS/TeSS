@@ -1469,6 +1469,30 @@ class MaterialsControllerTest < ActionController::TestCase
     end
   end
 
+  test 'provider attribution survives material previews without persisting providers' do
+    sign_in users(:regular_user)
+    portal = content_providers(:portal_provider)
+    existing = content_providers(:organisation_provider)
+    candidates = [
+      [{ title: 'New preview provider', url: 'https://preview-provider.example.org' }, 'https://preview-provider.example.org'],
+      [{ title: 'Different name', url: existing.url }, existing.url],
+      [{ url: 'https://invalid-provider.example.org' }, portal.url],
+      [nil, portal.url]
+    ]
+
+    assert_no_difference(['Material.count', 'ContentProvider.count']) do
+      candidates.each do |provider, expected_url|
+        post :preview, params: { material: { title: 'Preview material', url: 'https://preview-material.example.org',
+                                             description: 'Training material', content_provider_id: portal.id,
+                                             content_provider: provider } }
+        assert_response :success
+        assert_equal expected_url, assigns(:material).content_provider.url
+        selected = assigns(:material).content_provider
+        assert_select '.nav-block a.h5[href=?]', selected.persisted? ? content_provider_path(selected) : selected.url
+      end
+    end
+  end
+
   test 'should not preview invalid material' do
     sign_in users(:regular_user)
 

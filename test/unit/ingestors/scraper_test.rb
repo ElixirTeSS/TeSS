@@ -8,7 +8,7 @@ class ScraperTest < ActiveSupport::TestCase
     Source.destroy_all # use destroy_all instead of delete_all to delete related objects correctly
   end
 
-  test 'saves content provider ingestion counts on the source' do
+  test 'imports a provider and its resources with separate source counts and reuses them on subsequent runs' do
     user = users(:scraper_user)
     source = Source.create!(url: 'https://source.example.org',
                             method: 'bioschemas',
@@ -16,19 +16,34 @@ class ScraperTest < ActiveSupport::TestCase
                             content_provider: content_providers(:portal_provider),
                             user:,
                             approval_status: 'approved')
-    ingestor = Ingestors::Ingestor.new
-    ingestor.define_singleton_method(:read) { |_url| }
-    ingestor.define_singleton_method(:write) do |*_args, **_kwargs|
-      stats[:content_providers][:added] = 2
-      stats[:content_providers][:rejected] = 1
-    end
+    stub_request(:get, source.url).to_return(body: {
+      '@context' => 'http://schema.org',
+      '@type' => 'LearningResource',
+      name: 'Imported material', description: 'Training material',
+      url: 'https://material.example.org',
+      provider: { '@type' => 'Organization', name: 'Imported provider', url: 'https://provider.example.org' }
+    }.to_json)
+    stub_request(:get, 'https://provider.example.org').to_return(body: '')
+    scraper = Scraper.new({ sources: [] })
 
-    Ingestors::IngestorFactory.stub(:get_ingestor, ingestor) do
-      Scraper.new(sources: []).scrape(source, user)
+    assert_difference('ContentProvider.count') do
+      assert_difference('Material.count') { scraper.scrape(source, user) }
     end
+    source.reload
+    assert_equal 1, source.content_providers_added
+    assert_equal 0, source.content_providers_rejected
+    assert_equal 1, source.records_written
+    assert_equal 1, source.resources_added
+    refute_includes source.log, '**Failed:**'
 
-    assert_equal 2, source.reload.content_providers_added
-    assert_equal 1, source.content_providers_rejected
+    assert_no_difference('ContentProvider.count') do
+      assert_no_difference('Material.count') { scraper.scrape(source, user) }
+    end
+    source.reload
+    assert_equal 0, source.content_providers_added
+    assert_equal 0, source.resources_added
+    assert_equal 1, source.resources_updated
+    assert_equal 1, source.records_written
   end
 
   def run

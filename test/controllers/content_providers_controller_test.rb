@@ -426,10 +426,12 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_equal(JSON.parse(response.body)['id'], @content_provider.id)
   end
 
-  test 'should find existing content_provider by title' do
-    post :check_exists, params: { format: :json, content_provider: { title: @content_provider.title } }
-    assert_response :success
-    assert_equal(JSON.parse(response.body)['id'], @content_provider.id)
+  test 'does not match content providers by title without a matching URL' do
+    [nil, 'https://different-provider.example.org'].each do |url|
+      post :check_exists, params: { format: :json, content_provider: { title: @content_provider.title, url: url } }
+      assert_response :success
+      assert_equal '{}', response.body
+    end
   end
 
   test 'should return nothing when content_provider does not exist' do
@@ -714,24 +716,13 @@ class ContentProvidersControllerTest < ActionController::TestCase
       post :preview, params: { content_provider: { title: 'Potential provider',
                                                    url: 'https://someprovider.com',
                                                    description: 'A provider of things',
+                                                   image_url: 'http://example.com/logo.png',
                                                    keywords: ['genomics'] } }
 
       assert_response :success
       assert_select 'a.h5', text: 'Potential provider'
       assert_select 'a[href=?]', 'https://someprovider.com'
       assert_select '.nav-block', text: /genomics/
-    end
-  end
-
-  test 'should preview content provider with remote image' do
-    sign_in users(:regular_user)
-
-    assert_no_difference('ContentProvider.count') do
-      post :preview, params: { content_provider: { title: 'Imaged provider',
-                                                   url: 'https://someprovider.com',
-                                                   image_url: 'http://example.com/logo.png' } }
-
-      assert_response :success
       assert_select 'img[src=?]', 'http://example.com/logo.png'
     end
   end

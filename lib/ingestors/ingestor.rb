@@ -18,11 +18,13 @@ module Ingestors
       @token = ''
       @events = []
       @materials = []
+      @provider_cache = {}
+      @provider_metadata_cache = {}
     end
 
     # accessor methods
     attr_reader :messages, :stats, :events, :materials
-    attr_accessor :token, :ingesting_content_provider
+    attr_accessor :token, :ingesting_content_provider, :provider_metadata_host
 
     def self.config
       raise NotImplementedError
@@ -161,19 +163,19 @@ module Ingestors
     end
 
     def processed
-      @stats.values.sum { |s| s[:processed] }
+      @stats.values_at(:events, :materials).sum { |s| s[:processed] }
     end
 
     def added
-      @stats.values.sum { |s| s[:added] }
+      @stats.values_at(:events, :materials).sum { |s| s[:added] }
     end
 
     def updated
-      @stats.values.sum { |s| s[:updated] }
+      @stats.values_at(:events, :materials).sum { |s| s[:updated] }
     end
 
     def rejected
-      @stats.values.sum { |s| s[:rejected] }
+      @stats.values_at(:events, :materials).sum { |s| s[:rejected] }
     end
 
     private
@@ -190,17 +192,14 @@ module Ingestors
         key = type.model_name.collection.to_sym
         @stats[key][:processed] += 1
 
-        # check for matched events
-        attached_provider = resource.content_provider if resource.respond_to?(:content_provider)
         fields = resource.to_h.except(:content_provider)
-        resource = type.new(fields) unless resource.is_a?(type)
-        resource.user_id ||= user.id
-        resource.content_provider_id ||= attached_provider&.id || provider.id
-        resource.space_id ||= source&.space_id
-        existing_resource = find_existing(type, resource)
+        fields[:user_id] ||= user.id
+        fields[:content_provider_id] ||= resource.try(:content_provider)&.id || provider.id
+        fields[:space_id] ||= source&.space_id
+        existing_resource = find_existing(type, fields)
 
         update = existing_resource
-        resource = update_resource(existing_resource, fields) if update
+        resource = update ? update_resource(existing_resource, fields) : type.new(fields)
 
         resource.language ||= source&.default_language if resource.has_attribute?(:language) && resource.new_record?
 

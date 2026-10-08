@@ -148,8 +148,8 @@ module Bioschemas
           '@type' => 'Organization',
           'name' => resource.content_provider.title,
           'url' => resource.content_provider.url,
-          'subjectOf' => routes.content_provider_url(resource.content_provider)
-        }
+          'subjectOf' => resource.content_provider.persisted? ? routes.content_provider_url(resource.content_provider) : nil
+        }.compact
       end
 
       resource.nodes.each do |node|

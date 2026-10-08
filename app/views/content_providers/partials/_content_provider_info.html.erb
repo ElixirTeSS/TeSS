@@ -15,7 +15,7 @@ Variable that should be available
           url = content_provider.url
           url_opts = { target: '_blank', rel: 'noopener' }
         else
-          url = content_provider
+          url = content_provider.persisted? ? content_provider : content_provider.url
           url_opts = {}
         end
       %>

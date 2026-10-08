@@ -20,6 +20,6 @@
   <label class="ml-2 delete-person-btn delete-nested-resource-btn">
     <i class="icon icon-sm cross-icon icon-greyscale"></i>
     <%= hidden_field_tag "#{field_name_prefix}[_destroy]", '0', autocomplete: 'off' %>
-    <%= check_box_tag "#{field_name_prefix}[_destroy]", '1', false, class: 'destroy-attribute field-lock-ignore', autocomplete: 'off' %>
+    <%= check_box_tag "#{field_name_prefix}[_destroy]", '1', false, class: 'destroy-attribute', autocomplete: 'off' %>
   </label>
 </div>

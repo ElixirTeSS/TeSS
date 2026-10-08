@@ -39,12 +39,19 @@ module HasTestJob
       klass = type.classify.constantize
       controller = "#{klass.name.pluralize}Controller".constantize
       c = controller.new
-      # No request/warden is available for this synthetic controller.
-      c.define_singleton_method(:current_user) { nil }
+      c.define_singleton_method(:current_user) { nil } if klass == ContentProvider
       c.params = { klass.model_name.param_key => params }
       safe_params = c.send("#{klass.model_name.param_key}_params")
-      # Extras such as `content_provider` only apply to some resource types.
-      extras = extras.select { |key, _| klass.method_defined?("#{key}=") }
+      if klass == ContentProvider
+        resource = klass.new(safe_params.merge(extras.except(:content_provider)))
+        return ContentProvider.check_exists(resource) || resource
+      end
+
+      provider_params = c.params[klass.model_name.param_key][:content_provider]
+      if provider_params.present?
+        provider = get_test_resource('content_providers', provider_params, user: extras[:user])
+        extras[:content_provider] = provider if provider.persisted? || provider.valid?
+      end
       klass.new(safe_params.merge(extras))
     end
   end
@@ -62,15 +69,10 @@ module HasTestJob
     dir.join("test_results_#{path_id}.yml")
   end
 
-  def deep_hashify(params, nested: false)
-    if params.respond_to?(:attributes) && params.class.respond_to?(:reflect_on_all_associations)
-      hash = nested ? params.attributes : params.attributes.symbolize_keys
-      params.class.reflect_on_all_associations(:has_many).each do |association|
-        next unless params.association(association.name).loaded?
-
-        hash[association.name] = params.public_send(association.name).map { |record| deep_hashify(record, nested: true) }
-      end
-      return hash.transform_values { |value| deep_hashify(value, nested: nested) }
+  def deep_hashify(params)
+    if params.is_a?(ContentProvider)
+      params = params.attributes.slice('title', 'url', 'description', 'image_url', 'content_provider_type',
+                                       'keywords', 'node_id', 'contact').symbolize_keys
     end
 
     params = params.to_h if params.is_a?(OpenStruct) || params.is_a?(ActionController::Parameters)

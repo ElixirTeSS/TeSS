@@ -665,48 +665,81 @@ class SourcesControllerTest < ActionController::TestCase
     FileUtils.rm(path) if File.exist?(path)
   end
 
-  test 'displays content providers in test results' do
+  test 'worker results preserve selected providers in the inventory and resource previews after filtering' do
+    mock_images
     source = sources(:unapproved_source)
-    user = source.user
-    sign_in user
-    provider = content_providers(:provider_with_empty_image_url)
-    source.test_results = {
-      events: [], materials: [],
-      content_providers: [provider.attributes],
-      messages: [], run_time: 120, finished_at: Time.now }
-    assert source.test_results
+    portal = content_providers(:portal_provider)
+    existing = content_providers(:organisation_provider)
+    source.update!(content_provider: portal)
+    source.source_filters.create!(mode: 'block', property: 'title', value: 'Filtered material')
+    sign_in source.user
+    providers = [
+      { '@type' => 'Organization', name: 'Imaged provider', url: 'https://new-provider.example.org' },
+      { '@type' => 'Organization', name: existing.title, url: existing.url },
+      { '@type' => 'Organization', name: 'Filtered provider', url: 'https://filtered-provider.example.org' }
+    ]
+    materials = providers.each_with_index.map do |provider, index|
+      { '@context' => 'http://schema.org', '@type' => 'LearningResource',
+        name: index == 2 ? 'Filtered material' : "Material #{index}", description: 'Training material',
+        url: "https://materials.example.org/#{index}", provider: provider }
+    end
+    stub_request(:get, source.url).to_return(body: materials.to_json)
+    stub_request(:get, providers.first[:url]).to_return(
+      body: '<meta property="og:description" content="Provider description"><meta name="keywords" content="training, FAIR data"><meta property="og:image" content="http://example.com/logo.png">'
+    )
+    stub_request(:get, providers.last[:url]).to_return(body: '')
 
-    get :test_results, params: { id: source }, xhr: true
+    assert_no_difference(['ContentProvider.count', 'Material.count']) do
+      Sidekiq::Testing.inline! { SourceTestWorker.perform_async([source.id]) }
+      results = source.test_results
+      assert_equal providers.first(2).map { |p| p[:url] }, results[:content_providers].map { |p| p[:url] }
+      assert_equal 2, results[:materials].size
+      assert_equal %i[title url description image_url content_provider_type keywords node_id contact].sort,
+                   results[:content_providers].first.keys.sort
+      results[:materials].each_with_index do |params, index|
+        resource = Source.get_test_resource('materials', params, user: User.get_default_user, content_provider: portal)
+        assert_equal providers[index][:url], resource.content_provider.url
+        assert_equal index == 1, resource.content_provider.persisted?
+      end
+      get :test_results, params: { id: source }, xhr: true
+    end
 
     assert_response :success
     assert_select 'h4', text: 'Last Test Results'
     assert_select '#content_providers' do
-      assert_select 'h4', /#{Regexp.escape(provider.title)}/
-      assert_select 'a[href=?]', provider.url
-      assert_select 'form[action=?]', preview_content_providers_path
+      assert_select 'h4', /Imaged provider/
+      assert_select 'a[href=?]', providers.first[:url]
+      assert_select 'form[action=?]', preview_content_providers_path, count: 2
+      assert_select 'img.card-avatar[src=?]', 'http://example.com/logo.png'
+    end
+    assert_select '#materials' do
+      assert_select 'input[name="material[content_provider][url]"][value=?]', providers.first[:url]
+      assert_select 'input[name="material[content_provider_id]"][value=?]', existing.id.to_s
     end
   ensure
     path = source.send(:test_results_path)
     FileUtils.rm(path) if File.exist?(path)
   end
 
-  test 'displays content provider image in test results' do
-    mock_images
+  test 'legacy results and invalid selected providers retain portal fallback' do
     source = sources(:unapproved_source)
-    user = source.user
-    sign_in user
+    sign_in source.user
+    portal = source.content_provider
+    invalid = { url: 'https://invalid-provider.example.org' }
     source.test_results = {
-      events: [], materials: [],
-      content_providers: [{ title: 'Imaged provider', url: 'https://someprovider.com',
-                            image_url: 'http://example.com/logo.png' }],
+      events: [{ title: 'Legacy event', url: 'https://legacy-event.example.org' }],
+      materials: [{ title: 'Invalid provider material', url: 'https://material.example.org',
+                    description: 'Training material', content_provider: invalid }],
+      content_providers: [invalid],
       messages: [], run_time: 120, finished_at: Time.now }
-    assert source.test_results
 
     get :test_results, params: { id: source }, xhr: true
-
     assert_response :success
     assert_select '#content_providers' do
-      assert_select 'img.card-avatar[src=?]', 'http://example.com/logo.png'
+      assert_select '.alert', /source content provider/
+    end
+    %w[event material].each do |type|
+      assert_select "input[name=\"#{type}[content_provider_id]\"][value=?]", portal.id.to_s
     end
   ensure
     path = source.send(:test_results_path)

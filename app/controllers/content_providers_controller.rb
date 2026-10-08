@@ -36,7 +36,7 @@ class ContentProvidersController < ApplicationController
   # POST /events/check_exists
   # POST /events/check_exists.json
   def check_exists
-    @content_provider = ContentProvider.check_exists(content_provider_params)
+    @content_provider = ContentProvider.check_exists(ContentProvider.new(content_provider_params))
 
     if @content_provider
       respond_to do |format|
@@ -126,7 +126,7 @@ class ContentProvidersController < ApplicationController
     permitted = [:title, :url, :image, :image_url, :description, :id, :content_provider_type, :node_id, :contact,
                  :content_curation_email,
                  { keywords: [] }, :remote_updated_date, :remote_created_date, { approved_editors: [] },
-           :local_updated_date, :remote_updated_date, :node_name, :user_id, { locked_fields: [] }]
+                 :local_updated_date, :remote_updated_date, :node_name, :user_id, { locked_fields: [] }]
 
     permitted.delete(:user_id) unless current_user && current_user.is_admin?
 

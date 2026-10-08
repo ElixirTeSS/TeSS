@@ -3,8 +3,8 @@ module Ingestors
     include AutoParsing
 
     def add_material(material)
-      provider = material[:content_provider] if material.respond_to?(:[])
       if material.is_a?(Hash)
+        provider = material[:content_provider]
         c = MaterialsController.new
         c.params = { material: material }
         material = OpenStruct.new(c.send(:material_params))

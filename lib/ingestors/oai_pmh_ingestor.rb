@@ -22,6 +22,7 @@ module Ingestors
 
     def read(source_url)
       @bioschemas_manager.ingesting_content_provider = ingesting_content_provider
+      @bioschemas_manager.provider_metadata_host = URI.parse(source_url).host
       client = OAI::Client.new source_url, headers: { 'From' => config[:mail], 'User-Agent' => config[:user_agent] }
 
       tess_instance = client.identify.descriptions.any? { |d| d.get_elements('//tess-instance').any? }
@@ -123,6 +124,8 @@ module Ingestors
       @bioschemas_manager.deduplicate(provider_materials).each do |material_params|
         add_material(material_params)
       end
+      @messages.concat(@bioschemas_manager.messages)
+      @bioschemas_manager.messages.clear
 
       provider_events.any? || provider_materials.any?
     end

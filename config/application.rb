@@ -112,8 +112,6 @@ module TeSS
   merge_config(Rails.configuration.tess_defaults.with_indifferent_access, tess_config)
 
   class TessConfig < OpenStruct
-    AUTOMATIC_FIELD_LOCKING_TARGETS = %w[materials events providers].freeze
-
     def redis_url
       if Rails.env.test?
         ENV.fetch('REDIS_TEST_URL') { 'redis://localhost:6379/0' }
@@ -185,20 +183,11 @@ module TeSS
 
     def automatic_field_locking_enabled_for?(resource)
       setting = automatic_field_locking
-      return false if setting.blank? || setting == false
+      return false if setting.blank?
       return true if setting == true
 
-      Array(setting).include?(automatic_field_locking_target_for(resource))
-    end
-
-    private
-
-    def automatic_field_locking_target_for(resource)
-      return 'materials' if resource == Material || resource.is_a?(Material)
-      return 'events' if resource == Event || resource.is_a?(Event)
-      return 'providers' if resource == ContentProvider || resource.is_a?(ContentProvider)
-
-      nil
+      target = resource.is_a?(ContentProvider) ? 'providers' : resource.model_name.route_key
+      Array(setting).include?(target)
     end
   end
 
