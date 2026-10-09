@@ -179,6 +179,10 @@ default: &default
     user_source_creation: true
     trainers: false
     edit_suggestions: false
+    bip_scholar_infographics: # ruby rewrite of https://github.com/athenarc/bip-plugin/tree/main
+      enabled: false # when true + when an ORCID is found both in TeSS and in BIP!Scholar, it displays the researcher's infographics on the trainer's page, see https://github.com/ElixirTeSS/TeSS/pull/1373 for details
+      layout: 'default' # default: 'default'; if 'compact', displays the infographics without labels
+      empty_mode: 'default' # default: 'default'; if 'silent', does not display anything when no ORCID is found
 
     # UI
     sticky_navbar: false # when true, allows navbar (and header_notice if enabled) to stick to the top of the window and shrink when scrolling

@@ -1,0 +1,59 @@
+<% 
+  # for the `layout` and `empty_mode` parameters, see https://github.com/athenarc/bip-plugin/tree/main
+  data = BipScholarHelper.fetch_score(orcid) 
+  is_compact = local_assigns.fetch(:layout, 'default') == 'compact' # compact allows to hide most of the words, and shows only icons and numbers
+  empty_mode = local_assigns.fetch(:empty_mode, 'default') # empty_mode hides BIP!Scholar widget if no ORCID on BIP!Scholar is found
+%>
+
+<div class="bip-scholar-embed" data-orcid="<%= orcid %>" <%= 'hidden' if data.nil? && empty_mode == 'silent' %>>
+  <% if data.nil? %>
+    <% unless empty_mode == 'silent' %>
+      <div class="bip-scholar-no-profile">
+        <i class="fa fa-circle-info" aria-hidden="true"></i>
+        No BIP! Scholar profile found for this ORCID.
+        <%= link_to "Learn more ↗", "https://bip.imsi.athenarc.gr/scholar", target: "_blank", rel: "noopener" %>
+      </div>
+    <% end %>
+  <% else %>
+    <% 
+      wt = parse_work_types(data)
+      pct = data.dig('openness', 'open_percentage') ? "#{data['openness']['open_percentage'].to_i}%" : "—"
+      age = data['academic_age'] ? "#{data['academic_age']} yrs" : "—"
+      profile_url = "https://bip.imsi.athenarc.gr/scholar/profile/#{CGI.escape(orcid)}"
+      
+      stats = [
+        { icon: "file-text-o", value: format_scholar_number(wt[0]), label: "Publications" },
+        { icon: "database", value: format_scholar_number(wt[1]), label: "Datasets" },
+        { icon: "code", value: format_scholar_number(wt[2]), label: "Software" },
+        { icon: "archive", value: format_scholar_number(wt[3]), label: "Other" },
+        { icon: "quote-left", value: format_scholar_number(data['citations_num']), label: "Citations", sep: true },
+        { icon: "fire", value: format_scholar_number(data['popular_works_count']), label: "Popular" },
+        { icon: "university", value: format_scholar_number(data['influential_works_count']), label: "Influential" },
+        { icon: "line-chart", value: format_scholar_number(data['h_index']), label: "h-index" },
+        { icon: "hourglass", value: age, label: "Acad. Age", sep: true },
+        { icon: "unlock-alt", value: pct, label: "Open Access", sep: true }
+      ]
+    %>
+
+    <%= link_to profile_url, target: "_blank", rel: "noopener", class: "bip-scholar-badge#{' bip-scholar-badge--compact' if is_compact}" do %>
+      <div class="bip-scholar-logo">
+        <%= image_tag "bip-minimal.svg", alt: "BIP! Scholar", style: "height: 30px; width: auto; display: block;" %>
+      </div>
+      
+      <% stats.each do |stat| %>
+        <div class="bip-scholar-stat <%= 'bip-scholar-stat--group-sep' if stat[:sep] %>" title="<%= stat[:label] %>">
+          <span class="bip-scholar-stat-value">
+            <i class="fa fa-<%= stat[:icon] %> bip-scholar-stat-icon" aria-hidden="true"></i>
+            <% if is_compact %>
+              <span class="sr-only"><%= stat[:label] %>: </span>
+            <% end %>
+            <%= stat[:value] %>
+          </span>
+          <% unless is_compact %>
+            <span class="bip-scholar-stat-label"><%= stat[:label] %></span>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
