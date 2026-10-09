@@ -34,7 +34,7 @@
       <%= link_to @learning_path_topic.user.name, @learning_path_topic.user %>
     </div>
     <% if @learning_path_topic.collaborators.any? %>
-      <h4 class="nav-heading"><%= Collection.human_attribute_name(:collaborators) %></h4>
+      <h4 class="nav-heading"><%= LearningPathTopic.human_attribute_name(:collaborators) %></h4>
       <% @learning_path_topic.collaborators.each do |collaborator| %>
         <div class="nav-block">
           <%= link_to collaborator.name, collaborator %>
