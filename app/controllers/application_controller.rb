@@ -181,10 +181,10 @@ class ApplicationController < ActionController::Base
     if TeSS::Config.feature['spaces'] && Space.current_space != Space.default
       unless policy(Space.current_space).shown?
         if current_user
-          flash[:alert] = t('private_space.no_authorized')
+          flash.now[:alert] = t('private_space.not_authorized')
           raise Pundit::NotAuthorizedError
         else
-          flash[:alert] = t('private_space.needs_sign_in')
+          flash.now[:alert] = t('private_space.needs_sign_in')
           raise Pundit::NotAuthorizedError
         end
       end
