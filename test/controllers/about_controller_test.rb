@@ -127,4 +127,31 @@ class AboutControllerTest < ActionController::TestCase
       assert_response :success
     end
   end
+
+  test 'should redirect about pages to external link when configured' do
+    site_settings = TeSS::Config.site.dup
+    site_settings['about_us_link'] = 'https://example.org'
+
+    with_settings(site: site_settings) do
+      get :tess
+      assert_response :redirect
+      assert_redirected_to 'https://example.org/'
+
+      get :registering
+      assert_response :redirect
+      assert_redirected_to 'https://example.org/content/intro-content/'
+
+      get :learning_paths
+      assert_response :redirect
+      assert_redirected_to 'https://example.org/content/learning-paths/'
+
+      get :developers
+      assert_response :redirect
+      assert_redirected_to 'https://example.org/developers/code-data/'
+
+      get :us
+      assert_response :redirect
+      assert_redirected_to 'https://example.org/overview/about/'
+    end
+  end
 end
