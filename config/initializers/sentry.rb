@@ -18,6 +18,8 @@ Rails.configuration.after_initialize do
         if event.contexts
           event.contexts = filter.filter(event.contexts)
         end
+
+        event
       end
       git_rev = `git rev-parse --short HEAD`&.chomp("\n")
       config.release = git_rev if git_rev.present?

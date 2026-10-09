@@ -28,6 +28,46 @@ class OrcidControllerTest < ActionController::TestCase
     end
   end
 
+  test 'authenticating orcid in space uses matching redirect URI from list' do
+    plant_space = spaces(:plants)
+    redirect_uris = [
+      "#{TeSS::Config.base_url}/orcid/callback",
+      "https://#{plant_space.host}/orcid/callback"
+    ]
+
+    Rails.application.config.secrets.stub(:orcid, Rails.application.config.secrets.orcid.merge(redirect_uri: redirect_uris)) do
+      with_host(plant_space.host) do
+        sign_in users(:regular_user)
+
+        post :authenticate
+
+        assert_redirected_to /https:\/\/sandbox\.orcid\.org\/oauth\/authorize\?.+/
+        params = Rack::Utils.parse_query(URI.parse(response.location).query)
+        assert_equal "https://#{plant_space.host}/orcid/callback", params['redirect_uri']
+        assert_equal "space_id:#{plant_space.id}", params['state']
+      end
+    end
+  end
+
+  test 'authenticating orcid falls back to first redirect URI when none match host domain' do
+    redirect_uris = [
+      "https://first.example.com/orcid/callback",
+      "https://second.example.com/orcid/callback"
+    ]
+
+    Rails.application.config.secrets.stub(:orcid, Rails.application.config.secrets.orcid.merge(redirect_uri: redirect_uris)) do
+      with_host('space.golf.com') do
+        sign_in users(:regular_user)
+
+        post :authenticate
+
+        assert_redirected_to /https:\/\/sandbox\.orcid\.org\/oauth\/authorize\?.+/
+        params = Rack::Utils.parse_query(URI.parse(response.location).query)
+        assert_equal 'https://first.example.com/orcid/callback', params['redirect_uri']
+      end
+    end
+  end
+
   test 'do not authenticate orcid if user not logged-in' do
     post :authenticate
 
@@ -174,8 +214,10 @@ class OrcidControllerTest < ActionController::TestCase
     assert user.profile.orcid.blank?
     sign_in user
 
-    VCR.use_cassette('orcid/get_token_free_orcid') do
-      get :callback, params: { code: '123xyz', state: "space_id:#{space.id}" }
+    with_host('www.example.com') do
+      VCR.use_cassette('orcid/get_token_free_orcid') do
+        get :callback, params: { code: '123xyz', state: "space_id:#{space.id}" }
+      end
     end
 
     profile = user.profile.reload
@@ -194,8 +236,10 @@ class OrcidControllerTest < ActionController::TestCase
     assert user.profile.orcid.blank?
     sign_in user
 
-    VCR.use_cassette('orcid/get_token_free_orcid') do
-      get :callback, params: { code: '123xyz', state: "space_id:#{space.id}" }
+    with_host('www.example.com') do
+      VCR.use_cassette('orcid/get_token_free_orcid') do
+        get :callback, params: { code: '123xyz', state: "space_id:#{space.id}" }
+      end
     end
 
     profile = user.profile.reload

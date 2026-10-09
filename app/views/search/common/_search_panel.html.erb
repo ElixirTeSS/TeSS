@@ -21,6 +21,9 @@
         <%= content_for(:display_options) %>
       </div>
       <% if TeSS::Config.solr_enabled %>
+        <% if filter_limit_reached? %>
+          <div class="alert alert-info mb-3"><%= t('search.errors.filter_limit_reached') %></div>
+        <% end %>
         <div class="hidden-xs">
           <%= render partial: 'search/common/search_filters', locals: { resources: resources } %>
         </div>

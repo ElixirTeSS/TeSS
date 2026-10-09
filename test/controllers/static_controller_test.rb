@@ -577,11 +577,21 @@ class StaticControllerTest < ActionController::TestCase
   end
 
   test 'should find log in button when login_through_oidc_only is enabled' do
-    Devise.stub(:omniauth_configs, { oidc: OpenStruct.new(options: { label: 'OIDC' }) }) do
+    base_host = TeSS::Config.base_uri.host
+    omniauth_configs = {
+      oidc: OpenStruct.new(options: {
+        label: 'OIDC',
+        redirect_uris: ["https://#{base_host}/users/auth/oidc/callback"]
+      })
+    }
+
+    Devise.stub(:omniauth_configs, omniauth_configs) do
       with_settings({ feature: { login_through_oidc_only: true } }) do
-        get :home
-        assert_select 'ul.user-options.nav.navbar-nav.navbar-right' do
-          assert_select 'a[href="/users/auth/oidc"]', count: 1
+        with_host(base_host) do
+          get :home
+          assert_select 'ul.user-options.nav.navbar-nav.navbar-right' do
+            assert_select 'a[href="/users/auth/oidc"]', count: 1
+          end
         end
       end
     end

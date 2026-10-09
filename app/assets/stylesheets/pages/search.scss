@@ -1,0 +1,126 @@
+// Style for empty results etc.
+.empty {
+  color: #aaa;
+  font-style: italic;
+}
+
+.search-results-count {
+  margin-right: 1em;
+  display: inline-block
+}
+
+.search-results-per-page {
+  display: inline-block;
+
+  select {
+    border: none;
+    padding: 0;
+    background: transparent;
+    border-bottom: 1px dashed $text-color;
+  }
+}
+
+.index-display-options {
+  margin: 5px 0;
+}
+
+.search-panel {
+  padding-top: 5px;
+
+  .btn, .searchbox-sm, .input-group input {
+    margin: 5px 0;
+  }
+}
+
+.searchbox {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 30px;
+
+  form {
+    padding-right: 10px;
+    text-align: center;
+    line-height: 2;
+    font-size: $font-size-large;
+    margin: auto;
+    max-width: 800px;
+
+    border: none;
+    border-radius: 50px;
+    background-color: #F4F4F4;
+
+    .searchbox-wrapper {
+      display: flex;
+    }
+
+    .searchbox-field {
+      border: none;
+      box-shadow: none;
+      outline: 0 none;
+      background: transparent;
+      padding: 15px 15px 15px 25px;
+      flex: 1;
+      min-width: 220px;
+      border-radius: 100px;
+    }
+
+    .searchbox-btn {
+      border: none;
+      background-color: transparent;
+      opacity: 0.5;
+      box-shadow: none;
+      padding: 8px 16px 8px 8px;
+      flex-shrink: 0;
+
+      transition: $transition-time;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.searchbox-sm {
+  form {
+    padding-right: 10px;
+    text-align: center;
+    margin: auto;
+    max-width: 800px;
+
+    border: none;
+    border-radius: 50px;
+    background-color: #F4F4F4;
+
+    .searchbox-wrapper {
+      display: flex;
+    }
+
+    .searchbox-field {
+      border: none;
+      box-shadow: none;
+      outline: 0 none;
+      background: transparent;
+      line-height: $line-height-base;
+      padding: $padding-base-vertical $padding-base-horizontal $padding-base-vertical ($padding-base-vertical + 16px);
+      flex: 1;
+      min-width: 220px;
+      border-radius: 100px;
+    }
+
+    .searchbox-btn {
+      border: none;
+      background-color: transparent;
+      opacity: 0.5;
+      box-shadow: none;
+      padding: 8px 8px 8px 8px;
+      flex-shrink: 0;
+
+      transition: $transition-time;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}

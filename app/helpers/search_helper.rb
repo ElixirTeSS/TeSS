@@ -1,3 +1,5 @@
+require 'base64'
+
 # The helper for searches
 module SearchHelper
 
@@ -29,12 +31,26 @@ module SearchHelper
     parameters.delete('page') #remove the page option if it exists
     html_options.reverse_merge!(title: value.to_s)
 
-    link_to parameters, html_options do
+    content = -> do
       if block_given?
         block.call
       else
         content_tag(:span, facet_title(name, value, html_options), class: 'facet-label') +
           content_tag(:span, "#{count}", class: 'facet-count')
+      end
+    end
+
+    if filter_limit_reached?
+      html_options[:class] = [html_options[:class], 'filter-limit-reached'].compact.join(' ')
+
+      content_tag(:span, html_options, &content)
+    else
+      link = url_for(parameters)
+
+      if TeSS::Config.obfuscate_filters
+        content_tag('span', html_options.merge('data-filter-link': Base64.urlsafe_encode64(link, padding: false)), &content)
+      else
+        link_to(link, html_options, &content)
       end
     end
   end
@@ -74,5 +90,10 @@ module SearchHelper
             Show fewer #{facet.humanize.pluralize.downcase}</span>
             <i class='glyphicon glyphicon-chevron-up pull-right toggle-#{facet}' style='display: none;'></i>
             ".html_safe
+  end
+
+  def filter_limit_reached?
+    current_user.nil? && @facet_params&.values && TeSS::Config.filter_limit &&
+      @facet_params.values.flatten.length >= TeSS::Config.filter_limit
   end
 end

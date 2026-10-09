@@ -32,7 +32,7 @@ module Ingestors
         # Instead of using the sitemap we use the events page.
         # The sitemap shows also past events, but the ical link for those does not work, so we can't parse them with the below code.
         url = 'https://www.openscience-maastricht.nl/events/'
-        Nokogiri::HTML5.parse(open_url(url.to_s, raise: true)).css('.eventname > a').each do |event_link|
+        Nokogiri::HTML5.parse(open_url(url.to_s, raise: true)).css('.events-table a').each do |event_link|
           begin
             event_url = event_link.attributes['href']
             event_page = Nokogiri::HTML5.parse(open_url(event_url, raise: true))

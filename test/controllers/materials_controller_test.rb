@@ -1798,4 +1798,101 @@ class MaterialsControllerTest < ActionController::TestCase
       assert_select '#space-info', count: 0
     end
   end
+
+  test 'displays warning when filter limit reached for anonymous users' do
+    with_settings(solr_enabled: true, filter_limit: 2) do
+      Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
+        get :index, params: { keywords: ['dancing', 'singing'] }
+
+        assert_response :success
+      end
+    end
+
+    assert_select 'div.alert', text: /Filter limit reached/
+    assert_select '.facet-option.filter-limit-reached'
+  end
+
+  test 'does not display filter limit warning for logged-in users' do
+    sign_in(@user)
+
+    with_settings(solr_enabled: true, filter_limit: 2) do
+      Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
+        get :index, params: { keywords: ['dancing', 'singing'] }
+
+        assert_response :success
+      end
+    end
+
+    assert_select 'div.alert', text: /Filter limit reached/, count: 0
+    assert_select '.facet-option.filter-limit-reached', count: 0
+  end
+
+  test 'throws error if filter limit exceeded for anonymous users' do
+    with_settings(solr_enabled: true, filter_limit: 2) do
+      Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
+        get :index, params: { keywords: ['dancing', 'singing', 'acrobatics'] }
+
+        assert_response :bad_request
+      end
+    end
+
+    assert_select '#error-message', text: /Filter limit reached/
+  end
+
+  test 'does not throw error if filter limit exceeded for logged-in users' do
+    sign_in(@user)
+
+    with_settings(solr_enabled: true, filter_limit: 2) do
+      Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
+        get :index, params: { keywords: ['dancing', 'singing', 'acrobatics'] }
+
+        assert_response :success
+      end
+    end
+
+    assert_select '#error-message', count: 0
+    assert_select 'div.alert', text: /Filter limit reached/, count: 0
+    assert_select '.facet-option.filter-limit-reached', count: 0
+  end
+
+  test 'does not throw error if filter limit exceeded for API requests' do
+    with_settings(solr_enabled: true, filter_limit: 2) do
+      Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
+        get :index, params: { keywords: ['dancing', 'singing', 'acrobatics'], format: :json_api }
+
+        assert_response :success
+        assert_not_nil assigns(:materials)
+        assert_valid_json_api_response
+        body = nil
+        assert_nothing_raised do
+          body = JSON.parse(response.body)
+        end
+
+        assert body['data'].any?
+        assert body['meta']['results-count'] > 0
+        assert_includes body['meta']['facets']['keywords'], 'acrobatics'
+        assert body['meta']['available-facets'].keys.any?
+        assert body['meta']['available-facets'].values.any?
+        assert body['links']['self'].include?('acrobatics')
+      end
+    end
+  end
+
+  test 'filters can be obfuscated' do
+    Material.stub(:search_and_filter, MockSearch.new(Material.all)) do
+      with_settings(solr_enabled: true, obfuscate_filters: false) do
+        get :index
+
+        assert_select 'a.facet-option[href=?]', materials_path(target_audience: 'Fish')
+        assert_select 'span.facet-option', count: 0
+      end
+
+      with_settings(solr_enabled: true, obfuscate_filters: true) do
+        get :index
+
+        assert_select 'a.facet-option[href=?]', materials_path(target_audience: 'Fish'), count: 0
+        assert_select 'span.facet-option[data-filter-link]'
+      end
+    end
+  end
 end

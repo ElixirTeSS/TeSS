@@ -1,0 +1,243 @@
+{
+  "created": "2026-03-18T12:40:23.436409+00:00",
+  "id": "3023615",
+  "links": {
+    "self": "https://videos.cern.ch/api/record/3023615"
+  },
+  "metadata": {
+    "$schema": "https://videos.cern.ch/schemas/records/videos/video/video-v1.0.0.json",
+    "_access": {
+      "update": [
+        "weblecture-service@cern.ch",
+        "webcast-team@cern.ch",
+        "cas-admin@cern.ch"
+      ]
+    },
+    "_project_id": "20c7e7fb421d49349498594271c5a92b",
+    "additional_descriptions": [
+      {
+        "description": "CAS - CERN Accelerator School",
+        "type": "SeriesInformation"
+      },
+      {
+        "description": "Intensity Limitations in Hadron Beams, 15 - 27 June 2025, Borovets, Bulgaria",
+        "type": "SeriesInformation"
+      }
+    ],
+    "alternate_identifiers": [
+      {
+        "scheme": "URL",
+        "value": "https://indico.cern.ch/event/1466612/contributions/6449173/"
+      }
+    ],
+    "category": "LECTURES",
+    "chapters": [
+      {
+        "seconds": 556,
+        "timestamp": "00:09:16",
+        "title": "Slide 2"
+      },
+      {
+        "seconds": 853,
+        "timestamp": "00:14:13",
+        "title": "Slide 3"
+      },
+      {
+        "seconds": 1025,
+        "timestamp": "00:17:05",
+        "title": "Slide 4"
+      },
+      {
+        "seconds": 1438,
+        "timestamp": "00:23:58",
+        "title": "Slide 5"
+      },
+      {
+        "seconds": 1469,
+        "timestamp": "00:24:29",
+        "title": "Slide 6"
+      },
+      {
+        "seconds": 1534,
+        "timestamp": "00:25:34",
+        "title": "Slide 7"
+      },
+      {
+        "seconds": 1566,
+        "timestamp": "00:26:06",
+        "title": "Slide 8"
+      },
+      {
+        "seconds": 1630,
+        "timestamp": "00:27:10",
+        "title": "Slide 9"
+      },
+      {
+        "seconds": 1648,
+        "timestamp": "00:27:28",
+        "title": "Slide 10"
+      },
+      {
+        "seconds": 1791,
+        "timestamp": "00:29:51",
+        "title": "Slide 11"
+      },
+      {
+        "seconds": 2396,
+        "timestamp": "00:39:56",
+        "title": "Slide 12"
+      },
+      {
+        "seconds": 2453,
+        "timestamp": "00:40:53",
+        "title": "Slide 13"
+      },
+      {
+        "seconds": 2487,
+        "timestamp": "00:41:27",
+        "title": "Slide 14"
+      },
+      {
+        "seconds": 2505,
+        "timestamp": "00:41:45",
+        "title": "Slide 15"
+      },
+      {
+        "seconds": 2679,
+        "timestamp": "00:44:39",
+        "title": "Slide 16"
+      },
+      {
+        "seconds": 2915,
+        "timestamp": "00:48:35",
+        "title": "Slide 17"
+      }
+    ],
+    "collections": [
+      "Lectures",
+      "Lectures::Video Lectures",
+      "Lectures::CERN Accelerator School"
+    ],
+    "contributors": [
+      {
+        "affiliations": [
+          "CERN"
+        ],
+        "email": "cas.news@cern.ch",
+        "ids": [
+          {
+            "source": "CERN",
+            "value": "44095"
+          }
+        ],
+        "name": "Noemi Caraban",
+        "role": "Creator"
+      },
+      {
+        "name": "cas.news@cern.ch",
+        "role": "ContactPerson"
+      },
+      {
+        "email": "no-reply@cern.ch",
+        "ids": [
+          {
+            "source": "cern",
+            "value": "9428695"
+          }
+        ],
+        "name": "Dorda, Ulrich",
+        "role": "Speaker"
+      }
+    ],
+    "copyright": {
+      "holder": "CERN",
+      "url": "https://copyright.web.cern.ch/",
+      "year": "2025"
+    },
+    "date": "2025-06-26",
+    "description": "After presenting the motivation for an Accelerator Driven System (ADS), the requirements on the accelerator are derived.\nUsing the MYRRHA project as example, the beam optics/dynamics design and operational concept of such an accelerator is discussed.\nFinally, the main technology choices and challenges are presented.\u003Cbr\u003E\u003Cbr\u003E00:00:00 Slide 1\u003Cbr\u003E\n00:09:16 Slide 2\u003Cbr\u003E\n00:14:13 Slide 3\u003Cbr\u003E\n00:17:05 Slide 4\u003Cbr\u003E\n00:23:58 Slide 5\u003Cbr\u003E\n00:24:29 Slide 6\u003Cbr\u003E\n00:25:34 Slide 7\u003Cbr\u003E\n00:26:06 Slide 8\u003Cbr\u003E\n00:27:10 Slide 9\u003Cbr\u003E\n00:27:28 Slide 10\u003Cbr\u003E\n00:29:51 Slide 11\u003Cbr\u003E\n00:39:56 Slide 12\u003Cbr\u003E\n00:40:53 Slide 13\u003Cbr\u003E\n00:41:27 Slide 14\u003Cbr\u003E\n00:41:45 Slide 15\u003Cbr\u003E\n00:44:39 Slide 16\u003Cbr\u003E\n00:48:35 Slide 17\u003Cbr\u003E",
+    "duration": "00:48:34",
+    "featured": false,
+    "keywords": [
+      {
+        "name": "Ulrich Dorda"
+      },
+      {
+        "name": "Beam cooling"
+      },
+      {
+        "name": "high-intensity beams"
+      },
+      {
+        "name": "beam quality"
+      },
+      {
+        "name": "hadron beams"
+      },
+      {
+        "name": "cooling techniques"
+      },
+      {
+        "name": "beam emittance"
+      },
+      {
+        "name": "stochastic cooling"
+      },
+      {
+        "name": "electron cooling"
+      },
+      {
+        "name": "ionization cooling"
+      },
+      {
+        "name": "Technology"
+      },
+      {
+        "name": "Topical"
+      },
+      {
+        "name": "CAS - CERN Accelerator School"
+      },
+      {
+        "name": "Intensity Limitations in Hadron Beams, 15 - 27 June 2025, Borovets, Bulgaria"
+      },
+      {
+        "name": "CERN Accelerator School"
+      },
+      {
+        "name": "1466612c58"
+      }
+    ],
+    "language": "en",
+    "license": [
+      {
+        "credit": "CERN",
+        "license": "CERN",
+        "url": "https://copyright.web.cern"
+      }
+    ],
+    "publication_date": "2026-03-18",
+    "recid": 3023615,
+    "related_identifiers": [
+      {
+        "identifier": "1466612",
+        "relation_type": "IsPartOf",
+        "scheme": "Indico"
+      },
+      {
+        "identifier": "https://indico.cern.ch/event/1466612/",
+        "relation_type": "IsPartOf",
+        "scheme": "URL"
+      }
+    ],
+    "report_number": [
+      "LECTURES-VIDEO-2026-2754-001"
+    ],
+    "title": {
+      "title": "HI for Accelerator Driven Systems"
+    },
+    "type": "VIDEO",
+    "vr": false
+  },
+  "updated": "2026-03-18T12:40:34.981245+00:00"
+}

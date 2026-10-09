@@ -1,21 +1,25 @@
 // executed for space form
 function show_private_groups() {
-    let checkbox = document.getElementById("space_is_private")
-    let container = document.getElementById("groups_container")
+    let checkbox = document.getElementById("space_is_private");
+    let container = document.getElementById("groups_container");
+
+    if (!checkbox || !container) {
+        return;
+    }
 
     const toggleGroups = () => {
         if (checkbox && checkbox.checked) {
-            container.style.display = "block"
+            container.style.display = "block";
         } else {
-            container.style.display = "none"
+            container.style.display = "none";
         }
     }
 
     if (checkbox) {
-        checkbox.addEventListener("change", toggleGroups)
+        checkbox.addEventListener("change", toggleGroups);
     }
 
-    toggleGroups()
+    toggleGroups();
 }
 
 window.addEventListener('turbolinks:load', function() {

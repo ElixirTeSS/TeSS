@@ -1,5 +1,11 @@
 # OpenID Connect configuration for LS Login nee Elixir AAI
 unless Rails.application.config.secrets.dig(:elixir_aai, :client_id).blank?
+  redirect_uris = Array(
+    Rails.application.config.secrets.elixir_aai[:redirect_uri].presence ||
+      # Url helper user_elixir_aai_omniauth_callback_url can not be used here
+      "#{TeSS::Config.base_url.chomp('/')}/users/auth/elixir_aai/callback"
+  )
+
   Devise.omniauth :openid_connect, {
     logo: 'ls-login.png',
     name: :elixir_aai,
@@ -7,11 +13,12 @@ unless Rails.application.config.secrets.dig(:elixir_aai, :client_id).blank?
     response_type: :code,
     issuer: 'https://login.aai.lifescience-ri.eu/oidc/',
     discovery: true,
+    strategy_class: OmniAuth::Strategies::HostRedirectOpenIDConnect,
+    redirect_uris: redirect_uris,
     client_options: {
       identifier: Rails.application.config.secrets.elixir_aai[:client_id],
       secret: Rails.application.config.secrets.elixir_aai[:secret],
-      # Wish I could use the url helper for this! (user_elixir_aai_omniauth_callback_url)
-      redirect_uri: "#{TeSS::Config.base_url.chomp('/')}/users/auth/elixir_aai/callback",
+      redirect_uri: redirect_uris.first,
     }
   }
 end
