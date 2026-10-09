@@ -1198,7 +1198,7 @@ en:
       description: |
         Groups is a feature which for now is used only to manage access of private spaces.
         A user being part of a group has access to every private space which requires the group.
-        Each group has multiple owners. A owner can add and remove people to the group.
+        Each group has multiple owners. An owner can add and remove people to the group.
     collaborators:
       title: What are %{attribute}?
       description: |
