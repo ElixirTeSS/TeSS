@@ -2,6 +2,15 @@
   <%# SIDEBAR %>
   <div class="collapsing-sidebar" id="sidebar">
     <%= render(partial: 'users/partials/user_info', locals: { user: @space.user }) if current_user.try(:is_admin?) %>
+
+    <% if @space.administrators.any? %>
+      <h4 class="nav-heading"><%= Space.human_attribute_name(:administrators) %></h4>
+      <% @space.administrators.each do |admin| %>
+        <div class="nav-block">
+          <%= link_to admin.name, admin %>
+        </div>
+      <% end %>
+    <% end %>
   </div>
 
   <div id="content">
@@ -29,19 +38,13 @@
       <div class="my-3">
         <%= display_attribute(@space, :url) %>
 
-        <% if @space.administrators.any? %>
-          <p><div class="text-primary">Administrators:</div> <%= @space.administrators.pluck(:username).join(", ") %></p>
-        <% end %>
-
-        <% if @space.is_private %>
-          <div style="display: inline;">
-            <span class="text-primary">Groups authorized:</span> <%= @space.groups.pluck(:title).join(", ") %>
-          </div>
-        <% end %>
-
         <div class="description">
           <%= render_markdown @space.description %>
         </div>
+
+        <% if @space.is_private %>
+          <%= display_attribute(@space, :groups) { |g| g.map(&:title).join(', ') } %>
+        <% end %>
       </div>
     </div>
 
