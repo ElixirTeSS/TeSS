@@ -3,6 +3,17 @@ require 'test_helper'
 class AboutControllerTest < ActionController::TestCase
   include Devise::Test::ControllerHelpers
 
+  setup do
+    @links = {
+      'enabled' => true,
+      'tess' => 'https://elixirtess.github.io/docs/',
+      'registering' => 'https://elixirtess.github.io/docs/content/intro-content/',
+      'learning_paths' => 'https://elixirtess.github.io/docs/content/learning-paths/',
+      'developers' => 'https://elixirtess.github.io/docs/developers/code-data/',
+      'us' => 'https://elixirtess.github.io/docs/developers/credit/#cite-us'
+    }
+  end
+
   test 'should get first about page' do
     get :tess
     assert_response :success
@@ -128,30 +139,21 @@ class AboutControllerTest < ActionController::TestCase
     end
   end
 
-  test 'should redirect about pages to external link when configured' do
-    site_settings = TeSS::Config.site.dup
-    site_settings['about_us_link'] = 'https://example.org'
+  test 'redirects to configured external links when enabled' do
+    with_settings({ 'site' => { 'external_about_links' => @links } }) do
+      @links.except('enabled').each do |action, expected_url|
+        get action.to_sym
+        assert_redirected_to expected_url
+      end
+    end
+  end
 
-    with_settings(site: site_settings) do
+  test 'does not redirect when external links are disabled' do
+    disabled_config = { 'site' => { 'external_about_links' => @links.merge('enabled' => false) } }
+
+    with_settings(disabled_config) do
       get :tess
-      assert_response :redirect
-      assert_redirected_to 'https://example.org/'
-
-      get :registering
-      assert_response :redirect
-      assert_redirected_to 'https://example.org/content/intro-content/'
-
-      get :learning_paths
-      assert_response :redirect
-      assert_redirected_to 'https://example.org/content/learning-paths/'
-
-      get :developers
-      assert_response :redirect
-      assert_redirected_to 'https://example.org/developers/code-data/'
-
-      get :us
-      assert_response :redirect
-      assert_redirected_to 'https://example.org/overview/about/'
+      assert_response :success
     end
   end
 end
