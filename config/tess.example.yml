@@ -131,6 +131,13 @@ default: &default
     directory_tabs: ['trainers', 'content_providers', 'nodes', 'spaces']
     # The order in with the 'about us' tabs appear
     about_us_tab_order: ['tess_club', 'contact', 'team', 'funding', 'acknowledgements', 'cite']
+    external_about_links:
+      enabled: false
+      tess: https://elixirtess.github.io/docs/
+      registering: https://elixirtess.github.io/docs/content/intro-content/
+      learning_paths: https://elixirtess.github.io/docs/content/learning-paths/
+      developers: https://elixirtess.github.io/docs/developers/code-data/
+      us: https://elixirtess.github.io/docs/developers/credit/#cite-us
     n_provider_ids: 5
     calendar_event_maxlength: 5
     content_provider_grid_long: true # true for full width in grid, false for short

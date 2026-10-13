@@ -3,6 +3,17 @@ require 'test_helper'
 class AboutControllerTest < ActionController::TestCase
   include Devise::Test::ControllerHelpers
 
+  setup do
+    @links = {
+      'enabled' => true,
+      'tess' => 'https://elixirtess.github.io/docs/',
+      'registering' => 'https://elixirtess.github.io/docs/content/intro-content/',
+      'learning_paths' => 'https://elixirtess.github.io/docs/content/learning-paths/',
+      'developers' => 'https://elixirtess.github.io/docs/developers/code-data/',
+      'us' => 'https://elixirtess.github.io/docs/developers/credit/#cite-us'
+    }
+  end
+
   test 'should get first about page' do
     get :tess
     assert_response :success
@@ -124,6 +135,24 @@ class AboutControllerTest < ActionController::TestCase
   test 'should access learning paths help directly even if feature disabled' do
     with_settings(feature: { learning_paths: false }) do
       get :learning_paths
+      assert_response :success
+    end
+  end
+
+  test 'redirects to configured external links when enabled' do
+    with_settings({ 'site' => { 'external_about_links' => @links } }) do
+      @links.except('enabled').each do |action, expected_url|
+        get action.to_sym
+        assert_redirected_to expected_url
+      end
+    end
+  end
+
+  test 'does not redirect when external links are disabled' do
+    disabled_config = { 'site' => { 'external_about_links' => @links.merge('enabled' => false) } }
+
+    with_settings(disabled_config) do
+      get :tess
       assert_response :success
     end
   end
