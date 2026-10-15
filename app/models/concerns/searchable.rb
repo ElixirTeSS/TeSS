@@ -19,6 +19,15 @@ module Searchable
       @search_and_facet_keys ||= ([:q] | facet_keys_with_multiple)
     end
 
+    def user_can_curate_unapproved_in_space?(user, space)
+      return false unless user
+      return true if user.is_admin?
+      return true if space && !space.default? && user.has_space_role?(space, 'admin')
+      return true if user.is_curator? && (space.nil? || space.default? || !space.is_private)
+
+      false
+    end
+
     # Searches and filters resources of the including model using Solr (via Sunspot),
     # applying space-based visibility, facets, sorting and pagination in a single query.
     #
@@ -58,6 +67,13 @@ module Searchable
       if has_space && (space.nil? || space.default?)
         inaccessible_space_ids = Space.where(is_private: true).pluck(:id)
       end
+
+      filter_material_approval = name == 'Material' &&
+        TeSS::Config.feature['material_under_admin_approval'] &&
+        !user_can_curate_unapproved_in_space?(user, space)
+      filter_event_approval = name == 'Event' &&
+        TeSS::Config.feature['event_under_admin_approval'] &&
+        !user_can_curate_unapproved_in_space?(user, space)
 
       search(include: includes) do
         if has_space
@@ -138,16 +154,14 @@ module Searchable
           end
         end
 
-        # Filters by approval_status for unauthenticated requests (regardless of whether the feature is enabled or disabled) 
-        if name == 'Material' && TeSS::Config.feature['material_under_admin_approval'] && !(user&.is_admin? || user&.is_curator?)
+        if filter_material_approval
           any_of do
             with(:approval_status, I18n.t('materials.approval_status.approved'))
             with(:user_id, user.id) if user.present?
           end
         end
 
-        # Filters by approval_status for unauthenticated requests (regardless of whether the feature is enabled or disabled) 
-        if name == 'Event' && TeSS::Config.feature['event_under_admin_approval'] && !(user&.is_admin? || user&.is_curator?)
+        if filter_event_approval
           any_of do
             with(:approval_status, I18n.t('events.approval_status.approved'))
             with(:user_id, user.id) if user.present?

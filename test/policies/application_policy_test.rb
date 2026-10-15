@@ -38,6 +38,19 @@ class ApplicationPolicyTest < ActiveSupport::TestCase
     end
   end
 
+  test 'curator with access to a private space cannot see another users unapproved resource' do
+    with_settings(feature: { spaces:true, material_under_admin_approval: true }) do
+      group = groups(:one)
+      @private_space.groups << group
+      group.users << @curator
+
+      Space.with_current_space(@private_space) do
+        assert policy_for(@curator, @private_space).shown?
+        refute policy_for(@curator, @requested_private_material).shown?
+      end
+    end
+  end
+
   test 'record owner can see their own unapproved resource' do
     with_settings(feature: { spaces:true, material_under_admin_approval: true }) do
       assert policy_for(@regular_user, @requested_material).shown?

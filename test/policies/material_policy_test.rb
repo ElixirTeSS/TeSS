@@ -11,6 +11,8 @@ class MaterialPolicyTest < ActiveSupport::TestCase
 
     @approved = materials(:approved_material)
     @requested = materials(:requested_material)
+    @requested_private = materials(:requested_private_material)
+    @private_space = spaces(:private_space)
   end
 
   def resolve_scope(user)
@@ -60,6 +62,26 @@ class MaterialPolicyTest < ActiveSupport::TestCase
 
       assert_includes results, @approved
       assert_includes results, @requested
+      refute_includes results, @requested_private
+    end
+  end
+
+  test 'space admin curator scope includes requested resources in their private space' do
+    with_settings(feature: { material_under_admin_approval: true }) do
+      @curator.space_roles.create!(space: @private_space, key: 'admin')
+
+      results = resolve_scope(@curator)
+
+      assert_includes results, @requested_private
+    end
+  end
+
+  test 'Solr index permits private-space curation only to space admins' do
+    with_settings(feature: { material_under_admin_approval: true }) do
+      refute Material.user_can_curate_unapproved_in_space?(@curator, @private_space)
+
+      @curator.space_roles.create!(space: @private_space, key: 'admin')
+      assert Material.user_can_curate_unapproved_in_space?(@curator, @private_space)
     end
   end
 

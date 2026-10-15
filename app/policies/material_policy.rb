@@ -2,7 +2,7 @@ class MaterialPolicy < ScrapedResourcePolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
       return scope unless TeSS::Config.feature['material_under_admin_approval']
-      return scope if user&.is_admin? || user&.is_curator?
+      return scope if user&.is_admin?
 
       approved_scope = scope.approved
       return approved_scope unless user
@@ -12,6 +12,10 @@ class MaterialPolicy < ScrapedResourcePolicy
       if scope.reflect_on_association(:space)
         admin_space_ids = user.space_roles.where(key: 'admin').pluck(:space_id)
         user_conditions = user_conditions.or(scope.where(space_id: admin_space_ids)) if admin_space_ids.any?
+        if user.is_curator?
+          public_space_ids = Space.where(is_private: false).pluck(:id)
+          user_conditions = user_conditions.or(scope.where(space_id: [nil, *public_space_ids]))
+        end
       end
 
       approved_scope.or(user_conditions)

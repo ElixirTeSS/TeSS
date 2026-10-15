@@ -112,7 +112,7 @@ class ApplicationPolicy
   #   - Approved records follow standard space accessibility rules.
   #   - Unapproved records require BOTH space accessibility AND one of:
   #     * Site administrator privileges;
-  #     * Curator privileges;
+  #     * Curator privileges for public/default-space records;
   #     * Record ownership (@record.user_id == @user.id);
   #     * Space administrator privileges for the record's space.
   #
@@ -235,7 +235,7 @@ class ApplicationPolicy
 
     space = @record.respond_to?(:space) ? @record.space : @space
 
-    return true if @user.is_curator?                                            # Resource can be shown to a general curator
+    return true if @user.is_curator? && (space.nil? || !space.is_private)      # Curators can see unapproved public resources
     return true if @record.respond_to?(:user_id) && @record.user_id == @user.id # Resource can be shown to its owner
     return true if space.present? && @user&.has_space_role?(space, 'admin')     # Resource can be shown to its space admin
   end
