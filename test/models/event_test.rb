@@ -897,29 +897,32 @@ class EventTest < ActiveSupport::TestCase
     assert_includes @event.instructors.map(&:name), person2.name
   end
 
-  # KR: I gave up on both next tests – they pass with the fixtures
-  # KR: HOWEVER
-  # KR: If I were to create the fixtures, it would fail the tests in event.rb
-  # KR:   should provide an RSS file
-  # KR:   should include parameters in RSS file
-  # KR: because of this
-  # KR:   assert_equal Event.count, rss_events.items.count
-  # KR:   33 vs 30 # at the time I was doing it
-  # KR: something with sunspot or I don't know. I tried the most I could.
-  
-  # test '.approved scope returns only approved event' do
-  #   approved = Event.approved
-  #   assert_includes approved, @approved_event
-  #   refute_includes approved, @not_approved_event
-  #   refute_includes approved, @requested_event
-  # end
+  test '.approved scope returns only approved event' do
+    e1 = events(:one)
+    e2 = events(:two)
+    e3 = events(:month_long_event)
 
-  # test '.approval_requested scope returns only requested event' do
-  #   requested = Event.approval_requested
-  #   assert_includes requested, @requested_event
-  #   refute_includes requested, @approved_event
-  #   refute_includes requested, @not_approved_event
-  # end
+    e1.update!(approval_status: :approved)
+    e2.update!(approval_status: :requested)
+    e3.update!(approval_status: :not_approved)
+
+    approved = Event.approved
+    assert_includes approved, e1
+    refute_includes approved, e2
+    refute_includes approved, e3
+  end
+
+  test '.approval_requested scope returns only requested event' do
+    e1 = events(:one)
+    e2 = events(:two)
+
+    e1.update!(approval_status: :requested)
+    e2.update!(approval_status: :approved)
+
+    requested = Event.approval_requested
+    assert_includes requested, e1
+    refute_includes requested, e2
+  end
 
   test 'approval status predicate methods work correctly' do
     @event.update!(approval_status: :not_approved)

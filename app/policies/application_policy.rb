@@ -219,7 +219,14 @@ class ApplicationPolicy
   end
 
   def approval_enabled?
-    TeSS::Config.feature['material_under_admin_approval'] || TeSS::Config.feature['event_under_admin_approval']
+    case @record
+    when Material
+      TeSS::Config.feature['material_under_admin_approval']
+    when Event
+      TeSS::Config.feature['event_under_admin_approval']
+    else
+      false
+    end
   end
 
   # Who can still access the resource when it is unapproved?

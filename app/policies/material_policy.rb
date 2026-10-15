@@ -1,4 +1,23 @@
 class MaterialPolicy < ScrapedResourcePolicy
+  class Scope < ApplicationPolicy::Scope
+    def resolve
+      return scope unless TeSS::Config.feature['material_under_admin_approval']
+      return scope if user&.is_admin? || user&.is_curator?
+
+      approved_scope = scope.approved
+      return approved_scope unless user
+
+      user_conditions = scope.where(user_id: user.id)
+
+      if scope.reflect_on_association(:space)
+        admin_space_ids = user.space_roles.where(key: 'admin').pluck(:space_id)
+        user_conditions = user_conditions.or(scope.where(space_id: admin_space_ids)) if admin_space_ids.any?
+      end
+
+      approved_scope.or(user_conditions)
+    end
+  end
+
   # Determines whether the record should be visible to the current user,
   # considering space privacy and resource approval status.
   def show?

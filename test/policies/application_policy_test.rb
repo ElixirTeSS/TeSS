@@ -86,11 +86,12 @@ class ApplicationPolicyTest < ActiveSupport::TestCase
 
   test 'resolve_curatable returns only assigned space records for space admin' do
     with_settings(feature: { spaces:true, material_under_admin_approval: true }) do
+      @private_space_owner.space_roles.create!(space: @private_space, key: 'admin')
       context = Struct.new(:user).new(@private_space_owner)
       scope = ApplicationPolicy::Scope.new(context, Material).resolve_curatable
-
+      assert scope.exists?(space_id: @private_space.id)
       scope.each do |material|
-        assert_equal @space.id, material.space_id
+        assert_equal @private_space.id, material.space_id
       end
     end
   end

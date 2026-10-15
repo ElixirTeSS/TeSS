@@ -158,6 +158,11 @@ class EventsController < ApplicationController
     @event.user = current_user
     @event.space = current_space
 
+    # apply approval_status from params only if the built record's policy allows it
+    if params[:event].present? && params[:event].key?(:approval_status) && policy(@event).approve?
+      @event.approval_status = params[:event][:approval_status]
+    end
+
     respond_to do |format|
       if @event.save
         @event.create_activity :create, owner: current_user
@@ -175,7 +180,7 @@ class EventsController < ApplicationController
   def update
     authorize @event
     respond_to do |format|
-      if @event.update(event_params)
+      if @event.update(event_params(@event))
         @event.create_activity(:update, owner: current_user) if @event.log_update_activity?
         redirect_path = params[:redirect_to].presence || @event
         format.html { redirect_to redirect_path, notice: 'Event was successfully updated.' }
@@ -253,7 +258,9 @@ class EventsController < ApplicationController
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
-  def event_params
+  # When a record is provided, gate approval-specific fields using the record-level policy (policy(record).approve?)
+  # For create flows where the record is not yet built, approval fields are applied explicitly after building the record.
+  def event_params(record = nil)
     permitted = [:external_id, :title, :subtitle, :url, :organizer, :last_scraped, :scraper_record,
                   :description, { scientific_topic_names: [] }, { scientific_topic_uris: [] },
                   { operation_names: [] }, { operation_uris: [] }, { event_types: [] },
@@ -268,7 +275,11 @@ class EventsController < ApplicationController
                   external_resources: %i[url title], material_ids: [],
                   llm_interaction_attributes: %i[id scrape_or_process model prompt input output needs_processing _destroy],
                   locked_fields: [], instructors: [:name, :orcid], contributors: [:name, :orcid]]
-    permitted << :approval_status if User.current_user&.can_approve_resources?
+
+    # Only permit approval_status when a record is present and the record-level policy allows approval
+    if record && policy(record).approve?
+      permitted << :approval_status
+    end
 
     params.require(:event).permit(permitted)
   end

@@ -97,6 +97,11 @@ class MaterialsController < ApplicationController
     @material.user = current_user
     @material.space = current_space
 
+    # apply approval_status from params only if the built record's policy allows it
+    if params[:material].present? && params[:material].key?(:approval_status) && policy(@material).approve?
+      @material.approval_status = params[:material][:approval_status]
+    end
+
     respond_to do |format|
       if @material.save
         @material.create_activity :create, owner: current_user
@@ -114,7 +119,7 @@ class MaterialsController < ApplicationController
   def update
     authorize @material
     respond_to do |format|
-      if @material.update(material_params)
+      if @material.update(material_params(@material))
         @material.create_activity(:update, owner: current_user) if @material.log_update_activity?
         redirect_path = params[:redirect_to].presence || @material
         format.html { redirect_to redirect_path, notice: 'Material was successfully updated.' }
@@ -183,7 +188,7 @@ class MaterialsController < ApplicationController
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
-  def material_params
+  def material_params(record = nil)
     permitted = [:id, :title, :url, :contact, :description, :short_description,
                   :long_description, :doi, :licence,
                   :last_scraped, :scraper_record, :remote_created_date, :remote_updated_date,
@@ -200,7 +205,11 @@ class MaterialsController < ApplicationController
                   external_resources_attributes: %i[id url title _destroy],
                   external_resources: %i[url title],
                   event_ids: [], locked_fields: []]
-    permitted << :approval_status if User.current_user&.can_approve_resources?
+
+    # Only permit approval_status when a record is present and the record-level policy allows approval
+    if record && policy(record).approve?
+      permitted << :approval_status
+    end
 
     params.require(:material).permit(permitted)
   end

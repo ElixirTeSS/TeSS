@@ -6,6 +6,11 @@ class CuratorController < ApplicationController
     'events'    => Event
   }.freeze
 
+  APPROVAL_FEATURE_FLAGS = {
+    'materials' => 'material_under_admin_approval',
+    'events'    => 'event_under_admin_approval'
+  }.freeze
+
   before_action :check_curator
   before_action :set_breadcrumbs, :only => [:topic_suggestions]
 
@@ -64,13 +69,23 @@ class CuratorController < ApplicationController
     @status = params[:status].presence || 'requested'
     @type = params[:type].presence || 'all'
 
-    target_classes = @type == 'all' ? CURATABLE_TYPES.values : [CURATABLE_TYPES[@type]].compact
-    records = target_classes.flat_map { |klass| fetch_curatable_records(klass) }
+    target_classes = @type == 'all' ? enabled_curatable_classes : [enabled_curatable_types[@type]].compact
+    
+    page = (params[:page] || 1).to_i
+    per_page = (params[:per_page] || 20).to_i
+    fetch_limit = page * per_page
+
+    # Total count across enabled classes
+    total_count = target_classes.sum { |klass| fetch_curatable_records(klass).count }
+
+    # Bounded fetch to prevent memory spikes on massive queues
+    records = target_classes.flat_map do |klass|
+      fetch_curatable_records(klass).order(updated_at: :desc).limit(fetch_limit).to_a
+    end
+
     sorted_records = records.sort_by(&:updated_at).reverse
 
-    page = params[:page] || 1
-    per_page = params[:per_page] || 20
-    @resources = WillPaginate::Collection.create(page, per_page, sorted_records.size) do |pager|
+    @resources = WillPaginate::Collection.create(page, per_page, total_count) do |pager|
       pager.replace(sorted_records[pager.offset, pager.per_page] || [])
     end
 
@@ -82,11 +97,11 @@ class CuratorController < ApplicationController
     type = params[:type].presence || 'all'
     action = params[:approve_action]
     new_status = action == 'reject' ? 'not_approved' : 'approved'
-    target_classes = type == 'all' ? CURATABLE_TYPES.values : [CURATABLE_TYPES[type]].compact
+    target_classes = type == 'all' ? enabled_curatable_classes : [enabled_curatable_types[type]].compact
 
     updated_count = 0
     target_classes.each do |klass|
-      fetch_curatable_records(klass).each do |resource|
+      fetch_curatable_records(klass).find_each do |resource|
         updated_count += 1 if resource.update(approval_status: new_status)
       end
     end
@@ -96,6 +111,14 @@ class CuratorController < ApplicationController
   end
 
   private
+
+  def enabled_curatable_types
+    CURATABLE_TYPES.select { |type, _| TeSS::Config.feature[APPROVAL_FEATURE_FLAGS[type]] }
+  end
+
+  def enabled_curatable_classes
+    enabled_curatable_types.values
+  end
 
   def action_count_for(action)
     return PublicActivity::Activity.where(key: action).group_by{|logs| logs.owner}.sort_by{|user, logs| -logs.count}.map{|user,logs| [user, logs.count]}.to_h
@@ -132,7 +155,7 @@ class CuratorController < ApplicationController
   end
 
   def recent_resource_approvals
-    activity_ids = CURATABLE_TYPES.values.flat_map do |klass|
+    activity_ids = enabled_curatable_classes.flat_map do |klass|
       allowed_ids = ApplicationPolicy::Scope.new(pundit_user, klass).resolve_curatable.pluck(:id)
       key = "#{klass.name.underscore}.approval_status_changed"
       PublicActivity::Activity.where(trackable_type: klass.name, trackable_id: allowed_ids, key: key).pluck(:id)
