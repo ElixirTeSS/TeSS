@@ -23,7 +23,7 @@ class EventsControllerTest < ActionController::TestCase
     @mandatory_fields = { online: true, start: @event.start, end: @event.end, organizer: @event.organizer,
                           host_institutions: @event.host_institutions, timezone: @event.timezone,
                           contact: @event.contact, eligibility: @event.eligibility }
-  end
+end
 
   # Tests
   # INDEX, NEW, EDIT, CREATE, SHOW, BREADCRUMBS, TABS, API CHECKS
@@ -1718,5 +1718,60 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :success
 
     assert_select '#origin-info a[href=?]', uri
+  end
+
+  test "should request approval when event is not approved" do
+    sign_in users(:admin)
+    with_settings(feature: { event_under_admin_approval: true }) do
+      assert_changes -> { @event.reload.approval_status }, to: :requested do
+        post :request_approval, params: {
+          id: @event.id
+        }
+      end
+      assert_redirected_to event_path(@event)
+      assert_equal 'Approval request was sent successfully.', flash[:notice]
+    end
+  end
+
+  test "should not request approval and alert if already requested" do
+    sign_in users(:admin)
+    @event.update!(approval_status: :requested)
+
+    with_settings(feature: { event_under_admin_approval: true }) do
+      assert_no_changes -> { @event.approval_status } do
+        post :request_approval, params: {
+          id: @event.id
+        }
+      end
+      assert_redirected_to event_path(@event)
+      assert_equal 'Approval request has already been submitted.', flash[:error]
+    end
+  end
+
+  test "should not request approval and alert if already approved" do
+    sign_in users(:admin)
+    @event.update!(approval_status: :approved)
+
+    with_settings(feature: { event_under_admin_approval: true }) do
+      assert_no_changes -> { @event.approval_status } do
+        post :request_approval, params: {
+          id: @event.id
+        }
+      end
+      assert_redirected_to event_path(@event)
+      assert_equal 'Already approved.', flash[:error]
+    end
+  end
+
+  test "should deny request_approval for unauthorized users" do
+    with_settings(feature: { event_under_admin_approval: true }) do
+      assert_no_changes -> { @event.reload.approval_status } do
+        post :request_approval, params: {
+          id: @event.id
+        }
+      end
+      assert_response :found
+      assert_equal :not_approved, @event.reload.approval_status
+    end
   end
 end

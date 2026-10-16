@@ -169,4 +169,23 @@ module MaterialsHelper
     tags << '&hellip;'.html_safe if limit_exceeded
     safe_join(tags, ' ')
   end
+
+  def approval_options_for_select_material
+    Material::APPROVAL_STATUS.values.map { |status| [t("materials.approval_status.#{status}"), status] }
+  end
+
+  def material_enabled_badge(enabled)
+    content_tag(:span, enabled ? 'Enabled' : 'Disabled', class: "label label-#{enabled ? 'success' : 'danger'}")
+  end
+
+  def material_approval_badge(status)
+    case status.to_sym
+    when :not_approved
+      content_tag(:span, t("materials.approval_status.#{status}"), class: 'label label-danger')
+    when :requested
+      content_tag(:span, t("materials.approval_status.#{status}"), class: 'label label-warning')
+    when :approved
+      content_tag(:span, t("materials.approval_status.#{status}"), class: 'label label-success')
+    end
+  end
 end

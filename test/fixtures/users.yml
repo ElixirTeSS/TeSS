@@ -184,3 +184,9 @@ other_owner:
   email: 'otherboss@example.com'
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
   confirmed_at: <%= Time.zone.now %>
+
+private_space_owner:
+  username: 'private_boss'
+  email: 'privateboss@example.com'
+  encrypted_password: <%= Devise::Encryptor.digest(User, '12345678') %>
+  confirmed_at: <%= Time.zone.now %>

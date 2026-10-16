@@ -3,6 +3,7 @@ require 'i18n_data'
 # The core application helper
 module ApplicationHelper
   IGNORED_FILTERS = %w[user].freeze
+  CURATION_FILTERS = %w[approval_status].freeze # add here the attributes shown as filters to be hidden from users but not from admin and curators
 
   # def bootstrap_class_for flash_type
   #   { success: "alert-success", error: "alert-danger", alert: "alert-warning", notice: "alert-info" }[flash_type] || flash_type.to_s
@@ -31,6 +32,8 @@ module ApplicationHelper
     check: { icon: 'fa-check', message: 'This resource is enabled' },
     cross: { icon: 'fa-times', message: 'This resource has been disabled' },
     exchanged: { icon: 'fa-exchange', message: 'This resource originated from another TeSS registry' },
+    approval_requested: { icon: 'fa-eye', message: 'This resource has been requested an approval' },
+    not_approved: { icon: 'fa-ban', message: 'This resource has been rejected by an admin' }
   }.freeze
 
   # Countries that have priority in the country selection menu. Using ISO 3166-1 Alpha2 code.
@@ -84,6 +87,18 @@ module ApplicationHelper
     return unless record.edit_suggestion
 
     "<span class='fresh-icon pull-right'>#{icon_for(:suggestion, size)}</span>".html_safe
+  end
+
+  def approval_requested_icon(record, size = nil)
+    return unless record.approval_requested?
+
+    "<span class='fresh-icon pull-right'>#{icon_for(:approval_requested, size)}</span>".html_safe
+  end
+
+  def not_approved_icon(record, size = nil)
+    return unless record.not_approved?
+
+    "<span class='fresh-icon pull-right'>#{icon_for(:not_approved, size)}</span>".html_safe
   end
 
   def event_status_icon(event, size = nil)
@@ -647,12 +662,11 @@ module ApplicationHelper
   end
 
   def available_facets(resources)
-    if (selected_facets = TeSS::Config.solr_facets&.fetch(controller_name, nil))
-      indices = selected_facets.map { |name| resources.facets.index { |f| f.field_name.to_s == name } }.compact
-      resources.facets.values_at(*indices)
-    else
-      resources.facets
-    end.select { |f| f.rows.any? && !IGNORED_FILTERS.include?(f.field_name.to_s) }
+    filter_facets(resources) { |name| !IGNORED_FILTERS.include?(name) && !CURATION_FILTERS.include?(name) }
+  end
+
+  def curation_facets(resources)
+    filter_facets(resources) { |name| CURATION_FILTERS.include?(name) }
   end
 
   def render_language_name(code)
@@ -742,4 +756,22 @@ module ApplicationHelper
       [[prefix, value]]
     end
   end
+
+  def filter_facets(resources)
+    raw_facets = resources.facets
+    selected_names = TeSS::Config.solr_facets&.fetch(controller_name, nil)
+
+    facets = if selected_names
+              indices = selected_names.map { |name| raw_facets.index { |f| f.field_name.to_s == name } }.compact
+              raw_facets.values_at(*indices)
+            else
+              raw_facets
+            end
+
+    facets.select do |f|
+      name = f.field_name.to_s
+      f.rows.any? && yield(name)
+    end
+  end
+
 end
