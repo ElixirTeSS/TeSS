@@ -175,6 +175,6 @@ class Source < ApplicationRecord
 
   def loggable_changes
     super - %w[approval_status log records_read records_written resources_added resources_updated resources_rejected
-               content_providers_added content_providers_rejected finished_at]
+               content_providers_added content_providers_updated content_providers_rejected finished_at]
   end
 end

@@ -4,12 +4,12 @@ module Ingestors
 
     def add_material(material)
       if material.is_a?(Hash)
-        provider = material[:content_provider]
+        providers = material[:providers]
         c = MaterialsController.new
         c.params = { material: material }
         material = OpenStruct.new(c.send(:material_params))
+        material.providers = providers
       end
-      material.content_provider = provider if provider
       material = handle_auto_parsing(material)
       material = handle_controlled_vocabulary(material)
       @materials << material unless material.nil?

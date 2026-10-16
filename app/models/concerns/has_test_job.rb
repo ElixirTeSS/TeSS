@@ -39,12 +39,18 @@ module HasTestJob
       klass = type.classify.constantize
       controller = "#{klass.name.pluralize}Controller".constantize
       c = controller.new
-      c.define_singleton_method(:current_user) { nil } if klass == ContentProvider
+      c.define_singleton_method(:current_user) { nil } # user normally comes from request
       c.params = { klass.model_name.param_key => params }
       safe_params = c.send("#{klass.model_name.param_key}_params")
+
       if klass == ContentProvider
-        resource = klass.new(safe_params.merge(extras.except(:content_provider)))
-        return ContentProvider.check_exists(resource) || resource
+        resource = klass.new(safe_params.merge(extras))
+        existing = ContentProvider.check_exists(resource)
+        if existing
+          existing.assign_attributes(safe_params.reject { |_field, value| value.blank? })
+          return existing
+        end
+        return resource
       end
 
       provider_params = c.params[klass.model_name.param_key][:content_provider]

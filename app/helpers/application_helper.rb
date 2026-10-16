@@ -207,10 +207,10 @@ module ApplicationHelper
     end
   end
 
-  # As `get_image_url_for`, but falls back to the remote image URL for unsaved
-  # records, whose images Paperclip has not written to storage yet.
+  # Preview new image URLs before Paperclip writes their attachments to storage.
   def display_image_url_for(resource)
-    if !resource.persisted? && resource.respond_to?(:image_url) && resource.image_url.present?
+    if resource.respond_to?(:image_url) && resource.image_url.present? &&
+       (!resource.persisted? || resource.image_url_changed?)
       resource.image_url
     else
       get_image_url_for(resource)

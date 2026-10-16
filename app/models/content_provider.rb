@@ -10,6 +10,7 @@ class ContentProvider < ApplicationRecord
   include HasFriendlyId
   include LockableFields
   include CurationQueue
+  include Scrapable
 
   has_many :materials, dependent: :destroy
   has_many :events, dependent: :destroy
@@ -70,6 +71,7 @@ class ContentProvider < ApplicationRecord
       integer :user_id # Used for shadowbans
       time :created_at
       time :updated_at
+      time :last_scraped
     end
     # :nocov:
   end

@@ -177,8 +177,9 @@ class OaiPmhIngestorTest < ActiveSupport::TestCase
     mock_oai_pmh([material, material, event], [])
 
     @ingestor.read(@oai_pmh_url)
+    @ingestor.resolve_providers
 
-    assert_same @ingestor.source, @ingestor.instance_variable_get(:@bioschemas_manager).source
+    assert_nil @ingestor.instance_variable_get(:@bioschemas_manager).source.content_provider
     assert_equal 1, @ingestor.materials.length
     result = @ingestor.materials.first
     assert_equal 'bioschemas title', result.title

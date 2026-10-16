@@ -57,19 +57,21 @@ class ContentProviderExchangeTest < ActionDispatch::IntegrationTest
         ingestor = Ingestors::BioschemasIngestor.new
         ingestor.source = Source.new(url: export_url, method: 'bioschemas', content_provider: portal)
         ingestor.read(export_url)
+        ingestor.resolve_providers
         assert_empty ingestor.messages.grep(/error occurred/)
         assert_equal 1 + expected_rejections, ingestor.ingested
         assert_equal 1, ingestor.providers.size
         candidate = ingestor.providers.first
         assert_equal expected, candidate.attributes.slice(*expected.keys)
         assert_equal with_image ? image_url : nil, candidate.image_url
-        assert_equal index.zero?, candidate.new_record?
+        assert candidate.new_record?
 
         assert_difference('ContentProvider.count', index.zero? ? 1 : 0) do
           assert_difference("#{klass.name}.count") { ingestor.write(user) }
         end
         imported = klass.find_by!(url: resource_url)
-        assert_equal candidate, imported.content_provider
+        assert_equal expected, imported.content_provider.attributes.slice(*expected.keys)
+        assert_equal candidate.url, imported.content_provider.url
         assert_equal with_image, imported.content_provider.image?
         assert_equal 1, ingestor.added
         assert_equal expected_rejections, ingestor.rejected

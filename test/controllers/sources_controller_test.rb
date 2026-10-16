@@ -683,12 +683,13 @@ class SourcesControllerTest < ActionController::TestCase
     source = sources(:unapproved_source)
     portal = content_providers(:portal_provider)
     existing = content_providers(:organisation_provider)
+    stored_description = existing.description
     source.update!(content_provider: portal)
     source.source_filters.create!(mode: 'block', property: 'title', value: 'Filtered material')
     sign_in source.user
     providers = [
       { '@type' => 'Organization', name: 'Imaged provider', url: 'https://new-provider.example.org' },
-      { '@type' => 'Organization', name: existing.title, url: existing.url },
+      { '@type' => 'Organization', name: 'Renamed existing provider', url: existing.url },
       { '@type' => 'Organization', name: 'Filtered provider', url: 'https://filtered-provider.example.org' }
     ]
     materials = providers.each_with_index.map do |provider, index|
@@ -701,6 +702,9 @@ class SourcesControllerTest < ActionController::TestCase
       body: '<meta property="og:description" content="Provider description"><meta name="keywords" content="training, FAIR data"><meta property="og:image" content="http://example.com/logo.png">'
     )
     stub_request(:get, providers.last[:url]).to_return(body: '')
+    stub_request(:get, existing.url).to_return(
+      body: '<meta property="og:description" content="Updated existing provider description"><meta property="og:image" content="http://example.com/logo.png">'
+    )
 
     assert_no_difference(['ContentProvider.count', 'Material.count']) do
       Sidekiq::Testing.inline! { SourceTestWorker.perform_async([source.id]) }
@@ -713,6 +717,7 @@ class SourcesControllerTest < ActionController::TestCase
         resource = Source.get_test_resource('materials', params, user: User.get_default_user, content_provider: portal)
         assert_equal providers[index][:url], resource.content_provider.url
         assert_equal index == 1, resource.content_provider.persisted?
+        assert_equal 'Updated existing provider description', resource.content_provider.description if index == 1
       end
       get :test_results, params: { id: source }, xhr: true
     end
@@ -721,14 +726,16 @@ class SourcesControllerTest < ActionController::TestCase
     assert_select 'h4', text: 'Last Test Results'
     assert_select '#content_providers' do
       assert_select 'h4', /Imaged provider/
+      assert_select 'h4', /Renamed existing provider/
       assert_select 'a[href=?]', providers.first[:url]
       assert_select 'form[action=?]', preview_content_providers_path, count: 2
-      assert_select 'img.provider-logo[src=?]', 'http://example.com/logo.png'
+      assert_select 'img.provider-logo[src=?]', 'http://example.com/logo.png', count: 2
     end
     assert_select '#materials' do
       assert_select 'input[name="material[content_provider][url]"][value=?]', providers.first[:url]
       assert_select 'input[name="material[content_provider_id]"][value=?]', existing.id.to_s
     end
+    assert_equal stored_description, existing.reload.description
   ensure
     path = source.send(:test_results_path)
     FileUtils.rm(path) if File.exist?(path)

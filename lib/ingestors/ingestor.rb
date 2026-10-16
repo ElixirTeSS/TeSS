@@ -14,12 +14,12 @@ module Ingestors
       @stats = {
         events: { processed: 0, added: 0, updated: 0, rejected: 0 },
         materials: { processed: 0, added: 0, updated: 0, rejected: 0 },
-        content_providers: { added: 0, rejected: 0 }
+        content_providers: { processed: 0, added: 0, updated: 0, rejected: 0 }
       }
       @token = ''
       @events = []
       @materials = []
-      @provider_cache = {}
+      @providers = []
     end
 
     # accessor methods
@@ -69,6 +69,7 @@ module Ingestors
 
       filter
       write_providers(user)
+      @messages << stats_summary(:content_providers) if @stats[:content_providers][:processed].positive?
       write_resources(Event, @events, user, provider)
       @messages << stats_summary(:events)
       write_resources(Material, @materials, user, provider)
@@ -204,12 +205,18 @@ module Ingestors
       resource
     end
 
+    def ingestion_activity_parameters
+      return {} unless source.persisted?
+
+      { source: { id: source.id, url: source.url, method: source.method } }
+    end
+
     def write_resources(type, resources, user, provider)
       resources.each_with_index do |resource, i|
         key = type.model_name.collection.to_sym
         @stats[key][:processed] += 1
 
-        fields = resource.to_h.except(:content_provider)
+        fields = resource.to_h.except(:content_provider, :providers)
         fields[:user_id] ||= user.id
         fields[:content_provider_id] ||= resource.try(:content_provider)&.id || provider.id
         fields[:space_id] ||= source.space_id
@@ -225,21 +232,12 @@ module Ingestors
         resource = set_resource_defaults(resource, source: source)
         if resource.valid?
           resource.save!
-          activity_params = {}
-          if source.persisted?
-            activity_params[:source] = {
-              id: source.id,
-              url: source.url,
-              method: source.method
-            }
-          end
-
           if update
             if resource.log_update_activity?
-              resource.create_activity(:update, owner: user, parameters: activity_params)
+              resource.create_activity(:update, owner: user, parameters: ingestion_activity_parameters)
             end
           else
-            resource.create_activity(:create, owner: user, parameters: activity_params)
+            resource.create_activity(:create, owner: user, parameters: ingestion_activity_parameters)
           end
           @stats[key][update ? :updated : :added] += 1
         else
@@ -268,17 +266,24 @@ module Ingestors
       return true if existing_resource.last_scraped_by_source.nil?
       return true if existing_resource.last_scraped_by_source == source
 
-      considered_fields = %i[title url doi description resource_type prerequisites keywords start end sponsors venue city county postcode cost_value target_audience contact language]
-      existing_fields_count = considered_fields.count { |f| existing_resource[f].present? }
-      new_fields_count = considered_fields.count { |f| new_resource[f].present? }
-      return true if new_fields_count > existing_fields_count
+      existing_fields = existing_resource.attributes.symbolize_keys
+      incoming_fields = new_resource.is_a?(ContentProvider) ? new_resource.attributes.symbolize_keys : new_resource
+      if existing_resource.is_a?(ContentProvider)
+        existing_fields[:image_url] = existing_resource.image_url.presence || existing_resource.image_file_name.presence
+        FieldLock.strip_locked_fields(existing_fields, existing_resource.locked_fields)
+        FieldLock.strip_locked_fields(incoming_fields, existing_resource.locked_fields)
+      end
 
-      considered_description_fields = %i[description prerequisites learning_objectives tech_requirements]
-      existing_description_length = considered_description_fields.sum { |f| existing_resource[f].to_s.length }
-      new_description_length = considered_description_fields.sum { |f| new_resource[f].to_s.length }
-      return true if new_fields_count == existing_fields_count && new_description_length > existing_description_length * 1.5
+      considered_fields = %i[title url doi description resource_type prerequisites keywords start end sponsors
+                            venue city county postcode cost_value target_audience contact language image_url]
+      existing_count = considered_fields.count { |field| existing_fields[field].present? }
+      incoming_count = considered_fields.count { |field| incoming_fields[field].present? }
+      return true if incoming_count > existing_count
 
-      false
+      description_fields = %i[description prerequisites learning_objectives tech_requirements]
+      existing_length = description_fields.sum { |field| existing_fields[field].to_s.length }
+      incoming_length = description_fields.sum { |field| incoming_fields[field].to_s.length }
+      incoming_count == existing_count && incoming_length > existing_length * 1.5
     end
 
     def find_existing(type, resource)

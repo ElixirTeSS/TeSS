@@ -22,6 +22,7 @@ class SourceTestWorker
       ingestor = Ingestors::IngestorFactory.get_ingestor(source)
       ingestor.read(source.url)
       ingestor.filter
+      ingestor.resolve_providers
       results = {
         events: ingestor.events,
         materials: ingestor.materials,

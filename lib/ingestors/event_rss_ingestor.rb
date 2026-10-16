@@ -63,17 +63,7 @@ module Ingestors
     def extract_rdf_bioschemas_records(content)
       return [] unless content.present?
 
-      events = Tess::Rdf::EventExtractor.new(content, :rdfxml).extract do |params|
-        @bioschemas_manager.convert_params(params)
-      end
-      courses = Tess::Rdf::CourseExtractor.new(content, :rdfxml).extract do |params|
-        @bioschemas_manager.convert_params(params)
-      end
-      course_instances = Tess::Rdf::CourseInstanceExtractor.new(content, :rdfxml).extract do |params|
-        @bioschemas_manager.convert_params(params)
-      end
-
-      @bioschemas_manager.deduplicate(events + courses + course_instances)
+      @bioschemas_manager.extract_resources(content, format: :rdfxml, types: [:events])[:resources][:events]
     rescue StandardError => e
       Rails.logger.error("#{e.class}: #{e.message}")
       Rails.logger.error(e.backtrace.join("\n")) if e.backtrace&.any?
