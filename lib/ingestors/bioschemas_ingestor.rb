@@ -130,8 +130,8 @@ module Ingestors
       resources.each do |resource|
         resource_url = resource[:url]
         puts "  Considering: #{resource_url}" if verbose
-        score = metadata_score(resource)
         if hash[resource_url]
+          score = metadata_score(resource)
           # Replace the resource if this resource has a higher metadata score
           puts "    Duplicate! Comparing #{score} vs. #{scores[resource_url]}" if verbose
           if score > scores[resource_url]
@@ -142,7 +142,7 @@ module Ingestors
         else
           puts '    Not present, adding' if verbose
           hash[resource_url] = resource
-          scores[resource_url] = score
+          scores[resource_url] = metadata_score(resource)
         end
       end
 
@@ -163,6 +163,7 @@ module Ingestors
 
     def convert_params(params)
       params[:description] = convert_description(params[:description]) if params.key?(:description)
+
       params
     end
   end

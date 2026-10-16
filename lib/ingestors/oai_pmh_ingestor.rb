@@ -16,6 +16,7 @@ module Ingestors
     def initialize
       super
 
+      # to use some helper functions that are instance level methods of BioschemasIngestor
       @bioschemas_manager = BioschemasIngestor.new
     end
 
@@ -121,6 +122,7 @@ module Ingestors
       @bioschemas_manager.deduplicate(provider_materials).each do |material_params|
         add_material(material_params)
       end
+
       provider_events.any? || provider_materials.any?
     end
 
