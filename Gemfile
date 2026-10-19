@@ -17,7 +17,7 @@ gem 'country_select'
 gem 'devise'
 gem 'devise_invitable'
 gem 'eventbrite_sdk'
-gem 'ffi-icu'
+gem 'ffi-icu', '~> 0.7' # Fix for when 32 and 64 bit libs are present
 gem 'font-awesome-sass', '~> 4.7.0' # Prefer V4 icon styles
 gem 'friendly_id'
 gem 'geocoder'
