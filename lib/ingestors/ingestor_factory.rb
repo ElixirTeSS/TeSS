@@ -15,8 +15,7 @@ module Ingestors
         Ingestors::GithubIngestor,
         Ingestors::EventRSSIngestor,
         Ingestors::MaterialRSSIngestor,
-        Ingestors::YoutubeIngestor,
-        Ingestors::CdsVideosIngestor
+        Ingestors::YoutubeIngestor
       ] + taxila_ingestors + llm_ingestors + heptraining_ingestors
     end
 
@@ -57,7 +56,9 @@ module Ingestors
 
     def self.heptraining_ingestors
       [
-        Ingestors::Heptraining::GrayScottIngestor
+        Ingestors::Heptraining::GrayScottIngestor,
+        Ingestors::Heptraining::CdsVideosIngestor,
+        Ingestors::Heptraining::EpicTutorialsIngestor
       ]
     end
 
