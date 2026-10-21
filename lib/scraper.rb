@@ -119,10 +119,7 @@ class Scraper
       output << "**Method:** #{source.ingestor_title}"
 
       # get ingestor
-      ingestor = Ingestors::IngestorFactory.get_ingestor(source.method)
-
-      # set token
-      ingestor.token = source.token
+      ingestor = Ingestors::IngestorFactory.get_ingestor(source)
 
       # read records
       ingestor.read(source.url)
@@ -133,7 +130,7 @@ class Scraper
       end
 
       # write resources
-      ingestor.write(user, source.content_provider, source: source)
+      ingestor.write(user)
       unless ingestor.messages.blank?
         output << "\n## Writing"
         output += ingestor.messages
@@ -146,10 +143,18 @@ class Scraper
       source.resources_added = ingestor.added
       source.resources_updated = ingestor.updated
       source.resources_rejected = ingestor.rejected
+      source.content_providers_added = ingestor.stats[:content_providers][:added]
+      source.content_providers_updated = ingestor.stats[:content_providers][:updated]
+      source.content_providers_rejected = ingestor.stats[:content_providers][:rejected]
       log "Source URL[#{source.url}] resources read[#{source.records_read}]" +
           ", added[#{source.resources_added}]" +
           ", updated[#{source.resources_updated}]" +
           ", rejected[#{source.resources_rejected}]", 2
+      if source.content_provider&.content_provider_type == 'Portal'
+        log "Source URL[#{source.url}] content providers added[#{source.content_providers_added}]" +
+            ", updated[#{source.content_providers_updated}]" +
+            ", rejected[#{source.content_providers_rejected}]", 2
+      end
     end
   rescue StandardError => e
     output << "\n**Failed:** #{e.message}"

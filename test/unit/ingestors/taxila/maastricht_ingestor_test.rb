@@ -21,6 +21,8 @@ class MaastrichtIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::MaastrichtIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = 'Qualitative FAIR Data'
     new_url = 'https://library.maastrichtuniversity.nl/events/qualitative-fair-data-4/'
@@ -31,7 +33,7 @@ class MaastrichtIngestorTest < ActiveSupport::TestCase
       freeze_time(2019) do
         VCR.use_cassette("ingestors/maastricht") do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

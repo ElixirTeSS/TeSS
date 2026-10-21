@@ -5,6 +5,7 @@ class ContentProvidersController < ApplicationController
   before_action :set_breadcrumbs
 
   include SearchableIndex
+  include FieldLockEnforcement
 
   def index
     respond_to do |format|
@@ -35,7 +36,7 @@ class ContentProvidersController < ApplicationController
   # POST /events/check_exists
   # POST /events/check_exists.json
   def check_exists
-    @content_provider = ContentProvider.check_exists(content_provider_params)
+    @content_provider = ContentProvider.check_exists(ContentProvider.new(content_provider_params))
 
     if @content_provider
       respond_to do |format|
@@ -91,6 +92,20 @@ class ContentProvidersController < ApplicationController
     end
   end
 
+  # POST /content_providers/preview
+  def preview
+    @content_provider = User.get_default_user.content_providers.new(content_provider_params)
+
+    respond_to do |format|
+      if @content_provider.valid?
+        format.html { render :show }
+      else
+        flash[:error] = 'This resource is invalid.'
+        format.html { render 'bioschemas/test', status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -111,7 +126,7 @@ class ContentProvidersController < ApplicationController
     permitted = [:title, :url, :image, :image_url, :description, :id, :content_provider_type, :node_id, :contact,
                  :content_curation_email,
                  { keywords: [] }, :remote_updated_date, :remote_created_date, { approved_editors: [] },
-                 :local_updated_date, :remote_updated_date, :node_name, :user_id]
+                 :local_updated_date, :remote_updated_date, :node_name, :user_id, { locked_fields: [] }]
 
     permitted.delete(:user_id) unless current_user && current_user.is_admin?
 

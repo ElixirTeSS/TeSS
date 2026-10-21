@@ -21,6 +21,8 @@ class DccIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::DccIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = 'Training Beïnvloedings-vaardigheden'
     new_url = 'https://dcc-po.nl/agenda/training-beinvloedingsvaardigheden/'
@@ -31,7 +33,7 @@ class DccIngestorTest < ActiveSupport::TestCase
       freeze_time(2025) do
         VCR.use_cassette('ingestors/dcc') do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

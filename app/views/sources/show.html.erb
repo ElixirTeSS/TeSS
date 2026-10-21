@@ -102,6 +102,14 @@
                     <li>Updated: <span class="text-warning"><%= @source.resources_updated %></span></li>
                     <li>Rejected: <span class="text-danger"><%= @source.resources_rejected %></span></li>
                   </ul>
+                  <% if @source.content_provider&.content_provider_type == 'Portal' %>
+                    <strong>Content Providers:</strong>
+                    <ul>
+                      <li>Added: <span class="text-success"><%= @source.content_providers_added %></span></li>
+                      <li>Updated: <span class="text-warning"><%= @source.content_providers_updated %></span></li>
+                      <li>Rejected: <span class="text-danger"><%= @source.content_providers_rejected %></span></li>
+                    </ul>
+                  <% end %>
                 <% end %>
 
                 <%# Show details of log %>
@@ -125,4 +133,3 @@
     </div>
   </div>
 </div>
-

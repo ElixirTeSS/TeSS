@@ -129,6 +129,11 @@ class ContentProviderTest < ActiveSupport::TestCase
       assert_includes materials, materials(:good_material)
     end
   end
+
+  test 'check_exists accepts a content provider instance' do
+    content_provider = content_providers(:goblet)
+    assert_equal content_provider, ContentProvider.check_exists(content_provider)
+  end
 end
 
 class ContentProvidersWithBrokenScrapersTest < ActiveSupport::TestCase

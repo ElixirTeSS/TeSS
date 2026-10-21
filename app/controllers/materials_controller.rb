@@ -40,7 +40,7 @@ class MaterialsController < ApplicationController
   end
 
   def preview
-    @material = User.get_default_user.materials.new(material_params)
+    @material = Source.get_test_resource('materials', params.require(:material), user: User.get_default_user)
 
     respond_to do |format|
       if @material.valid?

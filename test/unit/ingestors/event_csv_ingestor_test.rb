@@ -28,10 +28,12 @@ class EventCsvIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::EventCsvIngestor.new
 
+    ingestor.source = source
+
     assert_difference('Event.count', 14) do
       freeze_time(2021) do
         ingestor.read(source.url)
-        ingestor.write(@user, @content_provider)
+        ingestor.write(@user)
       end
     end
 

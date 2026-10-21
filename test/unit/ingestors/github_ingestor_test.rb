@@ -39,6 +39,7 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
     @ingestor_decorated = GithubIngestorDecorator.new(@ingestor)
     @user = users(:regular_user)
     @content_provider = content_providers(:portal_provider)
+    @ingestor.source = Source.new(method: 'github', content_provider: @content_provider)
     mock_timezone # System time zone should not affect test result
 
     # Sitemap
@@ -138,7 +139,7 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
     assert_includes messages, "\n - 4 URLs found"
 
     assert_difference('Material.count', 3) do
-      @ingestor.write(@user, @content_provider)
+      @ingestor.write(@user)
     end
 
     # It thus adds 3 materials
@@ -162,7 +163,7 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
 
   test 'should read github.com source' do
     @ingestor.read('https://github.com/hsf-training/cpluspluscourse')
-    @ingestor.write(@user, @content_provider)
+    @ingestor.write(@user)
 
     sample = @ingestor.materials.detect { |e| e.title == 'Cpluspluscourse' }
     assert sample.persisted?
@@ -184,7 +185,7 @@ class GithubIngestorTest < ActiveSupport::TestCase # rubocop:disable Metrics/Cla
 
   test 'should read github.io source' do
     @ingestor.read('https://swcarpentry.github.io/python-novice-inflammation/')
-    @ingestor.write(@user, @content_provider)
+    @ingestor.write(@user)
 
     sample = @ingestor.materials.detect { |e| e.title == 'Python Novice Inflammation' }
     assert sample.persisted?

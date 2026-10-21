@@ -138,30 +138,7 @@ module Ingestors
       return output unless content
 
       begin
-        events = Tess::Rdf::EventExtractor.new(content, :rdfxml).extract do |p|
-          @bioschemas_manager.convert_params(p)
-        end
-        courses = Tess::Rdf::CourseExtractor.new(content, :rdfxml).extract do |p|
-          @bioschemas_manager.convert_params(p)
-        end
-        course_instances = Tess::Rdf::CourseInstanceExtractor.new(content, :rdfxml).extract do |p|
-          @bioschemas_manager.convert_params(p)
-        end
-        learning_resources = Tess::Rdf::LearningResourceExtractor.new(content, :rdfxml).extract do |p|
-          @bioschemas_manager.convert_params(p)
-        end
-        output[:totals]['Events'] += events.count
-        output[:totals]['Courses'] += courses.count
-        output[:totals]['CourseInstances'] += course_instances.count
-        output[:totals]['LearningResources'] += learning_resources.count
-
-        @bioschemas_manager.deduplicate(events + courses + course_instances).each do |event|
-          output[:resources][:events] << event
-        end
-
-        @bioschemas_manager.deduplicate(learning_resources).each do |material|
-          output[:resources][:materials] << material
-        end
+        output = @bioschemas_manager.extract_resources(content, format: :rdfxml)
       rescue StandardError => e
         Rails.logger.error("#{e.class}: #{e.message}")
         Rails.logger.error(e.backtrace.join("\n")) if e.backtrace&.any?

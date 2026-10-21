@@ -4,7 +4,8 @@ class FieldLock < ApplicationRecord
   validates :field, presence: true
 
   ALIASES = {
-    node_ids: [:node_names]
+    node_ids: [:node_names],
+    image: [:image_url]
   }.freeze
 
   def self.strip_locked_fields(params, locked_fields)

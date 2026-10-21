@@ -207,6 +207,16 @@ module ApplicationHelper
     end
   end
 
+  # Preview new image URLs before Paperclip writes their attachments to storage.
+  def display_image_url_for(resource)
+    if resource.respond_to?(:image_url) && resource.image_url.present? &&
+       (!resource.persisted? || resource.image_url_changed?)
+      resource.image_url
+    else
+      get_image_url_for(resource)
+    end
+  end
+
   # Return icon classes for model name (could be symbol or string)
   def icon_class_for_model(model)
     case model.to_s
@@ -359,9 +369,11 @@ module ApplicationHelper
     end
 
     def field_lock(name, _options = {})
-      field_name = "#{object.class.name.downcase}[locked_fields][]"
-      field_id = "#{object.class.name.downcase}_locked_fields_#{name}"
-      @template.check_box_tag(field_name, name.to_s, object.field_locked?(name), id: field_id, class: 'field-lock') +
+      model_key = object.class.model_name.param_key
+      field_name = "#{model_key}[locked_fields][]"
+      field_id = "#{model_key}_locked_fields_#{name}"
+      @template.check_box_tag(field_name, name.to_s, object.field_locked?(name), id: field_id, class: 'field-lock',
+                                                                                       data: { autolock: TeSS::Config.automatic_field_locking_enabled_for?(object) }) +
         @template.label_tag(field_id, '', class: 'field-lock-label', title: 'Lock this field to prevent it being overwritten when automated scrapers are run')
     end
 

@@ -41,7 +41,9 @@ var ARDCVocabs = {
                 value: dataValue,
                 name: dataName
             })
-            parent.append(newItem);
+            var item = $(newItem);
+            parent.append(item);
+            item.find('input[type=hidden]').trigger('change');
         }
     }
 };

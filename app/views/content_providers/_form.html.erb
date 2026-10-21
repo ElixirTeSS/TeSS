@@ -2,19 +2,23 @@
 
   <%= render partial: 'common/error_summary', locals: { resource: @content_provider } %>
 
-  <%= f.input :title, as: :string %>
+  <%# Necessary to allow removal of all field locks %>
+  <%= hidden_field_tag 'content_provider[locked_fields][]', '' %>
+
+  <%= f.input :title, as: :string, field_lock: true %>
 
   <%= render partial: 'common/url_checker', locals: { f: f, url: content_providers_check_exists_path, title: '' } %>
 
-  <%= f.input :contact, as: :string %>
+  <%= f.input :contact, as: :string, field_lock: true %>
 
-  <%= f.input :description, as: :markdown_area, input_html: { rows: '10' } %>
+  <%= f.input :description, as: :markdown_area, input_html: { rows: '10' }, field_lock: true %>
 
   <div class="form-group">
     <%= render partial: 'common/image_form', locals: { form: f } %>
   </div>
 
-  <%= f.input :content_provider_type, label: 'Type', collection: ContentProvider::PROVIDER_TYPE, include_blank: false %>
+  <%= f.input :content_provider_type, label: 'Type', collection: ContentProvider::PROVIDER_TYPE, include_blank: false,
+              hint: t('content_providers.hints.content_provider_type'), field_lock: true %>
 
   <% if current_user.is_admin? %>
     <%= f.autocompleter :user, url: users_path, transform_function: 'users', template: 'autocompleter/content_provider_owner',

@@ -4,9 +4,11 @@ module Ingestors
 
     def add_event(event)
       if event.is_a?(Hash)
+        providers = event[:providers]
         c = EventsController.new
         c.params = { event: event }
         event = OpenStruct.new(c.send(:event_params))
+        event.providers = providers
       end
       event = handle_auto_parsing(event)
       event = handle_controlled_vocabulary(event)

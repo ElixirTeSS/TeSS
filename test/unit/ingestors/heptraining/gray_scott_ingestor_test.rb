@@ -5,6 +5,7 @@ class GrayScottIngestorTest < ActiveSupport::TestCase
     @ingestor = Ingestors::Heptraining::GrayScottIngestor.new
     @user = users(:regular_user)
     @content_provider = content_providers(:another_portal_provider)
+    @ingestor.source = Source.new(method: 'gray_scott_event', content_provider: @content_provider)
 
     webmock('https://cta-lapp.pages.in2p3.fr/COURS/GRAY_SCOTT_REVOLUTIONS/GrayScott2026/invitation/gray_scott_2026_webinars.ics', 'heptraining/grayscott/grayscott-event.ics')
     webmock('https://cta-lapp.pages.in2p3.fr/cours/gray_scott_revolutions/grayscott2026/redirect.html?label=sec_gray_scott_webinar_memory_allocation_memory_profiling', 'heptraining/grayscott/grayscott-redirect.html')
@@ -17,7 +18,7 @@ class GrayScottIngestorTest < ActiveSupport::TestCase
 
   test 'should read Gray Scott ics' do
     @ingestor.read('https://cta-lapp.pages.in2p3.fr/COURS/GRAY_SCOTT_REVOLUTIONS/GrayScott2026/invitation/gray_scott_2026_webinars.ics')
-    @ingestor.write(@user, @content_provider)
+    @ingestor.write(@user)
 
     sample = @ingestor.events.detect { |e| e.title == 'Memory allocation, why and how to profile applications' }
     assert sample.persisted?

@@ -344,10 +344,20 @@ class MaterialRSSIngestorTest < ActiveSupport::TestCase
           <sdo:name>RSS 1.0 Bioschemas title</sdo:name>
           <sdo:url rdf:resource="https://example.org/rss10/bioschemas/material"/>
           <sdo:license rdf:resource="https://opensource.org/licenses/MIT"/>
+          <sdo:provider>
+            <sdo:Organization rdf:about="https://provider.example.org">
+              <sdo:name>RSS provider</sdo:name>
+              <sdo:url rdf:resource="https://provider.example.org"/>
+            </sdo:Organization>
+          </sdo:provider>
         </sdo:LearningResource>
       </rdf:RDF>
     XML
 
+    @ingestor.source = Source.new(content_provider: content_providers(:portal_provider), method: 'material_rss')
+    homepage = stub_request(:get, 'https://provider.example.org').to_return(
+      body: '<meta property="og:description" content="RSS provider description">'
+    )
     read_xml(rss_10_bioschemas_feed_xml)
 
     assert_equal 2, @ingestor.materials.count
@@ -357,6 +367,11 @@ class MaterialRSSIngestorTest < ActiveSupport::TestCase
     assert_equal 'RSS 1.0 Bioschemas title', material.title
     assert_equal 'https://example.org/rss10/bioschemas/material', material.url
     assert_equal 'https://opensource.org/licenses/MIT', material.licence
+    assert_nil material.content_provider
+    assert_not_requested homepage
+    @ingestor.resolve_providers
+    assert_equal 'RSS provider description', material.content_provider.description
+    assert_requested homepage, times: 1
 
     fallback_material = @ingestor.materials.detect { |m| m.url == 'https://example.org/rss10-bioschemas/item' }
     refute_nil fallback_material

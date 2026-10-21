@@ -21,6 +21,8 @@ class UtwenteIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::UtwenteIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = 'Let’s make peace work'
     new_url = 'https://www.utwente.nl/en/about-us/news-events-ceremonies/events/2026/9/996952/lets-make-peace-work'
@@ -31,7 +33,7 @@ class UtwenteIngestorTest < ActiveSupport::TestCase
       freeze_time(2019) do
         VCR.use_cassette('ingestors/utwente') do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

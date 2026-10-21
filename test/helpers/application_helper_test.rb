@@ -39,6 +39,27 @@ class ApplicationHelperTest < ActionView::TestCase
     users(:admin)
   end
 
+  test 'provider previews display incoming image URLs without changing saved images' do
+    provider = content_providers(:organisation_provider)
+    assert_equal get_image_url_for(provider), display_image_url_for(provider)
+    provider.image_url = 'https://images.example.org/incoming.png'
+    assert_equal provider.image_url, display_image_url_for(provider)
+    assert_nil provider.reload.image_url
+
+    incoming = ContentProvider.new(image_url: 'https://images.example.org/new.png')
+    assert_equal incoming.image_url, display_image_url_for(incoming)
+  end
+
+  test 'provider scrape status is hidden without history and reflects accepted scrape freshness' do
+    provider = content_providers(:organisation_provider)
+    assert_nil scrape_status_icon(provider)
+    provider.scraper_record = true
+    provider.last_scraped = Date.current
+    assert_match(/fresh-icon/, scrape_status_icon(provider))
+    provider.last_scraped = 3.days.ago.to_date
+    assert_match(/stale-icon/, scrape_status_icon(provider))
+  end
+
   test "icon should be correct for event not scraped for a while" do
     assert_not_nil(current_user)
     assert_equal(current_user.is_admin?, true)

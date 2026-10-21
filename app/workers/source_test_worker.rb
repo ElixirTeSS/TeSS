@@ -13,18 +13,20 @@ class SourceTestWorker
     results = {
       events: [],
       materials: [],
+      content_providers: [],
       messages: []
     }
     start_time = Time.now
     exception = nil
     begin
-      ingestor = Ingestors::IngestorFactory.get_ingestor(source.method)
-      ingestor.token = source.token
+      ingestor = Ingestors::IngestorFactory.get_ingestor(source)
       ingestor.read(source.url)
-      ingestor.filter(source)
+      ingestor.filter
+      ingestor.resolve_providers
       results = {
         events: ingestor.events,
         materials: ingestor.materials,
+        content_providers: ingestor.providers,
         messages: ingestor.messages
       }
     rescue StandardError => e

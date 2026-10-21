@@ -40,6 +40,7 @@ default: &default
     zoom:
       latitude: 3
       longitude: 13
+  automatic_field_locking: true
   header_notice:
   feature:
     elearning_materials: true

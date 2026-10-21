@@ -10,15 +10,20 @@
     <div class="content-actions">
       <div class="content-viewer-actions">
         <%= external_link_button 'View home page', @content_provider.url if @content_provider.url.present? %>
-        <%= render partial: 'common/identifiers_dot_org_button',
-                   locals: { resource: @content_provider } if TeSS::Config.identifiers_prefix %>
+        <% if @content_provider.persisted? %>
+          <%= render partial: 'common/identifiers_dot_org_button',
+                     locals: { resource: @content_provider } if TeSS::Config.identifiers_prefix %>
+        <% end %>
       </div>
-      <div class="content-manager-actions">
-        <%= edit_button(@content_provider) if policy(@content_provider).update? %>
-        <%= delete_button(@content_provider) if policy(@content_provider).destroy? %>
-      </div>
+      <% if @content_provider.persisted? %>
+        <div class="content-manager-actions">
+          <%= edit_button(@content_provider) if policy(@content_provider).update? %>
+          <%= delete_button(@content_provider) if policy(@content_provider).destroy? %>
+        </div>
+      <% end %>
     </div>
 
+    <% if @content_provider.persisted? %>
     <div class="my-3">
       <% resource_limit = 30 %>
       <% materials = @content_provider.materials.in_current_space.from_verified_users.not_disabled.limit(resource_limit) %>
@@ -94,5 +99,6 @@
     </div>
 
     <%= render partial: 'activities/activity_log_button', locals: { resource: @content_provider } %>
+    <% end %>
   </div>
 </div>

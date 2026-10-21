@@ -167,6 +167,17 @@ class EventsControllerTest < ActionController::TestCase
     sign_in @event.user
     get :edit, params: { id: @event }
     assert_response :success
+    assert_select 'input#event_locked_fields_title.field-lock[data-autolock="true"]', count: 1
+  end
+
+  test 'event edit can enable automatic field locking just for events' do
+    sign_in @event.user
+
+    with_settings(automatic_field_locking: %w[events]) do
+      get :edit, params: { id: @event }
+      assert_response :success
+      assert_select 'input#event_locked_fields_title.field-lock[data-autolock="true"]', count: 1
+    end
   end
 
   test 'should get edit for admin' do
@@ -1571,6 +1582,29 @@ class EventsControllerTest < ActionController::TestCase
         assert_response :success
         assert_select 'h2', text: 'Potential event'
         assert_select '.external-resources-box a[href=?]', 'https://bio.tools/some_tool'
+      end
+    end
+  end
+
+  test 'provider attribution survives event previews without persisting providers' do
+    sign_in users(:regular_user)
+    portal = content_providers(:portal_provider)
+    existing = content_providers(:organisation_provider)
+    candidates = [
+      [{ title: 'New preview provider', url: 'https://preview-provider.example.org' }, 'https://preview-provider.example.org'],
+      [{ title: 'Different name', url: existing.url }, existing.url],
+      [{ url: 'https://invalid-provider.example.org' }, portal.url],
+      [nil, portal.url]
+    ]
+
+    assert_no_difference(['Event.count', 'ContentProvider.count']) do
+      candidates.each do |provider, expected_url|
+        post :preview, params: { event: { title: 'Preview event', url: 'https://preview-event.example.org',
+                                          content_provider_id: portal.id, content_provider: provider } }
+        assert_response :success
+        assert_equal expected_url, assigns(:event).content_provider.url
+        selected = assigns(:event).content_provider
+        assert_select '.nav-block a.h5[href=?]', selected.persisted? ? content_provider_path(selected) : selected.url
       end
     end
   end

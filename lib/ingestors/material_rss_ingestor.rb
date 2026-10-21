@@ -79,11 +79,7 @@ module Ingestors
     def extract_rdf_bioschemas_records(content)
       return [] unless content.present?
 
-      materials = Tess::Rdf::LearningResourceExtractor.new(content, :rdfxml).extract do |params|
-        @bioschemas_manager.convert_params(params)
-      end
-
-      @bioschemas_manager.deduplicate(materials)
+      @bioschemas_manager.extract_resources(content, format: :rdfxml, types: [:materials])[:resources][:materials]
     rescue StandardError => e
       Rails.logger.error("#{e.class}: #{e.message}")
       Rails.logger.error(e.backtrace.join("\n")) if e.backtrace&.any?

@@ -21,6 +21,8 @@ class RstIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::RstIngestor.new
 
+    ingestor.source = source
+
     # check materials don't exist
     new_title = 'Software Carpentry'
     new_url = 'https://software-carpentry.org/lessons/'
@@ -31,7 +33,7 @@ class RstIngestorTest < ActiveSupport::TestCase
       freeze_time(2019) do
         VCR.use_cassette('ingestors/rst') do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

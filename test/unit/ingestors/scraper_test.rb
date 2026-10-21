@@ -8,6 +8,102 @@ class ScraperTest < ActiveSupport::TestCase
     Source.destroy_all # use destroy_all instead of delete_all to delete related objects correctly
   end
 
+  test 'imports a provider and its resources with separate source counts and reuses them on subsequent runs' do
+    user = users(:scraper_user)
+    source = Source.create!(url: 'https://source.example.org',
+                            method: 'bioschemas',
+                            enabled: true,
+                            content_provider: content_providers(:portal_provider),
+                            user:,
+                            approval_status: 'approved')
+    stub_request(:get, source.url).to_return(body: {
+      '@context' => 'http://schema.org',
+      '@type' => 'LearningResource',
+      name: 'Imported material', description: 'Training material',
+      url: 'https://material.example.org',
+      provider: { '@type' => 'Organization', name: 'Imported provider', url: 'https://provider.example.org' }
+    }.to_json)
+    stub_request(:get, 'https://provider.example.org').to_return(body: '')
+    scraper = Scraper.new({ sources: [], loglevel: 2 })
+
+    assert_difference('ContentProvider.count') do
+      assert_difference('Material.count') { scraper.scrape(source, user) }
+    end
+    source.reload
+    assert_equal 1, source.content_providers_added
+    assert_equal 0, source.content_providers_updated
+    assert_equal 0, source.content_providers_rejected
+    assert_equal 1, source.records_written
+    assert_equal 1, source.resources_added
+    refute_includes source.log, '**Failed:**'
+    assert_includes scraper.log_file.string, 'content providers added[1], updated[0], rejected[0]'
+
+    assert_no_difference('ContentProvider.count') do
+      assert_no_difference('Material.count') { scraper.scrape(source, user) }
+    end
+    source.reload
+    assert_equal 0, source.content_providers_added
+    assert_equal 1, source.content_providers_updated
+    assert_equal 0, source.resources_added
+    assert_equal 1, source.resources_updated
+    assert_equal 1, source.records_written
+    assert_includes scraper.log_file.string, 'content providers added[0], updated[1], rejected[0]'
+  end
+
+  test 'reports provider updates when a later run finds more metadata' do
+    user = users(:scraper_user)
+    source = Source.create!(url: 'https://source.example.org',
+                            method: 'bioschemas', enabled: true,
+                            content_provider: content_providers(:portal_provider),
+                            user:, approval_status: 'approved')
+    stub_request(:get, source.url).to_return(body: {
+      '@context' => 'http://schema.org', '@type' => 'LearningResource',
+      name: 'Imported material', description: 'Training material',
+      url: 'https://material.example.org',
+      provider: { '@type' => 'Organization', name: 'Imported provider', url: 'https://provider.example.org' }
+    }.to_json)
+    homepage = stub_request(:get, 'https://provider.example.org').to_return(body: '')
+    scraper = Scraper.new({ sources: [], loglevel: 2 })
+
+    assert_difference('ContentProvider.count') { scraper.scrape(source, user) }
+    assert_equal 0, source.reload.content_providers_updated
+    assert_nil ContentProvider.find_by!(url: 'https://provider.example.org').description
+
+    homepage.to_return(body: '<meta property="og:description" content="Provider homepage description">')
+
+    assert_no_difference('ContentProvider.count') { scraper.scrape(source, user) }
+    provider = ContentProvider.find_by!(url: 'https://provider.example.org')
+    assert_equal 'Provider homepage description', provider.description
+    assert_equal 1, source.reload.content_providers_updated
+    assert_equal 0, source.content_providers_added
+    assert_equal source, provider.last_scraped_by_source
+    assert_includes scraper.log_file.string, 'content providers added[0], updated[1], rejected[0]'
+  end
+
+  test 'non-portal runs omit provider logging and still log resource counts' do
+    user = users(:scraper_user)
+    source = Source.create!(url: 'https://source.example.org',
+                            method: 'bioschemas', enabled: true,
+                            content_provider: content_providers(:organisation_provider),
+                            user:, approval_status: 'approved')
+    stub_request(:get, source.url).to_return(body: {
+      '@context' => 'http://schema.org', '@type' => 'LearningResource',
+      name: 'Imported material', description: 'Training material',
+      url: 'https://material.example.org',
+      provider: { '@type' => 'Organization', name: 'Ignored provider', url: 'https://provider.example.org' }
+    }.to_json)
+    scraper = Scraper.new({ sources: [], loglevel: 2 })
+
+    assert_no_difference('ContentProvider.count') do
+      assert_difference('Material.count') { scraper.scrape(source, user) }
+    end
+    assert_includes scraper.log_file.string, 'resources read[1], added[1], updated[0], rejected[0]'
+    refute_includes scraper.log_file.string, 'content providers added['
+    refute_includes source.reload.log, '**Failed:**'
+    assert_equal 0, source.content_providers_added
+    assert_equal 0, source.content_providers_rejected
+  end
+
   def run
     with_dresa_dictionaries do
       super

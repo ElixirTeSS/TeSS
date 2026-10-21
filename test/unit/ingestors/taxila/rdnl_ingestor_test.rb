@@ -21,6 +21,8 @@ class RDNLIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::RdnlIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = 'Essentials 4 Data Support, april/juni 2026 (NL)'
     new_url = 'https://researchdata.nl/agenda/essentials-4-data-support-april-juni-2026/'
@@ -31,7 +33,7 @@ class RDNLIngestorTest < ActiveSupport::TestCase
       freeze_time(2026) do
         VCR.use_cassette('ingestors/rdnl') do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end
