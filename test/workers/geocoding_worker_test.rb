@@ -34,6 +34,19 @@ class GeocodingWorkerTest < ActiveSupport::TestCase
     assert_equal 45, event.longitude
   end
 
+  test 'set missing timezone from geocoded coordinates' do
+    mock_nominatim
+
+    event = events(:kilburn)
+    event.update_column(:timezone, nil)
+
+    Sidekiq::Testing.inline! do
+      GeocodingWorker.perform_async([event.id, event.address])
+    end
+
+    assert_equal 'London', event.reload.timezone
+  end
+
   test 'gracefully handle geocoding for event that no longer exists' do
     Sidekiq::Testing.inline! do
       assert_nothing_raised do

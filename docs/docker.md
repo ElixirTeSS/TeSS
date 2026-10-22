@@ -147,3 +147,8 @@ Precompile the assets, necessary if any CSS/JS/images are changed after building
 Reindex Solr:
 
     docker compose -f docker-compose-prod.yml exec app bundle exec rake tess:reindex
+
+Set the time zone of events that have none from their location (coordinates or country), e.g. after upgrading.
+New and edited events get one automatically; these are shown as "(inferred)":
+
+    docker compose -f docker-compose-prod.yml exec app bundle exec rake tess:infer_event_timezones

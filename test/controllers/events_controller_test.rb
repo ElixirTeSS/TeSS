@@ -1719,4 +1719,62 @@ class EventsControllerTest < ActionController::TestCase
 
     assert_select '#origin-info a[href=?]', uri
   end
+
+  test 'should show inferred timezone' do
+    @event.update_columns(timezone: 'London', timezone_inferred: true)
+    get :show, params: { id: @event }
+    assert_response :success
+    assert_select 'p.timezone', text: /London \(inferred\)/
+  end
+
+  test 'should show timezone chosen by user without inferred' do
+    @event.update_columns(timezone: 'London', timezone_inferred: false)
+    get :show, params: { id: @event }
+    assert_response :success
+    assert_select 'p.timezone', text: /London/
+    assert_select 'p.timezone', text: /inferred/, count: 0
+  end
+
+  test 'should suggest timezone when none is selected' do
+    sign_in users(:regular_user)
+    get :timezone_suggestion, params: { latitude: '-37.81', longitude: '144.96', country: 'AU', timezone: '' }
+    assert_response :success
+    json = JSON.parse(response.body)
+    assert_equal 'Melbourne', json['timezone']
+    assert_includes json['message'], 'Melbourne'
+    assert_equal 'Use Melbourne', json['button']
+  end
+
+  test 'should warn when selected timezone differs from location' do
+    sign_in users(:regular_user)
+    get :timezone_suggestion, params: { latitude: '-37.81', longitude: '144.96', country: 'AU', timezone: 'London' }
+    json = JSON.parse(response.body)
+    assert_equal 'Melbourne', json['timezone']
+    assert_includes json['message'], 'not London'
+  end
+
+  test 'should not warn when selected timezone has the same offsets as the location' do
+    sign_in users(:regular_user)
+    get :timezone_suggestion, params: { latitude: '55.95', longitude: '-3.19', country: 'GB', timezone: 'Edinburgh' }
+    json = JSON.parse(response.body)
+    assert_equal 'London', json['timezone']
+    assert_nil json['message']
+  end
+
+  test 'should suggest timezone from country without coordinates' do
+    sign_in users(:regular_user)
+    get :timezone_suggestion, params: { country: 'GB', timezone: '' }
+    assert_equal 'London', JSON.parse(response.body)['timezone']
+
+    get :timezone_suggestion, params: { country: 'US', timezone: '' }
+    json = JSON.parse(response.body)
+    assert_nil json['timezone']
+    assert_nil json['message']
+  end
+
+  test 'should not suggest timezone for basic users' do
+    sign_in users(:basic_user)
+    get :timezone_suggestion, params: { country: 'GB' }
+    assert_response :forbidden
+  end
 end

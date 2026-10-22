@@ -1091,6 +1091,10 @@ components:
           type: string
           nullable: true
           description: The timezone in which the event takes place. e.g. Europe/Brussels
+        timezone-inferred:
+          type: boolean
+          description: Whether the timezone was inferred from the event's location (coordinates or country), rather
+            than given by the user or the source of the event.
         sponsors:
           type: array
           description: Who sponsored, or funded the event.

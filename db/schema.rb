@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_29_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_22_230000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -228,6 +228,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_29_120000) do
     t.string "target_audience", default: [], array: true
     t.text "tech_requirements"
     t.string "timezone"
+    t.boolean "timezone_inferred", default: false, null: false
     t.string "title"
     t.integer "trainer_count"
     t.datetime "updated_at", null: false

@@ -30,6 +30,8 @@ class Event < ApplicationRecord
   before_save :check_country_name
   before_save :set_default_times
   before_save :geocoding_cache_lookup, if: :address_will_change?
+  before_save -> { self.timezone_inferred = false }, if: :will_save_change_to_timezone?
+  before_save :timezone_from_location, if: -> { timezone.blank? }
   after_save :enqueue_geocoding_worker, if: :address_changed?
 
   if TeSS::Config.solr_enabled
@@ -383,6 +385,14 @@ class Event < ApplicationRecord
 
   def address_changed?
     ADDRESS_FIELDS.any? { |field| previous_changes.keys.include?(field.to_s) }
+  end
+
+  # Set a missing time zone from the event's coordinates (once geocoded) or, failing that, its country. Online
+  # events often have neither, and keep no time zone. Marked as inferred until the time zone is changed otherwise,
+  # e.g. by the user.
+  def timezone_from_location
+    self.timezone = TimezoneLookup.find(latitude:, longitude:, country:)
+    self.timezone_inferred = timezone.present?
   end
 
   # Check the Redis cache for coordinates

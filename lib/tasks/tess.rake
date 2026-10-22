@@ -206,6 +206,23 @@ namespace :tess do
     puts 'Task: check_timezones - finished.'
   end
 
+  desc 'Set missing event time zones from the location (coordinates or country), marked as inferred'
+  task infer_event_timezones: :environment do
+    events = Event.where(timezone: [nil, ''])
+    total = events.count
+    inferred = 0
+    events.find_each do |event|
+      timezone = TimezoneLookup.find(latitude: event.latitude, longitude: event.longitude, country: event.country)
+      next unless timezone
+
+      # Not an edit of the event: keep updated_at and skip callbacks
+      event.update_columns(timezone:, timezone_inferred: true)
+      event.solr_index if TeSS::Config.solr_enabled
+      inferred += 1
+    end
+    puts "Task: infer_event_timezones - inferred the time zone of #{inferred} of #{total} events without one"
+  end
+
   desc 'Fetch and convert SPDX licenses from GitHub'
   task fetch_spdx: :environment do
     old_licenses = YAML.load(File.read(File.join(Rails.root, 'config', 'dictionaries', 'licences_old.yml')))

@@ -387,6 +387,47 @@ class EventTest < ActiveSupport::TestCase
     end
   end
 
+  test 'sets missing timezone from coordinates' do
+    event = Event.create!(@mandatory.merge(user: users(:regular_user), title: 'Event in Evansville',
+                                           url: 'http://example.com', timezone: nil,
+                                           latitude: 37.97, longitude: -87.57, venue: 'Somewhere'))
+    assert_equal 'Central Time (US & Canada)', event.timezone
+    assert event.valid?
+  end
+
+  test 'sets missing timezone from country with a single timezone' do
+    event = Event.create!(@mandatory.merge(user: users(:regular_user), title: 'Online event', url: 'http://example.com',
+                                           timezone: nil, presence: :online, country: 'United Kingdom'))
+    assert_equal 'London', event.timezone
+  end
+
+  test 'marks inferred timezone until it is changed' do
+    event = Event.create!(@mandatory.merge(user: users(:regular_user), title: 'Event', url: 'http://example.com',
+                                           timezone: nil, country: 'United Kingdom', venue: 'Somewhere'))
+    assert_equal 'London', event.timezone
+    assert event.timezone_inferred?
+
+    event.update!(title: 'Renamed event')
+    assert event.timezone_inferred?, 'Should still be inferred when the timezone is not changed'
+
+    event.update!(timezone: 'Dublin')
+    assert_equal 'Dublin', event.timezone
+    refute event.timezone_inferred?
+  end
+
+  test 'does not change a timezone that is set' do
+    event = Event.create!(@mandatory.merge(user: users(:regular_user), title: 'Event', url: 'http://example.com',
+                                           timezone: 'London', latitude: -37.81, longitude: 144.96, venue: 'Somewhere'))
+    assert_equal 'London', event.timezone
+    refute event.timezone_inferred?
+  end
+
+  test 'no timezone for online event without location' do
+    event = Event.create!(@mandatory.merge(user: users(:regular_user), title: 'Online event', url: 'http://example.com',
+                                           timezone: nil, presence: :online))
+    assert_nil event.timezone
+  end
+
   test 'validates timezone if present' do
     event = Event.new(title: 'An event', url: 'https://myevent.com', timezone: 'UTC', user: users(:regular_user))
     assert event.valid?
