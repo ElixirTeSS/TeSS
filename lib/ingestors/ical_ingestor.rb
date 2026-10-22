@@ -51,10 +51,10 @@ module Ingestors
       event.title = calevent.summary&.to_s
       event.description = process_description(calevent.description)
 
-      event.end = calevent.dtend&.to_time
+      event.end = ical_local_time(calevent.dtend)
       unless calevent.dtstart.nil?
         dtstart = calevent.dtstart
-        event.start = dtstart&.to_time
+        event.start = ical_local_time(dtstart)
         tzid = dtstart.ical_params['tzid']
         event.timezone = tzid.first.to_s if tzid.present?
       end

@@ -223,6 +223,22 @@ namespace :tess do
     puts "Task: infer_event_timezones - inferred the time zone of #{inferred} of #{total} events without one"
   end
 
+  desc 'Report events ingested from iCalendar with a time zone, which were stored in UTC rather than local time'
+  task report_ical_event_times: :environment do
+    # Before the fix, these ingestors stored DTSTART;TZID=... times converted to UTC, while TeSS treats event times
+    # as local time in the event's timezone, so these events show and export shifted by their UTC offset. UTC (...Z)
+    # times have timezone UTC and were not affected. Upcoming events are corrected when their source is ingested again.
+    zoned = Event.where.not(timezone: [nil, '', 'UTC'])
+    Source.where(method: %w[ical indico gray_scott_event]).includes(:content_provider).find_each do |source|
+      events = zoned.where(last_scraped_by_id: source.id)
+      # Events scraped before last_scraped_by was recorded, from the same content provider
+      older = zoned.where(last_scraped_by_id: nil, scraper_record: true, content_provider_id: source.content_provider_id)
+      puts "Source #{source.id} (#{source.method}) #{source.url} - #{source.content_provider&.title}: " \
+           "#{events.not_finished.count} upcoming, #{events.finished.count} past; " \
+           "#{older.not_finished.count} upcoming, #{older.finished.count} past possibly from this source"
+    end
+  end
+
   desc 'Fetch and convert SPDX licenses from GitHub'
   task fetch_spdx: :environment do
     old_licenses = YAML.load(File.read(File.join(Rails.root, 'config', 'dictionaries', 'licences_old.yml')))

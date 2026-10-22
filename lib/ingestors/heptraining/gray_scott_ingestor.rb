@@ -41,10 +41,10 @@ module Ingestors
         html_description = html.css('.paragraphStyle').text.to_s.strip
         event.description = html_description.empty? ? calevent.description.to_s : html_description
 
-        event.end = calevent.dtend&.to_time&.utc
+        event.end = ical_local_time(calevent.dtend)
         unless calevent.dtstart.nil?
           dtstart = calevent.dtstart
-          event.start = dtstart&.to_time&.utc
+          event.start = ical_local_time(dtstart)
           tzid = dtstart.ical_params['tzid']
           event.timezone = tzid.first.to_s if !tzid.nil? && tzid.size.positive?
         end
