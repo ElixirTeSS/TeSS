@@ -149,6 +149,18 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should default new event to 09:00-17:00, whatever the server time zone' do
+    sign_in users(:regular_user)
+    %w[Asia/Tokyo America/New_York].each do |tz|
+      mock_timezone(tz)
+      get :new
+      assert_equal [9, 0], [assigns(:event).start.hour, assigns(:event).start.min], tz
+      assert_equal 17, assigns(:event).end.hour, tz
+    ensure
+      reset_timezone
+    end
+  end
+
   test 'should not get new page for basic users' do
     sign_in users(:basic_user)
     get :new
