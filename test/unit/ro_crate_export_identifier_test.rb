@@ -21,6 +21,14 @@ class RoCrateExportIdentifierTest < ActiveSupport::TestCase
     assert_equal 'https://hdl.handle.net/1234/5678', RoCrateExport::Identifier.url('https://hdl.handle.net/1234/5678')
   end
 
+  test 'gives SPDX licences as SPDX license URIs' do
+    assert_equal 'http://spdx.org/licenses/CC-BY-4.0', RoCrateExport::Identifier.licence_url('CC-BY-4.0')
+    assert_equal 'http://spdx.org/licenses/Apache-2.0', RoCrateExport::Identifier.licence_url('Apache-2.0')
+    assert_nil RoCrateExport::Identifier.licence_url(nil)
+    assert_nil RoCrateExport::Identifier.licence_url('')
+    assert_nil RoCrateExport::Identifier.licence_url('not-a-licence')
+  end
+
   test 'rejects values that are not DOIs or URLs' do
     [nil, '', 'not really a doi.', 'doi:', '10.12/too-short-prefix', 'https://doi.org/has spaces'].each do |value|
       assert_nil RoCrateExport::Identifier.url(value), value.inspect

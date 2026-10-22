@@ -128,6 +128,15 @@ def test_follow_signposting_to_ro_crate(kind, page_urls):
         for prop in ("name", "description", "datePublished", "license"):
             assert root.get(prop), f"Root Data Entity of {url} has no {prop}"
 
+        # The resource is the main entity, with its Bioschemas type and profile; only materials are data entities
+        main = entities[root["mainEntity"]["@id"]]
+        assert "Dataset" not in main["@type"]
+        assert main["conformsTo"]["@id"].startswith("https://bioschemas.org/profiles/")
+        if kind == "materials" and not main["@id"].startswith("#"):
+            assert root["hasPart"] == {"@id": main["@id"]}
+        if kind == "events":
+            assert "hasPart" not in root
+
         # Flattened: nested objects are only references, and every reference is described
         for entity in crate["@graph"]:
             for key, value in entity.items():
@@ -172,8 +181,8 @@ def test_doi_rewritten_to_https_doi_org():
         assert str(signposts.citeAs.target) == f"https://doi.org/{suffix}"
 
         crate = requests.get(str(ro_crate_link(signposts).target), timeout=30).json()
-        _, root, _ = root_entity(crate)
-        assert root["identifier"] == f"https://doi.org/{suffix}"
+        _, root, entities = root_entity(crate)
+        assert entities[root["mainEntity"]["@id"]]["identifier"] == f"https://doi.org/{suffix}"
 
 
 @pytest.mark.skipif(not shutil.which("rocrate-validator"), reason="rocrate-validator (roc-validator) not installed")

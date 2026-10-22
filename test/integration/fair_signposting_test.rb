@@ -23,7 +23,7 @@ class FairSignpostingTest < ActionDispatch::IntegrationTest
     assert_link(links, material_url(material, format: :json_api), rel: 'describedby', type: 'application/vnd.api+json')
     assert_link(links, 'http://dx.doi.ac.uk/2q3093032', rel: 'cite-as')
     assert_link(links, 'https://orcid.org/0000-0002-1825-0097', rel: 'author')
-    assert_link(links, 'https://spdx.org/licenses/CC-BY-4.0.html', rel: 'license')
+    assert_link(links, 'http://spdx.org/licenses/CC-BY-4.0', rel: 'license')
     assert_link(links, 'https://schema.org/LearningResource', rel: 'type')
     assert_link(links, 'https://schema.org/AboutPage', rel: 'type')
 
@@ -53,8 +53,8 @@ class FairSignpostingTest < ActionDispatch::IntegrationTest
 
     get ro_crate_metadata_material_path(material)
 
-    root = JSON.parse(response.body)['@graph'].detect { |e| e['@id'] == material_url(material) }
-    assert_equal 'https://doi.org/10.1109/SEAA.2009.59', root['identifier']
+    main = JSON.parse(response.body)['@graph'].detect { |e| e['@id'] == material.url }
+    assert_equal 'https://doi.org/10.1109/SEAA.2009.59', main['identifier']
   end
 
   test 'fair signposting for event' do
@@ -95,18 +95,51 @@ class FairSignpostingTest < ActionDispatch::IntegrationTest
     assert_equal material_url(material), descriptor.dig('about', '@id')
 
     root = entities[material_url(material)]
-    assert_equal %w[Dataset LearningResource], root['@type']
+    assert_equal crate['@graph'][1], root, 'Root Data Entity should follow the metadata descriptor'
+    assert_equal 'Dataset', root['@type']
     assert_equal 'Training Material Example', root['name']
     assert_equal 'This is a Training Material produced by an example organization', root['description']
     assert root['datePublished'].present?
-    assert_equal 'https://spdx.org/licenses/CC-BY-4.0.html', root.dig('license', '@id')
+    assert_equal 'http://spdx.org/licenses/CC-BY-4.0', root.dig('license', '@id')
     assert_equal 'Creative Commons Attribution 4.0 International',
-                 entities['https://spdx.org/licenses/CC-BY-4.0.html']['name']
-    assert_equal 'https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE', root.dig('conformsTo', '@id')
-    assert_equal 'Profile', entities['https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE']['@type']
-    assert_nil root['dct:conformsTo']
-    assert_nil root['@context']
+                 entities['http://spdx.org/licenses/CC-BY-4.0']['name']
+    assert_equal root_url, root.dig('publisher', '@id')
+    assert_nil root['conformsTo']
 
+    # The material itself, at its external URL, is the main entity and a part of the crate
+    assert_equal({ '@id' => 'http://training.com/trainers/1359023' }, root['mainEntity'])
+    assert_equal({ '@id' => 'http://training.com/trainers/1359023' }, root['hasPart'])
+    main = entities['http://training.com/trainers/1359023']
+    assert_equal 'LearningResource', main['@type']
+    assert_equal 'Training Material Example', main['name']
+    assert_equal 'This is a Training Material produced by an example organization', main['description']
+    assert_nil main['url']
+    assert_equal 'http://spdx.org/licenses/CC-BY-4.0', main.dig('license', '@id')
+    assert_equal 'https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE', main.dig('conformsTo', '@id')
+    assert_equal 'Profile', entities['https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE']['@type']
+    assert_equal root_url, main.dig('sdPublisher', '@id')
+    assert_nil main['dct:conformsTo']
+    assert_nil main['@context']
+    assert_equal 1, crate['@graph'].count { |e| e['name'] == 'Goblet' }, 'Provider should be flattened once'
+
+    assert_flattened(crate)
+  end
+
+  test 'local main entity and no part in detached ro-crate for material without a valid url' do
+    material = materials(:good_material)
+    material.update_column(:url, 'Not really a valid URL.com')
+
+    get ro_crate_metadata_material_path(material)
+
+    assert_response :success
+    crate = JSON.parse(response.body)
+    entities = crate['@graph'].index_by { |e| e['@id'] }
+    root = entities[material_url(material)]
+    assert_nil root['hasPart']
+    main = entities[root.dig('mainEntity', '@id')]
+    assert main['@id'].start_with?('#')
+    assert_equal 'LearningResource', main['@type']
+    assert_equal 'Not really a valid URL.com', main['url']
     assert_flattened(crate)
   end
 
@@ -119,10 +152,17 @@ class FairSignpostingTest < ActionDispatch::IntegrationTest
     crate = JSON.parse(response.body)
     entities = crate['@graph'].index_by { |e| e['@id'] }
     root = entities[event_url(event)]
-    assert_equal %w[Dataset Course], root['@type']
+    assert_equal 'Dataset', root['@type']
     assert_equal RoCrateExport::DetachedCrate::NO_LICENCE, root['license']
+
+    # The event is the main entity, but not a data entity
+    assert_equal({ '@id' => 'http://example.com/cool-event' }, root['mainEntity'])
+    assert_nil root['hasPart']
+    main = entities['http://example.com/cool-event']
+    assert_equal 'Course', main['@type']
+    assert_equal 'event one', main['name']
     RoCrateExport::DetachedCrate::UNDEFINED_PROPERTIES.each do |property|
-      assert_nil root[property]
+      assert_nil main[property]
     end
 
     assert_flattened(crate)

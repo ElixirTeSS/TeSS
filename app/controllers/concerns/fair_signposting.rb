@@ -63,9 +63,8 @@ module FairSignposting
   end
 
   def licence_links(resource)
-    licence = resource.try(:licence)
-    licence_url = LicenceDictionary.instance.lookup_value(licence, 'reference') if licence.present?
-    licence_url.present? ? [[licence_url, { rel: 'license' }]] : []
+    licence_url = RoCrateExport::Identifier.licence_url(resource.try(:licence))
+    licence_url ? [[licence_url, { rel: 'license' }]] : []
   end
 
   def type_links(resource)

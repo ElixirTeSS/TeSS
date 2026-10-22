@@ -1,7 +1,9 @@
 module RoCrateExport
   # Builds a Detached RO-Crate (https://w3id.org/ro/crate/1.3) describing a single TeSS resource.
-  # The Root Data Entity is the resource's Bioschemas representation, typed additionally as a Dataset and
-  # flattened into an RO-Crate @graph, with the TeSS page URL as its absolute @id.
+  # The Root Data Entity is a Dataset for the TeSS record, with the TeSS page URL as its absolute @id. Its
+  # +mainEntity+ is the resource's Bioschemas representation (e.g. a LearningResource or Event), flattened into the
+  # RO-Crate @graph with the resource's external URL as its @id. A material is also a part (+hasPart+) of the crate;
+  # an event is not a data entity, so it is only the main entity.
   class DetachedCrate
     SPEC = 'https://w3id.org/ro/crate/1.3'.freeze
     CONTEXT = "#{SPEC}/context".freeze
@@ -14,6 +16,9 @@ module RoCrateExport
 
     NO_LICENCE = 'No licence has been specified for this resource in TeSS.'.freeze
 
+    # Resources that are data entities of the crate, not only its main entity.
+    PART_CLASSES = %w[Material].freeze
+
     attr_reader :resource
 
     def initialize(resource)
@@ -24,7 +29,12 @@ module RoCrateExport
     def generate
       @entities = {}
       @local_ids = Hash.new(0)
-      root = add_entity(root_data_entity)
+      bioschemas = @bioschemas.generate.transform_keys(&:to_s)
+      main = main_entity(bioschemas)
+      main_ref = add_entity(main)
+      root = add_entity(root_data_entity(bioschemas['@id'], main, main_ref))
+      # List the Root Data Entity first after the descriptor, for readers that do not look it up by @id
+      @entities = { root['@id'] => @entities[root['@id']] }.merge(@entities)
 
       descriptor = {
         '@id' => METADATA_ID,
@@ -42,18 +52,40 @@ module RoCrateExport
 
     private
 
-    # The resource's Bioschemas properties, with those required of a Root Data Entity.
-    def root_data_entity
-      root = @bioschemas.generate.transform_keys(&:to_s).except('@context', 'dct:conformsTo', *UNDEFINED_PROPERTIES)
-      root.merge(
-        '@type' => ['Dataset', root['@type']],
-        'identifier' => Identifier.url(root['identifier']),
-        'description' => root['description'].presence || root['name'],
+    # The TeSS record, with the properties required of a Root Data Entity.
+    def root_data_entity(page_url, main, main_ref)
+      {
+        '@id' => page_url,
+        '@type' => 'Dataset',
+        'name' => main['name'],
+        'description' => main['description'],
         'datePublished' => date_published,
-        'license' => licence(root['license']),
+        'license' => licence || NO_LICENCE,
+        'publisher' => publisher,
+        'mainEntity' => main_ref,
+        'hasPart' => (main_ref if PART_CLASSES.include?(resource.class.name) && main['@id'].start_with?('http'))
+      }
+    end
+
+    # The resource's Bioschemas properties, identified by its external URL (or a local identifier if it has none).
+    # Its Bioschemas +url+ is a plain string, so it is replaced by the @id.
+    def main_entity(bioschemas)
+      main = bioschemas.except('@context', 'dct:conformsTo', *UNDEFINED_PROPERTIES)
+      url = external_url
+      main.merge(
+        '@id' => url || local_id(main['@type']),
+        'url' => (main['url'] unless url),
+        'identifier' => Identifier.url(main['identifier']),
+        'description' => main['description'].presence || main['name'],
+        'license' => licence || main['license'],
         'conformsTo' => profile,
         'sdPublisher' => publisher
       )
+    end
+
+    def external_url
+      url = resource.try(:url).to_s.strip
+      url if url.match?(%r{\Ahttps?://[^\s/]+\.[^\s/]+(/\S*)?\z}i)
     end
 
     def date_published
@@ -61,12 +93,12 @@ module RoCrateExport
       date.iso8601
     end
 
-    def licence(value)
-      return NO_LICENCE if value.blank?
-      return value unless value.start_with?('http://', 'https://')
+    def licence
+      url = Identifier.licence_url(resource.try(:licence))
+      return nil unless url
 
       title = LicenceDictionary.instance.lookup_value(resource.licence, 'title')
-      { '@id' => value, '@type' => 'CreativeWork', 'name' => title || value }
+      { '@id' => url, '@type' => 'CreativeWork', 'name' => title || url }
     end
 
     def profile

@@ -46,7 +46,9 @@ appending `.jsonld` to the URL:
     http://localhost:3000/materials/1.jsonld
 
 Each Material and Event is also available as a [Detached RO-Crate](https://w3id.org/ro/crate/1.3), with the record's
-URL as the Root Data Entity:
+URL as the Root Data Entity, a `Dataset`. The Material or Event itself is its `mainEntity`: the Bioschemas
+`LearningResource`, `Event` or `Course`, identified by its external URL. A Material is also a part of the crate
+(`hasPart`). Licences are given as SPDX license URIs, e.g. `http://spdx.org/licenses/CC-BY-4.0`:
 
     http://localhost:3000/materials/1/ro-crate-metadata.json
     curl -H 'Accept: application/ld+json; profile="https://w3id.org/ro/crate"' http://localhost:3000/materials/1
