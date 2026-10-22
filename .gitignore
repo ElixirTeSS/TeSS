@@ -43,3 +43,7 @@ tess.crontab
 
 app-secrets*
 node_modules/
+
+# Python (test/signposting)
+__pycache__/
+*.pyc
