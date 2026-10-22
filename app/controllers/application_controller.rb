@@ -21,13 +21,13 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   # Should allow token authentication for API calls
-  acts_as_token_authentication_handler_for User, except: [:index, :show, :embed, :calendar, :check_exists, :handle_error, :count,
+  acts_as_token_authentication_handler_for User, except: [:index, :show, :embed, :calendar, :check_exists, :handle_error, :count, :ro_crate,
                                                           :redirect] #only: [:new, :create, :edit, :update, :destroy]
 
   # User auth should be required in the web interface as well; it's here rather than in routes so that it
   # doesn't override the token auth, above.
   before_action :set_current_user
-  before_action :authenticate_user!, except: [:index, :show, :embed, :calendar, :check_exists, :handle_error, :count, :redirect]
+  before_action :authenticate_user!, except: [:index, :show, :embed, :calendar, :check_exists, :handle_error, :count, :ro_crate, :redirect]
   before_action :set_current_space
 
   # Should prevent forgery errors for JSON posts.
