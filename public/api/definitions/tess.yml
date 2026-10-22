@@ -946,12 +946,14 @@ components:
         start:
           type: string
           nullable: true
-          description: The date and time at which the event starts.
+          description: The date and time the event starts, in ISO 8601 with the UTC offset of the event's timezone on that date,
+            e.g. 2026-10-22T09:00:00-03:00, or without an offset (local time) if the timezone is unknown.
           format: date
         end:
           type: string
           nullable: true
-          description: The date and time at which the event ends.
+          description: The date and time the event ends, in ISO 8601 with the UTC offset of the event's timezone on that date,
+            e.g. 2026-10-22T09:00:00-03:00, or without an offset (local time) if the timezone is unknown.
           format: date
         sponsor:
           type: string

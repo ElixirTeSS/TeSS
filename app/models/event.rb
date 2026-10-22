@@ -196,6 +196,17 @@ class Event < ApplicationRecord
     set_to_local start
   end
 
+  # A start or end time as an ISO 8601 date-time with the UTC offset of the event's time zone on that date, e.g.
+  # "2015-11-23T10:16:33-05:00". Times are stored as local (wall clock) time, so without a known time zone (e.g.
+  # many online events) it is given without an offset, as local time, rather than as UTC.
+  def local_iso8601(time)
+    return nil if time.blank?
+
+    wall_clock = time.strftime('%Y-%m-%dT%H:%M:%S')
+    zone = ActiveSupport::TimeZone[timezone] if timezone.present?
+    zone ? zone.parse(wall_clock).iso8601 : wall_clock
+  end
+
   def end_local
     set_to_local self.end
   end

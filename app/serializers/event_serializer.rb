@@ -28,6 +28,15 @@ class EventSerializer < ApplicationSerializer
     object.online? || object.hybrid?
   end
 
+  # Local time with the offset of the event's time zone, not the stored wall clock time as UTC
+  def start
+    object.local_iso8601(object.start)
+  end
+
+  def end
+    object.local_iso8601(object.end)
+  end
+
   def presence
     object.presence.to_s
   end
