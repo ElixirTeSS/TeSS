@@ -38,6 +38,28 @@ A record can be viewed through this API by appending `.json_api` to the URL, for
     http://localhost:3000/materials.json_api
     http://localhost:3000/materials/1.json_api
 
+## Bioschemas, RO-Crate and FAIR Signposting
+
+The pages of Materials and Events embed [Bioschemas](https://bioschemas.org/) JSON-LD, which can also be retrieved by
+appending `.jsonld` to the URL:
+
+    http://localhost:3000/materials/1.jsonld
+
+Each Material and Event is also available as a [Detached RO-Crate](https://w3id.org/ro/crate/1.3), with the record's
+URL as the Root Data Entity:
+
+    http://localhost:3000/materials/1/ro-crate-metadata.json
+    curl -H 'Accept: application/ld+json; profile="https://w3id.org/ro/crate"' http://localhost:3000/materials/1
+
+These representations are advertised by [FAIR Signposting](https://signposting.org/FAIR/) links, in the HTTP `Link`
+header and as `<link>` elements in the HTML head of the page: `describedby` for the Bioschemas JSON-LD, RO-Crate and
+JSON-API, `cite-as` for the DOI (as an `https://doi.org/` URL), `author` for authors' ORCIDs, `license` and `type`.
+
+    curl -I http://localhost:3000/materials/1
+
+Integration tests that check these with the [signposting](https://pypi.org/project/signposting/) library against a
+running TeSS are in [test/signposting](../test/signposting/test_signposting.py).
+
 ## Legacy API
 
 A simple read/write API supporting Events and Materials.
