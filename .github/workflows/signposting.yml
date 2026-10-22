@@ -1,0 +1,78 @@
+name: Signposting
+
+on: [push, pull_request]
+
+jobs:
+  signposting:
+    runs-on: ubuntu-latest
+    env:
+      DB_HOST: localhost
+      DB_NAME: tess
+      DB_USER: tess
+      DB_PASSWORD: password
+      SECRET_BASE_KEY: test_key
+      RAILS_ENV: test
+      REDIS_TEST_URL: redis://localhost:6379/0
+      TESS_URL: http://localhost:3000
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_DB: ${{ env.DB_NAME }}
+          POSTGRES_USER: ${{ env.DB_USER }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+    steps:
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install imagemagick
+      - name: Check out code
+        uses: actions/checkout@v6
+      - name: Install Ruby & gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Configure and initialize database
+        run: |
+          cp test/config/test_tess.yml config/tess.yml
+          cp config/secrets.github.yml config/secrets.yml
+          cp config/ingestion.example.yml config/ingestion.yml
+          bundle exec rake db:test:prepare
+          bundle exec rails db:fixtures:load
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20.x'
+          cache: 'yarn'
+      - name: Install JS dependencies
+        run: yarn install --frozen-lockfile --non-interactive
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: test/signposting/requirements.txt
+      - name: Install Python dependencies
+        run: pip install -r test/signposting/requirements.txt
+      - name: Start TeSS
+        run: |
+          bundle exec rails server -p 3000 -d
+          timeout 120 bash -c 'until curl -sf $TESS_URL/up; do sleep 2; done'
+      - name: Run signposting tests
+        run: pytest test/signposting
