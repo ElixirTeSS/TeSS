@@ -83,9 +83,10 @@ module FairSignposting
     signposting = links.map do |url, attributes|
       (["<#{url}>"] + attributes.map { |key, value| %(#{key}="#{value}") }).join(' ; ')
     end
-    # Keep any existing links, e.g. asset preload hints added by Rails.
+    # Keep any existing links, e.g. asset preload hints added by Rails, but after the signposting links: some clients,
+    # such as the Signposting Sniffing browser extension, ignore the whole header unless its first link is a signpost.
     existing = response.get_header('Link').presence
-    response.set_header('Link', [existing && quote_link_values(existing), *signposting].compact.join(', '))
+    response.set_header('Link', [*signposting, existing && quote_link_values(existing)].compact.join(', '))
   end
 
   # Rails' asset preload links have unquoted attribute values that are not valid RFC 8288 tokens (e.g. base64

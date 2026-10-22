@@ -13,6 +13,7 @@ class FairSignpostingTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_match(/rel="preload"/, response.headers['Link'], 'Rails preload links should be kept')
+    assert_match(/\A<[^>]*>\s*;\s*rel="describedby"/, response.headers['Link'], 'Signposting links should come first')
     links = parse_link_header
     assert_equal 8, links.size
     assert_link(links, material_url(material, format: :jsonld), rel: 'describedby', type: 'application/ld+json',
