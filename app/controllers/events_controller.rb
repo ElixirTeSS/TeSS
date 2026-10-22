@@ -3,7 +3,7 @@ require 'tzinfo'
 # The controller for actions related to the Events model
 class EventsController < ApplicationController
   before_action :ensure_feature_enabled
-  before_action :set_event, only: %i[show edit clone update destroy update_collections add_term reject_term
+  before_action :set_event, only: %i[show ro_crate edit clone update destroy update_collections add_term reject_term
                                      redirect report update_report add_data reject_data]
   before_action :set_breadcrumbs
   before_action :disable_pagination, only: :index, if: ->(controller) { controller.request.format.ics? or controller.request.format.csv? or controller.request.format.rss? }
@@ -12,6 +12,7 @@ class EventsController < ApplicationController
   include ActionView::Helpers::TextHelper
   include FieldLockEnforcement
   include TopicCuration
+  include FairSignposting
 
   # GET /events
   # GET /events.json
@@ -73,7 +74,9 @@ class EventsController < ApplicationController
       format.json
       format.json_api { render json: @event }
       format.ics { send_data @event.to_ical, type: 'text/calendar', disposition: 'attachment', filename: "#{@event.slug}.ics" }
-      format.jsonld { render plain: @bioschemas.first.to_json }
+      format.jsonld do
+        ro_crate_requested? ? render_ro_crate(@event) : render(plain: @bioschemas.first.to_json)
+      end
     end
   end
 
@@ -227,6 +230,10 @@ class EventsController < ApplicationController
   end
 
   private
+
+  def fair_signposting_resource
+    @event if %w[show ro_crate].include?(action_name)
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_event

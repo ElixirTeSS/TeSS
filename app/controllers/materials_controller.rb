@@ -1,7 +1,7 @@
 # The controller for actions related to the Materials model
 class MaterialsController < ApplicationController
   before_action :ensure_feature_enabled
-  before_action :set_material, only: %i[show edit update destroy update_collections clone
+  before_action :set_material, only: %i[show ro_crate edit update destroy update_collections clone
                                         add_term reject_term add_data reject_data]
   before_action :set_breadcrumbs
   before_action :set_learning_path_navigation, only: :show
@@ -10,6 +10,7 @@ class MaterialsController < ApplicationController
   include ActionView::Helpers::TextHelper
   include FieldLockEnforcement
   include TopicCuration
+  include FairSignposting
 
   # GET /materials
   # GET /materials?q=queryparam
@@ -35,7 +36,9 @@ class MaterialsController < ApplicationController
       format.html
       format.json
       format.json_api { render json: @material }
-      format.jsonld { render plain: @bioschemas.first.to_json }
+      format.jsonld do
+        ro_crate_requested? ? render_ro_crate(@material) : render(plain: @bioschemas.first.to_json)
+      end
     end
   end
 
@@ -157,6 +160,10 @@ class MaterialsController < ApplicationController
   end
 
   private
+
+  def fair_signposting_resource
+    @material if %w[show ro_crate].include?(action_name)
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_material

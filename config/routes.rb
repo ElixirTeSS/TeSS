@@ -76,6 +76,7 @@ Rails.application.routes.draw do
       get :report
       patch :report, to: 'events#update_report'
       get :clone
+      get 'ro-crate-metadata.json', action: :ro_crate, as: :ro_crate_metadata, format: false
     end
   end
 
@@ -114,6 +115,7 @@ Rails.application.routes.draw do
       post :add_term
       post :add_data
       get :clone
+      get 'ro-crate-metadata.json', action: :ro_crate, as: :ro_crate_metadata, format: false
     end
     collection do
       get :count
