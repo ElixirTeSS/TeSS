@@ -1,5 +1,4 @@
-base_fields = [:id, :external_id, :title, :subtitle, :url, :organizer, :description, :start, :end, :timezone, :timezone_inferred, :sponsors,
-               :venue,
+base_fields = [:id, :external_id, :title, :subtitle, :url, :organizer, :description, :start, :end, :sponsors, :venue,
                :city, :country, :postcode, :latitude, :longitude, :created_at, :updated_at, :source, :slug,
                :content_provider_id, :user_id, :last_scraped, :scraper_record, :keywords, :event_types,
                :target_audience, :capacity, :eligibility, :contact, :host_institutions, :prerequisites,
@@ -10,9 +9,6 @@ json.array!(@events) do |event|
   fields += Event::SENSITIVE_FIELDS if policy(event).view_report?
 
   json.extract! event, *fields
-  # Local time with the offset of the event's time zone, not the stored wall clock time as UTC
-  json.set! :start, event.local_iso8601(event.start)
-  json.set! :end, event.local_iso8601(event.end)
   json.online(event.online? || event.hybrid?)
 
   json.partial! 'common/ontology_terms', type: 'scientific_topics', resource: event

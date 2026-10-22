@@ -1778,13 +1778,8 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :forbidden
   end
 
-  test 'should give start and end with the offset of the event timezone in json and json-api' do
+  test 'should give start and end with the offset of the event timezone in json-api' do
     @event.update_columns(timezone: 'Buenos Aires', start: Time.utc(2026, 10, 22, 9), end: Time.utc(2026, 10, 22, 17))
-
-    get :show, params: { id: @event, format: :json }
-    json = JSON.parse(response.body)
-    assert_equal '2026-10-22T09:00:00-03:00', json['start']
-    assert_equal '2026-10-22T17:00:00-03:00', json['end']
 
     get :show, params: { id: @event, format: :json_api }
     attributes = JSON.parse(response.body)['data']['attributes']
@@ -1792,25 +1787,19 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal '2026-10-22T17:00:00-03:00', attributes['end']
   end
 
-  test 'should give start and end without offset in json and json-api when timezone is unknown' do
+  test 'should give start and end without offset in json-api when timezone is unknown' do
     @event.update_columns(timezone: nil, start: Time.utc(2026, 10, 22, 9), end: Time.utc(2026, 10, 22, 17))
-
-    get :show, params: { id: @event, format: :json }
-    assert_equal '2026-10-22T09:00:00', JSON.parse(response.body)['start']
 
     get :show, params: { id: @event, format: :json_api }
     assert_equal '2026-10-22T09:00:00', JSON.parse(response.body)['data']['attributes']['start']
   end
 
-  test 'should include timezone in json event list' do
-    @event.update_columns(timezone: 'Buenos Aires', timezone_inferred: true, start: 1.day.from_now.change(hour: 9),
-                          end: 1.day.from_now.change(hour: 17))
+  test 'should leave start and end in the legacy json api unchanged' do
+    @event.update_columns(timezone: 'Buenos Aires', start: Time.utc(2026, 10, 22, 9), end: Time.utc(2026, 10, 22, 17))
 
-    get :index, params: { format: :json }
-    event = JSON.parse(response.body).detect { |e| e['id'] == @event.id }
-    assert_equal 'Buenos Aires', event['timezone']
-    assert event['timezone_inferred']
-    assert_match(/T09:00:00-03:00\z/, event['start'])
-    assert_valid_legacy_json_response
+    get :show, params: { id: @event, format: :json }
+    json = JSON.parse(response.body)
+    assert_equal '2026-10-22T09:00:00.000Z', json['start']
+    assert_nil json['timezone_inferred']
   end
 end

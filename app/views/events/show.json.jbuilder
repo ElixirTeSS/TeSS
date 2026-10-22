@@ -5,7 +5,7 @@ fields = [
 
   :keywords, :event_types, :fields,
 
-  :start, :end, :duration, :timezone, :timezone_inferred, :language,
+  :start, :end, :duration, :timezone, :language,
 
   :organizer, :sponsors, :contact, :host_institutions,
 
@@ -22,9 +22,6 @@ fields = [
 fields += Event::SENSITIVE_FIELDS if policy(@event).view_report?
 
 json.extract! @event, *fields
-# Local time with the offset of the event's time zone, not the stored wall clock time as UTC
-json.set! :start, @event.local_iso8601(@event.start)
-json.set! :end, @event.local_iso8601(@event.end)
 json.online(@event.online? || @event.hybrid?)
 
 json.partial! 'common/ontology_terms', type: 'scientific_topics', resource: @event
