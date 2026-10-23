@@ -104,14 +104,7 @@ class EventsController < ApplicationController
     authorize Event, :new?
     suggestion = TimezoneLookup.find(latitude: params[:latitude], longitude: params[:longitude],
                                      country: params[:country])
-    selected = params[:timezone].presence
-    message = if suggestion.nil? || (selected && TimezoneLookup.same_offsets?(selected, suggestion))
-                nil
-              elsif selected
-                t('events.timezone_suggestion.mismatch', suggestion:, selected:)
-              else
-                t('events.timezone_suggestion.blank', suggestion:)
-              end
+    message = timezone_suggestion_message(suggestion, params[:timezone].presence)
 
     render json: { timezone: suggestion, message:, button: (t('events.timezone_suggestion.use', suggestion:) if message) }
   end
@@ -245,6 +238,16 @@ class EventsController < ApplicationController
   end
 
   private
+
+  def timezone_suggestion_message(suggestion, selected)
+    return nil if suggestion.nil? || (selected && TimezoneLookup.same_offsets?(selected, suggestion))
+
+    if selected
+      t('events.timezone_suggestion.mismatch', suggestion:, selected:)
+    else
+      t('events.timezone_suggestion.blank', suggestion:)
+    end
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_event

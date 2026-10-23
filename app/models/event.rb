@@ -32,7 +32,7 @@ class Event < ApplicationRecord
   before_save :geocoding_cache_lookup, if: :address_will_change?
   before_save -> { self.timezone_inferred = false }, if: :will_save_change_to_timezone?
   # Not for date-only events with default times: their floating local times show on the right day anywhere
-  before_save -> { self.timezone, self.timezone_inferred = nil, false }, if: -> { timezone_inferred? && default_times? }
+  before_save :clear_inferred_timezone, if: -> { timezone_inferred? && default_times? }
   before_save :timezone_from_location, if: -> { timezone.blank? && !default_times? }
   after_save :enqueue_geocoding_worker, if: :address_changed?
 
@@ -324,10 +324,10 @@ class Event < ApplicationRecord
 
     # Hour set to 0 if not otherwise defined, e.g. only a date was given. The default times are marked with 1
     # microsecond (09:00:00.000001), which is not shown, so that they can be told apart (see default_times?)
-    self.start = (start + 9.hours).change(usec: DEFAULT_TIME_MARKER) if start.hour == 0
+    self.start = (start + 9.hours).change(usec: DEFAULT_TIME_MARKER) if start.hour.zero?
 
     if self.end
-      self.end = (self.end + 17.hours).change(usec: DEFAULT_TIME_MARKER) if self.end.hour == 0
+      self.end = (self.end + 17.hours).change(usec: DEFAULT_TIME_MARKER) if self.end.hour.zero?
     elsif online?
       self.end = start + 1.hour
     else
@@ -427,6 +427,11 @@ class Event < ApplicationRecord
   def timezone_from_location
     self.timezone = TimezoneLookup.find(latitude:, longitude:, country:)
     self.timezone_inferred = timezone.present?
+  end
+
+  def clear_inferred_timezone
+    self.timezone = nil
+    self.timezone_inferred = false
   end
 
   # Check the Redis cache for coordinates

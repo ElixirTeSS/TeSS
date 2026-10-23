@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Finds the time zone of a place, as one of the time zone names TeSS accepts (the keys of
 # ActiveSupport::TimeZone::MAPPING, e.g. "Eastern Time (US & Canada)").
 #
@@ -55,19 +57,21 @@ module TimezoneLookup
     canonical = TZInfo::Timezone.get(zone).canonical_identifier
     mapping = ActiveSupport::TimeZone::MAPPING
     name = [zone, canonical].lazy.map { |id| mapping.key?(id) ? id : named_after_city(id) }.find(&:itself)
-    return name if name
+    name || nearest_with_same_offsets(canonical, *(latitude && longitude ? [latitude, longitude] : locations[canonical]))
+  rescue TZInfo::InvalidTimezoneIdentifier
+    nil
+  end
 
-    offsets = offsets(canonical)
-    candidates = mapping.select { |_, id| offsets(id) == offsets }.keys
-    latitude, longitude = locations[canonical] if latitude.nil? || longitude.nil?
+  # The Rails time zone with the same UTC offsets over the year as an IANA time zone that is nearest to a point
+  def self.nearest_with_same_offsets(zone, latitude = nil, longitude = nil)
+    mapping = ActiveSupport::TimeZone::MAPPING
+    candidates = mapping.select { |_, id| offsets(id) == offsets(zone) }.keys
     return candidates.first if latitude.nil? || longitude.nil?
 
     candidates.min_by do |candidate|
       location = locations[TZInfo::Timezone.get(mapping[candidate]).canonical_identifier]
       location ? distance(latitude, longitude, *location) : Float::INFINITY
     end
-  rescue TZInfo::InvalidTimezoneIdentifier
-    nil
   end
 
   # The Rails name for an IANA time zone, preferring the one named after its city when there are several

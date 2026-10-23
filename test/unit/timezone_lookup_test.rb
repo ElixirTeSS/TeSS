@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class TimezoneLookupTest < ActiveSupport::TestCase
@@ -42,5 +44,16 @@ class TimezoneLookupTest < ActiveSupport::TestCase
     assert_nil TimezoneLookup.find(country: '')
     assert_nil TimezoneLookup.find(country: 'BigCountry')
     assert_nil TimezoneLookup.find(latitude: 0, longitude: -30) # Atlantic ocean
+  end
+
+  test 'no time zone when the lookups fail' do
+    WhereTZ.stub(:lookup, ->(*) { raise ArgumentError, 'Point outside any known timezone' }) do
+      assert_nil TimezoneLookup.zone_at(51.5, -0.12)
+    end
+    TZInfo::Country.stub(:get, ->(*) { raise TZInfo::InvalidCountryCode }) do
+      assert_nil TimezoneLookup.country_zone('United Kingdom')
+    end
+    assert_nil TimezoneLookup.rails_name('Not/A_Zone')
+    refute TimezoneLookup.same_offsets?('London', 'Not a zone')
   end
 end
