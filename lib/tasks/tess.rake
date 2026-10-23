@@ -212,6 +212,8 @@ namespace :tess do
     total = events.count
     inferred = 0
     events.find_each do |event|
+      next if event.default_times? # Date-only events keep floating local times
+
       timezone = TimezoneLookup.find(latitude: event.latitude, longitude: event.longitude, country: event.country)
       next unless timezone
 

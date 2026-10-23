@@ -47,8 +47,8 @@ class UhasseltIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'UHasselt', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal Time.zone.parse('Mon, 16 Mar 2026 09:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Mon, 16 Mar 2026 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal Time.zone.parse('Mon, 16 Mar 2026 09:00:00.000001000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Mon, 16 Mar 2026 17:00:00.000001000 UTC +00:00'), event.end
     assert_equal 'campus Diepenbeek', event.venue
     refute event.online?
   end

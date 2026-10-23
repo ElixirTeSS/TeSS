@@ -44,8 +44,8 @@ class CarpentriesIngestorTest < ActiveSupport::TestCase
     assert_equal 28.03107, event.longitude.to_f.round(5)
     assert_equal 'South Africa', event.country
     assert_equal 'The National Institute for Theoretical and Computational Sciences - NITheCS', event.venue
-    assert_equal Time.zone.parse('12 Aug 2024 09:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('16 Aug 2024 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal Time.zone.parse('12 Aug 2024 09:00:00.000001000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('16 Aug 2024 17:00:00.000001000 UTC +00:00'), event.end
     assert_equal ['National Institute for Theoretical and Computational Sciences'], event.host_institutions
     assert event.online?
   end

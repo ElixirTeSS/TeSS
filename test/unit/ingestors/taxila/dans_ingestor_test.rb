@@ -52,7 +52,7 @@ class DansIngestorTest < ActiveSupport::TestCase
     assert_equal 'DANS', event.source
     assert_equal 'Amsterdam', event.timezone
     assert_equal ['FAIR and Open data'], event.keywords
-    assert_equal Time.zone.parse('Mon, 24 Oct 2025 09:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Mon, 24 Oct 2025 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal Time.zone.parse('Mon, 24 Oct 2025 09:00:00.000001000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Mon, 24 Oct 2025 17:00:00.000001000 UTC +00:00'), event.end
   end
 end

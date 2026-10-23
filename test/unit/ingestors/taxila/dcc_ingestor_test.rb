@@ -51,8 +51,8 @@ class DccIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'DCC', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal Time.zone.parse('Fri, 18 Sep 2025 09:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Sat, 10 Oct 2025 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal Time.zone.parse('Fri, 18 Sep 2025 09:00:00.000001000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Sat, 10 Oct 2025 17:00:00.000001000 UTC +00:00'), event.end
     assert_equal 'Utrecht, SURF en HU', event.venue
   end
 end

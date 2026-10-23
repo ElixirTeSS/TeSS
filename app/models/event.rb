@@ -31,7 +31,9 @@ class Event < ApplicationRecord
   before_save :set_default_times
   before_save :geocoding_cache_lookup, if: :address_will_change?
   before_save -> { self.timezone_inferred = false }, if: :will_save_change_to_timezone?
-  before_save :timezone_from_location, if: -> { timezone.blank? }
+  # Not for date-only events with default times: their floating local times show on the right day anywhere
+  before_save -> { self.timezone, self.timezone_inferred = nil, false }, if: -> { timezone_inferred? && default_times? }
+  before_save :timezone_from_location, if: -> { timezone.blank? && !default_times? }
   after_save :enqueue_geocoding_worker, if: :address_changed?
 
   if TeSS::Config.solr_enabled
@@ -177,6 +179,8 @@ class Event < ApplicationRecord
 
   COUNTRY_SYNONYMS = JSON.parse(File.read(File.join(Rails.root, 'config', 'data', 'country_synonyms.json')))
 
+  # Microseconds added to default times (see set_default_times)
+  DEFAULT_TIME_MARKER = 1
   NOMINATIM_DELAY = 1.minute
   NOMINATIM_MAX_ATTEMPTS = 3
 
@@ -203,8 +207,19 @@ class Event < ApplicationRecord
     return nil if time.blank?
 
     wall_clock = time.strftime('%Y-%m-%dT%H:%M:%S')
-    zone = ActiveSupport::TimeZone[timezone] if timezone.present?
+    zone = known_time_zone
     zone ? zone.parse(wall_clock).iso8601 : wall_clock
+  end
+
+  # Whether the start time is the default (09:00) that set_default_times gives events with only a date, rather than
+  # a time given by the user or the source
+  def default_times?
+    start&.usec == DEFAULT_TIME_MARKER
+  end
+
+  # The event's time zone, or nil if it has none or it is not recognised
+  def known_time_zone
+    ActiveSupport::TimeZone[timezone] if timezone.present?
   end
 
   def end_local
@@ -272,9 +287,14 @@ class Event < ApplicationRecord
         if all_day?
           ical_event.dtstart = Icalendar::Values::Date.new(start, tzid: 'UTC') unless start.blank?
           ical_event.dtend = Icalendar::Values::Date.new(self.end.tomorrow, tzid: 'UTC') unless self.end.blank?
-        else
+        elsif known_time_zone
           ical_event.dtstart = Icalendar::Values::DateTime.new(start_utc, tzid: 'UTC') unless start.blank?
           ical_event.dtend = Icalendar::Values::DateTime.new(end_utc, tzid: 'UTC') unless self.end.blank?
+        else
+          # Time zone unknown: floating (local) times, e.g. DTSTART:20261105T090000, which calendars show at the same
+          # clock time and day in their own time zone, assuming people are near the event, rather than as UTC
+          ical_event.dtstart = Icalendar::Values::DateTime.new(start.strftime('%Y%m%dT%H%M%S'))
+          ical_event.dtend = Icalendar::Values::DateTime.new(self.end.strftime('%Y%m%dT%H%M%S'))
         end
 
       end
@@ -302,10 +322,12 @@ class Event < ApplicationRecord
   def set_default_times
     return unless start
 
-    self.start = start + 9.hours if start.hour == 0 # hour set to 0 if not otherwise defined...
+    # Hour set to 0 if not otherwise defined, e.g. only a date was given. The default times are marked with 1
+    # microsecond (09:00:00.000001), which is not shown, so that they can be told apart (see default_times?)
+    self.start = (start + 9.hours).change(usec: DEFAULT_TIME_MARKER) if start.hour == 0
 
     if self.end
-      self.end = self.end + 17.hours if self.end.hour == 0 # hour set to 0 if not otherwise defined...
+      self.end = (self.end + 17.hours).change(usec: DEFAULT_TIME_MARKER) if self.end.hour == 0
     elsif online?
       self.end = start + 1.hour
     else
@@ -400,7 +422,8 @@ class Event < ApplicationRecord
 
   # Set a missing time zone from the event's coordinates (once geocoded) or, failing that, its country. Online
   # events often have neither, and keep no time zone. Marked as inferred until the time zone is changed otherwise,
-  # e.g. by the user.
+  # e.g. by the user. Not done for events with the default 09:00-17:00 times (see default_times?), as combining two
+  # guesses would pin them to a time and day that may not apply.
   def timezone_from_location
     self.timezone = TimezoneLookup.find(latitude:, longitude:, country:)
     self.timezone_inferred = timezone.present?

@@ -45,7 +45,7 @@ class HanIngestorTest < ActiveSupport::TestCase
     assert_equal 'HAN', event.source
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'Nijmegen, Laan van Scheut 2', event.venue
-    assert_equal Time.zone.parse('Tue, 1 Sep 2026 09:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Tue, 1 Sep 2026 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal Time.zone.parse('Tue, 1 Sep 2026 09:00:00.000001000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Tue, 1 Sep 2026 17:00:00.000001000 UTC +00:00'), event.end
   end
 end

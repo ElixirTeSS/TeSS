@@ -52,7 +52,7 @@ class NwoIngestorTest < ActiveSupport::TestCase
     assert_equal 'NL Polar day 2025', event.title
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'NWO', event.source
-    assert_equal Time.zone.parse('Mon, 8 Apr 2025 09:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Mon, 8 Apr 2025 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal Time.zone.parse('Mon, 8 Apr 2025 09:00:00.000001000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Mon, 8 Apr 2025 17:00:00.000001000 UTC +00:00'), event.end
   end
 end

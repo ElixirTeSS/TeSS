@@ -401,6 +401,48 @@ class EventTest < ActiveSupport::TestCase
     assert_equal 'London', event.timezone
   end
 
+  test 'marks default times of date-only events' do
+    event = Event.create!(@mandatory.merge(user: users(:regular_user), title: 'Date-only event', url: 'http://example.com',
+                                           timezone: nil, start: Date.new(2026, 11, 5), end: Date.new(2026, 11, 5)))
+    event.reload
+    assert_equal [9, 0, 0, 1], [event.start.hour, event.start.min, event.start.sec, event.start.usec]
+    assert_equal [17, 0, 0, 1], [event.end.hour, event.end.min, event.end.sec, event.end.usec]
+    assert event.default_times?
+    assert_equal '2026-11-05T09:00:00', event.local_iso8601(event.start), 'Marker should not be shown'
+    assert_includes event.to_ical, "DTSTART:20261105T090000\r\n"
+  end
+
+  test 'does not infer timezone for date-only events' do
+    event = Event.create!(@mandatory.merge(user: users(:regular_user), title: 'Date-only event', url: 'http://example.com',
+                                           timezone: nil, start: Date.new(2026, 11, 5), end: Date.new(2026, 11, 5),
+                                           latitude: -37.81, longitude: 144.96, venue: 'Somewhere'))
+    assert_nil event.timezone, 'Default times should stay floating local times'
+  end
+
+  test 'infers timezone for an event that really is 09:00-17:00' do
+    event = Event.create!(@mandatory.merge(user: users(:regular_user), title: 'Day event', url: 'http://example.com',
+                                           timezone: nil, start: Time.utc(2026, 11, 5, 9), end: Time.utc(2026, 11, 5, 17),
+                                           latitude: -37.81, longitude: 144.96, venue: 'Somewhere'))
+    refute event.default_times?
+    assert_equal 'Melbourne', event.timezone
+  end
+
+  test 'clears inferred timezone when times become default, but not a chosen one' do
+    event = Event.create!(@mandatory.merge(user: users(:regular_user), title: 'Event', url: 'http://example.com',
+                                           timezone: nil, start: Time.utc(2026, 11, 5, 9), end: Time.utc(2026, 11, 5, 17),
+                                           latitude: -37.81, longitude: 144.96, venue: 'Somewhere'))
+    assert event.timezone_inferred?
+
+    # e.g. ingested again from a source that only gives the date
+    event.update!(start: Date.new(2026, 11, 5), end: Date.new(2026, 11, 5))
+    assert_nil event.timezone
+    refute event.timezone_inferred?
+
+    event.update!(timezone: 'Melbourne')
+    event.update!(start: Date.new(2026, 11, 6), end: Date.new(2026, 11, 6))
+    assert_equal 'Melbourne', event.timezone
+  end
+
   test 'marks inferred timezone until it is changed' do
     event = Event.create!(@mandatory.merge(user: users(:regular_user), title: 'Event', url: 'http://example.com',
                                            timezone: nil, country: 'United Kingdom', venue: 'Somewhere'))
@@ -426,6 +468,21 @@ class EventTest < ActiveSupport::TestCase
     event = Event.create!(@mandatory.merge(user: users(:regular_user), title: 'Online event', url: 'http://example.com',
                                            timezone: nil, presence: :online))
     assert_nil event.timezone
+  end
+
+  test 'ical export in UTC when the timezone is known' do
+    event = Event.new(title: 'Event', timezone: 'Perth', start: Time.utc(2022, 2, 11, 9, 45),
+                      end: Time.utc(2022, 2, 11, 12, 50))
+    ical = event.to_ical
+    assert_includes ical, 'DTSTART:20220211T014500Z'
+    assert_includes ical, 'DTEND:20220211T045000Z'
+  end
+
+  test 'ical export in floating local time when the timezone is unknown' do
+    event = Event.new(title: 'Event', timezone: nil, start: Time.utc(2026, 11, 5, 9), end: Time.utc(2026, 11, 5, 17))
+    ical = event.to_ical
+    assert_includes ical, "DTSTART:20261105T090000\r\n", 'Should be shown on the same day in any time zone'
+    assert_includes ical, "DTEND:20261105T170000\r\n"
   end
 
   test 'validates timezone if present' do

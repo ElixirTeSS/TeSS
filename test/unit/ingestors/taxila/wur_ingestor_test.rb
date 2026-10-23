@@ -52,7 +52,7 @@ class WurIngestorTest < ActiveSupport::TestCase
     assert_equal 'WUR', event.source
     assert_equal 'Amsterdam', event.timezone
     assert_equal 'Omnia - Building 105', event.venue
-    assert_equal Time.zone.parse('2026-08-24 09:00:00'), event.start
-    assert_equal Time.zone.parse('2026-08-24 17:00:00'), event.end
+    assert_equal Time.zone.parse('2026-08-24 09:00:00.000001'), event.start
+    assert_equal Time.zone.parse('2026-08-24 17:00:00.000001'), event.end
   end
 end

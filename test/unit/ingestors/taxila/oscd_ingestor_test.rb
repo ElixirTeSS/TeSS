@@ -52,8 +52,8 @@ class OscdIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'OSCD', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal Time.zone.parse('Tue, 21 Jan 2019 09:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Tue, 21 Jan 2019 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal Time.zone.parse('Tue, 21 Jan 2019 09:00:00.000001000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Tue, 21 Jan 2019 17:00:00.000001000 UTC +00:00'), event.end
     assert_equal 'Online - Register here', event.venue
     assert event.online?
   end

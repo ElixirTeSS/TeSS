@@ -51,8 +51,8 @@ class TdccIngestorTest < ActiveSupport::TestCase
     # check other fields
     assert_equal 'TDCC', event.source
     assert_equal 'Amsterdam', event.timezone
-    assert_equal Time.zone.parse('Mon, 9 Oct 2025 09:00:00.000000000 UTC +00:00'), event.start
-    assert_equal Time.zone.parse('Mon, 9 Oct 2025 17:00:00.000000000 UTC +00:00'), event.end
+    assert_equal Time.zone.parse('Mon, 9 Oct 2025 09:00:00.000001000 UTC +00:00'), event.start
+    assert_equal Time.zone.parse('Mon, 9 Oct 2025 17:00:00.000001000 UTC +00:00'), event.end
     assert_equal 'Social Impact Factory', event.venue
   end
 end

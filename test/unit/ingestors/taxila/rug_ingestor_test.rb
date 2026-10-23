@@ -65,8 +65,8 @@ class RugIngestorTest < ActiveSupport::TestCase
       # check other fields
       assert_equal 'RUG', event.source
       assert_equal 'Amsterdam', event.timezone
-      assert_equal Time.zone.parse('Sat, 15 Feb 2025 09:00:00.000000000 UTC +00:00'), event.start
-      assert_equal Time.zone.parse('Sun, 04 jan 2026 17:00:00.000000000 UTC +00:00'), event.end
+      assert_equal Time.zone.parse('Sat, 15 Feb 2025 09:00:00.000001000 UTC +00:00'), event.start
+      assert_equal Time.zone.parse('Sun, 04 jan 2026 17:00:00.000001000 UTC +00:00'), event.end
       assert_equal 'University museum, Oude Kijk in Het Jatstraat 7A, 9712 EA Groningen', event.venue
     end
   end
