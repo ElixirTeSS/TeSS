@@ -1719,4 +1719,29 @@ class EventsControllerTest < ActionController::TestCase
 
     assert_select '#origin-info a[href=?]', uri
   end
+
+  test 'should give start and end with the offset of the event timezone in json-api' do
+    @event.update_columns(timezone: 'Buenos Aires', start: Time.utc(2026, 10, 22, 9), end: Time.utc(2026, 10, 22, 17))
+
+    get :show, params: { id: @event, format: :json_api }
+    attributes = JSON.parse(response.body)['data']['attributes']
+    assert_equal '2026-10-22T09:00:00-03:00', attributes['start']
+    assert_equal '2026-10-22T17:00:00-03:00', attributes['end']
+  end
+
+  test 'should give start and end without offset in json-api when timezone is unknown' do
+    @event.update_columns(timezone: nil, start: Time.utc(2026, 10, 22, 9), end: Time.utc(2026, 10, 22, 17))
+
+    get :show, params: { id: @event, format: :json_api }
+    assert_equal '2026-10-22T09:00:00', JSON.parse(response.body)['data']['attributes']['start']
+  end
+
+  test 'should leave start and end in the legacy json api unchanged' do
+    @event.update_columns(timezone: 'Buenos Aires', start: Time.utc(2026, 10, 22, 9), end: Time.utc(2026, 10, 22, 17))
+
+    get :show, params: { id: @event, format: :json }
+    json = JSON.parse(response.body)
+    assert_equal '2026-10-22T09:00:00.000Z', json['start']
+    assert_nil json['timezone_inferred']
+  end
 end
