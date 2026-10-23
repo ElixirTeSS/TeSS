@@ -1756,4 +1756,20 @@ class EventsControllerTest < ActionController::TestCase
     assert_equal '2026-10-22T09:00:00.000Z', json['start']
     assert_nil json['timezone_inferred']
   end
+
+  test 'should show inferred timezone' do
+    @event.update_columns(timezone: 'London', timezone_inferred: true)
+    get :show, params: { id: @event }
+    assert_response :success
+    assert_select 'p.timezone', text: /London \(inferred\)/
+  end
+
+  test 'should show timezone chosen by user without inferred' do
+    @event.update_columns(timezone: 'London', timezone_inferred: false)
+    get :show, params: { id: @event }
+    assert_response :success
+    assert_select 'p.timezone', text: /London/
+    assert_select 'p.timezone', text: /inferred/, count: 0
+  end
+
 end

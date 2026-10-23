@@ -30,6 +30,10 @@ class Event < ApplicationRecord
   before_save :check_country_name
   before_save :set_default_times
   before_save :geocoding_cache_lookup, if: :address_will_change?
+  before_save -> { self.timezone_inferred = false }, if: :will_save_change_to_timezone?
+  # Not for events with default times: their floating local times show on the right day anywhere
+  before_save :clear_inferred_timezone, if: -> { timezone_inferred? && time_inferred? }
+  before_save :timezone_from_location, if: -> { timezone.blank? && !time_inferred? }
   after_save :enqueue_geocoding_worker, if: :address_changed?
 
   if TeSS::Config.solr_enabled
@@ -310,7 +314,13 @@ class Event < ApplicationRecord
   def set_default_times
     return unless start
 
-    self.start = start + 9.hours if start.hour == 0 # hour set to 0 if not otherwise defined...
+    # Hour set to 0 if not otherwise defined, e.g. only a date was given: the default times are marked as inferred
+    if start.hour.zero?
+      self.start = start + 9.hours
+      self.time_inferred = true
+    elsif start_in_database && start.strftime('%H:%M') != start_in_database.strftime('%H:%M')
+      self.time_inferred = false # A time of day was given
+    end
 
     if self.end
       self.end = self.end + 17.hours if self.end.hour == 0 # hour set to 0 if not otherwise defined...
@@ -404,6 +414,20 @@ class Event < ApplicationRecord
 
   def address_changed?
     ADDRESS_FIELDS.any? { |field| previous_changes.keys.include?(field.to_s) }
+  end
+
+  # Set a missing time zone from the event's coordinates (once geocoded) or, failing that, its country. Online
+  # events often have neither, and keep no time zone. Marked as inferred until the time zone is changed otherwise,
+  # e.g. by the user. Not done for events with default (inferred) times, as combining two guesses would pin them to
+  # a time and day that may not apply.
+  def timezone_from_location
+    self.timezone = TimezoneLookup.find(latitude:, longitude:, country:)
+    self.timezone_inferred = timezone.present?
+  end
+
+  def clear_inferred_timezone
+    self.timezone = nil
+    self.timezone_inferred = false
   end
 
   # Check the Redis cache for coordinates

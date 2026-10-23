@@ -3,7 +3,7 @@ class EventSerializer < ApplicationSerializer
 
              :keywords, :event_types, :scientific_topics, :operations, :fields, :external_resources,
 
-             :start, :end, :duration, :timezone,
+             :start, :end, :duration, :timezone, :timezone_inferred, :time_inferred,
 
              :organizer, :sponsors, :contact, :host_institutions,
 

@@ -13,9 +13,18 @@ columns are UTC `datetime`s, so an event at 09:00–17:00 in Buenos Aires is sto
   if the time zone is unknown. These are used by the iCal and Google Calendar exports, JSON-API and Bioschemas.
 - Without a time zone, exports give floating local times (`DTSTART:20261105T090000`), which calendars show at the
   same clock time in their own time zone, so on the same day for people near the event.
-- Events given only dates (start and end at midnight) get 09:00–17:00 (`Event#set_default_times`).
+- Events given only dates (start and end at midnight) get 09:00–17:00 (`Event#set_default_times`), and are marked
+  with `time_inferred` until a time of day is given.
 - Nothing should depend on the server's time zone: use `Time.zone.now` and `Date.current`, not `Time.now`,
   `DateTime.now` or `Date.today`.
+
+## Inferred time zones
+
+A missing time zone is looked up from the event's coordinates, or a country with a single time zone
+(`TimezoneLookup`), when the event is saved, and marked with `timezone_inferred` until it is changed. This is not
+done for events with inferred (default) times, as a guessed time zone on top of guessed times would pin them to a
+time and day that may not apply. Existing events get one when they are next saved, e.g. when their source is next
+ingested.
 
 ## Ingestors
 

@@ -634,6 +634,7 @@ en:
     controller: "The data controller for %{site_name} is The University of Manchester."
     post: "<strong>The TeSS Team</strong><br/>Room 2.86 c/o School of Computer Science,<br/>Kilburn Building,<br/>Oxford Road,<br/>Manchester,<br/>M13 9PL"
   events:
+    timezone_inferred: "%{timezone} (inferred)"
     hints:
       address: 'Physical location of the event if its being conducted Face-to-face.'
       capacity: >
