@@ -98,6 +98,17 @@ class EventsController < ApplicationController
                        end: Time.zone.now.change(hour: 17))
   end
 
+  # GET /events/timezone_suggestion?latitude=..&longitude=..&country=..&timezone=..
+  # The time zone of the location entered in the event form, and a message if it differs from the selected one.
+  def timezone_suggestion
+    authorize Event, :new?
+    suggestion = TimezoneLookup.find(latitude: params[:latitude], longitude: params[:longitude],
+                                     country: params[:country])
+    message = timezone_suggestion_message(suggestion, params[:timezone].presence)
+
+    render json: { timezone: suggestion, message:, button: (t('events.timezone_suggestion.use', suggestion:) if message) }
+  end
+
   # GET /events/1/clone
   def clone
     authorize @event
@@ -227,6 +238,16 @@ class EventsController < ApplicationController
   end
 
   private
+
+  def timezone_suggestion_message(suggestion, selected)
+    return nil if suggestion.nil? || (selected && TimezoneLookup.same_offsets?(selected, suggestion))
+
+    if selected
+      t('events.timezone_suggestion.mismatch', suggestion:, selected:)
+    else
+      t('events.timezone_suggestion.blank', suggestion:)
+    end
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_event

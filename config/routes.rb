@@ -65,6 +65,7 @@ Rails.application.routes.draw do
     collection do
       get :count
       get :calendar, format: %i[js html]
+      get :timezone_suggestion
       post :preview
     end
     member do
