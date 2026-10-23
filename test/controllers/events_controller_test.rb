@@ -149,6 +149,18 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test 'should default new event to 09:00-17:00, whatever the server time zone' do
+    sign_in users(:regular_user)
+    %w[Asia/Tokyo America/New_York].each do |tz|
+      mock_timezone(tz)
+      get :new
+      assert_equal [9, 0], [assigns(:event).start.hour, assigns(:event).start.min], tz
+      assert_equal 17, assigns(:event).end.hour, tz
+    ensure
+      reset_timezone
+    end
+  end
+
   test 'should not get new page for basic users' do
     sign_in users(:basic_user)
     get :new
@@ -1718,5 +1730,30 @@ class EventsControllerTest < ActionController::TestCase
     assert_response :success
 
     assert_select '#origin-info a[href=?]', uri
+  end
+
+  test 'should give start and end with the offset of the event timezone in json-api' do
+    @event.update_columns(timezone: 'Buenos Aires', start: Time.utc(2026, 10, 22, 9), end: Time.utc(2026, 10, 22, 17))
+
+    get :show, params: { id: @event, format: :json_api }
+    attributes = JSON.parse(response.body)['data']['attributes']
+    assert_equal '2026-10-22T09:00:00-03:00', attributes['start']
+    assert_equal '2026-10-22T17:00:00-03:00', attributes['end']
+  end
+
+  test 'should give start and end without offset in json-api when timezone is unknown' do
+    @event.update_columns(timezone: nil, start: Time.utc(2026, 10, 22, 9), end: Time.utc(2026, 10, 22, 17))
+
+    get :show, params: { id: @event, format: :json_api }
+    assert_equal '2026-10-22T09:00:00', JSON.parse(response.body)['data']['attributes']['start']
+  end
+
+  test 'should leave start and end in the legacy json api unchanged' do
+    @event.update_columns(timezone: 'Buenos Aires', start: Time.utc(2026, 10, 22, 9), end: Time.utc(2026, 10, 22, 17))
+
+    get :show, params: { id: @event, format: :json }
+    json = JSON.parse(response.body)
+    assert_equal '2026-10-22T09:00:00.000Z', json['start']
+    assert_nil json['timezone_inferred']
   end
 end
