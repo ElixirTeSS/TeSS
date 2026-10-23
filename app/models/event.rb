@@ -275,9 +275,14 @@ class Event < ApplicationRecord
         if all_day?
           ical_event.dtstart = Icalendar::Values::Date.new(start, tzid: 'UTC') unless start.blank?
           ical_event.dtend = Icalendar::Values::Date.new(self.end.tomorrow, tzid: 'UTC') unless self.end.blank?
-        else
+        elsif known_time_zone
           ical_event.dtstart = Icalendar::Values::DateTime.new(start_utc, tzid: 'UTC') unless start.blank?
           ical_event.dtend = Icalendar::Values::DateTime.new(end_utc, tzid: 'UTC') unless self.end.blank?
+        else
+          # Time zone unknown: floating (local) times, e.g. DTSTART:20261105T090000, which calendars show at the same
+          # clock time and day in their own time zone, assuming people are near the event, rather than as UTC
+          ical_event.dtstart = Icalendar::Values::DateTime.new(start.strftime('%Y%m%dT%H%M%S'))
+          ical_event.dtend = Icalendar::Values::DateTime.new(self.end.strftime('%Y%m%dT%H%M%S'))
         end
 
       end
