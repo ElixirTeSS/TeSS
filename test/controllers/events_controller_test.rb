@@ -1927,7 +1927,7 @@ class EventsControllerTest < ActionController::TestCase
     # 10:16 GMT == 03:16 Mountain time
     assert_includes p.text, '23 November 2015 @ 03:16'
     p = div.at_css('p.timezone')
-    assert_includes p.text, 'Mountain Daylight Time'
+    assert_includes p.text, 'Mountain Standard Time'
 
     # event(:calendar_event)
     html = Nokogiri::HTML(json.find do |e|

@@ -11,6 +11,6 @@
       <%= t('events.no_timezone_provided_gmt_assumed') %>
     <% end %>
   </p>
-  <%= display_attribute(event, :timezone) {|v| normalized_icu_timezone(v) } %>
+  <%= display_attribute(event, :timezone) {|v| normalized_icu_timezone(v, event.start_local) } %>
 </div>
 <% event.timezone = saved_timezone if local_assigns[:timezone] %>
