@@ -8,8 +8,8 @@ module Bioschemas
       'https://bioschemas.org/profiles/CourseInstance/1.0-RELEASE'
     end
 
-    property :startDate, :start
-    property :endDate, :end
+    property :startDate, -> (event) { local_time(event, event.start) }
+    property :endDate, -> (event) { local_time(event, event.end) }
     property :organizer, -> (event) { { '@type' => 'Organization', name: event.organizer } if event.organizer.present? }
     property :location, -> (event) { address(event) },
              condition: -> (event) { event.venue.present? || event.city.present? || event.county.present? ||

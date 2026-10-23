@@ -30,6 +30,10 @@ class Event < ApplicationRecord
   before_save :check_country_name
   before_save :set_default_times
   before_save :geocoding_cache_lookup, if: :address_will_change?
+  before_save -> { self.timezone_inferred = false }, if: :will_save_change_to_timezone?
+  # Not for events with default times: their floating local times show on the right day anywhere
+  before_save :clear_inferred_timezone, if: -> { timezone_inferred? && time_inferred? }
+  before_save :timezone_from_location, if: -> { timezone.blank? && !time_inferred? }
   after_save :enqueue_geocoding_worker, if: :address_changed?
 
   if TeSS::Config.solr_enabled
@@ -194,6 +198,22 @@ class Event < ApplicationRecord
     set_to_local start
   end
 
+  # A start or end time as an ISO 8601 date-time with the UTC offset of the event's time zone on that date, e.g.
+  # "2015-11-23T10:16:33-05:00". Times are stored as local (wall clock) time, so without a known time zone (e.g.
+  # many online events) it is given without an offset, as local time, rather than as UTC.
+  def local_iso8601(time)
+    return nil if time.blank?
+
+    wall_clock = time.strftime('%Y-%m-%dT%H:%M:%S')
+    zone = known_time_zone
+    zone ? zone.parse(wall_clock).iso8601 : wall_clock
+  end
+
+  # The event's time zone, or nil if it has none or it is not recognised
+  def known_time_zone
+    ActiveSupport::TimeZone[timezone] if timezone.present?
+  end
+
   def end_local
     set_to_local self.end
   end
@@ -259,9 +279,14 @@ class Event < ApplicationRecord
         if all_day?
           ical_event.dtstart = Icalendar::Values::Date.new(start, tzid: 'UTC') unless start.blank?
           ical_event.dtend = Icalendar::Values::Date.new(self.end.tomorrow, tzid: 'UTC') unless self.end.blank?
-        else
+        elsif known_time_zone
           ical_event.dtstart = Icalendar::Values::DateTime.new(start_utc, tzid: 'UTC') unless start.blank?
           ical_event.dtend = Icalendar::Values::DateTime.new(end_utc, tzid: 'UTC') unless self.end.blank?
+        else
+          # Time zone unknown: floating (local) times, e.g. DTSTART:20261105T090000, which calendars show at the same
+          # clock time and day in their own time zone, assuming people are near the event, rather than as UTC
+          ical_event.dtstart = Icalendar::Values::DateTime.new(start.strftime('%Y%m%dT%H%M%S'))
+          ical_event.dtend = Icalendar::Values::DateTime.new(self.end.strftime('%Y%m%dT%H%M%S'))
         end
 
       end
@@ -289,7 +314,13 @@ class Event < ApplicationRecord
   def set_default_times
     return unless start
 
-    self.start = start + 9.hours if start.hour == 0 # hour set to 0 if not otherwise defined...
+    # Hour set to 0 if not otherwise defined, e.g. only a date was given: the default times are marked as inferred
+    if start.hour.zero?
+      self.start = start + 9.hours
+      self.time_inferred = true
+    elsif start_in_database && start.strftime('%H:%M') != start_in_database.strftime('%H:%M')
+      self.time_inferred = false # A time of day was given
+    end
 
     if self.end
       self.end = self.end + 17.hours if self.end.hour == 0 # hour set to 0 if not otherwise defined...
@@ -383,6 +414,20 @@ class Event < ApplicationRecord
 
   def address_changed?
     ADDRESS_FIELDS.any? { |field| previous_changes.keys.include?(field.to_s) }
+  end
+
+  # Set a missing time zone from the event's coordinates (once geocoded) or, failing that, its country. Online
+  # events often have neither, and keep no time zone. Marked as inferred until the time zone is changed otherwise,
+  # e.g. by the user. Not done for events with default (inferred) times, as combining two guesses would pin them to
+  # a time and day that may not apply.
+  def timezone_from_location
+    self.timezone = TimezoneLookup.find(latitude:, longitude:, country:)
+    self.timezone_inferred = timezone.present?
+  end
+
+  def clear_inferred_timezone
+    self.timezone = nil
+    self.timezone_inferred = false
   end
 
   # Check the Redis cache for coordinates
