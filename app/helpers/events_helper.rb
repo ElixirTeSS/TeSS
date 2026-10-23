@@ -169,8 +169,11 @@ module EventsHelper
     end
   end
 
-  def normalized_icu_timezone(name)
+  def normalized_icu_timezone(name, time=nil)
     # Get more standardized name from TZinfo...
+    # The "time" is usually set to the start time of the event
+    time ||= Time.now
+
     tz_name = ActiveSupport::TimeZone[name]&.tzinfo&.name
 
     return nil unless tz_name
@@ -180,7 +183,7 @@ module EventsHelper
     formatter = ICU::TimeFormatting.create(locale: I18n.locale.to_s,
                                            zone: tz_name,
                                            skeleton: '%zzzz')
-    formatter.format(Time.now)
+    formatter.format(time)
   end
 
 end
