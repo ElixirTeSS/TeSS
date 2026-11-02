@@ -419,3 +419,11 @@ document.addEventListener('turbolinks:load', function () {
     }
   });
 });
+
+document.addEventListener('turbolinks:request-end', (event) => {
+    const xhr = event.data.xhr
+    if (xhr.getResponseHeader('cf-mitigated') === 'challenge') {
+        // Do a real navigation so the challenge page loads with its own headers
+        window.location.href = xhr.responseURL || window.location.href
+    }
+});
