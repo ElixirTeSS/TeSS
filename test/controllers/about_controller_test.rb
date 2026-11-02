@@ -106,6 +106,9 @@ class AboutControllerTest < ActionController::TestCase
   test 'should get about developers' do
     get :developers
     assert_response :success
+    assert_select '#api #fair-signposting', text: 'Bioschemas, RO-Crate and FAIR Signposting'
+    assert_select '#api a[href="https://signposting.org/FAIR/"]'
+    assert_select '#api code', text: %r{/ro-crate-metadata\.json}
   end
 
   test 'should get about learning paths' do

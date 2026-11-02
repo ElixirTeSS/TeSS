@@ -112,6 +112,35 @@
           <% end %>
         </p>
 
+        <% if feature_enabled?('events') || feature_enabled?('materials') %>
+          <h4 id="fair-signposting">Bioschemas, RO-Crate and FAIR Signposting</h4>
+          <p>
+            The pages of events and training materials embed
+            <a href="https://bioschemas.org/" target="_blank" rel="noopener">Bioschemas<i class="icon icon-md arrow-top-right-icon"></i></a>
+            JSON-LD, which can also be retrieved by appending <code>.jsonld</code> to the URL. Each event and material
+            is also available as a
+            <a href="https://w3id.org/ro/crate/1.3" target="_blank" rel="noopener">Detached RO-Crate<i class="icon icon-md arrow-top-right-icon"></i></a>,
+            with the <%= TeSS::Config.site['title_short'] %> record as its root and the event or material itself as
+            its main entity. For example:
+          </p>
+          <p>
+            <% resource = feature_enabled?('materials') ? 'materials' : 'events' %>
+            <code><%= TeSS::Config.base_url %>/<%= resource %>/&lt;id&gt;.jsonld</code><br/>
+            <code><%= TeSS::Config.base_url %>/<%= resource %>/&lt;id&gt;/ro-crate-metadata.json</code><br/>
+            <code>curl -H 'Accept: application/ld+json; profile="https://w3id.org/ro/crate"' <%= TeSS::Config.base_url %>/<%= resource %>/&lt;id&gt;</code>
+          </p>
+          <p>
+            These representations, and the DOI (<code>cite-as</code>), authors' ORCIDs (<code>author</code>), licence
+            (<code>license</code>) and type (<code>type</code>) of the resource, are advertised by
+            <a href="https://signposting.org/FAIR/" target="_blank" rel="noopener">FAIR Signposting<i class="icon icon-md arrow-top-right-icon"></i></a>
+            links (<code>describedby</code>) in the HTTP <code>Link</code> header and the HTML
+            <code>&lt;link&gt;</code> elements of each page, so that clients can find them:
+          </p>
+          <p>
+            <code>curl -I <%= TeSS::Config.base_url %>/<%= resource %>/&lt;id&gt;</code>
+          </p>
+        <% end %>
+
         <p>
           We recommend using the JSON API, but if you have already begun using our old API, technical information
           can still be found here:
