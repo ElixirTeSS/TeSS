@@ -61,6 +61,7 @@ default: &default
     bioschemas_testing: true
     learning_paths: true
     spaces: true
+    timezone_controls: true
   user_ingestion_methods: ["event_csv", "material_csv", "ical", "eventbrite", "tess_event", "zenodo", "bioschemas"]
   placeholder:
     collection: 'placeholder-collection.png'
