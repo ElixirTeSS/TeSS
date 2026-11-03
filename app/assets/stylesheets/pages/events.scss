@@ -63,3 +63,13 @@
 .ol-geocoder ul.gcd-gl-result > li {
   line-height: unset !important;
 }
+
+#timezone-controls {
+  overflow: auto;
+  // font-size: 0.7em;
+  label { font-weight: inherit; }
+  fieldset legend { font-size: inherit; }
+  #timezone-display .unselected { display: none; }
+  .center-block { width: 80%; }
+  .close-timezone-controls { float: right; }
+}
