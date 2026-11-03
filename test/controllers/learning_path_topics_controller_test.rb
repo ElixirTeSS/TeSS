@@ -602,4 +602,13 @@ class LearningPathTopicsControllerTest < ActionController::TestCase
     assert_redirected_to learning_path_topic_path(assigns(:learning_path_topic))
     assert_equal 'Some comment', topic_item.reload.comment
   end
+
+  test 'should call collaborators maintainers' do
+    sign_in @learning_path_topic.user
+    get :show, params: { id: @learning_path_topic }
+    assert_response :success
+
+    assert_select '.btn[data-target="#collaborators-modal"]', text: 'Maintainers'
+    assert_select '#collaborators-modal .modal-header h4', text: 'Maintainers'
+  end
 end

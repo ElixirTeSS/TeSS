@@ -18,8 +18,9 @@
 
     <% is_admin = current_user.is_admin? %>
     <% is_curator = current_user.is_curator? %>
+    <% is_owner_in_any_group = current_user.is_owner_in_any_group? %>
     <% is_current_space_admin = !Space.current_space.default? && current_user.has_space_role?(Space.current_space, :admin) %>
-    <% if is_admin || is_curator || is_current_space_admin %>
+    <% if is_admin || is_curator || is_current_space_admin || is_owner_in_any_group %>
       <li role="presentation" class="divider"></li>
 
       <li class="dropdown-header"><%= t('menu.user.administration') %></li>
@@ -39,6 +40,15 @@
           <% end %>
         </li>
       <% end %>
+
+      <% if is_admin || is_curator || is_owner_in_any_group %>
+        <li class="dropdown-item">
+          <%= link_to groups_path, title: t('menu.user.view_groups') do %>
+            <i class="glyphicon glyphicon-th"></i> <%= t('menu.user.view_groups') %>
+          <% end %>
+        </li>
+      <% end %>
+
 
       <% if !TeSS::Config.feature['disabled'].include?('topics') && (is_admin || is_curator) %>
         <li class="dropdown-item">

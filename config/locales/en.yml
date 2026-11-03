@@ -37,10 +37,48 @@ en:
     spaces:
       short: Spaces
       long: Spaces
+    groups:
+      short: Groups
+      long: Groups
   pundit:
     default: 'You are not authorised to perform this action.'
     material_policy:
     event_policy:
+  private_space:
+    not_authorized: >
+      You are not authorized to access this page.
+      <br><a href="%{link}">Return to the main application</a>
+    needs_sign_in: >
+      You need to sign in to the main application to access this page.
+      <br><a href="%{link}">Sign in to the main application</a>
+    needs_groups_in_form: If the space is private, you must add required groups.
+  group:
+    show:
+      group: Group
+      members: Members
+      owner: Owner
+      no_members: No members yet.
+      back_to_groups: Back to groups
+      add_members: Add members
+      stats:
+        title: Quick stats
+        total: Total members
+        owners: Owners
+      table:
+        name: Name
+        email: Email
+        role: Role
+        owner: Owner
+        member: Member
+      spaces:
+        title: Spaces which require this group to have access to
+        space: Space
+        other_groups: Other groups which have access
+        no_access: This group does not give access to any private space
+    form:
+      members: Members
+      placeholder: Group title
+      member_explain: Search and add members below - check <strong>Owner</strong> to grant ownership.
   attributes:
     url: 'URL'
     doi: 'DOI'
@@ -77,8 +115,10 @@ en:
         difficulty_level: Competency level
       learning_path:
         difficulty_level: Competency level
+        collaborators: Maintainers
       learning_path_topic:
         difficulty_level: Competency level
+        collaborators: Maintainers
       workflow:
         difficulty_level: Competency level
   about:
@@ -845,6 +885,11 @@ en:
       filters: Filters
       allow_list: Allow List
       block_list: Block List
+    testing:
+      error:
+        title: "Error rendering test ingestion!"
+        input_data: "Input data:"
+        message: "Error message:"
     prompts:
       default_language: 'Select a default language...'
   scraper:
@@ -982,6 +1027,7 @@ en:
       view_stars: 'View stars'
       administration: 'Administration'
       view_users: 'View users'
+      view_groups: 'View groups'
       view_sources: 'View sources'
       view_ingestion_sources: 'View ingestion sources'
       assign_scientific_topics: "Assign scientific topics to %{title} resources"
@@ -1078,6 +1124,9 @@ en:
         can be used for exchanging content between different TeSS instances. 
         See the <a href="https://elixirtess.github.io/docs/" target="_blank" rel="noopener">TeSS documentation</a> 
         for more details.
+      set_descriptions:
+        materials: 'Set of all training materials'
+        events: 'Set of all training events'
     unsubscribe:
       success: 'You have successfully unsubscribed.'
     frequency_options:
@@ -1178,7 +1227,19 @@ en:
     spaces:
       title: What are spaces?
       description: |
-        Spaces are customizable, community-managed sub-portals within %{site_name}, each with their own catalogue of training content.
+       Spaces are customizable, community-managed sub-portals within %{site_name}, each with its own catalogue of training content.
+       Some spaces are private. That means you can see and have access to them only if you are in at least one of the required groups for each of them.
+    groups:
+      title: What are Groups?
+      description: |
+        Groups is a feature which for now is used only to manage access of private spaces.
+        A user being part of a group has access to every private space which requires the group.
+        Each group has multiple owners. An owner can add and remove people to the group.
+    collaborators:
+      title: What are %{attribute}?
+      description: |
+        %{attribute} are other %{site_name} users who can edit this %{resource_type}. Only
+        the %{resource_type}owner can add and remove %{attribute}.
   orcid:
     error: 'An error occurred whilst trying to authenticate your ORCID.'
     link: 'Link your ORCID'
@@ -1222,3 +1283,9 @@ en:
     link: Go to original entry
   other_space:
     link: View in space
+  search:
+    errors:
+      filter_limit_reached: Filter limit reached, please log in to apply additional filters.
+  collaborators:
+    current: "Current %{attribute}:"
+    add: Add a new %{attribute}

@@ -4,6 +4,9 @@ require 'nokogiri'
 module Ingestors
   module Taxila
     class HanIngestor < Ingestor
+      DATE_REGEXP = /\b\d{1,2}\s+(?:januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december)\s+\d{4}\b/i
+      VENUE_REGEXP = /\bHAN in ([^.]+)/i
+
       def self.config
         {
           key: 'han_event',
@@ -32,21 +35,25 @@ module Ingestors
         event_page.each_with_index do |el, _idx|
           event = OpenStruct.new
           event.title = el.css('.card-skinny__content__title').first.text
-          event.url = "https://www.han.nl#{el.css('.card-skinny__content__buttons > .buttons > .buttons__button > a').first.get_attribute('href')}"
+          href = el.css('.card-skinny__content__buttons > .buttons > .buttons__button > a').first.get_attribute('href')
+          event.url = href.start_with?('http') ? href : "https://www.han.nl#{href}"
           event.description = el.css('.card-skinny__content__body').first.text
 
           sleep(1) unless Rails.env.test? and File.exist?('test/vcr_cassettes/ingestors/han.yml')
           event_page2 = Nokogiri::HTML5.parse(open_url(event.url.to_s, raise: true))
-          start_str = event_page2.css("div[class='course-superhero__payoff__content']")[0].css('p > span.course-superhero__payoff__subtitle')[0].text
-          start_str = convert_months(start_str)
-          event.start = Time.zone.parse(start_str.split('en')[0].strip)
+
+          details_text = extract_details_text(event_page2)
+
+          start_str = details_text[DATE_REGEXP]
+          raise "no date found for #{event.url}" unless start_str
+
+          event.start = Time.zone.parse(convert_months(start_str))
           event.end = event.start
           event.set_default_times
 
-          course_details = event_page2.css("div[class='course-details__sidebar__item']")[0]
-          venue_sub_css = course_details.css("span[class='nav-subswitch__title__label__sub']")[0]
-          venue_super_css = venue_sub_css.parent.css("strong.nav-subswitch__title__label__super")[0]
-          event.venue = "#{venue_super_css.text} #{venue_sub_css.text}"
+          venue_match = details_text.match(VENUE_REGEXP)
+          event.venue = venue_match[1].strip if venue_match
+
           event.source = "HAN"
           event.timezone = 'Amsterdam'
 
@@ -54,6 +61,15 @@ module Ingestors
         rescue Exception => e
           @messages << "Extract event fields failed with: #{e.message}"
         end
+      end
+
+      def extract_details_text(page)
+        section = page.css('.collapsible').find do |collapsible|
+          header = collapsible.css('.collapsible__header, button, h2, h3').first
+          header && header.text =~ /tijden|startdat/i
+        end
+        scope = section ? section.css('.collapsible__content').first : page
+        (scope || page).text.gsub(/\s+/, ' ').strip
       end
 
       def convert_months(my_str)

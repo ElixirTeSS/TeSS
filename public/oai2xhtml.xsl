@@ -438,7 +438,13 @@ p.intro {
     <tr><td class="key">setName</td>
     <td class="value"><xsl:value-of select="oai:setName"/></td></tr>
     <xsl:apply-templates select="oai:setSpec" />
+    <xsl:apply-templates select="oai:setDescription" />
   </table>
+</xsl:template>
+
+<xsl:template match="oai:setDescription">
+  <tr><td class="key">setDescription</td>
+  <td class="value"><xsl:value-of select="."/></td></tr>
 </xsl:template>
 
 <!-- ListMetadataFormats -->

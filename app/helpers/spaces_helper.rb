@@ -20,7 +20,27 @@ module SpacesHelper
     end
   end
 
+  def omniauth_providers_for_space(space = current_space)
+    host = space.try(:host) || TeSS::Config.base_uri.host
+
+    Devise.omniauth_configs.select do |_provider, config|
+      Array(config.options[:redirect_uris]).any? do |uri|
+        TessOmniauthRedirectUris.valid_login_domain?(URI.parse(uri).host, host)
+      end
+    end
+  end
+
   def space_supports_omniauth?(space = current_space)
-    space.nil? || space.default? || space.is_subdomain?(TeSS::Config.base_uri.domain)
+    omniauth_providers_for_space(space).any?
+  end
+
+  def space_supports_orcid_auth?(space = current_space)
+    host = space.try(:host) || TeSS::Config.base_uri.host
+    config = Rails.application.config.secrets.orcid
+    redirect_uris = Array(config[:redirect_uri].presence || "#{TeSS::Config.base_url.chomp('/')}/orcid/callback")
+
+    redirect_uris.any? do |uri|
+      TessOmniauthRedirectUris.valid_login_domain?(URI.parse(uri).host, host)
+    end
   end
 end

@@ -45,7 +45,14 @@ var Autocompleters = {
                     return { value: name, data: { id: item[config.idField], item: item } };
                 })
             };
-        }
+        },
+        groups: function (response, config) {
+            return {
+                suggestions: $.map(response, function (item) {
+                    return { value: item.title, data: { id: item[config.idField], item: item } };
+                })
+            };
+        },
     },
 
     init: function () {

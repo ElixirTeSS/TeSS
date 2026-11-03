@@ -19,7 +19,7 @@
   <li class="toggle-wrap mb-2 nav-item">
     <%= filter_link(facet_field, 'true', count) do %>
       <label class="toggle">
-        <input type="checkbox">
+        <input type="checkbox" <%= 'disabled' if filter_limit_reached? -%>>
         <span class="slider round"></span>
       </label>
       <%= enable_text %>

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :groups
   concern :collaboratable do
     resources :collaborations, only: [:create, :destroy, :index, :show]
   end

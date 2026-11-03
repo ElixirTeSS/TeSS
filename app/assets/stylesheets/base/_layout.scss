@@ -1,0 +1,54 @@
+div.wrapper {
+  *zoom: 1;
+  margin-bottom: 20px;
+  display: flex;
+
+  &.collapsing-wrapper {
+    // Divs that were arranged left -> right will collapse to bottom -> top
+    @media (max-width: $screen-sm-max) {
+      flex-direction: column-reverse;
+    }
+  }
+
+  &.collapsing-wrapper-tb {
+    // Opposite to above
+    @media (max-width: $screen-sm-max) {
+      flex-direction: column;
+    }
+  }
+}
+
+#content {
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.content-actions {
+  gap: 10px;
+  display: flex;
+  width: 100%;
+
+  .content-viewer-actions > .btn,
+  .content-viewer-actions > .btn-group,
+  .content-manager-actions > .btn,
+  .content-manager-actions > .btn-group {
+    margin-top: 5px; /* So they have some vertical spacing when collapsed on small screens */
+  }
+
+  .content-viewer-actions {
+    flex-grow: 1;
+    text-align: left;
+  }
+
+  .content-manager-actions {
+    flex-grow: 1;
+    text-align: right;
+  }
+}
+
+div {
+  &.field,
+  &.actions {
+    margin-bottom: 10px;
+  }
+}

@@ -203,6 +203,123 @@ class IngestorTest < ActiveSupport::TestCase
     assert_nil(event.language)
   end
 
+  test 'sets last_scraped_by_id for scrapable resources when source is provided' do
+    user = users(:scraper_user)
+    source = sources(:first_source)
+    provider = source.content_provider
+
+    ingestor = Ingestors::Ingestor.new
+    ingestor.instance_variable_set(:@events,
+                                   [OpenStruct.new(url: 'https://example.org/scraped-event',
+                                                   title: 'Scraped Event',
+                                                   start: '2021-01-31 13:00:00',
+                                                   end: '2021-01-31 14:00:00')])
+    ingestor.instance_variable_set(:@materials,
+                                   [OpenStruct.new(url: 'https://example.org/scraped-material',
+                                                   title: 'Scraped Material',
+                                                   description: 'A scraped material')])
+
+    ingestor.write(user, provider, source: source)
+
+    event = Event.find_by(url: 'https://example.org/scraped-event')
+    material = Material.find_by(url: 'https://example.org/scraped-material')
+
+    assert_equal source, event.last_scraped_by_source
+    assert_equal source, material.last_scraped_by_source
+  end
+
+  def build_ingested_event(existing_event, extra_attrs: {})
+    OpenStruct.new({
+      url: existing_event.url,
+      title: existing_event.title,
+      start: existing_event.start,
+      end: existing_event.end,
+      description: existing_event.description
+    }.merge(extra_attrs))
+  end
+
+  test 'switches responsibility when new resource has more considered metadata fields' do
+    user = users(:scraper_user)
+    source = sources(:first_source)
+    provider = source.content_provider
+
+    event = events(:responsibility_candidate_event)
+
+    ingestor = Ingestors::Ingestor.new
+    ingestor.instance_variable_set(:@events,
+                                   [build_ingested_event(event,
+                                                         extra_attrs: {venue: 'Main Hall'}
+                                                        )
+                                   ])
+
+    assert_no_difference('provider.events.count') do
+      ingestor.write(user, provider, source: source)
+    end
+
+    event.reload
+    assert_equal source, event.last_scraped_by_source
+    assert_equal 'Main Hall', event.venue
+  end
+
+  test 'switches responsibility when considered field count is equal but description content is much longer' do
+    user = users(:scraper_user)
+    source = sources(:first_source)
+    provider = source.content_provider
+
+    event = events(:responsibility_candidate_event)
+
+    ingestor = Ingestors::Ingestor.new
+    ingestor.instance_variable_set(:@events,
+                                   [build_ingested_event(event,
+                                                         extra_attrs: {
+                                                           description: "#{'long description ' * 12}with more detail"
+                                                         })])
+
+    assert_no_difference('provider.events.count') do
+      ingestor.write(user, provider, source: source)
+    end
+
+    event.reload
+    assert_equal source, event.last_scraped_by_source
+  end
+
+  test 'does not switch responsibility when new resource is not richer by considered fields or description' do
+    user = users(:scraper_user)
+    source = sources(:first_source)
+    provider = source.content_provider
+
+    event = events(:responsibility_candidate_event)
+
+    ingestor = Ingestors::Ingestor.new
+    ingestor.instance_variable_set(:@events, [build_ingested_event(event)])
+
+    assert_no_difference('provider.events.count') do
+      ingestor.write(user, provider, source: source)
+    end
+
+    event.reload
+    assert_equal sources(:second_source), event.last_scraped_by_source
+  end
+
+  test 'claims responsibility for legacy records without a last scraped source' do
+    user = users(:scraper_user)
+    source = sources(:first_source)
+    provider = source.content_provider
+
+    event = events(:responsibility_candidate_event)
+    event.update_column(:last_scraped_by_id, nil)
+
+    ingestor = Ingestors::Ingestor.new
+    ingestor.instance_variable_set(:@events, [build_ingested_event(event)])
+
+    assert_no_difference('provider.events.count') do
+      ingestor.write(user, provider, source: source)
+    end
+
+    event.reload
+    assert_equal source, event.last_scraped_by_source
+  end
+
   def run_filter(source_filter)
     source = Source.create!(url: 'https://somewhere.com/stuff', method: 'bioschemas',
                             enabled: true, approval_status: 'approved',

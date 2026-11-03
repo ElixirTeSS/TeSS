@@ -705,15 +705,14 @@ module ApplicationHelper
     "themes/#{params[:theme_preview] || current_space&.theme || TeSS::Config.site['default_theme'] || 'default'}"
   end
 
-  def omniauth_login_link(provider, config)
+  def omniauth_login_link(provider, config, html_options = {})
     params = Space.current_space&.default? ? {} : { space_id: Space.current_space.id }
-    link_to(
-      t('authentication.omniauth.log_in_with',
-        provider: config.options[:label] ||
-                  t("authentication.omniauth.providers.#{provider}", default: provider.to_s.titleize)),
-      omniauth_authorize_path('user', provider, **params),
-      method: :post
-    )
+    label = t('authentication.omniauth.log_in_with',
+              provider: config.options[:label] ||
+                        t("authentication.omniauth.providers.#{provider}", default: provider.to_s.titleize))
+
+    link_to(capture { block_given? ? yield : label }, omniauth_authorize_path('user', provider, **params),
+            { method: :post }.merge(html_options))
   end
 
   def per_page_options_for_select

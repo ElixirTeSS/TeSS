@@ -459,4 +459,41 @@ class OmniauthTest < ActionDispatch::IntegrationTest
     assert_equal "http://www.example.com/users/aaf_user/edit", response.headers['Location']
   end
 
+  test 'OIDC authorize request includes host-matched callback URI in authorize redirect' do
+    before_request_phase = lambda do |env|
+      strategy = env['omniauth.strategy']
+      next unless strategy&.name.to_s == 'oidc'
+
+      strategy.options[:issuer] = 'https://issuer.example.com'
+      strategy.options[:discovery] = false
+      strategy.options[:redirect_uris] = [
+        'https://www.example.com/users/auth/oidc/callback',
+        'https://space.mytess.training/users/auth/oidc/callback'
+      ]
+      strategy.options[:client_options][:scheme] = 'https'
+      strategy.options[:client_options][:host] = 'issuer.example.com'
+      strategy.options[:client_options][:port] = 443
+      strategy.options[:client_options][:authorization_endpoint] = '/authorize'
+      strategy.options[:client_options][:redirect_uri] = 'https://www.example.com/users/auth/oidc/callback'
+    end
+
+    original_before_request_phase = OmniAuth.config.before_request_phase
+    original_test_mode = OmniAuth.config.test_mode
+
+    OmniAuth.config.before_request_phase = before_request_phase
+    OmniAuth.config.test_mode = false
+
+    with_host('space2.mytess.training') do
+      post '/users/auth/oidc'
+
+      assert_response :redirect
+      location = CGI.unescape(response.headers['Location'])
+      assert_includes location, 'https://issuer.example.com/authorize'
+      assert_includes location, 'redirect_uri=https://space.mytess.training/users/auth/oidc/callback'
+    end
+  ensure
+    OmniAuth.config.before_request_phase = original_before_request_phase
+    OmniAuth.config.test_mode = original_test_mode
+  end
+
 end

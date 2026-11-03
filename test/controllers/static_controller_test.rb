@@ -311,12 +311,39 @@ class StaticControllerTest < ActionController::TestCase
     end
   end
 
-  test 'should show featured trainer' do
+  test 'should show featured trainer (legacy boolean value set to `true`)' do
     with_settings({ site: { home_page: { featured_trainer: true } } }) do
       get :home
       assert_select 'section#featured_trainer', count: 1
       assert_select 'section#featured_trainer h2', count: 1
       assert_select 'section#featured_trainer li', count: 1
+    end
+  end
+
+  test 'should not show featured trainer (legacy boolean value set to `false`)' do
+    with_settings({ site: { home_page: { featured_trainer: false } } }) do
+      get :home
+      assert_select 'section#featured_trainer', count: 0
+      assert_select 'section#featured_trainer h2', count: 0
+      assert_select 'section#featured_trainer li', count: 0
+    end
+  end
+
+  test 'should show featured trainer (positive int case)' do
+    with_settings({ site: { home_page: { featured_trainer: 2 } } }) do
+      get :home
+      assert_select 'section#featured_trainer', count: 1
+      assert_select 'section#featured_trainer h2', count: 1
+      assert_select 'section#featured_trainer li', count: 2
+    end
+  end
+
+  test 'should not show featured trainer (nil case)' do
+    with_settings({ site: { home_page: { featured_trainer: nil } } }) do
+      get :home
+      assert_select 'section#featured_trainer', count: 0
+      assert_select 'section#featured_trainer h2', count: 0
+      assert_select 'section#featured_trainer li', count: 0
     end
   end
 
@@ -550,11 +577,21 @@ class StaticControllerTest < ActionController::TestCase
   end
 
   test 'should find log in button when login_through_oidc_only is enabled' do
-    Devise.stub(:omniauth_configs, { oidc: OpenStruct.new(options: { label: 'OIDC' }) }) do
+    base_host = TeSS::Config.base_uri.host
+    omniauth_configs = {
+      oidc: OpenStruct.new(options: {
+        label: 'OIDC',
+        redirect_uris: ["https://#{base_host}/users/auth/oidc/callback"]
+      })
+    }
+
+    Devise.stub(:omniauth_configs, omniauth_configs) do
       with_settings({ feature: { login_through_oidc_only: true } }) do
-        get :home
-        assert_select 'ul.user-options.nav.navbar-nav.navbar-right' do
-          assert_select 'a[href="/users/auth/oidc"]', count: 1
+        with_host(base_host) do
+          get :home
+          assert_select 'ul.user-options.nav.navbar-nav.navbar-right' do
+            assert_select 'a[href="/users/auth/oidc"]', count: 1
+          end
         end
       end
     end

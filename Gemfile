@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org', cooldown: 14
 
-gem 'rails', '8.1.3'
+gem 'rails', '8.1.3.1'
 
 gem 'active_model_serializers'
 gem 'activerecord-session_store'
@@ -40,6 +40,7 @@ gem 'oai'
 gem 'omniauth_openid_connect'
 gem 'pg'
 gem 'private_address_check'
+gem 'public_suffix'
 gem 'public_activity'
 gem 'pundit'
 gem 'rack-cors', require: 'rack/cors'
@@ -90,6 +91,7 @@ group :development do
   gem 'listen'
   gem 'puma'
   gem 'web-console'
+  gem 'rdoc', '>= 8.0'
 end
 
 group :test do

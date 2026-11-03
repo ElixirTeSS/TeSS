@@ -584,4 +584,13 @@ class LearningPathsControllerTest < ActionController::TestCase
     assert assigns(:learning_path).unordered?
     assert_select '.learning-path-topic.unordered', minimum: 1
   end
+
+  test 'should call collaborators maintainers' do
+    sign_in @learning_path.user
+    get :show, params: { id: @learning_path }
+    assert_response :success
+
+    assert_select '.btn[data-target="#collaborators-modal"]', text: 'Maintainers'
+    assert_select '#collaborators-modal .modal-header h4', text: 'Maintainers'
+  end
 end

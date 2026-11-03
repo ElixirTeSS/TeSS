@@ -1,0 +1,89 @@
+.listing_image {
+  max-width: 150px;
+  max-height: 65px;
+}
+
+.tiny-avatar {
+  max-width: 32px;
+  min-width: 16px;
+  border-radius: 2px;
+  margin-left: 5px;
+}
+
+.small-avatar {
+  max-width: 64px;
+  min-width: 32px;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+.medium-avatar {
+  max-width: 50%;
+  min-width: 100px;
+  margin: 0 10px 10px 0;
+}
+
+.small-trainer-logo {
+  max-width: 80px;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+.medium-trainer-logo {
+  max-width: 160px;
+  border-radius: 4px;
+  margin-left: 0;
+}
+
+.large-trainer-logo {
+  max-width: 240px;
+  border-radius: 4px;
+  margin-left: 0;
+}
+
+.rounded-avatar {
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+#user-menu .rounded-avatar {
+  height: $line-height-computed;
+  @media (min-width: $grid-float-breakpoint) {
+    display: block;
+    float: left;
+  }
+  margin-right: 5px;
+}
+
+.preview-image {
+  overflow: auto;
+
+  > img {
+    width: 100px;
+    max-height: 150px;
+    margin: 0 10px 10px 0;
+    float: left;
+  }
+}
+
+.loading_image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.funding-logo {
+  width: 100px;
+  margin: 15px;
+}
+
+.masonry-brick .space-logo {
+  padding: .5em;
+  border-radius: 4px;
+}
+
+.user-list-avatar {
+  border-radius: 8px 0 0 8px;
+  float: left;
+  margin-right: 8px;
+}

@@ -1,6 +1,26 @@
+require 'ipaddr'
+require 'public_suffix'
+
 # Be sure to restart your server when you modify this file.
 opts = {
-  domain: :all
+  domain: lambda do |request|
+    host = request&.host.to_s.strip.downcase
+
+    next nil if host.blank? || !host.include?('.')
+
+    begin
+      IPAddr.new(host)
+      next nil
+    rescue IPAddr::InvalidAddressError
+      nil
+    end
+
+    begin
+      PublicSuffix.domain(host)
+    rescue PublicSuffix::Error
+      nil
+    end
+  end
 }
 
 if Rails.env.production?

@@ -6,7 +6,7 @@ class OaiController < ApplicationController
   # GET /oai-pmh
   def index
     provider = TrainingProvider.new({ provider_context: :instance_based })
-    provider.model = OAI::Provider::ActiveRecordWrapper.new(Material.in_current_space.where(visible: true))
+    provider.model = MultiModel.new([Material.in_current_space.where(visible: true), Event.in_current_space.where(visible: true)])
     response = provider.process_request(oai_params.to_h)
 
     # add XSLT prefix

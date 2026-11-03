@@ -1,0 +1,61 @@
+@import "./themes/mixins/modern_base";
+
+.group-member-list {
+  margin-top: 6px;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px;
+    border: 1px solid $dark-30-color;
+    border-radius: 4px;
+    background: $dark-05-color;
+    margin-bottom: 4px;
+
+    &.is-owner {
+      background: lighten($accent-color, 45%);
+      border-color: lighten($accent-color, 10%);
+    }
+  }
+}
+
+.group-member-name {
+  font-weight: 600;
+  color: $secondary-color;
+  flex: 1 1 auto;
+}
+
+.group-member-email {
+  font-size: 0.85em;
+  color: $dark-60-color;
+  flex: 1 1 auto;
+}
+
+.group-member-owner-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: normal;
+  margin: 0;
+  white-space: nowrap;
+  cursor: pointer;
+  color: $dark-60-color;
+
+  .glyphicon-star {
+    color: $dark-30-color;
+    transition: color 0.15s;
+
+    input:checked ~ & {
+      color: $primary-color;
+    }
+  }
+}
+
+.bg-accent {
+  background-color: $accent-color;
+}
+
+.color-accent {
+  color: $accent-color;
+}
