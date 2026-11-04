@@ -896,4 +896,85 @@ class EventTest < ActiveSupport::TestCase
     assert_includes @event.instructors.map(&:name), person1.name
     assert_includes @event.instructors.map(&:name), person2.name
   end
+
+  test '.approved scope returns only approved event' do
+    e1 = events(:one)
+    e2 = events(:two)
+    e3 = events(:month_long_event)
+
+    e1.update!(approval_status: :approved)
+    e2.update!(approval_status: :requested)
+    e3.update!(approval_status: :not_approved)
+
+    approved = Event.approved
+    assert_includes approved, e1
+    refute_includes approved, e2
+    refute_includes approved, e3
+  end
+
+  test '.approval_requested scope returns only requested event' do
+    e1 = events(:one)
+    e2 = events(:two)
+
+    e1.update!(approval_status: :requested)
+    e2.update!(approval_status: :approved)
+
+    requested = Event.approval_requested
+    assert_includes requested, e1
+    refute_includes requested, e2
+  end
+
+  test 'approval status predicate methods work correctly' do
+    @event.update!(approval_status: :not_approved)
+    assert @event.not_approved?
+    refute @event.approved?
+    refute @event.approval_requested?
+
+    @event.update!(approval_status: :requested)
+    assert @event.approval_requested?
+    refute @event.approved?
+    refute @event.not_approved?
+
+    @event.update!(approval_status: :approved)
+    assert @event.approved?
+    refute @event.not_approved?
+    refute @event.approval_requested?
+  end
+
+  test 'request_approval updates status to requested and saves record' do
+    @event.update!(approval_status: :not_approved)
+    assert_changes -> { @event.reload.approval_status }, to: :requested do
+      @event.request_approval
+    end
+  end
+
+  test 'initializes approval_status as approved when feature flag is disabled' do
+    with_settings(feature: { event_under_admin_approval: false }) do
+      event = Event.create!(title: 'Test', url: 'https://example.org/test2', user: users(:regular_user), description: 'bla')
+      assert_equal :approved, event.reload.approval_status
+    end
+  end
+
+  test 'initializes approval_status as requested when feature flag is enabled' do
+    with_settings(feature: { event_under_admin_approval: true }) do
+      event = Event.create!(title: 'Test', url: 'https://example.org/test2', user: users(:regular_user), description: 'bla')
+      assert_equal :requested, event.reload.approval_status
+    end
+  end
+
+  test 'resets status to requested on update when url changes and feature is enabled' do
+    @event.update!(approval_status: :approved)
+    with_settings(feature: { event_under_admin_approval: true }) do
+      @event.update!(url: 'https://example.org/updated-url')
+      assert_equal :requested, @event.reload.approval_status
+    end
+  end
+
+  test 'does not reset status on url change when feature is disabled' do
+    @event.update!(approval_status: :approved)
+    with_settings(feature: { event_under_admin_approval: false }) do
+      @event.update!(url: 'https://example.org/updated-url-2')
+      assert_equal :approved, @event.reload.approval_status
+    end
+  end
 end

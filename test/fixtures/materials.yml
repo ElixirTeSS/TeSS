@@ -30,6 +30,35 @@ bad_material:
   remote_updated_date: 2015-09-25
   remote_created_date: 2015-09-25
 
+not_approved_material:
+  user: regular_user
+  title: Training Material Example 0
+  url: http://training.com/trainers/0
+  description: This is a Training Material produced by an example organization 0 
+  approval_status: '0'
+
+requested_material:
+  user: regular_user
+  title: Training Material Example 1
+  url: http://training.com/trainers/1
+  description: This is a Training Material produced by an example organization 1
+  approval_status: '1'
+
+approved_material:
+  user: regular_user
+  title: Training Material Example 2
+  url: http://training.com/trainers/2
+  description: This is a Training Material produced by an example organization 2
+  approval_status: '2'
+
+requested_private_material:
+  user: regular_user
+  title: Plant Training Material Example 1
+  url: http://plant.training.com/trainers/1
+  description: This is a Training Material produced by an example organization 1
+  approval_status: '1'
+  space: private_space
+
 biojs:
   user: regular_user
   title: BioJS
@@ -197,6 +226,32 @@ plant_space_material:
   content_provider: goblet
   status: active
   space: plants
+
+requested_astro_space_material:
+  user: regular_user
+  title: Astro material req
+  slug: astro-material-req
+  url: http://example.com/astro/material123-req
+  description: This is a material in the astro space requested
+  licence: CC-BY-4.0
+  keywords: ['astro']
+  content_provider: goblet
+  status: active
+  space: astro
+  approval_status: '1'
+
+approved_astro_space_material:
+  user: regular_user
+  title: Astro material app
+  slug: astro-material-app
+  url: http://example.com/astro/material123-app
+  description: This is a material in the astro space approved
+  licence: CC-BY-4.0
+  keywords: ['astro']
+  content_provider: goblet
+  status: active
+  space: astro
+  approval_status: '2'
 
 passing_import_filters_material:
   user: regular_user

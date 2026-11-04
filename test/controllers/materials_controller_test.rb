@@ -22,6 +22,9 @@ class MaterialsControllerTest < ActionController::TestCase
     @failing_material = materials(:failing_material)
     @failing_material.title = 'Fail!'
     @monitor = @failing_material.create_link_monitor(url: @failing_material.url, code: 404, fail_count: 5)
+
+    @requested_material = materials(:requested_material)
+    @approved_material = materials(:approved_material)
   end
 
   # Tests
@@ -1858,6 +1861,58 @@ class MaterialsControllerTest < ActionController::TestCase
         assert_select 'a.facet-option[href=?]', materials_path(target_audience: 'Fish'), count: 0
         assert_select 'span.facet-option[data-filter-link]'
       end
+    end
+  end
+
+  test "should request approval when material is not approved" do
+    sign_in users(:admin)
+    with_settings(feature: { material_under_admin_approval: true }) do
+      assert_changes -> { @material.reload.approval_status }, to: :requested do
+        post :request_approval, params: {
+          id: @material.id
+        }
+      end
+      assert_redirected_to material_path(@material)
+      assert_equal 'Approval request was sent successfully.', flash[:notice]
+    end
+  end
+
+  test "should not request approval and alert if already requested" do
+    sign_in users(:admin)
+
+    with_settings(feature: { material_under_admin_approval: true }) do
+      assert_no_changes -> { @requested_material.reload.approval_status } do
+        post :request_approval, params: {
+          id: @requested_material.id
+        }
+      end
+      assert_redirected_to material_path(@requested_material)
+      assert_equal 'Approval request has already been submitted.', flash[:error]
+    end
+  end
+
+  test "should not request approval and alert if already approved" do
+    sign_in users(:admin)
+    with_settings(feature: { material_under_admin_approval: true }) do
+      assert_no_changes -> { @approved_material.reload.approval_status } do
+        post :request_approval, params: {
+          id: @approved_material.id
+        }
+      end
+      assert_redirected_to material_path(@approved_material)
+      assert_equal 'Already approved.', flash[:error]
+    end
+  end
+
+  test "should deny request_approval for unauthorized users" do
+    with_settings(feature: { material_under_admin_approval: true }) do
+      assert_no_changes -> { @material.reload.approval_status } do
+        post :request_approval, params: {
+          id: @material.id
+        }
+      end
+      assert_response :found
+      assert_equal :not_approved, @material.reload.approval_status
     end
   end
 end

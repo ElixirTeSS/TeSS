@@ -187,6 +187,14 @@
                          title: t('materials.hints.fields') } %>
   <% end %>
 
+  <!-- Field: Approval -->
+  <% if policy(@material).approve? %>
+    <%= f.input :approval_status,
+                label: 'Approval Status',
+                collection: approval_options_for_select_material,
+                include_blank: false %>
+  <% end %>
+
   <hr>
   <!-- Form Buttons -->
   <div class="form-group">

@@ -1,0 +1,76 @@
+<div class="panel panel-default curate-resource" id="<%= dom_id(resource) %>">
+  <div class="panel-heading">
+    <span class="label label-default"><%= resource.class.model_name.human %></span>
+    <strong><%= link_to resource.title, resource, target: '_blank' %></strong>
+
+    <%= respond_to?("#{resource.model_name.singular}_approval_badge") ? 
+          send("#{resource.model_name.singular}_approval_badge", resource.approval_status) : 
+          resource_approval_badge(resource.approval_status) %>
+
+    <div class="pull-right curate-resource-buttons">
+      <% unless resource.approved? %>
+        <%= link_to 'Approve', 
+                    polymorphic_path(resource, 
+                      resource.class.model_name.param_key => { approval_status: 'approved' }, 
+                      redirect_to: request.fullpath), 
+                    method: :put, 
+                    class: 'btn btn-xs btn-success', 
+                    data: { confirm: 'Approve this resource?' } %>
+      <% end %>
+      <% unless resource.not_approved? %>
+        <%= link_to 'Reject', 
+                    polymorphic_path(resource, 
+                      resource.class.model_name.param_key => { approval_status: 'not_approved' }, 
+                      redirect_to: request.fullpath), 
+                    method: :put, 
+                    class: 'btn btn-xs btn-danger', 
+                    data: { confirm: 'Reject this resource?' } %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-8">
+        <p class="small text-muted">
+          Created <%= time_ago_in_words(resource.created_at) %> ago
+          <% if resource.user %>
+            by <%= link_to resource.user.username, resource.user, target: '_blank' %>
+          <% end %>
+          <% if resource.respond_to?(:content_provider) && resource.content_provider %>
+            | Provider: <%= link_to resource.content_provider.title, resource.content_provider, target: '_blank' %>
+          <% end %>
+          <% if resource.respond_to?(:space) && resource.space %>
+            | 
+            <% if resource.space.is_private %>
+              <i class="fa fa-lock"></i>
+              Private 
+            <% end %>
+            Space: <%= link_to resource.space.title, space_path(resource.space), target: '_blank' %>
+          <% else %>
+            | Space: Default
+          <% end %>
+        </p>
+
+        <% if resource.respond_to?(:url) && resource.url.present? %>
+          <p><strong>URL:</strong> <%= link_to resource.url, resource.url, target: '_blank', rel: 'nofollow noreferrer' %></p>
+        <% end %>
+
+        <% if resource.respond_to?(:short_description) && resource.short_description.present? %>
+          <p><%= truncate(resource.short_description, length: 200) %></p>
+        <% elsif resource.respond_to?(:description) && resource.description.present? %>
+          <p><%= truncate(strip_tags(resource.description), length: 200) %></p>
+        <% end %>
+      </div>
+
+      <div class="col-md-4 border-left">
+        <small>
+          Last updated: <%= time_ago_in_words(resource.updated_at) %> ago<br/>
+          <% if resource.respond_to?(:scraper_record) && resource.scraper_record? %>
+            <span class="label label-info">Ingested Record</span>
+          <% end %>
+        </small>
+      </div>
+    </div>
+  </div>
+</div>

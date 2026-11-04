@@ -1,3 +1,5 @@
+<% can_approve_resources = current_user&.can_approve_resources? %>
+
 <div class="wrapper">
   <% if TeSS::Config.solr_enabled %>
     <div id="sidebar" class="popout-sidebar">
@@ -16,6 +18,12 @@
       <!-- Register button -->
       <%= link_to new_event_path, class: 'btn btn-primary' do %>
         <%= t('register.buttons.events') %>
+      <% end %>
+      <% if TeSS::Config.feature['event_under_admin_approval'] && can_approve_resources %>
+        <!-- Curate button -->
+        <%= link_to curate_resources_path, class: 'btn btn-default' do %>
+          <%= t('menu.user.curate_events', default: 'Curate Events') %>
+        <% end %>
       <% end %>
       <!-- Info -->
       <%= info_button("What are events in #{TeSS::Config.site['title_short']}?", hide_text: true) do %>

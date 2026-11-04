@@ -43,4 +43,50 @@ class MaterialsHelperTest < ActionView::TestCase
 
     assert_includes result, '&hellip;'
   end
+
+  test 'approval_options_for_select_material returns mapped array of translated pairs' do
+    options = approval_options_for_select_material
+
+    assert_kind_of Array, options
+    assert_equal Material::APPROVAL_STATUS.values.size, options.size
+
+    Material::APPROVAL_STATUS.values.each do |status|
+      expected_label = I18n.t("materials.approval_status.#{status}")
+      assert_includes options, [expected_label, status]
+    end
+  end
+
+  test 'material_enabled_badge renders success label when true' do
+    badge = material_enabled_badge(true)
+
+    assert_dom_equal '<span class="label label-success">Enabled</span>', badge
+  end
+
+  test 'material_enabled_badge renders danger label when false' do
+    badge = material_enabled_badge(false)
+
+    assert_dom_equal '<span class="label label-danger">Disabled</span>', badge
+  end
+
+  test 'material_approval_badge renders correct labels for each status' do
+    statuses = {
+      not_approved: 'label-danger',
+      requested: 'label-warning',
+      approved: 'label-success'
+    }
+
+    statuses.each do |status, expected_class|
+      label_text = I18n.t("materials.approval_status.#{status}")
+      
+      [status, status.to_s].each do |input|
+        badge = material_approval_badge(input)
+        assert_dom_equal "<span class=\"label #{expected_class}\">#{label_text}</span>", badge
+      end
+    end
+  end
+
+  test 'material_approval_badge returns nil for unknown status' do
+    assert_nil material_approval_badge(:unknown_status)
+  end
 end
+
