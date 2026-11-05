@@ -91,8 +91,10 @@ class IcalIngestorTest < ActiveSupport::TestCase
     assert_includes event.description, 'The Pawsey Supercomputing Research Centre takes prides in its Summer Internship Program'
     assert_includes event.description, 'range of trainings we immerse students in during Week 1 of the Program (and throughout).'
     assert_equal 'Perth', event.timezone.to_s, "event title[#{event.title}] timezone not matched"
-    assert_equal '2022-02-11 01:45:00 UTC', event.start.utc.to_s, "event title[#{event.title}] start not matched"
-    assert_equal '2022-02-11 04:50:00 UTC', event.end.utc.to_s, "event title[#{event.title}] end not matched"
+    # DTSTART;TZID=Australia/Perth:20220211T094500, DTEND;TZID=Australia/Perth:20220211T125000
+    assert_equal '2022-02-11 01:45:00 UTC', event.start_utc.to_s, "event title[#{event.title}] start not matched"
+    assert_equal '2022-02-11 04:50:00 UTC', event.end_utc.to_s, "event title[#{event.title}] end not matched"
+    assert_equal '2022-02-11T09:45:00+08:00', event.local_iso8601(event.start), "event title[#{event.title}] local start not matched"
 
     title = 'P\'Con - Experience with porting and scaling codes on AMD GPUs'
     event = check_event_exists title, 'https://pawsey.org.au/event/experience-with-porting-and-scaling-codes-on-amd-gpus/'
@@ -111,7 +113,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
     # TODO: check updated
     title = 'PaCER Seminar: Computational Fluid Dynamics'
     event = check_event_exists title, 'https://pawsey.org.au/event/pacer-seminar-computational-fluid-dynamics/'
-    assert_equal '2022-06-15 03:00:00 UTC', event.end.utc.to_s, "event title[#{event.title}] updated end not matched"
+    assert_equal '2022-06-15 03:00:00 UTC', event.end_utc.to_s, "event title[#{event.title}] updated end not matched"
     assert event.description != 'MyText', "event title[#{event.title}] description not updated"
     assert event.description.size > 100, "event title[#{event.title}] description too short"
     assert event.online?, "event title[#{event.title}] online not matched"

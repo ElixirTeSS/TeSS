@@ -194,6 +194,22 @@ class Event < ApplicationRecord
     set_to_local start
   end
 
+  # A start or end time as an ISO 8601 date-time with the UTC offset of the event's time zone on that date, e.g.
+  # "2015-11-23T10:16:33-05:00". Times are stored as local (wall clock) time, so without a known time zone (e.g.
+  # many online events) it is given without an offset, as local time, rather than as UTC.
+  def local_iso8601(time)
+    return nil if time.blank?
+
+    wall_clock = time.strftime('%Y-%m-%dT%H:%M:%S')
+    zone = known_time_zone
+    zone ? zone.parse(wall_clock).iso8601 : wall_clock
+  end
+
+  # The event's time zone, or nil if it has none or it is not recognised
+  def known_time_zone
+    ActiveSupport::TimeZone[timezone] if timezone.present?
+  end
+
   def end_local
     set_to_local self.end
   end
@@ -259,9 +275,14 @@ class Event < ApplicationRecord
         if all_day?
           ical_event.dtstart = Icalendar::Values::Date.new(start, tzid: 'UTC') unless start.blank?
           ical_event.dtend = Icalendar::Values::Date.new(self.end.tomorrow, tzid: 'UTC') unless self.end.blank?
-        else
+        elsif known_time_zone
           ical_event.dtstart = Icalendar::Values::DateTime.new(start_utc, tzid: 'UTC') unless start.blank?
           ical_event.dtend = Icalendar::Values::DateTime.new(end_utc, tzid: 'UTC') unless self.end.blank?
+        else
+          # Time zone unknown: floating (local) times, e.g. DTSTART:20261105T090000, which calendars show at the same
+          # clock time and day in their own time zone, assuming people are near the event, rather than as UTC
+          ical_event.dtstart = Icalendar::Values::DateTime.new(start.strftime('%Y%m%dT%H%M%S'))
+          ical_event.dtend = Icalendar::Values::DateTime.new(self.end.strftime('%Y%m%dT%H%M%S'))
         end
 
       end

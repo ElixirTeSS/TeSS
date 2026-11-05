@@ -24,9 +24,12 @@ class GrayScottIngestorTest < ActiveSupport::TestCase
 
     assert_equal sample.url, 'https://cta-lapp.pages.in2p3.fr/cours/gray_scott_revolutions/grayscott2026/redirect.html?label=sec_gray_scott_webinar_memory_allocation_memory_profiling'
     assert_includes sample.description, 'Sometimes memory has become a major problem in applications'
-    assert_equal sample.end, '2026-02-26 10:30:00 +0000'
-    assert_equal sample.start, '2026-02-26 09:00:00 +0000'
+    # DTSTART;TZID=Europe/Paris:20260226T100000, DTEND;TZID=Europe/Paris:20260226T113000
     assert_equal sample.timezone, 'Paris'
+    assert_equal '2026-02-26T10:00:00+01:00', sample.local_iso8601(sample.start)
+    assert_equal '2026-02-26T11:30:00+01:00', sample.local_iso8601(sample.end)
+    assert_equal Time.utc(2026, 2, 26, 9, 0), sample.start_utc
+    assert_equal Time.utc(2026, 2, 26, 10, 30), sample.end_utc
     assert_includes sample.venue, 'teratec.webex.com'
     assert_equal sample.organizer, 'Someone, SomeoneElse'
   end

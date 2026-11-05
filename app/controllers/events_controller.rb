@@ -38,12 +38,12 @@ class EventsController < ApplicationController
   def calendar
     # set a higher limit so we ensure to have enough results to fill a month
     params[:per_page] ||= 200
-    @start_date = Date.parse(params.fetch(:start_date, Date.today.to_s)).beginning_of_month
+    @start_date = Date.parse(params.fetch(:start_date, Date.current.to_s)).beginning_of_month
 
     set_params
 
     # override @facet_params to get only events relevant for the current month view
-    @facet_params[:running_during] = "#{Date.today.beginning_of_day}/#{@start_date + 1.month}"
+    @facet_params[:running_during] = "#{Date.current.beginning_of_day}/#{@start_date + 1.month}"
     fetch_resources
     events_set = @events
 
@@ -94,8 +94,8 @@ class EventsController < ApplicationController
   # GET /events/new
   def new
     authorize Event
-    @event = Event.new(start: DateTime.now.change(hour: 9),
-                       end: DateTime.now.change(hour: 17))
+    @event = Event.new(start: Time.zone.now.change(hour: 9),
+                       end: Time.zone.now.change(hour: 17))
   end
 
   # GET /events/1/clone
