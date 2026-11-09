@@ -36,7 +36,8 @@ var MapSearch = {
                     });
                     if(country != null) $('#event_country').val(country);
                     if(postcode != null) $('#event_postcode').val(postcode);
-                    
+                    $('#event_latitude').trigger('change');
+
                     MapSearch.placeMarker(marker_icon);
                 }
             });

@@ -845,6 +845,7 @@ GEM
     websocket-extensions (0.1.5)
     whenever (1.0.0)
       chronic (>= 0.6.3)
+    wheretz (0.0.6)
     will_paginate (4.0.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
@@ -949,6 +950,7 @@ DEPENDENCIES
   web-console
   webmock
   whenever
+  wheretz
   will_paginate
 
 BUNDLED WITH

@@ -591,4 +591,40 @@ class IngestorTest < ActiveSupport::TestCase
     end
   end
 
+  test 'gives the local clock time of icalendar dates and times, whatever the server time zone' do
+    ingestor = Ingestors::Ingestor.new
+    calendar = <<~ICS
+      BEGIN:VCALENDAR
+      BEGIN:VEVENT
+      SUMMARY:zoned
+      DTSTART;TZID=Australia/Perth:20220211T094500
+      END:VEVENT
+      BEGIN:VEVENT
+      SUMMARY:utc
+      DTSTART:20220211T094500Z
+      END:VEVENT
+      BEGIN:VEVENT
+      SUMMARY:floating
+      DTSTART:20220211T094500
+      END:VEVENT
+      BEGIN:VEVENT
+      SUMMARY:all-day
+      DTSTART;VALUE=DATE:20220211
+      END:VEVENT
+      END:VCALENDAR
+    ICS
+
+    # The clock time as written in the calendar; the time zone is kept separately, in the event's timezone
+    %w[UTC Europe/Oslo Asia/Tokyo America/New_York].each do |tz|
+      mock_timezone(tz)
+      clock = Icalendar::Event.parse(calendar).to_h do |event|
+        [event.summary.to_s, ingestor.ical_local_time(event.dtstart).strftime('%Y-%m-%d %H:%M')]
+      end
+      assert_equal({ 'zoned' => '2022-02-11 09:45', 'utc' => '2022-02-11 09:45', 'floating' => '2022-02-11 09:45',
+                     'all-day' => '2022-02-11 00:00' }, clock, "Server time zone #{tz}")
+    ensure
+      reset_timezone
+    end
+    assert_nil ingestor.ical_local_time(nil)
+  end
 end
