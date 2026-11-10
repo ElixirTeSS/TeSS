@@ -80,7 +80,7 @@ if !schedules['bioschemas_dump'].nil?
     rake 'tess:dump_bioschemas'
   end
 else
-  every :day, at: '6am' do
+  every :sunday, at: '9pm' do
     rake 'tess:dump_bioschemas'
   end
 end
