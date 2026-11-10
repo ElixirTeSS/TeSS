@@ -15,7 +15,7 @@ module Bioschemas
     end
 
     def write
-      FileUtils.mkdir_p(file_path_base)
+      FileUtils.mkdir_p(self.class.file_path_base)
       File.atomic_write(file_path) do |f|
         f.write("[\n")
         first = true
@@ -82,10 +82,10 @@ module Bioschemas
     private
 
     def file_path
-      File.join(file_path_base, file_name)
+      File.join(self.class.file_path_base, file_name)
     end
 
-    def file_path_base
+    def self.file_path_base
       Rails.root.join('public', 'bioschemas_dumps')
     end
   end
