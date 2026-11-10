@@ -17,3 +17,6 @@ autocomplete_suggestions:
 dead_link_check:
   every: day
   at: 6am
+bioschemas_dump:
+  every: sunday
+  at: 9pm

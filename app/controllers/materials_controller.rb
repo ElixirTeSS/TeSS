@@ -23,6 +23,14 @@ class MaterialsController < ApplicationController
       format.html { render elearning ? 'elearning_materials/index' : 'index' }
       format.json
       format.json_api { render({ json: @materials }.merge(api_collection_properties)) }
+      format.jsonld do
+        dump = Bioschemas::DataDump.new(Material, space: current_space)
+        if dump.exists?
+          send_file(dump.file, type: :jsonld)
+        else
+          head :not_found
+        end
+      end
     end
   end
 
