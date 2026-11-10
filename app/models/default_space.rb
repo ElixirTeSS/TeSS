@@ -22,4 +22,8 @@ class DefaultSpace < GlobalSpace
   def learning_path_topics
     LearningPathTopic.where(space_id: nil)
   end
+
+  def global?
+    false
+  end
 end
