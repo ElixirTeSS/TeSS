@@ -292,4 +292,13 @@ namespace :tess do
     puts 'done'
     puts 'Finished!'
   end
+
+  desc 'Dump Event & Materials Bioschemas'
+  task dump_bioschemas: :environment do
+    puts 'Dumping Bioschemas...'
+
+    Bioschemas::DataDump.generate_dumps
+
+    puts 'Finished!'
+  end
 end
