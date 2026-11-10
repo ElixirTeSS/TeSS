@@ -14,7 +14,7 @@ class BioschemasDataDumpTest < ActiveSupport::TestCase
     material = materials(:good_material)
     dump = Bioschemas::DataDump.new(Material, records: [material])
 
-    dump.stub(:file_path_base, @dump_directory) do
+    Bioschemas::DataDump.stub(:file_path_base, @dump_directory) do
       dump.write
 
       assert dump.exists?
@@ -70,5 +70,34 @@ class BioschemasDataDumpTest < ActiveSupport::TestCase
     end
 
     assert_equal [[Material, space], [Event, space]], generated_models
+  end
+
+  test 'dumps contain only content for given space' do
+    with_settings(feature: { spaces: true }) do
+      space_material = materials(:plant_space_material)
+      non_space_material = materials(:good_material)
+      Material.where.not(id: [space_material, non_space_material]).destroy_all
+      Event.destroy_all
+
+      space = spaces(:plants)
+      space_dump = Bioschemas::DataDump.new(Material, space: space)
+      non_space_dump = Bioschemas::DataDump.new(Material)
+
+      Bioschemas::DataDump.stub(:file_path_base, @dump_directory) do
+        Bioschemas::DataDump.generate_dumps
+
+        assert space_dump.exists?
+        assert non_space_dump.exists?
+
+        space_dump_titles = JSON.parse(space_dump.file.read).map { |r| r['name'] }
+        non_space_dump_titles = JSON.parse(non_space_dump.file.read).map { |r| r['name'] }
+
+        assert_equal 1, space_dump_titles.length
+        assert_includes space_dump_titles, space_material.title
+
+        assert_equal 1, non_space_dump_titles.length
+        assert_includes non_space_dump_titles, non_space_material.title
+      end
+    end
   end
 end
