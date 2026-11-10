@@ -24,7 +24,7 @@ class MaterialsController < ApplicationController
       format.json
       format.json_api { render({ json: @materials }.merge(api_collection_properties)) }
       format.jsonld do
-        dump = Bioschemas::DataDump.new(Material, space: current_space)
+        dump = Bioschemas::DataDump.new(Material)
         if dump.exists?
           send_file(dump.file, type: :jsonld)
         else

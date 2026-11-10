@@ -2,7 +2,7 @@ module Bioschemas
   class DataDump
     attr_reader :name
 
-    def initialize(model, space: Space.default, name: nil, records: nil)
+    def initialize(model, space: Space.current_space, name: nil, records: nil)
       @name = name || model.model_name.plural
       @space = space
       Space.with_current_space(space) do
