@@ -425,10 +425,10 @@ class UsersControllerTest < ActionController::TestCase
       end
     end
     # Tabs
-    assert_select 'a[data-toggle="tab"]', text: "Events (#{@user.events.not_finished.count})"
-    assert_select 'a[data-toggle="tab"]', text: "Materials (#{@user.materials.count})"
-    assert_select 'a[data-toggle="tab"]', text: "Collections (#{@user.collections.count})"
-    assert_select 'a[data-toggle="tab"]', text: "Workflows (#{@user.workflows.count})"
+    assert_select 'a[data-toggle="tab"]', text: "Events (#{@user.events.in_current_space.not_finished.count})"
+    assert_select 'a[data-toggle="tab"]', text: "Materials (#{@user.materials.in_current_space.count})"
+    assert_select 'a[data-toggle="tab"]', text: "Collections (#{@user.collections.in_current_space.count})"
+    assert_select 'a[data-toggle="tab"]', text: "Workflows (#{@user.workflows.in_current_space.count})"
 
     # Links
     assert_select '#events a[href=?]', events_path(user: @user.username)

@@ -587,7 +587,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
     new_material = Material.create!(title: 'my_material', description: 'visible material', url: 'http://new.url.com', content_provider: @content_provider, user: @content_provider.user)
     get :show, params: { id: @content_provider }
     assert_response :success
-    not_disabled_material_count = @content_provider.materials.not_disabled.length
+    not_disabled_material_count = @content_provider.materials.in_current_space.not_disabled.length
     assert not_disabled_material_count > 1
     assert_select '.search-results-count.my-3', text: "Showing #{not_disabled_material_count} materials"
     assert_select '.masonry-brick-heading h4', text: 'my_material'

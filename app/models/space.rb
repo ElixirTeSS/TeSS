@@ -107,6 +107,10 @@ class Space < ApplicationRecord
     false
   end
 
+  def global?
+    false
+  end
+
   # Finds the users who hold a given SpaceRole in this space.
   #
   # role:: the role key (e.g. :admin) to filter by.

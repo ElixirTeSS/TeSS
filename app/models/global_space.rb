@@ -57,6 +57,10 @@ class GlobalSpace
     true
   end
 
+  def global?
+    true
+  end
+
   def administrators
     User.with_role('admin')
   end
