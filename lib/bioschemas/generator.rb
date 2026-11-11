@@ -14,12 +14,12 @@ module Bioschemas
       @resource = resource
     end
 
-    def generate
-      template = {
-        '@context' => 'http://schema.org',
-        '@id' => routes.polymorphic_url(resource),
-        '@type' => self.class.type
-      }
+    def generate(include_context: true)
+      template = {}
+
+      template['@context'] = 'http://schema.org' if include_context
+      template['@id'] = routes.polymorphic_url(resource)
+      template['@type'] = self.class.type
 
       if self.class.bioschemas_profile
         template['dct:conformsTo'] = {
