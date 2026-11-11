@@ -20,8 +20,9 @@ class BioschemasDataDumpTest < ActiveSupport::TestCase
       assert dump.exists?
       assert_operator dump.size, :>, 0
       assert_kind_of Time, dump.date_modified
-      assert_equal [JSON.parse(material.to_bioschemas.first.to_json)],
-                   JSON.parse(File.read(@dump_directory.join(dump.file_name)))
+      json = JSON.parse(material.to_bioschemas.first.to_json)
+      json.delete('@context')
+      assert_equal [json], JSON.parse(File.read(@dump_directory.join(dump.file_name)))['@graph']
     end
   end
 
@@ -89,8 +90,8 @@ class BioschemasDataDumpTest < ActiveSupport::TestCase
         assert space_dump.exists?
         assert non_space_dump.exists?
 
-        space_dump_titles = JSON.parse(space_dump.file.read).map { |r| r['name'] }
-        non_space_dump_titles = JSON.parse(non_space_dump.file.read).map { |r| r['name'] }
+        space_dump_titles = JSON.parse(space_dump.file.read)['@graph'].map { |r| r['name'] }
+        non_space_dump_titles = JSON.parse(non_space_dump.file.read)['@graph'].map { |r| r['name'] }
 
         assert_equal 1, space_dump_titles.length
         assert_includes space_dump_titles, space_material.title

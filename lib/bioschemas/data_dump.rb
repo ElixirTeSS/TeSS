@@ -17,17 +17,19 @@ module Bioschemas
     def write
       FileUtils.mkdir_p(self.class.file_path_base)
       File.atomic_write(file_path) do |f|
-        f.write("[\n")
+        f.write("{\n")
+        f.write("  \"@context\" : \"http://schema.org\",\n")
+        f.write("  \"@graph\": [\n")
         first = true
         # Write each record at a time to avoid loading entire set into memory
-        bioschemas do |record|
+        bioschemas do |generator|
           f.write(",\n") unless first
-          record.to_json.each_line do |line|
-            f.write('  ', line) # Indent 2 spaces
+          JSON.pretty_generate(generator.generate(include_context: false)).each_line do |line|
+            f.write('    ', line) # Indent 2 spaces
           end
           first = false
         end
-        f.write("\n]")
+        f.write("\n  ]\n}")
       end
     end
 
