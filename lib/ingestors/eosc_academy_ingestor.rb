@@ -1,5 +1,4 @@
 require 'nokogiri'
-require 'open-uri'
 require 'json'
 require 'uri'
 require 'cgi'
@@ -209,16 +208,20 @@ module Ingestors
     # --------------------------------------------------
 
     def fetch_document(url)
-      uri = URI.parse(url)
-      return nil unless uri.is_a?(URI::HTTP)
+      return nil unless valid_crawl_url?(url)
 
-      response = uri.open(
-        'User-Agent' => USER_AGENT,
-        'Accept' => 'text/html,application/xhtml+xml',
-        open_timeout: OPEN_TIMEOUT,
-        read_timeout: READ_TIMEOUT
+      response = open_url(
+        url,
+        raise: true,
+        open_options: {
+          'User-Agent' => USER_AGENT,
+          'Accept' => 'text/html,application/xhtml+xml',
+          open_timeout: OPEN_TIMEOUT,
+          read_timeout: READ_TIMEOUT
+        }
       )
 
+      return nil unless valid_crawl_url?(response.base_uri.to_s)
       return nil unless response.content_type.to_s.include?('html')
 
       Nokogiri::HTML(response.read)

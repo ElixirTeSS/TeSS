@@ -3,7 +3,6 @@
 require 'icalendar'
 require 'nokogiri'
 require 'tzinfo'
-require 'open-uri'
 require 'uri'
 require 'openssl'
 require 'net/http'
@@ -122,6 +121,7 @@ module Ingestors
 
     def fetch_calendar_content(url)
       uri = URI.parse(url)
+      raise ArgumentError, "Unsupported calendar URL: #{url}" unless uri.is_a?(URI::HTTP)
 
       # Preserve existing query parameters and ensure nc=yes.
       params = URI.decode_www_form(uri.query.to_s)
@@ -152,22 +152,17 @@ module Ingestors
           'Accept' => 'text/calendar'
         }
 
-        content = uri.open(options) do |response|
-          status = response.status
-          content_type = response.meta['content-type']
+        response = open_url(uri.to_s, raise: true, open_options: options)
 
-          Rails.logger.info(
-            "[Indico] HTTP status: #{status.inspect}"
-          )
+        Rails.logger.info(
+          "[Indico] HTTP status: #{response.status.inspect}"
+        )
 
-          Rails.logger.info(
-            "[Indico] HTTP Content-Type: #{content_type}"
-          )
+        Rails.logger.info(
+          "[Indico] HTTP Content-Type: #{response.meta['content-type']}"
+        )
 
-          response.read
-        end
-
-        return content.force_encoding(Encoding::UTF_8)
+        return response.read.force_encoding(Encoding::UTF_8)
       rescue Net::OpenTimeout,
              Net::ReadTimeout,
              Errno::ECONNRESET,

@@ -1,3 +1,4 @@
+require 'open-uri'
 require 'sitemap-parser'
 require 'private_address_check'
 require 'private_address_check/tcpsocket_ext'
@@ -64,14 +65,16 @@ module Ingestors
       summary
     end
 
-    def open_url(url, raise: false, token: nil)
+    def open_url(url, raise: false, token: nil, open_options: {})
       options = {
-        redirect: false, # We're doing redirects manually below, since open-uri can't handle http -> https redirection
         read_timeout: 30 # 5
       }
       options[:ssl_verify_mode] = config[:ssl_verify_mode] if config.key?(:ssl_verify_mode)
       redirect_attempts = 5
       options['Authorization'] = "Bearer #{token}" unless token.nil?
+      options.merge!(open_options)
+      # We're doing redirects manually below, since open-uri can't handle http -> https redirection
+      options[:redirect] = false
       begin
         PrivateAddressCheck.only_public_connections do
           URI(url).open(options)
