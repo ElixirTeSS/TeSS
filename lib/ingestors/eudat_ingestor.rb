@@ -6,7 +6,7 @@ require 'cgi'
 
 module Ingestors
   class EudatIngestor < Ingestor
-    EUDAT_BASE_HOST = (TeSS::Config.ingestors.dig(:eudat, :base_host) || 'www.eudat.eu').freeze
+    EUDAT_BASE_HOST = (TeSS::Config.ingestors&.dig(:eudat, :base_host) || 'www.eudat.eu').freeze
     EUDAT_BASE_URL = "https://#{EUDAT_BASE_HOST}".freeze
     EUDAT_HOSTS = [EUDAT_BASE_HOST, 'eudat.eu', 'www.eudat.eu'].uniq.freeze
     EUDAT_LANDING_PAGE = "#{EUDAT_BASE_URL}/eudat-training".freeze

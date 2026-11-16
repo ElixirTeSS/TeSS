@@ -7,7 +7,7 @@ require 'time'
 
 module Ingestors
   class EoscAcademyIngestor < Ingestor
-    EOSC_BASE_HOST = (TeSS::Config.ingestors.dig(:eosc, :base_host) || 'eosc.eu').freeze
+    EOSC_BASE_HOST = (TeSS::Config.ingestors&.dig(:eosc, :base_host) || 'eosc.eu').freeze
     EOSC_BASE_URL = "https://#{EOSC_BASE_HOST}".freeze
     EOSC_HOSTS = [EOSC_BASE_HOST, 'eosc.eu', 'www.eosc.eu'].uniq.freeze
     LANDING_PAGE = "#{EOSC_BASE_URL}/academy".freeze
