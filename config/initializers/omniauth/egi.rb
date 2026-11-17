@@ -13,7 +13,7 @@ unless Rails.application.config.secrets.dig(:egi, :client_id).blank?
 
   Devise.omniauth :openid_connect, {
     name: :egi,
-    logo: 'EGI_small.png',
+    logo: 'egi/EGI_small.png',
     logo_with_label: true,
     button_class: 'btn-primary',
     redirect_uris: [redirect_uri],

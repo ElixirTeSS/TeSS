@@ -320,7 +320,6 @@
             ...(csrfToken ? { "X-CSRF-Token": csrfToken } : {}),
           },
           body: JSON.stringify({
-            //messages: conversationHistory
             messages: [
               {
                 role: "user",
