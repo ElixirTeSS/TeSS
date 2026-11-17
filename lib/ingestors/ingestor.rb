@@ -1,3 +1,4 @@
+require 'open-uri'
 require 'sitemap-parser'
 require 'private_address_check'
 require 'private_address_check/tcpsocket_ext'
@@ -64,20 +65,23 @@ module Ingestors
       summary
     end
 
-    def open_url(url, raise: false, token: nil)
+    def open_url(url, raise: false, token: nil, open_options: {})
       options = {
-        redirect: false, # We're doing redirects manually below, since open-uri can't handle http -> https redirection
         read_timeout: 30 # 5
       }
       options[:ssl_verify_mode] = config[:ssl_verify_mode] if config.key?(:ssl_verify_mode)
       redirect_attempts = 5
       options['Authorization'] = "Bearer #{token}" unless token.nil?
+      options.merge!(open_options)
+      # We're doing redirects manually below, since open-uri can't handle http -> https redirection
+      options[:redirect] = false
       begin
         PrivateAddressCheck.only_public_connections do
           URI(url).open(options)
         end
       rescue PrivateAddressCheck::PrivateConnectionAttemptedError
         raise "Couldn't open URL #{url}" if raise
+
         @messages << "Couldn't open URL #{url}"
 
         nil
@@ -197,10 +201,20 @@ module Ingestors
         next unless responsible_for?(existing_resource, resource, source)
 
         update = existing_resource
+
+        attributes =
+          if resource.respond_to?(:attributes)
+            resource.attributes
+          else
+            resource.to_h
+          end
+
+        attributes ||= {}
+
         resource = if update
-                     update_resource(existing_resource, resource.to_h)
+                     update_resource(existing_resource, attributes)
                    else
-                     type.new(resource.to_h)
+                     type.new(attributes.except('id', :id))
                    end
 
         resource.language ||= source&.default_language if resource.has_attribute?(:language) && resource.new_record?
@@ -218,9 +232,7 @@ module Ingestors
           end
 
           if update
-            if resource.log_update_activity?
-              resource.create_activity(:update, owner: user, parameters: activity_params)
-            end
+            resource.create_activity(:update, owner: user, parameters: activity_params) if resource.log_update_activity?
           else
             resource.create_activity(:create, owner: user, parameters: activity_params)
           end
@@ -265,14 +277,30 @@ module Ingestors
     end
 
     def find_existing(type, resource)
-      type.check_exists(resource.to_h)
+      attributes = resource.respond_to?(:attributes) ? resource.attributes : resource.to_h
+      type.check_exists(attributes)
     end
 
     def update_resource(existing_resource, fields)
-      # overwrite unlocked attributes
+      # Overwrite unlocked attributes, but never overwrite primary key or ownership.
       FieldLock.strip_locked_fields(fields, existing_resource.locked_fields)
 
-      fields.except(:content_provider_id, :user_id).each do |attr, value|
+      primary_key = existing_resource.class.primary_key
+
+      protected_fields = [
+        primary_key,
+        primary_key.to_sym,
+        :content_provider_id,
+        'content_provider_id',
+        :user_id,
+        'user_id',
+        :created_at,
+        'created_at',
+        :updated_at,
+        'updated_at'
+      ]
+
+      fields.except(*protected_fields).each do |attr, value|
         existing_resource.send("#{attr}=", value)
       end
 

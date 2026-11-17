@@ -1,0 +1,44 @@
+<section
+  class="egi-llm-widget"
+  data-endpoint="/api/llm/chat"
+  data-model="gpt-oss-120b"
+  aria-label="EGI LLM assistant">
+
+  <h2>EGI LLM Assistant</h2>
+
+  <p>
+    Ask a question and receive a response from EGI FedLLM.
+  </p>
+
+  <div
+    class="egi-llm-transcript"
+    aria-live="polite"
+    aria-relevant="additions">
+  </div>
+
+  <form class="egi-llm-form">
+    <label for="egi-llm-prompt">
+      Your question
+    </label>
+
+    <textarea
+      id="egi-llm-prompt"
+      name="prompt"
+      rows="4"
+      maxlength="20000"
+      placeholder="Enter your question..."
+      required>
+    </textarea>
+
+    <button type="submit">
+      Send
+    </button>
+
+    <p
+      class="egi-llm-status"
+      role="status"
+      aria-live="polite">
+    </p>
+  </form>
+</section>
+

@@ -33,7 +33,7 @@ And install the Java 11 JDK from Oracle or OpenJDK directly (it is needed for th
 
 Clone the TeSS source code via git:
 
-    git clone https://github.com/ElixirTeSS/TeSS.git
+    git clone https://github.com/RItrain-DIGIT/ritrain-digit-tess.git
 
     cd TeSS
 

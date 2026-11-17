@@ -30,7 +30,15 @@ public/system
 coverage
 .env
 .env-production
-letsencrypt
+/letsencrypt
+/certbot/*
+!/certbot/www/
+!/certbot/letsencrypt/
+/certbot/www/*
+!/certbot/www/.gitkeep
+/certbot/letsencrypt/*
+!/certbot/letsencrypt/.gitkeep
+/nginx/sites-enabled/tess-ssl
 docker-volumes
 
 /config/master.key
@@ -43,3 +51,11 @@ tess.crontab
 
 app-secrets*
 node_modules/
+
+# Ignore IDE workspace settings
+.vscode
+
+# Use this directory for storing files for export/import like database dumps or public
+# assets created in runtime to restore.
+/backup/*
+!/backup/.gitkeep

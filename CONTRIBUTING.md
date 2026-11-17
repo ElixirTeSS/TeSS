@@ -39,7 +39,7 @@ If you decide to contribute to TeSS you will need to have registered, and been s
 
 # Bug Reports and Feature Suggestions
 
-If you notice a problem or a bug in TeSS, have an idea on something, or would like to see a new feature or some functionality in TeSS, please submit a bug report or make a feature suggestion by creating a new issue on [TeSS issues page](https://github.com/ElixirTeSS/TeSS/issues).
+If you notice a problem or a bug in TeSS, have an idea on something, or would like to see a new feature or some functionality in TeSS, please submit a bug report or make a feature suggestion by creating a new issue on [TeSS issues page](https://github.com/RItrain-DIGIT/ritrain-digit-tess/issues).
 
 Before opening a new issue, check the list of opened issues first to see if there is already an existing report on the same subject. If so, consider [adding your thoughts]((#Commenting-and-Voting)) to the existing issue instead of starting a new one.
 
@@ -53,16 +53,16 @@ Voting is done by leaving a reaction (👍 for +1, 👎 for -1) on an issue or p
 
 # Contributions to Code
 
-Contributions to TeSS code are done on a separate fork that you can create in your GitHub account from the [TeSS repository landing page](https://github.com/ElixirTeSS/TeSS/). Within your fork, you should create a separate feature branch to contain your changes. After you are done, you then create a pull request to bring your proposed changes back from your feature branch into the main TeSS codebase. A summary of instructions to do so are given below.
+Contributions to TeSS code are done on a separate fork that you can create in your GitHub account from the [TeSS repository landing page](https://github.com/RItrain-DIGIT/ritrain-digit-tess/). Within your fork, you should create a separate feature branch to contain your changes. After you are done, you then create a pull request to bring your proposed changes back from your feature branch into the main TeSS codebase. A summary of instructions to do so are given below.
 
 ## Fork TeSS
 
-Create a fork of [TeSS on Github](https://github.com/ElixirTeSS/TeSS) check out your copy, and create an `upstream` remote to make it easier to pull in changes from the main TeSS code.
+Create a fork of [TeSS on Github](https://github.com/RItrain-DIGIT/ritrain-digit-tess) check out your copy, and create an `upstream` remote to make it easier to pull in changes from the main TeSS code.
 
 ```
 git clone https://github.com/<your account>/TeSS.git
 cd TeSS
-git remote add upstream https://github.com/ElixirTeSS/TeSS.git
+git remote add upstream https://github.com/RItrain-DIGIT/ritrain-digit-tess.git
 ```
 
 Further information on how to create and work with a forked repository can be found [here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/about-collaborative-development-models).
@@ -82,8 +82,8 @@ git checkout -b my-feature-branch
 ## Set Up TeSS
 
 In order to run and test your code, you will need to be able to run TeSS locally. 
-Follow our [native installation](https://github.com/ElixirTeSS/TeSS/blob/master/docs/install.md) or
-[docker](https://github.com/ElixirTeSS/TeSS/blob/master/docs/docker.md) guides to set up your local instance of TeSS.
+Follow our [native installation](https://github.com/RItrain-DIGIT/ritrain-digit-tess/blob/master/docs/install.md) or
+[docker](https://github.com/RItrain-DIGIT/ritrain-digit-tess/blob/master/docs/docker.md) guides to set up your local instance of TeSS.
 
 ## Write Code
 
@@ -153,7 +153,7 @@ Other points to be aware of to ease the reviewer's work:
 
 Also be sure to select the branch of TeSS where you want the changes to be merged back into, and if your contribution is a work-in-progress, flag the pull request as being a "Draft" (Click the arrow next to the "Create Pull Request" button).
 
-Your pull request should trigger a build that can be monitored on our [actions](https://github.com/ElixirTeSS/TeSS/actions) page. The core TeSS development team will also be notified, and a member of the team will review your Pull Request in a timely manner.
+Your pull request should trigger a build that can be monitored on our [actions](https://github.com/RItrain-DIGIT/ritrain-digit-tess/actions) page. The core TeSS development team will also be notified, and a member of the team will review your Pull Request in a timely manner.
 
 Check in from time to time, or wait for notifications of any reviewer comments or build failures.
 
@@ -164,8 +164,8 @@ If you need to make additional code changes (in response to review comments, for
 
 TeSS has various levels of documentation that can also be contributed to:
 
-* [Technical documentation](https://github.com/ElixirTeSS/TeSS/tree/master/docs) - mostly related to how to install and configure TeSS (Markdown)
-* [API documentation](https://github.com/ElixirTeSS/TeSS/tree/master/public/api/definitions) - specifications on how TeSS APIs function, with some descriptions and guidance (Swagger 2.0 YAML)
+* [Technical documentation](https://github.com/RItrain-DIGIT/ritrain-digit-tess/tree/master/docs) - mostly related to how to install and configure TeSS (Markdown)
+* [API documentation](https://github.com/RItrain-DIGIT/ritrain-digit-tess/tree/master/public/api/definitions) - specifications on how TeSS APIs function, with some descriptions and guidance (Swagger 2.0 YAML)
 * User documentation - *Help wanted!* - Guidance for users of TeSS on best practices, how they can automatically register resources, etc. (Markdown?)
 
 Small changes can be made directly in GitHub. Simply open the relevant file, click the pencil icon to edit, make your change, and click the "Proprose changes" button - GitHub will automatically create a fork, a feature branch and a pull request for you.

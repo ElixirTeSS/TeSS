@@ -63,7 +63,7 @@
                   <%= hidden_field_tag('subscription[subscribable_type]', type) %>
                   <div class="form-group">
                     <label for="frequency"><%= t('subscriptions.button.frequency') %></label>
-                    <%= select_tag('subscription[frequency]', frequency_options_for_select,
+                    <%= select_tag('subscription[frequency]', frequency_options_for_select, id: 'frequency',
                                    class: 'form-control', autocomplete: 'off') %>
                   </div>
                   <%= submit_tag(t('subscriptions.button.submit_button'), class: 'btn btn-primary') %>

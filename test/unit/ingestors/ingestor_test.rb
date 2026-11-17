@@ -433,6 +433,24 @@ class IngestorTest < ActiveSupport::TestCase
     assert_equal 'ok', result.read
   end
 
+  test 'open_url passes custom options to URI.open' do
+    ingestor = DummyIngestor.new
+    stub_request(:get, 'https://example.com')
+      .with(headers: { 'User-Agent' => 'custom-agent', 'Accept' => 'application/json' })
+      .to_return(body: 'ok', status: 200)
+
+    result = ingestor.open_url(
+      'https://example.com',
+      open_options: {
+        'User-Agent' => 'custom-agent',
+        'Accept' => 'application/json',
+        read_timeout: 12
+      }
+    )
+
+    assert_equal 'ok', result.read
+  end
+
   test 'open_url raises exception after too many redirects' do
     ingestor = DummyIngestor.new
     WebMock.stub_request(:any, 'https://redirect.loop/').to_return(status: 301,

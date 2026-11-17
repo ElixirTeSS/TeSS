@@ -28,7 +28,7 @@ default: &default
     # Colours of the SVG icons used throughout TeSS, requires `rake assets:precompile` if changed
     icon_primary_color: '#047EAA' # Blue by default
     icon_secondary_color: '#F47D21' # Orange by default
-    repository: 'https://github.com/ElixirTeSS/TeSS'
+    repository: 'https://github.com/RItrain-DIGIT/ritrain-digit-tess'
     supported_by: 'elixir_supported_by'
     widget_example:
     home_page: # Configuration for the sections displayed on the front page

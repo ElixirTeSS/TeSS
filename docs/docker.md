@@ -21,7 +21,7 @@ This guide is designed to get you up and running with as few commands as possibl
 
 ### Clone the repository and change directory
 
-    git clone https://github.com/ElixirTeSS/TeSS.git && cd TeSS
+    git clone https://github.com/RItrain-DIGIT/ritrain-digit-tess.git && cd TeSS
 
 ### Configuration
 

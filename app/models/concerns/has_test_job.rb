@@ -19,10 +19,16 @@ module HasTestJob
 
   def test_results
     file = test_results_path
+    
     if File.exist?(file)
-      YAML.load(File.read(file),
-                aliases: true,
-                permitted_classes: Rails.application.config.active_record.yaml_column_permitted_classes)
+      permitted_classes = 
+        Array(Rails.application.config.active_record.yaml_column_permitted_classes) + [Event]
+
+      YAML.load(
+        File.read(file),
+        aliases: true,
+        permitted_classes: permitted_classes.uniq
+      )
     else
       nil
     end
@@ -58,15 +64,18 @@ module HasTestJob
     dir.join("test_results_#{path_id}.yml")
   end
 
-  def deep_hashify(params)
-    params = params.to_h if params.is_a?(OpenStruct) || params.is_a?(ActionController::Parameters)
-
-    if params.is_a?(Hash)
-      params.transform_values { |v| deep_hashify(v) }
-    elsif params.is_a?(Array)
-      params.map { |p| deep_hashify(p) }
+  def deep_hashify(value)
+    case value
+    when ActionController::Parameters, OpenStruct
+      deep_hashify(value.to_h)
+    when Hash
+      value.transform_values { |v| deep_hashify(v) }
+    when Array
+      value.map { |v| deep_hashify(v) }
+    when Material, Event
+      deep_hashify(value.attributes)
     else
-      params
+      value
     end
-  end
+  end  
 end

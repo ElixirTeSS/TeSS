@@ -12,5 +12,5 @@
 
 **Checklist**
 
-- [ ] I have read and followed the [CONTRIBUTING](https://github.com/ElixirTeSS/TeSS/blob/master/CONTRIBUTING.md) guide.
-- [ ] I confirm that I have the authority necessary to make this contribution on behalf of its copyright owner and agree to license it to the TeSS codebase under the [BSD license](https://github.com/ElixirTeSS/TeSS/blob/master/LICENSE).
+- [ ] I have read and followed the [CONTRIBUTING](https://github.com/RItrain-DIGIT/ritrain-digit-tess/blob/master/CONTRIBUTING.md) guide.
+- [ ] I confirm that I have the authority necessary to make this contribution on behalf of its copyright owner and agree to license it to the TeSS codebase under the [BSD license](https://github.com/RItrain-DIGIT/ritrain-digit-tess/blob/master/LICENSE).

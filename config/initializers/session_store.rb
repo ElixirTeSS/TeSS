@@ -29,4 +29,7 @@ if Rails.env.production?
   opts[:expire_after] = expiry_time unless expiry_time.blank?
 end
 
-Rails.application.config.session_store :cookie_store, **opts
+Rails.application.config.session_store :cookie_store,
+  key: '_tess_session',
+  secure: Rails.env.production?,
+  same_site: :lax

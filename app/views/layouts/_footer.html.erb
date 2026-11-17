@@ -44,6 +44,9 @@
         <div class="footer-item">
           <%= link_to t('footer.privacy'), privacy_path %>
         </div>
+        <div class="footer-item">
+          <%= link_to t('footer.terms'), terms_path %>
+        </div>
         <% if cookie_consent.required? %>
           <div class="footer-item">
             <%= link_to t('footer.cookie_preferences'), cookies_consent_path %>

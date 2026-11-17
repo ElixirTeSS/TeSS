@@ -1,7 +1,7 @@
 default: &default
-  base_url: http://localhost:3000
-  contact_email: contact@example.com
-  sender_email: no-reply@localhost
+  base_url: https://registry.hopto.org
+  contact_email: info@ritrain-digit.eu
+  sender_email: no-reply@ritrain-digit.eu
   twitter_handle: # @handle
   solr_enabled: true
   solr_facets:
@@ -88,15 +88,15 @@ default: &default
     #   https://guides.rubyonrails.org/v7.0/configuring.html#configuring-i18n
     #fallbacks: ...
   site:
-    title: 'TeSS (Training eSupport System)'
-    title_short: TeSS
-    favicon: elixir/favicon.png
-    logo: elixir/elixir-tess.svg
-    logo_alt: 'Training eSupport System'
+    title: 'RItrain-DIGIT'
+    title_short: RItrain-DIGIT
+    favicon: egi/favicon.ico
+    logo: egi/ritrain-digit-logo-short.png
+    logo_alt: 'The RItrain-DIGIT Training Registry'
     logo_open_graph: ''
     logo_email: ''
-    default_theme: default
-    repository: 'https://github.com/ElixirTeSS/TeSS'
+    default_theme: egi # Possible options: default, classic, blue, green
+    repository: 'https://github.com/RItrain-DIGIT/ritrain-digit-tess'
     supported_by: 'elixir_supported_by'
     widget_example:
     home_page: # Configuration for the sections displayed on the front page
@@ -107,17 +107,27 @@ default: &default
       featured_providers: # e.g. [123, 5, 10, 1]
       faq: # [who, how, why, embed, subscribe] # Questions/answers in config/en.yml: home > faq. Use empty array to hide section
       promo_blocks: false
-      upcoming_events: # Number of events on home page. Leave blank to turn off
-      latest_materials: # Number of materials on home page. Leave blank to turn off
-      featured_trainer: # Number of trainers to feature on home page. Leave blank to turn off
+      upcoming_events: 5 # Number of events on home page. Leave blank to turn off
+      latest_materials: 5 # Number of materials on home page. Leave blank to turn off
+      featured_trainer: false
       counters: false # Whether or not to show number of database objects in separate blocks
       search_box: true # Whether or not to show the search box
       additional_links: # Add custom links in separate blocks
-#       - url: https://example.com/
-#         icon: placeholder-person.png  # Path relative to app/assets/images or absolute URL
-#         title: "My Example Link"
-#         id: example-link  # Optional id for custom styling in theme
-#         new_tab: false # Open link in new tab, defaults to false
+       - url: https://mdl.vm.fedcloud.eu/login/index.php
+         icon: moodle.png  # Path relative to app/assets/images or absolute URL
+         title: "Moodle"
+         #id: example-link  # Optional id for custom styling in theme
+         new_tab: true # Open link in new tab, defaults to false
+       - url: https://confluence.egi.eu/display/ritraindigit/RItrain-DIGIT+Home
+         icon: confluence.png # Path relative to app/assets/images or absolute URL
+         title: "Confluence"
+         #id: example-link  # Optional id for custom styling in theme
+         new_tab: true # Open link in new tab, defaults to false
+       - url: https://cordis.europa.eu/project/id/101292852
+         icon: egi/eu_flag.svg # Path relative to app/assets/images or absolute URL
+         title: "CORDIS EU-portal"  
+         #id: example-link  # Optional id for custom styling in theme
+         new_tab: true # Open link in new tab, defaults to false
     footer: # Configuration for the footer
       additional_links: # Add custom links to the footer
 #        - url: https://example.com/
@@ -130,7 +140,7 @@ default: &default
     # The tabs that should be collapsed under the "Directory" tab. Can be left blank to hide it.
     directory_tabs: ['trainers', 'content_providers', 'nodes', 'spaces']
     # The order in with the 'about us' tabs appear
-    about_us_tab_order: ['tess_club', 'contact', 'team', 'funding', 'acknowledgements', 'cite']
+    about_us_tab_order: ['contact', 'team', 'funding', 'acknowledgements']
     n_provider_ids: 5
     calendar_event_maxlength: 5
     content_provider_grid_long: true # true for full width in grid, false for short
@@ -141,8 +151,8 @@ default: &default
     arguments: '-i -t'
   maps:
     center:
-      latitude: 53.4674583
-      longitude: -2.233948899999973
+      latitude: 37.5024
+      longitude: 15.0878
     zoom:
       wide: 3
       focused: 13
@@ -151,12 +161,12 @@ default: &default
     # TeSS main resources
     events: true
     materials: true
-    elearning_materials: false
+    elearning_materials: true
     workflows: true
     collections: true
-    learning_paths: false
+    learning_paths: true
     content_providers: true
-    sources: false
+    sources: true
     nodes: false
     spaces: false
 
@@ -177,7 +187,7 @@ default: &default
 
     # User rights
     user_source_creation: true
-    trainers: false
+    trainers: true
     edit_suggestions: false
     bip_scholar_infographics: # ruby rewrite of https://github.com/athenarc/bip-plugin/tree/main
       enabled: false # when true + when an ORCID is found both in TeSS and in BIP!Scholar, it displays the researcher's infographics on the trainer's page, see https://github.com/ElixirTeSS/TeSS/pull/1373 for details
@@ -261,6 +271,24 @@ default: &default
   llm_scraper:
     model:
     model_version:
+  egi_llm: # EGI LLM chat widget, the API key is set in secrets.yml (egi_llm_api_key)
+    server_url: https://llm.ai.egi.eu/v1/chat/completions
+    # Available models: glm, qwen3.5, qwen3.8-flash-next, qwen3.8-27b, gpt-oss-120b, glm-5.2, kimi-k3, mistral-small-4:119b
+    model: glm
+    timeout: 240 # in seconds
+  ingestors: # Settings of the RItrain-DIGIT ingestors
+    eudat:
+      base_host: www.eudat.eu
+    eosc:
+      base_host: eosc.eu
+    evita:
+      gitlab_url: https://code.europa.eu
+      project_path: eurohpc-ju/evita
+    hpc_portal:
+      base_url: https://hpc-portal.eu
+      max_pages: 1500
+      request_delay: 0.3 # in seconds
+      include_general_events: false
   scraper_event_check:
     enabled: false
     stale_threshold: 0.3
@@ -292,8 +320,12 @@ default: &default
     space:
       primary: '#260252'
       secondary: '#5c29b1'
+    egi:
+      primary: '#005FAA'
+      secondary: '#EF8300'
   filter_limit: # Maximum number of filter values allowed for anonymous users
   obfuscate_filters: false # Whether to obfuscate filter links from initial HTML load to deter crawlers
+
 development:
   <<: *default
 

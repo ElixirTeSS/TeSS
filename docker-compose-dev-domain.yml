@@ -1,0 +1,103 @@
+name: ${PREFIX}-dev-domain
+services:
+  nginx:
+    image: nginx:1.31.6
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:80:80'
+      - '127.0.0.1:443:443'
+    environment:
+      TESS_BASE_HOST: ${TESS_BASE_HOST}
+    volumes:
+      - ./nginx/dev-domain.conf.template:/etc/nginx/templates/dev-domain.conf.template:ro
+      - ./certbot/letsencrypt:/etc/letsencrypt:ro
+      - ./public/system:/TeSS/public/system:ro
+    depends_on:
+      - app
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    image: ${PREFIX}-app
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      - db
+      - solr
+      - redis
+    volumes:
+      - .:/code
+      - bundle-cache:/usr/local/bundle
+      - node_modules:/code/node_modules
+    environment:
+      RAILS_ENV: development
+      RAILS_LOG_TO_STDOUT: 'true'
+      RAILS_FORCE_SSL: 'true'
+  db:
+    logging:
+      driver: none
+    image: postgres:18.6
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      interval: 5s
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  adminer:
+    image: adminer:5.4.2
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:8081:8080'
+    depends_on:
+      - db
+  solr:
+    image: solr:8
+    restart: unless-stopped
+    volumes:
+      - solr-data:/var/solr
+      - ./solr:/opt/solr/server/solr/configsets/development
+    command:
+      - solr-precreate
+      - tess
+      - /opt/solr/server/solr/configsets/development
+    ports:
+      - '8985:8983'
+  redis:
+    image: redis:7
+    restart: unless-stopped
+    healthcheck:
+      test: redis-cli ping
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    volumes:
+      - redis-data:/data
+  sidekiq:
+    image: ${PREFIX}-app
+    restart: unless-stopped
+    healthcheck:
+      test: bundle exec sidekiqmon | grep $(hostname)
+    depends_on:
+      - app
+      - db
+      - redis
+    volumes:
+      - .:/code
+      - bundle-cache:/usr/local/bundle
+    env_file: .env
+    environment:
+      RAILS_ENV: development
+    command: bundle exec sidekiq
+volumes:
+  db-data:
+  solr-data:
+  redis-data:
+  bundle-cache:
+  node_modules:

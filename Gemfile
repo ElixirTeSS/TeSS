@@ -31,6 +31,7 @@ gem 'jquery-qtip2-wrapper-rails'
 gem 'jquery-rails'
 gem 'jquery-simplecolorpicker-rails'
 gem 'jquery-turbolinks'
+gem 'json', '~> 2.21'
 gem 'kt-paperclip'
 gem 'linkeddata'
 gem 'maxmind-db'
@@ -74,12 +75,13 @@ gem 'tzinfo-data'
 gem 'validate_url'
 gem 'whenever', require: false # Work around https://github.com/javan/whenever/issues/831
 gem 'will_paginate'
+gem 'faraday'
 
 group :development, :test do
   gem 'bundle-audit'
   gem 'byebug'
   gem 'pry-byebug'
-  gem 'rubocop'
+  gem 'rubocop', '~> 1.92'
   gem 'simplecov'
   gem 'simplecov-lcov', require: false
 end

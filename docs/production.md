@@ -69,7 +69,7 @@ Switch over to the `tess` user:
 
 and clone the TeSS repo (for this guide we will put it in the `tess` user's home directory `/home/tess/tess-app`).
 
-    git clone https://github.com/ElixirTeSS/TeSS.git tess-app
+    git clone https://github.com/RItrain-DIGIT/ritrain-digit-tess.git tess-app
 
 ...You also need to ensure the directory hierarchy has execute permissions:
 

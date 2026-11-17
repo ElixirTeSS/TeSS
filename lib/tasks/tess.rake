@@ -137,8 +137,15 @@ namespace :tess do
     scraper = Scraper.new
     scraper.run
     log = scraper.log_file
+    if log.respond_to?(:path)
+      puts "Finished successfully, output written to: #{log.path}"
+    elsif log.is_a?(StringIO)
+      puts log.read
+      puts 'Finished successfully, output written to stdout'
+    else
+      puts "Finished successfully, although log output was not defined"
+    end
     log.close
-    puts "Finished successfully, output written to: #{log.path}"
   end
 
   desc 'run LLM post processing'

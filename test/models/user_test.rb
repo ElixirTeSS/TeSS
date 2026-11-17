@@ -99,6 +99,21 @@ class UserTest < ActiveSupport::TestCase
     assert user.reload.encrypted_password.blank?
   end
 
+  test 'OmniAuth honors forced confirmation outside production' do
+    with_settings(force_user_confirmation: true) do
+      auth = OmniAuth::AuthHash.new(
+        provider: 'oidc',
+        uid: 'new-user-uid',
+        info: { email: 'new-omniauth-user@example.com', email_verified: true }
+      )
+
+      user = User.from_omniauth(auth)
+      assert_not user.confirmed?
+      assert_nil user.password
+      assert_nil user.processing_consent
+    end
+  end
+
   test "should not save with password under 8 characters" do
     user = User.new(@user_params.merge(password: '1234567'))
     assert_not user.save, 'Allowed a user to have a password under 8 characters'

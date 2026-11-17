@@ -126,6 +126,18 @@ input[type=checkbox].field-lock + label:before,
   height: 42px;
 }
 
+.btn-omniauth {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.omniauth-egi {
+  background: #fff;
+  border-radius: 6px;
+  padding: 1px;
+}
+
 .btn-oidc-only {
   font-size: 36px;
   padding: 4px;

@@ -234,7 +234,13 @@ class User < ApplicationRecord
                       username: username,
                       profile_attributes: { firstname: first_name, surname: last_name },
       )
-      user.skip_confirmation!
+
+      # Email verification logic
+      email_is_verified = auth.info.email_verified ||
+                          auth.extra&.raw_info&.email_verified ||
+                          auth.extra&.raw_info&.verified
+
+      user.skip_confirmation! if email_is_verified && !TeSS::Config.force_user_confirmation
     end
 
     user

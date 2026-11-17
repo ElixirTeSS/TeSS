@@ -16,7 +16,12 @@ module Ingestors
         Ingestors::EventRSSIngestor,
         Ingestors::MaterialRSSIngestor,
         Ingestors::YoutubeIngestor,
-        Ingestors::CdsVideosIngestor
+        Ingestors::CdsVideosIngestor,
+        Ingestors::EgiIngestor,
+        Ingestors::EudatIngestor,
+        Ingestors::EvitaIngestor,
+        Ingestors::HpcPortalIngestor,
+        Ingestors::EoscAcademyIngestor
       ] + taxila_ingestors + llm_ingestors + heptraining_ingestors
     end
 

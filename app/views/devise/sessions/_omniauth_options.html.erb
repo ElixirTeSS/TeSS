@@ -1,11 +1,14 @@
 <% if devise_mapping.omniauthable? -%>
   <% omniauth_providers_for_space.each do |provider, config| -%>
     <%= omniauth_login_link(provider, config,
-                            class: config.options[:logo] ? '' :
-                              TeSS::Config.feature["login_through_oidc_only"] ? 'btn btn-default btn-lg btn-oidc-only' : 'btn btn-default') do %>
+                            class: (config.options[:logo] && !config.options[:logo_with_label]) ? '' :
+                              TeSS::Config.feature["login_through_oidc_only"] ?
+                              "btn btn-default btn-omniauth btn-omniauth-#{provider} #{config.options[:button_class]} btn-lg btn-oidc-only" :
+                              "btn btn-default btn-omniauth btn-omniauth-#{provider} #{config.options[:button_class]}") do %>
       <% if config.options[:logo].present? %>
         <%= image_tag(config.options[:logo], class: "omniauth-logo omniauth-#{provider}") -%>
-      <% else %>
+      <% end %>
+      <% if !config.options[:logo].present? || config.options[:logo_with_label] %>
         <%= t('authentication.omniauth.log_in_with',
             provider: config.options[:label] || t("authentication.omniauth.providers.#{provider}", default: provider.to_s.titleize)) -%>
       <% end %>

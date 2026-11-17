@@ -1,0 +1,76 @@
+@import "bootstrap/mixins";
+
+$theme-base: 'themes/egi';
+
+// RItrain-DIGIT Palette
+$egi-blue: #009FE3;
+$egi-dark-blue: #312783;
+$white: #ffffff;
+$gray-dark: #333333;
+
+@import "mixins/modern_base";
+
+// TeSS/Bootstrap Variable Overrides
+$brand-primary: $egi-blue;
+$brand-secondary: $egi-dark-blue;
+$btn-primary-color: $white;
+$btn-primary-bg: $egi-blue;
+$btn-primary-border: darken($egi-blue, 5%);
+
+// RItrain-DIGIT theme variables
+$navbar-bg: $egi-blue;
+
+$navbar-default-color: $white;
+$navbar-default-bg: $egi-blue;
+$navbar-default-border: darken($egi-blue, 10%);
+$navbar-default-link-color: $white;
+$navbar-default-link-hover-color: $white;
+$navbar-default-link-active-color: $white;
+
+@import "../application";
+
+/// Default styles tweaks
+
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+  background-color: lighten($secondary-color, 5%);
+}
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover {
+  background-color: $secondary-color;
+}
+
+.unified-header .navbar-brand img {
+  $ritd-navbar-img-margin: 4px;
+  // override !important style from modern_base
+  max-height: calc(100% - #{$ritd-navbar-img-margin} * 2) !important;
+  // put the image in white circle, because it is a blue image on blue background
+  background-color: #FFF;
+  border-radius: 100%;
+  margin-top: $ritd-navbar-img-margin;
+  padding: 8px;
+}
+
+// Ensure buttons match brand
+.btn-primary {
+  background-color: $egi-blue;
+  border-color: darken($egi-blue, 5%);
+  color: $white;
+}
+
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus {
+  background-color: darken($egi-blue, 5%) !important;
+  border-color: darken($egi-blue, 10%) !important;
+  color: $white !important;
+}
+
+// Consistent Headers
+h1, h2, h3 {
+  color: $gray-dark;
+  border-bottom: 2px solid $egi-blue;
+}

@@ -68,6 +68,13 @@ class LoginTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'sign in page renders EGI through the standard omniauth link' do
+    get '/users/sign_in'
+
+    assert_response :success
+    assert_select "a[href='/users/auth/egi']", text: 'Login with EGI Check-In'
+  end
+
   test 'sign in page hides omniauth links on an unsupported host' do
     with_host('space.mytess.training') do
       get '/users/sign_in'

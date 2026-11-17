@@ -1,15 +1,43 @@
 <div class="legal-block">
-  <h1>Privacy</h1>
+  <h1>Privacy Notice</h1>
 
-  <h3>Information Submitted</h3>
+  <h3>Description</h3>
+  <p><%== t 'privacy.description' %></p>
+  
+  <h3>Data Controller</h3>
+  <p><%== t 'privacy.controller' %></p>
+  <p>
+    <b>EGI Foundation</b><br/>
+    Science Park 140<br/>
+    1098 XG<br/>
+    Amsterdam<br/>
+    The Netherlands<br/>
+  </p>
+  
+  <h3>Data Protection Officer</h3>
+  <p><%== t 'privacy.protection' %></p>
+  <p>
+    <b>EGI Foundation Data Protection Officer</b><br/>
+    Science Park 140<br/>
+    1098 XG<br/> 
+    Amsterdam<br/>
+    The Netherlands<br/>
+    E-mail: dpo@egi.eu<br/>
+  </p>
+  
+  <h3>Jurisdiction and supervisory authority</h3>
+  <p><%== t 'privacy.jurisdiction' %></p>
 
-  <h4>Registration</h4>
+  <h3>Personal data processed</h3>
   <%== t 'privacy.registration' %>
 
+  <h3>Purpose of the processing of personal data</h3>
+  <p><%== t 'privacy.purpose' %></p>
+  
   <h4>Additional Personal Information</h4>
   <p><%== t 'privacy.personal' %></p>
 
-  <h4>Creation of <%= TeSS::Config.site['title_short'] %> Resources</h4>
+  <h3>Creation of <%= TeSS::Config.site['title_short'] %> Resources</h3>
   <p><%== t 'privacy.resources' %></p>
 
   <h3>Information Automatically Collected</h3>
@@ -25,14 +53,28 @@
     <p><%== t 'privacy.analytics' %></p>
   <% end %>
 
+  <h3>Legal basis</h3>
+  <p><%== t 'privacy.legal' %></p>
+
+  <h3>Third parties to whom personal data is disclosed</h3>
+  <p><%== t 'privacy.third_parties' %></p>
+  
   <h3>Information Retention</h3>
   <p><%== t 'privacy.retention' %></p>
+
+  <h3>Security</h3>
+  <p><%== t 'privacy.security' %></p>
+
+  <h3>Your rights</h3>
+  <p><%== t 'privacy.rights' %></p>
 
   <h3>Code of Conduct</h3>
   <p><%== t 'privacy.code' %></p>
 
-  <h3>Data Controller</h3>
-  <p><%== t 'privacy.controller' %></p>
+  <h3>Acknowledgement</h3>
+  <p><%== t 'privacy.acknowledgement' %></p>
+
+  <h3>Contacts</h3>
   <em>For any enquiries or requests, please contact:</em><br/>
   <strong>Email:</strong> <%= mail_to(TeSS::Config.contact_email, TeSS::Config.contact_email) -%><br/>
   <% if !t('privacy.post').blank? %>

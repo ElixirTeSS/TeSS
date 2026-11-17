@@ -29,9 +29,14 @@ class CallbacksController < Devise::OmniauthCallbacksController
           end
         end
 
-        sign_in @user
-        flash[:notice] = "#{I18n.t('devise.registrations.signed_up')} Please ensure your profile is correct."
-        redirect_to_space(edit_user_path(@user), space)
+        if @user.confirmed?
+          sign_in @user
+          flash[:notice] = "#{I18n.t('devise.registrations.signed_up')} Please ensure your profile is correct."
+          redirect_to_space(edit_user_path(@user), space)
+        else
+          flash[:notice] = I18n.t('devise.registrations.signed_up_but_unconfirmed')
+          redirect_to_space(new_user_session_path, space)
+        end
       rescue Exception => e
         flash[:notice] = "Login failed: #{e.message.to_s}"
         redirect_to_space(new_user_session_path, space)

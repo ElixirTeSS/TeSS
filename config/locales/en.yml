@@ -149,26 +149,7 @@ en:
       learn_more_widgets: Learn more about Widgets
       learn_more_api: Learn more about our API
     registry: >
-      %{site_name} is a platform that was developed to provide a one-stop shop for trainers and trainees to discover
-      online information and content, including training materials, events and interactive tutorials.
-      For training providers, %{site_name} provides opportunities to promote training events and news, and to contribute
-      to a growing catalogue of materials; for trainers, the portal offers an environment for sharing materials
-      and event information; for trainees, it offers a convenient gateway via which to identify relevant training
-      events and resources, and to perform specific, guided analysis tasks via customised training workflows.
-    mtessx: >
-      The <a href='https://elixirtess.github.io/mTeSS-X' target='_blank'>mTeSS-X Project</a> 
-      (Multi-space Training e-Support System with eXchange)
-      overcomes the fragmentation of training resources across Research Infrastructures and the European Science 
-      Clusters. The project aims to enhance existing TeSS-based training registries or catalogues like 
-      ELIXIR TeSS (life sciences) and 
-      <a href='https://www.panosc.eu/training-catalogue/' target='_blank'>PaN-Training (photon and neutron)</a>
-      by building an aggregator for these and similar platforms.
-    history: >
-      %{site_name} was originally developed as part of <a href='https://elixir-europe.org/' target='_blank'>ELIXIR</a>,
-      Europe's distributed infrastructure for life-science data. One of the goals of ELIXIR is to train research
-      scientists to better use available computational infrastructures to address critical research questions.
-      This requires access both to face-to-face training opportunities and to disparate training materials and resources,
-      currently dispersed across Europe.
+      The RItrain-DIGIT project brings together Europe’s digital RIs and engages with thematic RIs from all scientific domains to strengthen digital competences and build sustainable collaborations. To achieve this vision, RItrain-DIGIT will implement a comprehensive Training Programme built around structured Learning Pathways, hands-on practice with national compute providers, and close collaboration with pan-European initiatives.
     events: >
       Events in %{site_name} are defined as face-to-face or online training opportunities that have set start and end times.
       These primarily take the form of workshops, courses, webinars, etc.; but %{site_name} also collects information about
@@ -223,11 +204,11 @@ en:
       As such, all content in %{site_name} is available under the CC BY 4.0 licence, and can be accessed through our API
       and widgets. The %{site_name} codebase is also available to re-use under the BSD Licence, and can be found on GitHub.
     code_license: >
-      <a href="https://github.com/ElixirTeSS/TeSS/blob/master/LICENSE", target="_blank">BSD 3-Clause<i class="icon icon-md arrow-top-right-icon"></i></a>
+      <a href="https://github.com/RItrain-DIGIT/ritrain-digit-tess/blob/master/LICENSE", target="_blank">BSD 3-Clause<i class="icon icon-md arrow-top-right-icon"></i></a>
     data_license: >
       <a href="https://creativecommons.org/licenses/by/4.0/", target="_blank">CC-BY 4.0<i class="icon icon-md arrow-top-right-icon"></i></a>
     contributions: >
-      <a href="https://github.com/ElixirTeSS/TeSS/blob/master/CONTRIBUTING.md", target="_blank">contributions<i class="icon icon-md arrow-top-right-icon"></i></a>
+      <a href="https://github.com/RItrain-DIGIT/ritrain-digit-tess/blob/master/CONTRIBUTING.md", target="_blank">contributions<i class="icon icon-md arrow-top-right-icon"></i></a>
     gmaps_countries: >
       'United Kingdom', 'Spain', 'Portugal', 'France', 'Belgium', 'Ireland', 'Estonia', 'Finland',
       'Germany', 'Austria', 'Italy', 'Hungary', 'Czech Republic', 'Estonia', 'Denmark',
@@ -244,73 +225,65 @@ en:
     api_example_5: "/workflows.json_api"
   us:
     keys:
-      tess_club: TeSS Club
       contact: Contact
-      team: The Team
+      team: The Management Team
       funding: Funding
       acknowledgements: Acknowledgments
       cite: Cite us
-    tess_club: >
-      <p>Fortnightly meetings, hackathons, shared activities, open priority setting, open contribution to unite the
-      community.</p>
-      <p>For all the details please visit the 
-      <a href="https://elixirtess.github.io/about/">TeSS Club Website<i class="icon icon-md arrow-top-right-icon"></i></a>
-      </p>
-    contact: >
-      For enquiries, information, or assistance; contact the TeSS support desk at <br>
-      <a href="mailto:tess-support@googlegroups.com">tess-support@googlegroups.com</a>
     team: >
-      <h5>Leadership</h5>
-      <ul><li>Carole Goble</li><li>Hedi Peterson</li></ul>
-      <h5>Project Management</h5>
-      <ul><li>Munazah Andrabi</li><li>Phil Reed</li></ul>
-      <h5>Software Engineering</h5>
-      <ul><li>Finn Bacall</li><li>Ivan Kuzmin</li></ul>
-      <h5>Community Engagement</h5>
-      <ul><li>Alexander Botzki</li><li>Olivier Sand</li></ul>
-      <h5>Past Members</h5>
-      <ul>
-        <li>Aleksandra Nenadic - Project Management/Software Engineering</li>
-        <li>Aleksandra Pawlik - Project Management</li>
-        <li>Teresa K. Attwood - Leadership</li>
-        <li>Susanna-Assunta Sansone - Leadership</li>
-        <li>Niall Beard - Project Management/Software Engineering</li>
-        <li>Milo Thurston - Software Engineering</li>
-        <li>Chris Child - Project Management/Software Engineering</li>
-        <li>Aitor Apaolaza - Software Engineering</li>
-        <li>Alexia Cardona - Leadership</li>
-      </ul>
+      <div class="h4">Project Director</div>
+      <ul><li>Giuseppe La Rocca, EGI F.</li></ul>
+      <div class="h4">Project Manager</div>
+      <ul><li>Małgorzata Krakowian, EGI F.</li></ul>
+      <div class="h4">Innovation Manager</div>
+      <ul><li>Elia Bellussi, EGI F.</li></ul>
+      <div class="h4">Communication Manager</div>
+      <ul><li>Anabelle Tumboimbela, EGI F.</li></ul>
+      <div class="h4">WP3, WP5 contributor</div>
+      <ul><li>Ignacio Lamata Martinez, EGI F.</li></ul>
+    contact: >
+      <div>
+        <center>
+        <a target="_blank" href="https://cordis.europa.eu/project/id/101292852">
+        <img class="funding-logo" style="width:500px; height:auto;" src="/assets/egi/RItrain-DIGIT_logo-56e1f4c653cafe519ef02c18bb46b5e6fb343a111722e61e6c845a3e92d93b8d.png"/>
+        </a>
+        </center>
+      </div>
+ 
+      <div>
+      For enquiries, information, or assistance; contact our support desk at<br><br>
+      <a class="btn btn-primary" href="mailto:info@ritrain-digit.eu"><i class="fa fa-envelope"> info@ritrain-digit.eu</i></a>
+      </div>
     funding: >
-      %{site_name} has been funded by:
+      The Training Registry has been funded by:
       <ul>
-      <li>The <a href="https://www.oscars-project.eu/projects/mtess-x-scaling-training-portal-federation-ris-through-multi-tenanting-and-exchange"
-        target="_blank">OSCARS project</a>, which has received funding from the European Commission’s Horizon Europe 
-        Research and Innovation programme under grant agreement No. 101129751;</li>
-      <li><a href="https://biofair.uk/" 
-        target="_blank">BioFAIR</a> Short Term Funding Award GP312;</li>
-      <li>European Commission, Horizon 2020 Research Infrastructures programme (ELIXIR-EXCELERATE,
-      <a href="https://cordis.europa.eu/project/rcn/198519_en.html" target="_blank">grant agreement number 676559</a>);</li>
-      <li>ELIXIR Implementation Study (Registry Integration from a User Perspective);</li>
-      <li>ELIXIR Implementation Study (Learning Paths);</li>
-      <li>BBSRC UK (Delivering ELIXIR-UK grant, grant agreement numbers
-        <a href="https://bbsrc.ukri.org/research/grants/grants/AwardDetails.aspx?FundingReference=BB/L005050/1"
-          target="_blank">BB/L005050/1</a> &amp;
-        <a href="https://bbsrc.ukri.org/research/grants-search/AwardDetails/?FundingReference=BB/L005069/1"
-          target="_blank">BB/L005069/1</a>
-        ).
-      </li>
+      <li>The <a href="https://cordis.europa.eu/project/id/101292852" target="_blank">RItrain-DIGIT project</a>, which has received funding from the European Commission’s Horizon Europe Research and Innovation programme under grant agreement No. 101292852</li>
+      <li>Unfunded contributions from the partners of the EGI Federation and PRACE</li>
       </ul>
+      <p></p>
+      <p>
+        <a target="_blank" class="img-only-link" href="https://cordis.europa.eu/project/id/857641">
+        <img class="funding-logo" src="/assets/egi/eu_flag-ec2b7784ff81622a0cdfbc2747a5272c62c169650c0dc2a607a6c0e24f0a5b36.svg"/>
+        </a>    
+        <a target="_blank" class="img-only-link" href="https://egi.eu/">
+        <img class="funding-logo" src="/assets/egi/EGI_logo_normal_300px_height-511abc852df9e2c4fd23c4bc80a81f2077020745d22ee2f017ab05a36f6e5d11.png"/>
+        </a>                 
+        <a target="_blank" class="img-only-link" href="https://prace-ri.eu/">
+        <img class="funding-logo" src="/assets/egi/PRACE_logo-012ac4d1927f6567730c2228e2555719f8065fc9bb31633085e542b1a13aa189.png"/>
+        <a>                 
+        </a>                 
+      </p>
+
     acknowledgements: >
-      <p>The %{site_name} team would like to acknowledge the help of a number of groups and individuals, and thank them
-         for useful discussions, feedback and assistance in developing %{site_name} - to name but a few:</p>
-       <ul>
-          <li>ELIXIR technical staff and coordinators from the Hub,
-            in particular Rafael Jimenez, Martin Cook and Premysl Velek</li>
-          <li>The ELIXIR Training Coordinators group, particularly Celia van Gelder, Patricia Palagi and Gabriella Rustici
-            </li>
-          <li>The UK structural bioinformatics group, particularly Christine Orengo</li>
-        </ul>
-      <p>%{site_name} is based on the <a href='https://elixir-europe.org/' target='_blank'>ELIXIR</a> TeSS platform.</p>
+      <p>The RItrain-DIGIT consortia would like to acknowledge the provision of the initial <a href="https://tess.elixir-europe.org/">TeSS</a> code from <a href="https://elixir-europe.org/">ELIXIR</a>, and thank the technical staff for useful discussions, feedback and assistance in developing this registry</p>
+      <p>The RItrain-DIGIT Training Registry is based on the <a href='https://elixir-europe.org/' target='_blank'>ELIXIR</a> TeSS platform.</p>
+      <p>
+        <center>
+        <a target="_blank" href="https://tess.elixir-europe.org">
+        <img class="funding-logo" src="/assets/elixir/elixir-tess-219b707c4912e9c46c917a24ce72b464ec9f2fd56ce03dbcee8b2f6b9ac98a44.svg"/>
+        </a>
+        </center>
+      </p>
     cite: >
       Niall Beard, Finn Bacall, Aleksandra Nenadic, Milo Thurston, Carole A Goble, Susanna-Assunta Sansone, Teresa K Attwood,
       <strong>TeSS: a platform for discovering life-science training opportunities</strong>,
@@ -534,17 +507,20 @@ en:
         From the topic page, you can view all training materials, in order.</li></ol>
   home:
     welcome: |
-      How can <span class="text-primary">%{site_name}</span> help you?
+      Training Registry for <a href="https://cordis.europa.eu/project/id/101292852" target="_blank">
+      <img class="funding-logo" 
+           style="width:400px; height:auto;" 
+           src="/assets/egi/RItrain-DIGIT_logo-56e1f4c653cafe519ef02c18bb46b5e6fb343a111722e61e6c845a3e92d93b8d.png"/></a>
     subtitle: |
-      Search the portal for courses, events, videos, presentations, learning pathways, handbooks...<br>
-      All types of resources at all levels for leveraging <span class="text-primary">computational resources in the life sciences</span>.
+      Explore the registry to discover a wide range of learning resources, including courses, events, videos, learning pathways, and more...<br>
+      Access resources spanning diverse areas, skill levels, and area of expertise, supporting the use of computational approaches, <br>data-driven methods, and digitial technologies, including AI.
     search_placeholder: >
-      Search %{site_name}...
+      Search in the Registry...
     catalogue:
       title: Browse the catalogue
       link_text: Start browsing
-      events: "Discover the latest training events and news from ELIXIR nodes and 3<sup>rd</sup>-party providers."
-      materials: "Browse the catalogue of training materials offered by ELIXIR nodes and 3<sup>rd</sup>-party providers."
+      events: "Discover the latest training events and news from the RItrain-DIGIT project."
+      materials: "Browse the catalogue of training materials offered by the RItrain-DIGIT project."
       workflows: "Create training workflows to visualise learning steps and link to resources specific to your training needs."
       providers: "Browse training providers to discover training resources they offer and follow links to their materials and courses."
       trainers: "Browse a directory of trainers based on their skills and expertise."
@@ -553,7 +529,7 @@ en:
     providers:
       title: Providers
       content: |
-        <p>Want to become one?</p>
+        <p>Want to become a new provider?</p>
         <p>Add your institution’s training to the portal at no cost</p>
       button_text: Contribute
     promo:
@@ -612,23 +588,99 @@ en:
       title: Connecting from %{country_name}?
       body: Visit the %{community_name} portal to browse local training.
   privacy:
-    registration: |
-      <p>When you register with %{site_name} we ask for a username, password and email address.</p>
+    description: "The %{site_name} Training Registry is a centralised, digital platform that serves as a single access point for training resources and opportunities, tailored to the needs of the Research Infrastructure workforce. <br/><br/>This privacy notice describes how we, the EGI Foundation (hereafter referred to as \"we\" or \"Data Controller\"), collect and process data by which you can be personally identified (\"Personal Data\") when you use the service."
+    registration: "The following categories of personal data may be processed by the EGI Foundation as part of providing the aforementioned service:</br>
+      <b>Identification data:</b>
       <ul>
-      <li>Your username is used for authentication and attribution. This information is publicly visible, e.g. when a user views a resource you have created.</li>
-      <li>Your password is stored as a cryptographically-secure hash and is not publicly visible.</li>
-      <li>Your email address is used to confirm your identity and for use when requesting your password to be reset. This email address is not publicly visible, but you may specify an additional public email address (see below).</li>
+      <li>Identification number</li>
+      <li>E-mail address</li>
+      <li>Affiliation</li>
+      <li>IP address</li>
       </ul>
+      <b>Behavioural data:</b>
+      <ul>
+      <li>Usage data</li>
+      <li>technical logs with timestamps</li>
+      </ul>
+      <b>Data allowing conclusions on the personality:</b>
+      <ul>
+      <li>Membership information on roles, groups and communities</li>
+      </ul>
+      "
     personal: "You may additionally provide a profile, containing your name, a public email address, website link and avatar. This information is publicly available to all users."
+    purpose: "The purpose of the collection, processing, and use of the personal data mentioned above is:<br/>
+      <ul>
+      <li>To provide the service functions, to coordinate and manage the project according to applicable requirements including projects' contracts, guidelines, funding policies, and legal requirements.</li>
+      <li>To keep evidence for audit needs.</li>
+      <li>To monitor and maintain service stability, performance, and security.</li>
+      </ul>"  
     resources: "The details of any training materials and events that you register will be publicly visible and searchable. Any workflows and packages created can be opted to be made private, in which case only you, any collaborators you specify, and the %{site_name} administrators will be able to view and search for them."
     server: "When you browse %{site_name}, the server automatically records logs of which pages you access, when you accessed them, and your IP address. These logs are used to fix errors and are not shared with any third parties. Sensitive information (such as passwords) is automatically stripped out."
     cookies: >
-      %{site_name} makes use of "strictly necessary cookies" for the site to function. These cookies are needed to establish your "session" with %{site_name}, which allows functionality such as user log-in, and secures against Cross Site Request Forgery (CSRF) attacks.
+      %{site_name} makes use of <u>"strictly necessary cookies"</u> for the site to function. <br/>
+      These cookies are needed to establish your "session" with %{site_name}, which allows functionality such as user log-in, and secures against Cross Site Request Forgery (CSRF) attacks.
     analytics: "%{site_name} uses Google Analytics to track how users are discovering %{site_name} and interacting with the service. The information gathered includes which pages you visited, which search terms lead you to %{site_name} and information about your web browser. No personally identifiable information is sent to Google."
+    legal: "The legal basis for processing personal data is: Legitimate interests pursued by the controller or by a third party according to Art. 6 (1) (f) GDPR."
+    third_parties: >-
+      Personal data will not be used beyond the original purpose of their acquisition. If a forwarding to third parties should be necessary to answer an inquiry or to carry out a service, the consent of the data subject is considered to have been given when using the respective function or service. In particular, the data you provide to us will not be used for marketing.</br></br>
+      For the purpose given in this privacy policy, personal data may be passed to the following third parties: </br></br>
+      <b>Within the EU / EEA:</b>
+      <ul>
+      <li>XXXXX (resource provider, service administrator, sub-contracted data processor)</li>
+      <li>Suppliers supporting the customer: Provision of cloud resources: a comprehensive list of providers contributing to the federation's cloud resources can be found here: <a href='https://www.egi.eu/federation/egi-federated-cloud'>https://www.egi.eu/federation/egi-federated-cloud/</a></li>
+      <li>The records of your use and technical log files produced by the Service components may be shared, via secured mechanisms, for security incident response purposes with other authorised participants in the academic and research distributed digital infrastructures authorised by EGI Foundation governance, only for the same purposes and only as far as necessary to provide the incident response capability where doing so is likely to assist in the investigation of suspected misuse of Infrastructure resources.</li>
+      </ul>
+      <b>Outside the EU / EEA:</b>
+      <ul>
+      <li>Suppliers supporting the customer: Provision of cloud resources: a comprehensive list of providers contributing to the federation's cloud resources can be found here: <a href='https://www.egi.eu/federation/egi-federated-cloud'>https://www.egi.eu/federation/egi-federated-cloud/</a></li>
+      </ul>
+      Any data transfer to a third country outside the EU or the EEA only takes place under the conditions contained in Chapter V of the GDPR and in compliance with the provisions of this privacy policy and any related policies adopted by the EGI Federation.
+    rights: >-
+      You can exercise the following rights at any time by contacting our data protection officer using the contact details provided in the Data Protection Officer section:<br/>
+      <ul>
+      <li>Information about your data stored with us and their processing</li>
+      <li>Correction of incorrect personal data</li>
+      <li>Deletion of your data stored by us</li>
+      <li>Restriction of data processing, if we are not yet allowed to delete your data due to legal obligations</li>
+      <li>Objection to the processing of your data by us</li>
+      <li>Data portability</li>
+      </ul>
+      You can complain at any time to the supervisory data protection authority (DPA) responsible for you. Your responsible DPA depends on your country and state of residence, of your workplace or of the presumed violation.<br/>
+      A list of the supervisory authorities with addresses can be found at: <a href="https://edpb.europa.eu/about-edpb/board/members_en">https://edpb.europa.eu/about-edpb/board/members_en</a>.<br/><br/>
+      You can contact EGI Foundation's lead supervising authority using the contact details provided in the Jurisdiction and Supervisory Authority section.
     retention: "Your information will be retained by %{site_name} until you choose to remove it, you delete your account, or the %{site_name} service ceases to exist."
-    code: "%{site_name} adheres to the <a href='https://www.geant.net/uri/dataprotection-code-of-conduct/v1'> GÉANT Data Protection Code of Conduct for Service Providers in EU/EEA </a>"
-    controller: "The data controller for %{site_name} is The University of Manchester."
-    post: "<strong>The TeSS Team</strong><br/>Room 2.86 c/o School of Computer Science,<br/>Kilburn Building,<br/>Oxford Road,<br/>Manchester,<br/>M13 9PL"
+    security: >-
+      We take appropriate technical and organisational measures to ensure data security and the protection against accidental or unlawful destruction, accidental loss, alteration, unauthorised disclosure, or access.<br/><br/>
+      A comprehensive overview of the technical and organisational measures taken by EGI Foundation can be found at: <a href="https://documents.egi.eu/public/ShowDocument?docid=3737">EGI Document 3737: EGI Foundation Technical and Organisational Measures (TOM)</a>
+    code: >-
+      %{site_name} adheres to the:
+      <ul>
+      <li><a href='https://www.geant.net/uri/dataprotection-code-of-conduct/v1'>Code of Conduct for Service Providers</a></li>
+      <li><a href='https://documents.egi.eu/public/ShowDocument?docid=2732'>EGI-doc-2732-v3:Policy on the Processing of Personal Data</a></li>
+      </ul>
+    controller: "The Data Controller for the %{site_name} Traiing Registry is The EGI Foundation."
+    protection: "The Data Protection Officier for the %{site_name} Training Registry is The EGI Foundation Data Protection Officer."
+    jurisdiction: "Jurisdiction: NL, Netherlands<br/> EGI Foundation's lead supervisory authority is the Dutch Data Protection Authority. <br/><br/>They can be contacted at: <a href='https://autoriteitpersoonsgegevens.nl/en/contact-dutch-dpa/contact-us'>https://autoriteitpersoonsgegevens.nl/en/contact-dutch-dpa/contact-us</a>"
+    acknowledgement: "This privacy notice is based on the <a href='https://aarc-project.eu/policies/policy-development-kit/'>AARC Policy development kit</a> (licensed under <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/'> CC-BY-NC-SA 4.0</a>)"
+    post: "<strong>The EGI Foundation Team</strong><br/>Science Park 140,<br/>1098 XG Amsterdam,<br/>The Netherlands"
+  terms:
+    description: >-
+      This Acceptable Use Policy and Conditions of Use ("AUP") defines the rules and conditions that govern your access to and use (including transmission, processing, and storage of data) of the resources and services ("Services") as granted by the EGI Federation, and the Virtual Organisation to which you belong, for the purpose of meeting the goals of EGI, namely to deliver advanced computing services to support researchers, multinational projects and research infrastructures, and the goals of your Virtual Organisation or Research Community.<br/><br/>
+
+      You shall only use the Services in a manner consistent with the purposes and limitations described above; you shall show consideration towards other users including by not causing harm to the Services; you have an obligation to collaborate in the resolution of issues arising from your use of the Services.<br/><br/>
+      <ul>
+      <li>You shall only use the Services for lawful purposes and not breach, attempt to breach, nor circumvent administrative or security controls.</li>
+      <li>You shall respect intellectual property and confidentiality agreements.</li>
+      <li>You shall protect your access credentials (e.g. passwords, private keys or multi-factor tokens); no intentional sharing is permitted.</li>
+      <li>You shall keep your registered information correct and up to date.</li>
+      <li>You shall promptly report known or suspected security breaches, credential compromise, or misuse to the security contact stated below; and report any compromised credentials to the relevant issuing authorities.</li>
+      <li>Reliance on the Services shall only be to the extent specified by any applicable service level agreements listed below. Use without such agreements is at your own risk.</li>
+      <li>Your personal data will be processed in accordance with the privacy statements referenced below.</li>
+      <li>Your use of the Services may be restricted or suspended, for administrative, operational, or security reasons, without prior notice and without compensation.</li>
+      <li>If you violate these rules, you may be liable for the consequences, which may include your account being suspended and a report being made to your home organisation or to law enforcement.</li>
+      </ul></br>
+      The administrative contact for this AUP is: <a href="mailto:operations@egi.eu">operations@egi.eu</a></br>
+      The security contact for this AUP is: <a href="mailto:abuse@egi.eu">abuse@egi.eu</a>
   events:
     hints:
       address: 'Physical location of the event if its being conducted Face-to-face.'
@@ -752,7 +804,7 @@ en:
       keywords: "Provide words or terms that clearly identify the learning path's topics."
       licence: 'Select the licence for the learning path.'
       objectives: >
-        Describe the knowledge, skills or abilities that students should acquire through the completion or use of the
+        Describe the knowledge, skills or abilities that students should acquire throught the completion or use of the
         learning path.
       other_types: 'Enter the types of resources that are not included on the above list.'
       part_of: 'Describe the larger service of training to which this learning path belongs.'
@@ -823,10 +875,11 @@ en:
       title: Institutional Login
       description: ''
       providers:
+        egi: EGI Check-In
         elixir_aai: LS Login
         oidc: OpenID Connect
         oidc2: Alternative OpenID Connect
-      log_in_with: 'Log in with %{provider}'
+      log_in_with: 'Login with %{provider}'
       admin: Admin
   ingestion:
     categories:
@@ -912,9 +965,10 @@ en:
     archived: This %{resource_type} has been archived, its content may no longer be relevant.
     unverified: This %{resource_type} will not be publicly visible until your registration has been approved by an administrator.
   footer:
-    about: "About %{title}"
-    funding: Funding & acknowledgements
+    about: "About RItrain-DIGIT"
+    funding: Funding & Acknowledgements
     privacy: Privacy
+    terms: Terms of Use
     cookie_preferences: Cookie preferences
     browse_spaces: Browse Spaces
     version: 'Version:'
@@ -922,7 +976,19 @@ en:
     api_documentation: API documentation
     bioschemas_testing_tool: Bioschemas testing tool
     eu_funding_html: >
-      %{site_name} has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No. <a href="https://cordis.europa.eu/project/rcn/198519_en.html", target="_blank">676559</a>.
+      <div class="supporters">
+         <a class="footer-logo" 
+            target="_blank" 
+            rel="noopener" 
+            href="https://ritrain-digit.eu">
+         <img class="funding-logo" 
+              style="width:150px; 
+              height:auto;" 
+              src="/assets/egi/RItrain-DIGIT_logo-56e1f4c653cafe519ef02c18bb46b5e6fb343a111722e61e6c845a3e92d93b8d.png"/></a>
+         <div>
+         The Training Registry is supported through the <a href="https://cordis.europa.eu/programme/id/H2020" target="_blank" class="expands-footer-link">European Union's Horizon 2020 research and innovation programme</a>, <br>under grant agreement No. <a href="https://cordis.europa.eu/project/id/101292852" target="_blank" class="expands-footer-link">101292852</a>, and the unfunded contribution from the partners of the <a href="https://egi.eu.eu" target="_blank" class="expands-footer-link">EGI Federation</a> and <a href="https://prace-ri.eu" target="_blank" class="expands-footer-link">PRACE</a>
+         </div>
+      </div>
   time:
     formats:
       time_short: "%H:%M"

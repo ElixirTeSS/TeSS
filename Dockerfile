@@ -11,6 +11,21 @@ RUN apt-get update \
     && apt-get install build-essential curl file git gnupg2 imagemagick libpq-dev libyaml-dev nodejs npm -y \
     && apt-get clean
 
+# Some sites (e.g. events.prace-ri.eu) do not send the DigiCert intermediate certificate.
+# Build a separate bundle with it, leaving the system CA bundle unchanged.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && update-ca-certificates \
+    && curl -fsSL \
+        "https://cacerts.digicert.com/DigiCertGlobalG2TLSRSASHA2562020CA1-1.crt.pem" \
+        -o /usr/local/share/ca-certificates/digicert-intermediate.pem \
+    && cat /usr/local/share/ca-certificates/digicert-intermediate.pem /etc/ssl/certs/ca-certificates.crt \
+        > /etc/ssl/certs/ca-chain-bundle.pem \
+    && apt-get clean
+
+# used by Ruby/OpenSSL (e.g. Indico ingestor)
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-chain-bundle.pem
+
 # install yarn to manage JS dependencies
 RUN npm install --global yarn@1.22.22
 
@@ -69,7 +84,7 @@ RUN if [ "$CR" = "True" ]; then \
     fi
 
 
-# run rails server, need bind for docker
+# run Puma on the configured Unix socket
 CMD bundle exec whenever > /code/tess.crontab \
     && (supercronic /code/tess.crontab &) \
-    && bundle exec rails server -b 0.0.0.0
+    && bundle exec puma -C config/puma.rb

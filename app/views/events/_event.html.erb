@@ -30,6 +30,13 @@
           <h4>
             <%= event.title %>
           </h4>
+
+          <% if event.content_provider.present? %>
+          <p>
+            <i class="fa fa-building"></i>
+            <%= event.content_provider.title %>
+         </p>
+         <% end %>
         </div>
 
         <% if event.has_node? -%>
