@@ -1,4 +1,4 @@
-output = `curl -k --verbose --silent https://localhost/ 2>&1`
+output = `curl --verbose --silent http://localhost:3000/ 2>&1`
 if $?.success? && output.include?('Browse the catalogue')
   exit 0
 else
