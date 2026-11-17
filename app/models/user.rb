@@ -63,21 +63,18 @@ class User < ApplicationRecord
   after_update :react_to_role_change
   before_save :set_username_for_invitee
 
-  omniauth_providers = Devise.omniauth_configs.keys
-  # Include default devise modules (Ensure omniauthable is included in all feature flags)
-  devise :omniauthable, omniauth_providers: omniauth_providers
+  # Include default devise modules. Others available are: :lockable, :timeoutable
   if TeSS::Config.feature['login_through_oidc_only']
-    devise :database_authenticatable, :confirmable, :trackable, :validatable,
-           :authentication_keys => [:login]
+    devise :database_authenticatable, :confirmable, :trackable, :validatable, :omniauthable, :authentication_keys => [:login]
   elsif TeSS::Config.feature['registration']
     devise :database_authenticatable, :confirmable, :registerable, :invitable, :recoverable, :rememberable, :trackable,
-           :validatable, :authentication_keys => [:login]
+           :validatable, :omniauthable, :authentication_keys => [:login]
   elsif TeSS::Config.feature['invitation']
     devise :database_authenticatable, :confirmable, :invitable, :recoverable, :rememberable, :trackable,
-           :validatable, :authentication_keys => [:login]
+           :validatable, :omniauthable, :authentication_keys => [:login]
   else
     devise :database_authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable,
-           :authentication_keys => [:login]
+           :omniauthable, :authentication_keys => [:login]
   end
 
   auto_strip_attributes :username, squish: false
