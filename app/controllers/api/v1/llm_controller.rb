@@ -92,7 +92,6 @@ class Api::V1::LlmController < ApplicationController
       }
     }
 
-    # Rails.logger.info(final_result)
     Rails.logger.info("\n#{JSON.pretty_generate(final_result)}")
 
     # Rendering the combined results from TeSS and the EGI LLM server
