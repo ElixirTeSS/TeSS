@@ -5,11 +5,10 @@
     <% end %>
   </div>
   <div class="form-middle">
-    <%# Removed space_supports_omniauth? guard %>
+    <%# NOTE: No space_supports_omniauth? guard - related to original TeSS %>
     <% if devise_mapping.omniauthable? %>
       <div class="h4"><%= t('authentication.omniauth.title') %></div>
       <p><%= t('authentication.omniauth.description') %></p>
-      <%# FIXME: RItrain-DIGIT: EGI not rendered, but it is omniauthable, why? %>
       <%= render partial: 'devise/sessions/omniauth_options' %>
       <hr/>
     <% end %>

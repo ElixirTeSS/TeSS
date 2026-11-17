@@ -98,17 +98,12 @@ module Ingestors
     end
 
     def get_html_from_url(url)
-      response = HTTParty.get(
-        url,
-        follow_redirects: true,
-        headers: { 'User-Agent' => config[:user_agent] }
-      )
-
+      response = HTTParty.get(url, follow_redirects: true, headers: { 'User-Agent' => config[:user_agent] })
       Nokogiri::HTML(response.body)
     end
 
     # Some URLs automatically redirects the user to another webpage
-    # This method gets a URL and returns the last redirected URL
+    # This method gets a URL and returns the last redirected URL (as shown by a 30X response or a `meta[http-equiv="Refresh"]` tag)
     def get_redirected_url(url, limit = 5) # rubocop:disable Metrics/AbcSize
       raise 'Too many redirects' if limit.zero?
 
@@ -157,7 +152,7 @@ module Ingestors
                                            verify_ssl: false,
                                            headers: { accept: accept_params } }.merge(kwargs)).execute
       # check response
-      raise "Invalid response code: #{response.code}" unless response.code == 200
+      raise "invalid response code: #{response.code}" unless response.code == 200
 
       JSON.parse(response.to_str)
     end
@@ -257,6 +252,13 @@ module Ingestors
     end
 
     def responsible_for?(existing_resource, new_resource, source)
+      # Stay with the existing source if there is one, to avoid constantly changing metadata back and forth.
+      # Switch responsibility if the new source provides a higher number of considered metadata fields, or
+      # if the considered field count is the same but a significantly longer description is available.
+      # This prefers a source closest to the original one (likely the first) and switches sources when
+      # originally scraped simple metadata is extended manually at an intermediate source.
+      # When there are no external changes, the source can only switch a limited number of times.
+
       return true unless source && existing_resource
       return true if existing_resource.last_scraped_by_source.nil?
       return true if existing_resource.last_scraped_by_source == source

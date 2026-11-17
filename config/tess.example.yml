@@ -129,12 +129,12 @@ default: &default
          #id: example-link  # Optional id for custom styling in theme
          new_tab: true # Open link in new tab, defaults to false
     footer: # Configuration for the footer
-      #additional_links: # Add custom links to the footer
-      #  - url: https://example.com/
-      #    title: add title
-      #    location: center # Display link on 'left', 'center' or 'right', defaults to 'center' 
-          #space: # e.g. myspace.tesshub.mydomain.com - if present, show link only in specified space ("default" for default space)
-      #show_space_logo: true # Show space logo instead of site logo in footer 
+      additional_links: # Add custom links to the footer
+#        - url: https://example.com/
+#          title: Example
+#          location: center # Display link on 'left', 'center' or 'right', defaults to 'center' 
+#          space: # e.g. myspace.tesshub.mydomain.com - if present, show link only in specified space ("default" for default space)
+      show_space_logo: false # Show space logo instead of site logo in footer 
     # The order in which the tabs appear (if feature enabled)
     tab_order: ['about', 'events', 'materials', 'elearning_materials', 'workflows', 'collections', 'trainers', 'content_providers', 'nodes']
     # The tabs that should be collapsed under the "Directory" tab. Can be left blank to hide it.
@@ -166,7 +166,6 @@ default: &default
     collections: true
     learning_paths: true
     content_providers: true
-    trainers: true
     sources: true
     nodes: false
     spaces: false
@@ -188,6 +187,7 @@ default: &default
 
     # User rights
     user_source_creation: true
+    trainers: true
     edit_suggestions: false
     bip_scholar_infographics: # ruby rewrite of https://github.com/athenarc/bip-plugin/tree/main
       enabled: false # when true + when an ORCID is found both in TeSS and in BIP!Scholar, it displays the researcher's infographics on the trainer's page, see https://github.com/ElixirTeSS/TeSS/pull/1373 for details

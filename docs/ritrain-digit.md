@@ -40,6 +40,7 @@ Edit `.env` and replace placeholder credentials with deployment-specific values;
    * **For production**, set `TESS_BASE_HOST` in `.env` to the hostname that points to the deployment host and `CERTBOT_EMAIL` to an address for Let's Encrypt account and expiry notices. Ensure DNS points to the host and inbound ports `80` and `443` are available.
 
 3. **For production**, Nginx serves the ACME HTTP challenge from `certbot/www` and redirects other HTTP requests to HTTPS. Certbot stores certificates in `certbot/letsencrypt`. Both directories are kept in Git with `.gitkeep`; their runtime contents are ignored.
+
 ## Running the application
 
 ### Development

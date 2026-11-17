@@ -21,7 +21,6 @@ Rails.application.routes.draw do
 
   get 'privacy' => 'static#privacy', as: 'privacy'
   get '/terms', to: 'static#terms', as: :terms
-  get './well-known/security.txt', to: proc { [404, {}, ['']] }
 
   post 'materials/check_exists' => 'materials#check_exists'
   post 'events/check_exists' => 'events#check_exists'

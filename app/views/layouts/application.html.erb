@@ -13,31 +13,29 @@
   <%= yield %>
 </div>
 
-<%# Other layout content above %>
+<%# EGI LLM Chat Widget %>    
+<script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+<div id="egi-chat-widget" class="egi-chat-container">
+  <button id="egi-chat-toggle" class="egi-chat-btn" data-username="<%= current_user&.username %>">
+    💬 Ask EGI AI
+  </button>
 
-    <%# EGI LLM Chat Widget %>    
-   <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
-    <div id="egi-chat-widget" class="egi-chat-container">
-      <button id="egi-chat-toggle" class="egi-chat-btn" data-username="<%= current_user&.username %>">
-        💬 Ask EGI AI
-      </button>
-
-      <div id="egi-chat-window" class="egi-chat-window hidden">
-        <div class="egi-chat-header">
-          <span>EGI Assistant</span>
-          <button id="egi-chat-close">&times;</button>
-        </div>
-        <div id="egi-chat-messages" class="egi-chat-body">
-          <div class="chat-msg assistant">Hello! How can I assist you today?</div>
-        </div>
-        <div class="egi-chat-footer">
-          <input type="text" id="egi-chat-input" placeholder="Type a question..." />
-          <button id="egi-chat-send">Send</button>
-          <button id="egi-chat-clear">🗑</button>
-        </div>
-      </div>
+  <div id="egi-chat-window" class="egi-chat-window hidden">
+    <div class="egi-chat-header">
+      <span>EGI Assistant</span>
+      <button id="egi-chat-close">&times;</button>
     </div>
+    <div id="egi-chat-messages" class="egi-chat-body">
+      <div class="chat-msg assistant">Hello! How can I assist you today?</div>
+    </div>
+    <div class="egi-chat-footer">
+      <input type="text" id="egi-chat-input" placeholder="Type a question..." />
+      <button id="egi-chat-send">Send</button>
+      <button id="egi-chat-clear">🗑</button>
+    </div>
+  </div>
+</div>
 
 <%= render partial: 'layouts/footer' %>
 </body>
