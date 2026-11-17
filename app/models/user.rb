@@ -232,17 +232,15 @@ class User < ApplicationRecord
                       uid: auth.uid,
                       email: auth.info.email,
                       username: username,
-                      password: Devise.friendly_token[0, 20],
-                      processing_consent: '1', # Bypasses consents_to_processing validation
                       profile_attributes: { firstname: first_name, surname: last_name },
       )
 
       # Email verification logic
-      is_verified = auth.info.email_verified ||
-                    auth.extra&.raw_info&.email_verified ||
-                    auth.extra&.raw_info&.verified
+      email_is_verified = auth.info.email_verified ||
+                          auth.extra&.raw_info&.email_verified ||
+                          auth.extra&.raw_info&.verified
 
-      user.skip_confirmation! if is_verified || !Rails.env.production?
+      user.skip_confirmation! if email_is_verified && !TeSS::Config.force_user_confirmation
     end
 
     user
