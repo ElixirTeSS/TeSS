@@ -30,7 +30,6 @@ public/system
 coverage
 .env
 .env-production
-/letsencrypt
 /certbot/*
 !/certbot/www/
 !/certbot/letsencrypt/

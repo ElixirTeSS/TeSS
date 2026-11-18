@@ -7,4 +7,6 @@ vendor/bundle/
 log/
 tmp/
 test/
+certbot/
+backup/
 .DS_Store
