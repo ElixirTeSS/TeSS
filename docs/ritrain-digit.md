@@ -96,7 +96,8 @@ docker compose -f docker-compose-prod.yml exec app bundle exec rake db:setup DIS
 For later releases, rebuild and start the updated services, then apply database migrations:
 
 ```sh
-docker compose -f docker-compose-prod.yml up -d --build
+docker compose -f docker-compose-prod.yml build app
+docker compose -f docker-compose-prod.yml up -d --no-build --force-recreate
 docker compose -f docker-compose-prod.yml exec app bundle exec rake db:migrate
 ```
 
