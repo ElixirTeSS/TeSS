@@ -75,6 +75,7 @@ gem 'tzinfo-data'
 gem 'validate_url'
 gem 'whenever', require: false # Work around https://github.com/javan/whenever/issues/831
 gem 'will_paginate'
+gem 'image_processing', '~> 1.2'
 gem 'faraday'
 
 group :development, :test do
