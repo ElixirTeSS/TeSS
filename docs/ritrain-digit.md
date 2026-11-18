@@ -27,7 +27,7 @@ The default hostname in this repository is `registry.hopto.org`. Set `TESS_BASE_
 cp env.sample .env
 cp config/tess.example.yml config/tess.yml
 cp config/secrets.example.yml config/secrets.yml
-cp config/ingestion.example.yml config/ingestion.example.yml
+cp config/ingestion.example.yml config/ingestion.yml
 ```
 
 Edit `.env` and replace placeholder credentials with deployment-specific values; it holds only Docker and infrastructure settings. Application settings live in the other two files:
