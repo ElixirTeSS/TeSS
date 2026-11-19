@@ -113,21 +113,22 @@ default: &default
       counters: false # Whether or not to show number of database objects in separate blocks
       search_box: true # Whether or not to show the search box
       additional_links: # Add custom links in separate blocks
-       - url: https://mdl.vm.fedcloud.eu/login/index.php
-         icon: moodle.png  # Path relative to app/assets/images or absolute URL
-         title: "Moodle"
-         #id: example-link  # Optional id for custom styling in theme
-         new_tab: true # Open link in new tab, defaults to false
-       - url: https://confluence.egi.eu/display/ritraindigit/RItrain-DIGIT+Home
-         icon: confluence.png # Path relative to app/assets/images or absolute URL
-         title: "Confluence"
-         #id: example-link  # Optional id for custom styling in theme
-         new_tab: true # Open link in new tab, defaults to false
-       - url: https://cordis.europa.eu/project/id/101292852
-         icon: egi/eu_flag.svg # Path relative to app/assets/images or absolute URL
-         title: "CORDIS EU-portal"  
-         #id: example-link  # Optional id for custom styling in theme
-         new_tab: true # Open link in new tab, defaults to false
+       - url: https://www.egi.eu/project/ritrain-digit
+         icon: egi/ritrain-digit-logo-short.png
+         title: "Website"
+         new_tab: true
+       - url: https://www.egi.eu/project/ritrain-digit
+         icon: egi/call.png
+         title: "Call for Providers"
+         new_tab: true
+       - url: https://www.egi.eu/service/training-infrastructure
+         icon: egi/training-infrastructure.png
+         title: "Training Infrastructure"
+         new_tab: true
+      #  - url: https://mdl.vm.fedcloud.eu/login/index.php
+      #    icon: moodle.png
+      #    title: "Moodle"
+      #    new_tab: true
     footer: # Configuration for the footer
       additional_links: # Add custom links to the footer
 #        - url: https://example.com/
