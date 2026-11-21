@@ -33,8 +33,8 @@ class BioschemasTest < ActionDispatch::IntegrationTest
     assert_equal ['an event to test calendar exports'], props['alternateName']
     assert_equal ['http://microsoft.com'], props['url']
     assert_equal ['Keyword'], props['keywords']
-    assert_equal ['2021-09-20 23:15:00 UTC'], props['startDate']
-    assert_equal ['2021-09-21 01:00:00 UTC'], props['endDate']
+    assert_equal ['2021-09-20T23:15:00+10:00'], props['startDate']
+    assert_equal ['2021-09-21T01:00:00+10:00'], props['endDate']
 
     # Address
     q = RDF::Query.new do
@@ -125,8 +125,8 @@ class BioschemasTest < ActionDispatch::IntegrationTest
     assert_equal ['Learn stuff', 'Get a job', 'Get paid'].sort, course_props['teaches'].sort, 'Should split the markdown into an array'
     assert_equal ['de'].sort, course_props['inLanguage']
 
-    assert_equal ['2015-08-23 10:16:33 UTC'], course_instance_props['startDate']
-    assert_equal ['2015-08-24 18:07:46 UTC'], course_instance_props['endDate']
+    assert_equal ['2015-08-23T10:16:33Z'], course_instance_props['startDate']
+    assert_equal ['2015-08-24T18:07:46Z'], course_instance_props['endDate']
 
     # Audience
     q = RDF::Query.new do
@@ -288,6 +288,24 @@ class BioschemasTest < ActionDispatch::IntegrationTest
 
     assert_equal ['** Get out of bed **'], course_props['coursePrerequisites']
     assert_equal ["The meaning of life\n * item1 \n * item2\n"], course_props['teaches']
+  end
+
+  test 'event dates in ISO 8601 with the offset of the event timezone on that date' do
+    event = events(:training_event)
+    event.update_columns(timezone: 'Eastern Time (US & Canada)', start: Time.utc(2021, 7, 1, 9), end: Time.utc(2021, 12, 1, 17))
+
+    props = Bioschemas::EventGenerator.new(event).generate
+    assert_equal '2021-07-01T09:00:00-04:00', props[:startDate], 'Should use daylight saving time in summer'
+    assert_equal '2021-12-01T17:00:00-05:00', props[:endDate]
+  end
+
+  test 'event dates without offset when timezone is unknown' do
+    event = events(:training_event)
+    event.update_columns(timezone: nil, start: Time.utc(2021, 7, 1, 9), end: Time.utc(2021, 7, 1, 17))
+
+    props = Bioschemas::EventGenerator.new(event).generate
+    assert_equal '2021-07-01T09:00:00', props[:startDate]
+    assert_equal '2021-07-01T17:00:00', props[:endDate]
   end
 
   test 'Bioschemas on event index page' do

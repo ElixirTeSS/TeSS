@@ -58,6 +58,10 @@ See [here](docs/customization.md) for an overview of how you can customize your 
 
 See [here](docs/api.md) for details on programmatic access to TeSS via its API.
 
+## Event times and time zones
+
+See [here](docs/timezones.md) for how event times and time zones are stored, and what ingestors need to do.
+
 ## Multi-space TeSS
 
 See [here](docs/spaces.md) for details on configuring a multi-space TeSS.

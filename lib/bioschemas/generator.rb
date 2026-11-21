@@ -79,6 +79,11 @@ module Bioschemas
       }
     end
 
+    # An event's start or end time in ISO 8601, with the offset of the event's time zone (see Event#local_iso8601)
+    def self.local_time(event, time)
+      event.local_iso8601(time)
+    end
+
     def self.person(person)
       p = {
         "@type" => "Person",

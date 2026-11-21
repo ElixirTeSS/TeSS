@@ -387,6 +387,21 @@ class EventTest < ActiveSupport::TestCase
     end
   end
 
+  test 'ical export in UTC when the timezone is known' do
+    event = Event.new(title: 'Event', timezone: 'Perth', start: Time.utc(2022, 2, 11, 9, 45),
+                      end: Time.utc(2022, 2, 11, 12, 50))
+    ical = event.to_ical
+    assert_includes ical, 'DTSTART:20220211T014500Z'
+    assert_includes ical, 'DTEND:20220211T045000Z'
+  end
+
+  test 'ical export in floating local time when the timezone is unknown' do
+    event = Event.new(title: 'Event', timezone: nil, start: Time.utc(2026, 11, 5, 9), end: Time.utc(2026, 11, 5, 17))
+    ical = event.to_ical
+    assert_includes ical, "DTSTART:20261105T090000\r\n", 'Should be shown on the same day in any time zone'
+    assert_includes ical, "DTEND:20261105T170000\r\n"
+  end
+
   test 'validates timezone if present' do
     event = Event.new(title: 'An event', url: 'https://myevent.com', timezone: 'UTC', user: users(:regular_user))
     assert event.valid?

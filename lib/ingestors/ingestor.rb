@@ -64,6 +64,16 @@ module Ingestors
       summary
     end
 
+    # The local (wall clock) time of an iCalendar date or date-time, e.g. 09:45 for
+    # DTSTART;TZID=Australia/Perth:20220211T094500, as TeSS stores event times as local time, with the time zone
+    # in the event's +timezone+. A date (all-day event) gives midnight, whatever the server's time zone.
+    def ical_local_time(value)
+      return nil if value.nil?
+
+      time = value.respond_to?(:hour) ? [value.hour, value.min, value.sec] : []
+      Time.utc(value.year, value.month, value.day, *time)
+    end
+
     def open_url(url, raise: false, token: nil)
       options = {
         redirect: false, # We're doing redirects manually below, since open-uri can't handle http -> https redirection

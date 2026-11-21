@@ -110,8 +110,8 @@ module Ingestors
 
     # Assigns to event: start, end, timezone.
     def assign_time_info(event, calevent)
-      event.start = calevent.dtstart&.to_time unless calevent.dtstart.nil?
-      event.end = calevent.dtend&.to_time unless calevent.dtend.nil?
+      event.start = ical_local_time(calevent.dtstart)
+      event.end = ical_local_time(calevent.dtend)
       event.timezone = get_tzid(calevent.dtstart)
     end
 
