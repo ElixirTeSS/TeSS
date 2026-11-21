@@ -40,6 +40,17 @@
           <% if @material.persisted? %>
             <div class="content-manager-actions">
               <% if policy(@material).update? %>
+                <p>
+                  <strong>Approval status:</strong>
+                  <%= resource_approval_badge(@material.approval_status) %>
+                </p>
+
+                <% if policy(@material).approve? && !@material.approved? %>
+                  <%= link_to 'Approve', material_path(@material, material: { approval_status: 'approved' }),
+                              method: :put, class: 'btn btn-success' %>
+                <% end %>
+              <% end %>
+              <% if policy(@material).update? %>
                 <%= link_to 'Clone', clone_material_path(@material), class: 'btn btn-default' %>
                 <%= edit_button(@material) %>
               <% end %>

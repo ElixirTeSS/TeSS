@@ -20,7 +20,8 @@
     <% is_curator = current_user.is_curator? %>
     <% is_owner_in_any_group = current_user.is_owner_in_any_group? %>
     <% is_current_space_admin = !Space.current_space.default? && current_user.has_space_role?(Space.current_space, :admin) %>
-    <% if is_admin || is_curator || is_current_space_admin || is_owner_in_any_group %>
+    <% is_space_admin = current_user.has_role_in_any_space?(:admin) %>
+    <% if is_admin || is_curator || is_current_space_admin || is_space_admin || is_owner_in_any_group %>
       <li role="presentation" class="divider"></li>
 
       <li class="dropdown-header"><%= t('menu.user.administration') %></li>
@@ -33,7 +34,7 @@
         </li>
       <% end %>
 
-      <% if TeSS::Config.feature['sources'] %>
+      <% if TeSS::Config.feature['sources'] && !is_space_admin %>
         <li class="dropdown-item">
           <%= link_to sources_path, title: t('menu.user.view_ingestion_sources') do %>
             <i class="fa fa-cloud-download"></i> <%= t('menu.user.view_sources') %>
@@ -64,6 +65,14 @@
         <li class="dropdown-item">
           <%= link_to curate_users_path(with_content: true, max_age: 1.month.iso8601) do %>
             <i class="fa fa-user-times"></i> <%= t('menu.user.curate_users') %>
+          <% end %>
+        </li>
+      <% end %>
+
+      <% if (TeSS::Config.feature['material_under_admin_approval'] || TeSS::Config.feature['event_under_admin_approval']) && (is_admin || is_curator || is_space_admin) %>
+        <li class="dropdown-item">
+          <%= link_to curate_resources_path do %>
+            <i class="fa fa-check-square-o"></i> <%= t('menu.user.curate_resources', default: 'Curate Resources') %>
           <% end %>
         </li>
       <% end %>

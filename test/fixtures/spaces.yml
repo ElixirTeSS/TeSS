@@ -12,3 +12,9 @@ other:
   title: Other TeSS Community
   host: other.mytess.training
   user: other_owner
+
+private_space:
+  title: Private Space
+  host: private.mytess.training
+  user: private_space_owner
+  is_private: true

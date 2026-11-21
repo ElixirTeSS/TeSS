@@ -135,6 +135,10 @@ class User < ApplicationRecord
     self.has_role?('curator')
   end
 
+  def can_approve_resources?
+    self.is_admin? || self.is_curator? || has_role_in_any_space?(:admin)
+  end
+
   def maintained_collections
     Collection.left_outer_joins(:collaborators).where(collaborators: { id: id }).or(Collection.where(user_id: id)).distinct
   end

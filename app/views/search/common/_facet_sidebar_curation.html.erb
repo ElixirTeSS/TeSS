@@ -1,5 +1,6 @@
 <% show_last_scraped_filter = resource_type.method_defined?(:last_scraped) %>
 <% show_hidden_filter = resource_type.method_defined?(:user_requires_approval?) %>
+<% resource_name = resource_type.model_name.human.downcase.pluralize %>
 
 <% if show_last_scraped_filter || show_hidden_filter %>
   <ul class="unstyled nav-simple">
@@ -36,6 +37,16 @@
         <% end %>
         </ul>
       </li>
+    <% end %>
+
+    <% boolean_facets, regular_facets = curation_facets(resources).partition { |f| f.field_name == :online } %>
+
+    <% regular_facets.reject{ |f| f.field_name.to_s == 'start' }.each do |facet| %>
+      <%= render partial: 'search/common/facet_sidebar_filter', locals: { facet: facet, resources: resources } %>
+    <% end %>
+
+    <% boolean_facets.each do |facet| %>
+      <%= render partial: 'search/common/facet_sidebar_boolean_filter', locals: { facet: facet, resources: resources } %>
     <% end %>
 
     <% if show_hidden_filter %>

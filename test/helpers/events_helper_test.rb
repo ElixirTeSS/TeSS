@@ -55,4 +55,29 @@ class EventsHelperTest < ActionView::TestCase
     assert_equal 'No date given', neatly_printed_date_range(nil, '')
     assert_equal 'No start date', neatly_printed_date_range(nil, DateTime.new(2024, 5, 16, 17))
   end
+
+  test 'approval_options_for_select_event returns mapped array of translated pairs' do
+    options = approval_options_for_select_event
+
+    assert_kind_of Array, options
+    assert_equal Event::APPROVAL_STATUS.values.size, options.size
+
+    Event::APPROVAL_STATUS.values.each do |status|
+      expected_label = I18n.t("events.approval_status.#{status}")
+      assert_includes options, [expected_label, status]
+    end
+  end
+
+  test 'event_enabled_badge renders success label when true' do
+    badge = event_enabled_badge(true)
+
+    assert_dom_equal '<span class="label label-success">Enabled</span>', badge
+  end
+
+  test 'event_enabled_badge renders danger label when false' do
+    badge = event_enabled_badge(false)
+
+    assert_dom_equal '<span class="label label-danger">Disabled</span>', badge
+  end
+
 end

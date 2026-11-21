@@ -19,6 +19,15 @@ module Searchable
       @search_and_facet_keys ||= ([:q] | facet_keys_with_multiple)
     end
 
+    def user_can_curate_unapproved_in_space?(user, space)
+      return false unless user
+      return true if user.is_admin?
+      return true if space && !space.default? && user.has_space_role?(space, 'admin')
+      return true if user.is_curator? && (space.nil? || space.default? || !space.is_private)
+
+      false
+    end
+
     # Searches and filters resources of the including model using Solr (via Sunspot),
     # applying space-based visibility, facets, sorting and pagination in a single query.
     #
@@ -59,6 +68,13 @@ module Searchable
         inaccessible_space_ids = Space.where(is_private: true).pluck(:id)
       end
 
+      filter_material_approval = name == 'Material' &&
+        TeSS::Config.feature['material_under_admin_approval'] &&
+        !user_can_curate_unapproved_in_space?(user, space)
+      filter_event_approval = name == 'Event' &&
+        TeSS::Config.feature['event_under_admin_approval'] &&
+        !user_can_curate_unapproved_in_space?(user, space)
+
       search(include: includes) do
         if has_space
           if space && !space.default?
@@ -86,20 +102,36 @@ module Searchable
 
         if sort_by && sort_by != 'default'
           case sort_by
-          when 'early'   then order_by(:start, :asc)
-          when 'late'    then order_by(:start, :desc)
-          when 'rel'     then nil
-          when 'mod'     then order_by(:updated_at, :desc)
-          when 'new'     then order_by(:created_at, :desc)
-          when 'finished' then order_by(:finished_at, :desc)
-          else                order_by(:sort_title, sort_by.to_sym)
+          when 'early'
+              # Sort by start date asc
+              order_by(:start, :asc)
+            when 'late'
+              # Sort by start date desc
+              order_by(:start, :desc)
+            when 'rel'
+              # Sort by relevance
+            when 'mod'
+              # Sort by last modified
+              order_by(:updated_at, :desc)
+            when 'new'
+              # Sort by newest
+              order_by(:created_at, :desc)
+            when 'finished'
+              # Sort by last finished
+              order_by(:finished_at, :desc)
+            else
+              order_by(:sort_title, sort_by.to_sym)
           end
         else
           case name
-          when 'Event'           then order_by(:start, :asc)
-          when 'ContentProvider' then order_by(:count, :desc)
-          when 'Material'        then order_by(:created_at, :desc)
-          else                        order_by(:sort_title, :asc)
+            when 'Event'
+              order_by(:start, :asc)
+            when 'ContentProvider'
+              order_by(:count, :desc)
+            when 'Material'
+              order_by(:approval_status, :asc)
+            else
+              order_by(:sort_title, :asc)
           end
         end
 
@@ -114,11 +146,25 @@ module Searchable
 
         if name == 'Trainer' || name == 'Profile'
           any_of { with(:public, true) }
-        elsif has_public && !user&.is_admin?
+        elsif has_public && !(user&.is_admin? || user&.is_curator?)
           any_of do
             with(:public, true)
             with(:user_id, user.id) if user
             with(:collaborator_ids, user.id) if user && has_collaborators
+          end
+        end
+
+        if filter_material_approval
+          any_of do
+            with(:approval_status, I18n.t('materials.approval_status.approved'))
+            with(:user_id, user.id) if user.present?
+          end
+        end
+
+        if filter_event_approval
+          any_of do
+            with(:approval_status, I18n.t('events.approval_status.approved'))
+            with(:user_id, user.id) if user.present?
           end
         end
 
