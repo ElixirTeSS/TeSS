@@ -17,3 +17,4 @@ The following people have contributed to the TeSS codebase:
 * Milo Thurston
 * Daan van Vugt <dvanvugt@ignitioncomputing.com>
 * Martin Voigt <m.voigt@hzdr.de>
+* Stian Soiland-Reyes <soiland-reyes@manchester.ac.uk>

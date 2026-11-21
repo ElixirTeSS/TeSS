@@ -13,8 +13,11 @@ module EventsHelper
     dates = if event.all_day?
               # Need to add 1 day for all day events apparently
               "#{event.start.strftime('%Y%m%d')}/#{event.end.tomorrow.strftime('%Y%m%d')}"
-            else
+            elsif event.known_time_zone
               "#{event.start_utc.strftime('%Y%m%dT%H%M00Z')}/#{event.end_utc.strftime('%Y%m%dT%H%M00Z')}"
+            else
+              # Time zone unknown: local times, which Google Calendar takes in the user's time zone, rather than UTC
+              "#{event.start.strftime('%Y%m%dT%H%M00')}/#{event.end.strftime('%Y%m%dT%H%M00')}"
             end
 
     location = if event.online?
@@ -26,7 +29,7 @@ module EventsHelper
     event_params = {
       text: event.title,
       dates:,
-      ctz: event.timezone,
+      ctz: event.known_time_zone&.tzinfo&.identifier, # IANA name, e.g. Australia/Perth rather than Perth
       details: "#{event_url(event)}",
       location:,
       sf: true,

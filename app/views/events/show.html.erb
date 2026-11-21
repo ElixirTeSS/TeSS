@@ -63,7 +63,7 @@
           <strong class="text-primary"> Date: </strong>
           <%= neatly_printed_date_range(@event.start, @event.end) %>
         </p>
-        <%= display_attribute(@event, :timezone) %>
+        <%= display_attribute(@event, :timezone) { |tz| @event.timezone_inferred? ? t('events.timezone_inferred', timezone: tz) : tz } %>
         <%= display_attribute(@event, :duration) %>
         <%= display_attribute(@event, :language) { |value| render_language_name(value) } %>
         <!-- Field: description -->

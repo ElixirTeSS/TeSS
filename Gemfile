@@ -20,6 +20,7 @@ gem 'eventbrite_sdk'
 gem 'font-awesome-sass', '~> 4.7.0' # Prefer V4 icon styles
 gem 'friendly_id'
 gem 'geocoder'
+gem 'wheretz'
 gem 'gravtastic'
 gem 'handlebars_assets'
 gem 'httparty'
