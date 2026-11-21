@@ -4,14 +4,14 @@ require 'test_helper'
 
 class CdsVideosIngestorTest < ActiveSupport::TestCase
   setup do
-    @ingestor = Ingestors::CdsVideosIngestor.new
+    @ingestor = Ingestors::Heptraining::CdsVideosIngestor.new
 
     # API record
     webmock('https://videos.cern.ch/api/record/3023615', 'cdsvideos/cds.ingestor.json')
   end
 
   test 'returns expected ingestor config' do
-    config = Ingestors::CdsVideosIngestor.config
+    config = Ingestors::Heptraining::CdsVideosIngestor.config
     assert_equal 'cds videos', config[:key]
     assert_equal :materials, config[:category]
   end

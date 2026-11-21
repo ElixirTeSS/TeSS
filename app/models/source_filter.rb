@@ -18,100 +18,98 @@ module FilterComparisons
   end
 end
 
-
-FILTER_DEFINITIONS = {
-  'target_audience' => {
-    comparison: FilterComparisons.method(:array_string_match)
-  },
-
-  'keyword' => {
-    comparison: FilterComparisons.method(:array_string_match),
-    filter_property: 'keywords'
-  },
-
-  'title' => {
-    comparison: FilterComparisons.method(:string_match)
-  },
-
-  'title_contains' => {
-    comparison: FilterComparisons.method(:contains_string_match),
-    filter_property: 'title'
-  },
-
-  'description' => {
-    comparison: FilterComparisons.method(:string_match)
-  },
-
-  'description_contains' => {
-    comparison: FilterComparisons.method(:contains_string_match),
-    filter_property: 'description'
-  },
-
-  'url' => {
-    comparison: FilterComparisons.method(:string_match)
-  },
-
-  'url_prefix' => {
-    comparison: FilterComparisons.method(:prefix_string_match),
-    filter_property: 'url'
-  },
-
-  'doi' => {
-    comparison: FilterComparisons.method(:string_match)
-  },
-
-  'license' => {
-    comparison: FilterComparisons.method(:string_match),
-    filter_property: 'licence'
-  },
-
-  'difficulty_level' => {
-    comparison: FilterComparisons.method(:string_match)
-  },
-
-  'resource_type' => {
-    comparison: FilterComparisons.method(:array_string_match)
-  },
-
-  'prerequisites_contains' => {
-    comparison: FilterComparisons.method(:contains_string_match),
-    filter_property: 'prerequisites'
-  },
-
-  'learning_objectives_contains' => {
-    comparison: FilterComparisons.method(:contains_string_match),
-    filter_property: 'learning_objectives'
-  },
-
-  'subtitle' => {
-    comparison: FilterComparisons.method(:string_match)
-  },
-
-  'subtitle_contains' => {
-    comparison: FilterComparisons.method(:contains_string_match),
-    filter_property: 'subtitle'
-  },
-
-  'city' => {
-    comparison: FilterComparisons.method(:string_match)
-  },
-
-  'country' => {
-    comparison: FilterComparisons.method(:string_match)
-  },
-
-  'event_type' => {
-    comparison: FilterComparisons.method(:array_string_match),
-    filter_property: 'event_types'
-  },
-
-  'timezone' => {
-    comparison: FilterComparisons.method(:string_match)
-  }
-}.freeze
-
-
 class SourceFilter < ApplicationRecord
+  FILTER_DEFINITIONS = {
+    'target_audience' => {
+      comparison: FilterComparisons.method(:array_string_match)
+    },
+
+    'keyword' => {
+      comparison: FilterComparisons.method(:array_string_match),
+      filter_property: 'keywords'
+    },
+
+    'title' => {
+      comparison: FilterComparisons.method(:string_match)
+    },
+
+    'title_contains' => {
+      comparison: FilterComparisons.method(:contains_string_match),
+      filter_property: 'title'
+    },
+
+    'description' => {
+      comparison: FilterComparisons.method(:string_match)
+    },
+
+    'description_contains' => {
+      comparison: FilterComparisons.method(:contains_string_match),
+      filter_property: 'description'
+    },
+
+    'url' => {
+      comparison: FilterComparisons.method(:string_match)
+    },
+
+    'url_prefix' => {
+      comparison: FilterComparisons.method(:prefix_string_match),
+      filter_property: 'url'
+    },
+
+    'doi' => {
+      comparison: FilterComparisons.method(:string_match)
+    },
+
+    'license' => {
+      comparison: FilterComparisons.method(:string_match),
+      filter_property: 'licence'
+    },
+
+    'difficulty_level' => {
+      comparison: FilterComparisons.method(:string_match)
+    },
+
+    'resource_type' => {
+      comparison: FilterComparisons.method(:array_string_match)
+    },
+
+    'prerequisites_contains' => {
+      comparison: FilterComparisons.method(:contains_string_match),
+      filter_property: 'prerequisites'
+    },
+
+    'learning_objectives_contains' => {
+      comparison: FilterComparisons.method(:contains_string_match),
+      filter_property: 'learning_objectives'
+    },
+
+    'subtitle' => {
+      comparison: FilterComparisons.method(:string_match)
+    },
+
+    'subtitle_contains' => {
+      comparison: FilterComparisons.method(:contains_string_match),
+      filter_property: 'subtitle'
+    },
+
+    'city' => {
+      comparison: FilterComparisons.method(:string_match)
+    },
+
+    'country' => {
+      comparison: FilterComparisons.method(:string_match)
+    },
+
+    'event_type' => {
+      comparison: FilterComparisons.method(:array_string_match),
+      filter_property: 'event_types'
+    },
+
+    'timezone' => {
+      comparison: FilterComparisons.method(:string_match)
+    }
+  }.freeze
+
   belongs_to :source
 
   auto_strip_attributes :value
