@@ -73,6 +73,8 @@ class ContentProvidersControllerTest < ActionController::TestCase
     sign_in users(:regular_user)
     get :new
     assert_response :success
+    assert_select '.content_provider_content_provider_type .help-block',
+                  text: I18n.t('content_providers.hints.content_provider_type')
   end
 
   test 'should get new page for logged in users only' do
@@ -106,6 +108,19 @@ class ContentProvidersControllerTest < ActionController::TestCase
     sign_in @content_provider.user
     get :edit, params: { id: @content_provider }
     assert_response :success
+    assert_select '.content_provider_content_provider_type .help-block',
+                  text: I18n.t('content_providers.hints.content_provider_type')
+    assert_select 'input#content_provider_locked_fields_title.field-lock[data-autolock="true"]', count: 1
+  end
+
+  test 'content provider edit supports providers alias for automatic field locking' do
+    sign_in @content_provider.user
+
+    with_settings(automatic_field_locking: %w[content_providers]) do
+      get :edit, params: { id: @content_provider }
+      assert_response :success
+      assert_select 'input#content_provider_locked_fields_title.field-lock[data-autolock="true"]', count: 1
+    end
   end
 
   test 'should get edit for admin' do
@@ -173,6 +188,15 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert assigns(:content_provider)
   end
 
+  test 'should include content provider keywords metadata on show page' do
+    @content_provider.update!(keywords: %w[alpha beta])
+
+    get :show, params: { id: @content_provider }
+
+    assert_response :success
+    assert_select 'meta[name="keywords"][content="alpha, beta"]', count: 1
+  end
+
   test 'should show content provider as json' do
     get :show, params: { id: @content_provider, format: :json }
     assert_response :success
@@ -212,6 +236,61 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_not_equal @content_provider.user, users(:collaborative_user)
     patch :update, params: { id: @content_provider, content_provider: @updated_content_provider }
     assert_response :forbidden
+  end
+
+  test 'can lock fields' do
+    sign_in @content_provider.user
+
+    assert_difference('FieldLock.count', 3) do
+      patch :update,
+            params: { id: @content_provider,
+                      content_provider: { title: 'Updated title', locked_fields: %w[title description image] } }
+    end
+
+    assert_redirected_to content_provider_path(assigns(:content_provider))
+    assert_equal 3, assigns(:content_provider).locked_fields.count
+    assert assigns(:content_provider).field_locked?(:title)
+    assert assigns(:content_provider).field_locked?(:description)
+    assert assigns(:content_provider).field_locked?(:image)
+    refute assigns(:content_provider).field_locked?(:contact)
+  end
+
+  test 'scraper cannot overwrite locked fields' do
+    user = users(:scraper_user)
+    provider = ContentProvider.create!(title: 'Scraper-owned provider',
+                                       url: 'http://scraper-owned-provider.example.org',
+                                       content_provider_type: 'Portal',
+                                       user: user)
+    provider.locked_fields = [:title]
+    provider.save!
+
+    patch :update,
+          params: {
+            user_token: user.authentication_token,
+            user_email: user.email,
+            content_provider: {
+              title: 'new title',
+              url: provider.url,
+              description: 'new description'
+            },
+            id: provider.id,
+            format: 'json'
+          }
+
+    parsed_response = JSON.parse(response.body)
+    assert_equal provider.title, parsed_response['title'], 'Title should not have changed'
+    assert_equal 'new description', parsed_response['description']
+  end
+
+  test 'normal user can overwrite locked fields' do
+    @content_provider.locked_fields = [:title]
+    @content_provider.save!
+
+    sign_in @content_provider.user
+    patch :update, params: { id: @content_provider, content_provider: { title: 'new title' } }
+    assert_redirected_to content_provider_path(assigns(:content_provider))
+
+    assert_equal 'new title', assigns(:content_provider).title
   end
 
   # DESTROY TEST
@@ -351,10 +430,12 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_equal(JSON.parse(response.body)['id'], @content_provider.id)
   end
 
-  test 'should find existing content_provider by title' do
-    post :check_exists, params: { format: :json, content_provider: { title: @content_provider.title } }
-    assert_response :success
-    assert_equal(JSON.parse(response.body)['id'], @content_provider.id)
+  test 'does not match content providers by title without a matching URL' do
+    [nil, 'https://different-provider.example.org'].each do |url|
+      post :check_exists, params: { format: :json, content_provider: { title: @content_provider.title, url: url } }
+      assert_response :success
+      assert_equal '{}', response.body
+    end
   end
 
   test 'should return nothing when content_provider does not exist' do
@@ -630,5 +711,33 @@ class ContentProvidersControllerTest < ActionController::TestCase
     get :show, params: { id: @content_provider }
     assert_response :success
     assert_select 'a.btn[href=?]', new_content_provider_source_path(@content_provider), text: 'Add source', count: 0
+  end
+
+  test 'should preview content provider' do
+    sign_in users(:regular_user)
+
+    assert_no_difference('ContentProvider.count') do
+      post :preview, params: { content_provider: { title: 'Potential provider',
+                                                   url: 'https://someprovider.com',
+                                                   description: 'A provider of things',
+                                                   image_url: 'http://example.com/logo.png',
+                                                   keywords: ['genomics'] } }
+
+      assert_response :success
+      assert_select 'a.h5', text: 'Potential provider'
+      assert_select 'a[href=?]', 'https://someprovider.com'
+      assert_select '.nav-block', text: /genomics/
+      assert_select 'img[src=?]', 'http://example.com/logo.png'
+    end
+  end
+
+  test 'should not preview invalid content provider' do
+    sign_in users(:regular_user)
+
+    assert_no_difference('ContentProvider.count') do
+      post :preview, params: { content_provider: { title: 'Missing URL' } }
+
+      assert_response :unprocessable_entity
+    end
   end
 end

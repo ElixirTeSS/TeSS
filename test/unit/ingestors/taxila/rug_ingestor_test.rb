@@ -20,6 +20,7 @@ class RugIngestorTest < ActiveSupport::TestCase
     )
 
     ingestor = Ingestors::Taxila::RugIngestor.new
+    ingestor.source = source
     # check event doesn't exist
     new_title = "Brainstorm: The Human Brain & Research in Groningen"
     new_url = 'https://www.rug.nl/about-ug/latest-news/events/calendar/2025/brainstorm-the-human-brain-research-in-groningen'
@@ -30,7 +31,7 @@ class RugIngestorTest < ActiveSupport::TestCase
       freeze_time(2016) do
         VCR.use_cassette("ingestors/rug") do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end
@@ -38,6 +39,7 @@ class RugIngestorTest < ActiveSupport::TestCase
     year = 2016
     ['Europe/London', 'Asia/Damascus', 'Australia/Adelaide', 'America/Barbados', 'Asia/Colombo'].each do |timezone|
       ingestor = Ingestors::Taxila::RugIngestor.new # Reset ingestor
+      ingestor.source = source
       mock_timezone(timezone)
       year += 1
 
@@ -45,7 +47,7 @@ class RugIngestorTest < ActiveSupport::TestCase
         freeze_time(year) do
           VCR.use_cassette("ingestors/rug") do
             ingestor.read(source.url)
-            ingestor.write(@user, @content_provider)
+            ingestor.write(@user)
           end
         end
       end

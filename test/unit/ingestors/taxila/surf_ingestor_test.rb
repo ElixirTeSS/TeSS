@@ -21,6 +21,8 @@ class SurfIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::SurfIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = 'SURF Onderwijsdagen 2026'
     new_url = 'https://www.surf.nl/agenda#surf_onderwijsdagen_2026'
@@ -31,7 +33,7 @@ class SurfIngestorTest < ActiveSupport::TestCase
       freeze_time(2019) do
         VCR.use_cassette('ingestors/surf') do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

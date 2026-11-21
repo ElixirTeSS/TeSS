@@ -1,6 +1,127 @@
 require 'test_helper'
 
 class IngestorTest < ActiveSupport::TestCase
+  test 'ingestors always have distinct unsaved Sources and reject invalid replacements' do
+    ingestor = Ingestors::Ingestor.new
+    other = Ingestors::IngestorFactory.get_ingestor(Source.new(method: 'event_rss'))
+
+    assert_instance_of Source, ingestor.source
+    assert_instance_of Source, other.source
+    assert ingestor.source.new_record?
+    refute_same ingestor.source, other.source
+    assert_equal '', ingestor.token
+    assert_nil ingestor.source_host
+
+    [nil, 'not a Source'].each do |invalid|
+      assert_raises(ArgumentError) { ingestor.source = invalid }
+      assert_instance_of Source, ingestor.source
+    end
+  end
+
+  test 'factory requires a Source and assigns its context without saving it' do
+    source = Source.new(method: 'event_rss', url: 'https://registry.example.org/feed', token: 'source-token',
+                        content_provider: content_providers(:portal_provider))
+    ingestor = nil
+
+    assert_no_difference('Source.count') do
+      ingestor = Ingestors::IngestorFactory.get_ingestor(source)
+    end
+
+    assert_instance_of Ingestors::EventRSSIngestor, ingestor
+    assert_same source, ingestor.source
+    assert_equal 'source-token', ingestor.token
+    assert_equal 'registry.example.org', ingestor.source_host
+    assert source.new_record?
+
+    assert_raises(ArgumentError) { Ingestors::IngestorFactory.get_ingestor }
+    [nil, 'event_rss'].each do |invalid|
+      assert_raises(ArgumentError) { Ingestors::IngestorFactory.get_ingestor(invalid) }
+    end
+    error = assert_raises(RuntimeError) do
+      Ingestors::IngestorFactory.get_ingestor(Source.new(method: 'not-a-method'))
+    end
+    assert_equal 'Invalid method: [not-a-method]', error.message
+  end
+
+  test 'Source ingestor lookup returns an ingestor with that same Source' do
+    source = sources(:first_source)
+    ingestor = source.ingestor_class
+
+    assert_same source, ingestor.source
+    assert_equal source.method, ingestor.config[:key]
+    assert_equal ingestor.config[:title], source.ingestor_title
+  end
+
+  test 'source assignment provides tokens to legacy ingestors and does not cache the hostname' do
+    ingestor = Ingestors::Ingestor.new
+    source = Source.new(url: 'https://registry.example.org/sitemap.txt', token: 'source-token')
+    ingestor.source = source
+
+    assert_same source, ingestor.source
+    assert_equal 'source-token', ingestor.token
+    assert_equal 'source-token', ingestor.instance_variable_get(:@token)
+    assert_equal 'registry.example.org', ingestor.source_host
+
+    source.url = 'https://another.example.org'
+    assert_equal 'another.example.org', ingestor.source_host
+
+    ingestor.source = Source.new
+    assert_equal '', ingestor.token
+    assert_nil ingestor.source_host
+    ingestor.token = 'legacy-override'
+    assert_equal 'legacy-override', ingestor.token
+  end
+
+  test 'unsaved source supplies provider filters and defaults without being saved or logged as a persisted source' do
+    ingestor = Ingestors::Ingestor.new
+    provider = content_providers(:organisation_provider)
+    source = Source.new(url: 'https://registry.example.org', method: 'bioschemas',
+                        content_provider: provider, default_language: 'fr', space: spaces(:plants),
+                        source_filters: [SourceFilter.new(mode: 'block', property: 'title', value: 'Blocked')])
+    ingestor.source = source
+    ingestor.add_event(title: 'Imported event', description: 'Training', url: 'https://event.example.org',
+                       start: 1.day.from_now, end: 2.days.from_now)
+    ingestor.add_event(title: 'Blocked', description: 'Training', url: 'https://event.example.org/blocked')
+
+    source.stub(:valid?, -> { flunk 'An unsaved ingestion Source must not be validated' }) do
+      assert_no_difference('Source.count') do
+        assert_difference('Event.count') { ingestor.write(users(:scraper_user)) }
+      end
+    end
+
+    assert source.new_record?
+    assert_equal 1, ingestor.events.size
+    event = ingestor.events.first
+    assert_equal provider, event.content_provider
+    assert_equal 'fr', event.language
+    assert_equal spaces(:plants), event.space
+    refute event.activities.find_by!(key: 'event.create').parameters.key?(:source)
+  end
+
+  test 'write uses the assigned source provider and never saves an unsaved Source' do
+    ingestor = Ingestors::Ingestor.new
+    provider = content_providers(:organisation_provider)
+    ingestor.source = Source.new(method: 'bioschemas', content_provider: provider)
+    ingestor.add_material(title: 'Legacy material', description: 'Training', url: 'https://material.example.org/legacy')
+
+    assert_no_difference('Source.count') do
+      assert_difference('Material.count') { ingestor.write(users(:scraper_user)) }
+    end
+    assert ingestor.source.new_record?
+    material = ingestor.materials.first
+    assert_equal provider, material.content_provider
+    refute material.activities.find_by!(key: 'material.create').parameters.key?(:source)
+  end
+
+  test 'write rejects missing provider context before persisting anything' do
+    ingestor = Ingestors::Ingestor.new
+    ingestor.add_material(title: 'Unattributed', description: 'Training', url: 'https://material.example.org/unattributed')
+
+    assert_no_difference('Material.count') do
+      assert_raises(ArgumentError) { ingestor.write(users(:scraper_user)) }
+    end
+  end
+
   test 'convert HTML descriptions to markdown where appropriate' do
     ingestor = Ingestors::Ingestor.new
 
@@ -24,6 +145,7 @@ class IngestorTest < ActiveSupport::TestCase
                              content_provider: provider, user: users(:admin))
 
     ingestor = Ingestors::Ingestor.new
+    ingestor.source = @source
 
     # Fake an event that was read ... no language set
     ingestor.instance_variable_set(:@events,
@@ -32,7 +154,7 @@ class IngestorTest < ActiveSupport::TestCase
                                                    start: '2021-01-31 13:00:00',
                                                    end: '2021-01-31 14:00:00')])
     assert_difference('provider.events.count', 1) do
-      ingestor.write(user, provider, source: @source)
+      ingestor.write(user)
     end
     event = Event.find_by(title: 'Some course')
     assert_equal(event.language, 'fr')
@@ -49,6 +171,7 @@ class IngestorTest < ActiveSupport::TestCase
                              content_provider: provider, user: users(:admin))
 
     ingestor = Ingestors::Ingestor.new
+    ingestor.source = @source
 
     # Fake an event that was read ... with language set
     ingestor.instance_variable_set(:@events,
@@ -58,7 +181,7 @@ class IngestorTest < ActiveSupport::TestCase
                                                    end: '2021-01-31 14:00:00',
                                                    language: 'de')])
     assert_difference('provider.events.count', 1) do
-      ingestor.write(user, provider, source: @source)
+      ingestor.write(user)
     end
     event = Event.find_by(title: 'Some german course')
     assert_equal(event.language, 'de')
@@ -74,6 +197,7 @@ class IngestorTest < ActiveSupport::TestCase
                              content_provider: provider, user: users(:admin))
 
     ingestor = Ingestors::Ingestor.new
+    ingestor.source = @source
 
     # Fake an event that was read ... with language set
     ingestor.instance_variable_set(:@events,
@@ -83,7 +207,7 @@ class IngestorTest < ActiveSupport::TestCase
                                                    end: '2021-01-31 14:00:00',
                                                    language: 'de')])
     assert_difference('provider.events.count', 1) do
-      ingestor.write(user, provider, source: @source)
+      ingestor.write(user)
     end
     event = Event.find_by(title: 'Some other course')
     assert_equal(event.language, 'de')
@@ -102,6 +226,7 @@ class IngestorTest < ActiveSupport::TestCase
                               enabled: true, approval_status: 'approved',
                               content_provider: provider, user: users(:admin))
       ingestor = Ingestors::Ingestor.new
+      ingestor.source = @source
       new_event = OpenStruct.new(url: 'https://some-course.net',
                                   title: 'Yet another event',
                                   start: '2021-01-31 13:00:00',
@@ -115,7 +240,7 @@ class IngestorTest < ActiveSupport::TestCase
         ingestor.add_material(new_material)
         assert_difference('provider.events.count', 1) do
           assert_difference('provider.materials.count', 1) do
-            ingestor.write(user, provider, source: @source)
+            ingestor.write(user)
           end
         end
       end
@@ -144,6 +269,7 @@ class IngestorTest < ActiveSupport::TestCase
                               enabled: true, approval_status: 'approved',
                               content_provider: provider, user: users(:admin))
       ingestor = Ingestors::Ingestor.new
+      ingestor.source = @source
       new_event = OpenStruct.new(url: 'https://some-course.net',
                                   title: 'Yet another event',
                                   start: '2021-01-31 13:00:00',
@@ -161,7 +287,7 @@ class IngestorTest < ActiveSupport::TestCase
         ingestor.add_material(new_material)
         assert_difference('provider.events.count', 1) do
           assert_difference('provider.materials.count', 1) do
-            ingestor.write(user, provider, source: @source)
+            ingestor.write(user)
           end
         end
       end
@@ -189,6 +315,7 @@ class IngestorTest < ActiveSupport::TestCase
                              content_provider: provider, user: users(:admin))
 
     ingestor = Ingestors::Ingestor.new
+    ingestor.source = @source
 
     # Fake an event that was read ... no language set
     ingestor.instance_variable_set(:@events,
@@ -197,7 +324,7 @@ class IngestorTest < ActiveSupport::TestCase
                                                    start: '2021-01-31 13:00:00',
                                                    end: '2021-01-31 14:00:00')])
     assert_difference('provider.events.count', 1) do
-      ingestor.write(user, provider, source: @source)
+      ingestor.write(user)
     end
     event = Event.find_by(title: 'Yet another course')
     assert_nil(event.language)
@@ -219,7 +346,8 @@ class IngestorTest < ActiveSupport::TestCase
                                                    title: 'Scraped Material',
                                                    description: 'A scraped material')])
 
-    ingestor.write(user, provider, source: source)
+    ingestor.source = source
+    ingestor.write(user)
 
     event = Event.find_by(url: 'https://example.org/scraped-event')
     material = Material.find_by(url: 'https://example.org/scraped-material')
@@ -253,7 +381,8 @@ class IngestorTest < ActiveSupport::TestCase
                                    ])
 
     assert_no_difference('provider.events.count') do
-      ingestor.write(user, provider, source: source)
+      ingestor.source = source
+      ingestor.write(user)
     end
 
     event.reload
@@ -276,7 +405,8 @@ class IngestorTest < ActiveSupport::TestCase
                                                          })])
 
     assert_no_difference('provider.events.count') do
-      ingestor.write(user, provider, source: source)
+      ingestor.source = source
+      ingestor.write(user)
     end
 
     event.reload
@@ -294,7 +424,8 @@ class IngestorTest < ActiveSupport::TestCase
     ingestor.instance_variable_set(:@events, [build_ingested_event(event)])
 
     assert_no_difference('provider.events.count') do
-      ingestor.write(user, provider, source: source)
+      ingestor.source = source
+      ingestor.write(user)
     end
 
     event.reload
@@ -313,7 +444,8 @@ class IngestorTest < ActiveSupport::TestCase
     ingestor.instance_variable_set(:@events, [build_ingested_event(event)])
 
     assert_no_difference('provider.events.count') do
-      ingestor.write(user, provider, source: source)
+      ingestor.source = source
+      ingestor.write(user)
     end
 
     event.reload
@@ -330,7 +462,8 @@ class IngestorTest < ActiveSupport::TestCase
                                    [events(:passing_import_filters_event), events(:passing_contains_import_filters_event), events(:failing_import_filters_event)])
     ingestor.instance_variable_set(:@materials,
                                    [materials(:passing_import_filters_material), materials(:passing_contains_import_filters_material), materials(:failing_import_filters_material)])
-    ingestor.filter(source)
+    ingestor.source = source
+    ingestor.filter
     ingestor
   end
 
@@ -399,7 +532,8 @@ class IngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::Ingestor.new
     ingestor.instance_variable_set(:@materials,
                                    [materials(:passing_import_filters_material), materials(:failing_import_filters_material)])
-    ingestor.filter(source)
+    ingestor.source = source
+    ingestor.filter
     
     assert_includes(ingestor.instance_variable_get(:@materials), materials(:passing_import_filters_material))
     refute_includes(ingestor.instance_variable_get(:@materials), materials(:failing_import_filters_material))
@@ -413,7 +547,8 @@ class IngestorTest < ActiveSupport::TestCase
     ingestor = Ingestors::Ingestor.new
     ingestor.instance_variable_set(:@materials,
                                    [materials(:passing_import_filters_material), materials(:failing_import_filters_material)])
-    ingestor.filter(source)
+    ingestor.source = source
+    ingestor.filter
     
     refute_includes(ingestor.instance_variable_get(:@materials), materials(:passing_import_filters_material))
     assert_includes(ingestor.instance_variable_get(:@materials), materials(:failing_import_filters_material))
@@ -504,14 +639,15 @@ class IngestorTest < ActiveSupport::TestCase
                              space: space, content_provider: provider, user: users(:admin))
 
     ingestor = Ingestors::Ingestor.new
+    ingestor.source = @source
 
     ingestor.instance_variable_set(:@events,
                                    [OpenStruct.new(url: 'https://some-course.ca',
                                                    title: 'Some course',
                                                    start: '2021-01-31 13:00:00',
-                                                   end:'2021-01-31 14:00:00')])
+                                                   end: '2021-01-31 14:00:00')])
     assert_difference('provider.events.count', 1) do
-      ingestor.write(user, provider, source: @source)
+      ingestor.write(user)
     end
     event = Event.find_by(title: 'Some course')
     assert_equal space, event.space
@@ -567,24 +703,26 @@ class IngestorTest < ActiveSupport::TestCase
     event = OpenStruct.new(url: 'http://example.com/cool-course-summer', title: 'A different title')
 
     ingestor = Ingestors::Ingestor.new
+    ingestor.source = Source.new(method: 'bioschemas', content_provider: provider)
     ingestor.instance_variable_set(:@events, [event])
     assert_no_difference('provider.events.count') do
       assert_no_difference('PublicActivity::Activity.where(key: "event.create").count') do
         assert_difference('PublicActivity::Activity.where(key: "event.update").count', 1) do
           assert_difference('PublicActivity::Activity.where(key: "event.update_parameter").count', 1) do # Title is changed
-            ingestor.write(user, provider)
+            ingestor.write(user)
           end
         end
       end
     end
 
     ingestor = Ingestors::Ingestor.new
+    ingestor.source = Source.new(method: 'bioschemas', content_provider: provider)
     ingestor.instance_variable_set(:@events, [event])
     assert_no_difference('provider.events.count') do
       assert_no_difference('PublicActivity::Activity.where(key: "event.create").count') do
         assert_no_difference('PublicActivity::Activity.where(key: "event.update").count') do
           assert_no_difference('PublicActivity::Activity.where(key: "event.update_parameter").count') do
-            ingestor.write(user, provider) # Nothing changed so don't log
+            ingestor.write(user) # Nothing changed so don't log
           end
         end
       end

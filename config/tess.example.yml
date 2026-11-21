@@ -146,6 +146,7 @@ default: &default
     zoom:
       wide: 3
       focused: 13
+  automatic_field_locking: true # true enables auto-locking everywhere; use e.g. ['materials', 'events', 'content_providers'] to limit it
   header_notice: # HTML to display above the header
   feature:
     # TeSS main resources

@@ -226,6 +226,8 @@ class SourceTest < ActiveSupport::TestCase
       source.resources_added = 1
       source.resources_updated = 1
       source.resources_rejected = 1
+      source.content_providers_added = 1
+      source.content_providers_rejected = 1
       source.log = 'test'
       source.finished_at = Time.now
       source.save!

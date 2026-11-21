@@ -103,6 +103,15 @@ div.legal-block {
   .scraped-metadata p {
     margin: 0;
   }
+
+  .provider-logo {
+    float: left;
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    border-radius: 4px;
+    margin: 2px 14px 8px 0;
+  }
 }
 
 .test-controls {

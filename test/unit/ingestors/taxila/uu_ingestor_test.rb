@@ -21,6 +21,8 @@ class UuIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::UuIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = 'Re-Inventing Policies and Institutions for Inclusive Labour Markets in Europe and Beyond'
     new_url = 'https://www.uu.nl/en/events/re-inventing-policies-and-institutions-for-inclusive-labour-markets-in-europe-and-beyond'
@@ -31,7 +33,7 @@ class UuIngestorTest < ActiveSupport::TestCase
       freeze_time(2016) do
         VCR.use_cassette("ingestors/uu") do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

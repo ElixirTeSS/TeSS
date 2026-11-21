@@ -78,7 +78,7 @@ class EventsController < ApplicationController
   end
 
   def preview
-    @event = User.get_default_user.events.new(event_params)
+    @event = Source.get_test_resource('events', params.require(:event), user: User.get_default_user)
 
     respond_to do |format|
       if @event.valid?

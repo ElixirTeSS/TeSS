@@ -180,6 +180,14 @@ module TeSS
     def base_uri
       @base_uri ||= Addressable::URI.parse(base_url)
     end
+
+    def automatic_field_locking_enabled_for?(resource)
+      setting = automatic_field_locking
+      return false if setting.blank?
+      return true if setting == true
+
+      Array(setting).include?(resource.model_name.route_key)
+    end
   end
 
   Config = TessConfig.new(tess_config)

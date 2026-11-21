@@ -30,7 +30,9 @@ class BioschemasControllerTest < ActionController::TestCase
   test 'should test JSON-LD snippet' do
     sign_in users(:regular_user)
 
-    post :run_test, params: { snippet: fixture_file('ext_res.json').read }
+    assert_no_difference('Source.count') do
+      post :run_test, params: { snippet: fixture_file('ext_res.json').read }
+    end
 
     assert_response :success
 

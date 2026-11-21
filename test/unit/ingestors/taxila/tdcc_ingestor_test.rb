@@ -21,6 +21,8 @@ class TdccIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::TdccIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = "TDCC-NES Governing Board meeting, October 2025"
     new_url = 'https://tdcc.nl/evenementen/tdcc-nes-governing-board-meeting-october-2025/'
@@ -31,7 +33,7 @@ class TdccIngestorTest < ActiveSupport::TestCase
       freeze_time(2025) do
         VCR.use_cassette("ingestors/tdcc") do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

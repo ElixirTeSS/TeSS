@@ -67,11 +67,15 @@ module Ingestors
       end.to_h
     end
 
-    def self.get_ingestor(method)
-      config = ingestor_config[method]
-      raise "Invalid method: [#{method}]" unless config
+    def self.get_ingestor(source)
+      raise ArgumentError, 'Ingestor source must be a Source' unless source.is_a?(Source)
 
-      config[:ingestor].new
+      config = ingestor_config[source.method]
+      raise "Invalid method: [#{source.method}]" unless config
+
+      ingestor = config[:ingestor].new
+      ingestor.source = source
+      ingestor
     end
 
     def self.valid_ingestor?(method)

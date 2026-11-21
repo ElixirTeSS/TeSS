@@ -110,7 +110,9 @@ var Autocompleters = {
                         obj.prefix = opts.prefix;
                     }
 
-                    listElement.append(HandlebarsTemplates[opts.templateName](obj));
+                    var newItem = $(HandlebarsTemplates[opts.templateName](obj));
+                    listElement.append(newItem);
+                    newItem.find('input[type=hidden]').trigger('change');
                     if (opts.singleton) {
                         inputElement.hide();
                     }

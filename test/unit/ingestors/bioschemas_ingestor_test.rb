@@ -4,7 +4,8 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
   setup do
     @ingestor = Ingestors::BioschemasIngestor.new
     @user = users(:regular_user)
-    @content_provider = content_providers(:portal_provider)
+    @content_provider = content_providers(:organisation_provider)
+    @ingestor.source = Source.new(method: 'bioschemas', content_provider: @content_provider)
     mock_timezone # System time zone should not affect test result
   end
 
@@ -19,7 +20,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_equal 0, @ingestor.materials.count
 
     assert_difference('Event.count', 23) do
-      @ingestor.write(@user, @content_provider)
+      @ingestor.write(@user)
     end
 
     sample = @ingestor.events.detect { |e| e.title == 'Neural Networks and Deep Learning' }
@@ -54,7 +55,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_includes messages, "\n - LearningResources: 3"
 
     assert_difference('Material.count', 3) do
-      @ingestor.write(@user, @content_provider)
+      @ingestor.write(@user)
     end
 
     assert_equal 3, @ingestor.stats[:materials][:added]
@@ -105,7 +106,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_includes messages, "Bioschemas not found in:\n\n - http://carpentries-incubator.github.io/python-testing/\n - https://hsf-training.github.io/hsf-training-scikit-hep-webpage/"
 
     assert_difference('Material.count', 1) do
-      @ingestor.write(@user, @content_provider)
+      @ingestor.write(@user)
     end
 
     assert_equal 1, @ingestor.stats[:materials][:added]
@@ -126,7 +127,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     assert_equal 0, @ingestor.materials.count
 
     assert_difference('Event.count', 1) do
-      @ingestor.write(@user, @content_provider)
+      @ingestor.write(@user)
     end
 
     assert_equal 1, @ingestor.stats[:events][:added]
@@ -153,8 +154,9 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     added_event = @ingestor.events.detect { |e| e.title == 'Summer Course on Learning Stuff 2' }
     assert added_event
 
+    @ingestor.source = Source.new(method: 'bioschemas', content_provider: provider)
     assert_no_difference('Event.count') do
-      @ingestor.write(@user, provider)
+      @ingestor.write(@user)
     end
 
     assert_equal 0, @ingestor.stats[:events][:added]
@@ -185,7 +187,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
                                     }) do
       @ingestor.read('https://website.org/courseinstances.json')
       assert_difference('Event.count', 2) do
-        @ingestor.write(@user, @content_provider)
+        @ingestor.write(@user)
       end
     end
 
@@ -200,7 +202,7 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     @ingestor.read('https://website.org/ext_res.json')
     assert_difference('Material.count', 1) do
       assert_difference('ExternalResource.count', 2) do
-        @ingestor.write(@user, @content_provider)
+        @ingestor.write(@user)
       end
     end
 
@@ -214,14 +216,76 @@ class BioschemasIngestorTest < ActiveSupport::TestCase
     refute other.is_tool?
 
     new_ingestor = Ingestors::BioschemasIngestor.new
+    new_ingestor.source = Source.new(method: 'bioschemas', content_provider: @content_provider)
     new_ingestor.read('https://website.org/ext_res.json')
     assert_no_difference('Material.count') do
       assert_no_difference('ExternalResource.count') do
-        new_ingestor.write(@user, @content_provider)
+        new_ingestor.write(@user)
       end
     end
 
     assert_equal [tool.id, other.id].sort, material.reload.external_resource_ids.sort
+  end
+
+  test 'convert_params preserves provider references without resolving them' do
+    params = {
+      providers: [
+        { name: 'No match', url: 'https://example.org/no-match' },
+        { name: 'Goblet', url: 'http://mygoblet.org' }
+      ]
+    }
+
+    result = @ingestor.convert_params(params)
+
+    assert_equal params[:providers], result[:providers]
+    refute result.key?(:content_provider)
+    assert_empty @ingestor.providers
+  end
+
+  test 'extract_resources returns normalized data and provider references independently of its source' do
+    provider = { name: 'Imported provider', url: 'https://provider.example.org' }
+    content = {
+      '@context' => 'http://schema.org', '@type' => 'LearningResource',
+      name: 'Imported material', description: '<b>Training</b>', url: 'https://material.example.org',
+      provider: provider.merge('@type' => 'Organization')
+    }.to_json
+
+    ContentProvider.stub(:find_by, ->(*) { flunk 'extraction must not resolve providers' }) do
+      result = @ingestor.extract_resources(content, format: :jsonld)
+      assert_equal 1, result[:totals]['LearningResources']
+      material = result[:resources][:materials].first
+      assert_equal '**Training**', material[:description]
+      assert_equal provider, material[:providers].first.slice(:name, :url)
+      refute material.key?(:content_provider)
+    end
+    assert_empty @ingestor.materials
+    assert_empty @ingestor.providers
+  end
+
+  test 'deduplication keeps the resource with the most metadata and its own provider references' do
+    first = { title: 'First', url: 'https://material.example.org',
+              providers: [{ name: nil, url: 'https://provider.example.org', see_also: ['https://registry.example.org/first'] }] }
+    richer = { title: 'Richer', url: first[:url], description: 'More metadata',
+               providers: [{ name: 'Named provider', url: 'https://provider.example.org',
+                             see_also: ['https://registry.example.org/second'] }] }
+
+    # The richer resource wins and keeps its own provider references, unmerged.
+    result = @ingestor.deduplicate([first, richer]).first
+    assert_equal 'Richer', result[:title]
+    assert_equal richer[:providers], result[:providers]
+
+    # Provider references score like any other metadata field, so a later duplicate can win on them alone.
+    plain = { title: 'Plain', url: first[:url] }
+    assert_equal 'First', @ingestor.deduplicate([plain, first]).first[:title]
+
+    # A winner without provider references does not inherit them from a losing duplicate.
+    richer_without_provider = { title: 'Richer', url: first[:url], description: 'More metadata', licence: 'CC-BY-4.0' }
+    winner = @ingestor.deduplicate([first, richer_without_provider]).first
+    assert_equal 'Richer', winner[:title]
+    assert_nil winner[:providers]
+
+    assert_equal @ingestor.metadata_score(first.except(:providers)) + 1,
+                 @ingestor.metadata_score(first)
   end
 
   private

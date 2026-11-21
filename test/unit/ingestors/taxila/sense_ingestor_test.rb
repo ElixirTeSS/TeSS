@@ -21,6 +21,8 @@ class SenseIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::SenseIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = "Reinventing the city; Scientific Conference AMS Institute"
     new_url = "https://sense.nl/event/reinventing-the-city-scientific-conference-ams-institute/"
@@ -31,7 +33,7 @@ class SenseIngestorTest < ActiveSupport::TestCase
       freeze_time(2019) do
         VCR.use_cassette("ingestors/sense") do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

@@ -6,21 +6,38 @@ module Ingestors
   class Ingestor
     include EventIngestion
     include MaterialIngestion
+    include ProviderIngestion
 
     def initialize
+      @source = Source.new
       @messages = []
       @stats = {
         events: { processed: 0, added: 0, updated: 0, rejected: 0 },
-        materials: { processed: 0, added: 0, updated: 0, rejected: 0 }
+        materials: { processed: 0, added: 0, updated: 0, rejected: 0 },
+        content_providers: { processed: 0, added: 0, updated: 0, rejected: 0 }
       }
       @token = ''
       @events = []
       @materials = []
+      @providers = []
     end
 
     # accessor methods
-    attr_reader :messages, :stats, :events, :materials
+    attr_reader :messages, :stats, :events, :materials, :source
+    # `token`/`@token` are kept for backwards compatibility with ingestors
+    # maintained outside this repository that read or override them directly.
     attr_accessor :token
+
+    def source=(value)
+      raise ArgumentError, 'Ingestor source must be a Source' unless value.is_a?(Source)
+
+      @source = value
+      @token = value.token || ''
+    end
+
+    def source_host
+      URI.parse(source.url).host if source.url.present?
+    end
 
     def self.config
       raise NotImplementedError
@@ -35,7 +52,7 @@ module Ingestors
       raise NotImplementedError
     end
 
-    def filter(source)
+    def filter
       material_count = @materials.length
       event_count = @events.length
 
@@ -46,11 +63,16 @@ module Ingestors
       @messages << "#{@events.length} of #{event_count} events passed the filters" if @events.length != event_count
     end
 
-    def write(user, provider, source: nil)
-      filter(source) if source
-      write_resources(Event, @events, user, provider, source:)
+    def write(user)
+      provider = source.content_provider
+      raise ArgumentError, 'A content provider is required to write ingested resources' unless provider
+
+      filter
+      write_providers(user)
+      @messages << stats_summary(:content_providers) if @stats[:content_providers][:processed].positive?
+      write_resources(Event, @events, user, provider)
       @messages << stats_summary(:events)
-      write_resources(Material, @materials, user, provider, source:)
+      write_resources(Material, @materials, user, provider)
       @messages << stats_summary(:materials)
     end
 
@@ -158,19 +180,19 @@ module Ingestors
     end
 
     def processed
-      @stats.values.sum { |s| s[:processed] }
+      @stats.values_at(:events, :materials).sum { |s| s[:processed] }
     end
 
     def added
-      @stats.values.sum { |s| s[:added] }
+      @stats.values_at(:events, :materials).sum { |s| s[:added] }
     end
 
     def updated
-      @stats.values.sum { |s| s[:updated] }
+      @stats.values_at(:events, :materials).sum { |s| s[:updated] }
     end
 
     def rejected
-      @stats.values.sum { |s| s[:rejected] }
+      @stats.values_at(:events, :materials).sum { |s| s[:rejected] }
     end
 
     private
@@ -183,46 +205,39 @@ module Ingestors
       resource
     end
 
-    def write_resources(type, resources, user, provider, source: nil)
+    def ingestion_activity_parameters
+      return {} unless source.persisted?
+
+      { source: { id: source.id, url: source.url, method: source.method } }
+    end
+
+    def write_resources(type, resources, user, provider)
       resources.each_with_index do |resource, i|
         key = type.model_name.collection.to_sym
         @stats[key][:processed] += 1
 
-        # check for matched events
-        resource.user_id ||= user.id
-        resource.content_provider_id ||= provider.id
-        resource.space_id ||= source&.space_id
-        existing_resource = find_existing(type, resource)
+        fields = resource.to_h.except(:content_provider, :providers)
+        fields[:user_id] ||= user.id
+        fields[:content_provider_id] ||= resource.try(:content_provider)&.id || provider.id
+        fields[:space_id] ||= source.space_id
+        existing_resource = find_existing(type, fields)
 
         next unless responsible_for?(existing_resource, resource, source)
 
         update = existing_resource
-        resource = if update
-                     update_resource(existing_resource, resource.to_h)
-                   else
-                     type.new(resource.to_h)
-                   end
+        resource = update ? update_resource(existing_resource, fields) : type.new(fields)
 
-        resource.language ||= source&.default_language if resource.has_attribute?(:language) && resource.new_record?
+        resource.language ||= source.default_language if resource.has_attribute?(:language) && resource.new_record?
 
         resource = set_resource_defaults(resource, source: source)
         if resource.valid?
           resource.save!
-          activity_params = {}
-          if source
-            activity_params[:source] = {
-              id: source.id,
-              url: source.url,
-              method: source.method
-            }
-          end
-
           if update
             if resource.log_update_activity?
-              resource.create_activity(:update, owner: user, parameters: activity_params)
+              resource.create_activity(:update, owner: user, parameters: ingestion_activity_parameters)
             end
           else
-            resource.create_activity(:create, owner: user, parameters: activity_params)
+            resource.create_activity(:create, owner: user, parameters: ingestion_activity_parameters)
           end
           @stats[key][update ? :updated : :added] += 1
         else
@@ -251,21 +266,28 @@ module Ingestors
       return true if existing_resource.last_scraped_by_source.nil?
       return true if existing_resource.last_scraped_by_source == source
 
-      considered_fields = %i[title url doi description resource_type prerequisites keywords start end sponsors venue city county postcode cost_value target_audience contact language]
-      existing_fields_count = considered_fields.count { |f| existing_resource[f].present? }
-      new_fields_count = considered_fields.count { |f| new_resource[f].present? }
-      return true if new_fields_count > existing_fields_count
+      existing_fields = existing_resource.attributes.symbolize_keys
+      incoming_fields = new_resource.is_a?(ContentProvider) ? new_resource.attributes.symbolize_keys : new_resource
+      if existing_resource.is_a?(ContentProvider)
+        existing_fields[:image_url] = existing_resource.image_url.presence || existing_resource.image_file_name.presence
+        FieldLock.strip_locked_fields(existing_fields, existing_resource.locked_fields)
+        FieldLock.strip_locked_fields(incoming_fields, existing_resource.locked_fields)
+      end
 
-      considered_description_fields = %i[description prerequisites learning_objectives tech_requirements]
-      existing_description_length = considered_description_fields.sum { |f| existing_resource[f].to_s.length }
-      new_description_length = considered_description_fields.sum { |f| new_resource[f].to_s.length }
-      return true if new_fields_count == existing_fields_count && new_description_length > existing_description_length * 1.5
+      considered_fields = %i[title url doi description resource_type prerequisites keywords start end sponsors
+                            venue city county postcode cost_value target_audience contact language image_url]
+      existing_count = considered_fields.count { |field| existing_fields[field].present? }
+      incoming_count = considered_fields.count { |field| incoming_fields[field].present? }
+      return true if incoming_count > existing_count
 
-      false
+      description_fields = %i[description prerequisites learning_objectives tech_requirements]
+      existing_length = description_fields.sum { |field| existing_fields[field].to_s.length }
+      incoming_length = description_fields.sum { |field| incoming_fields[field].to_s.length }
+      incoming_count == existing_count && incoming_length > existing_length * 1.5
     end
 
     def find_existing(type, resource)
-      type.check_exists(resource.to_h)
+      type.check_exists(resource)
     end
 
     def update_resource(existing_resource, fields)

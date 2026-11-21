@@ -15,15 +15,16 @@ Variable that should be available
           url = content_provider.url
           url_opts = { target: '_blank', rel: 'noopener' }
         else
-          url = content_provider
+          url = content_provider.persisted? ? content_provider : content_provider.url
           url_opts = {}
         end
       %>
-      <%= link_to(image_tag(content_provider.image.url, class: 'medium-avatar'), url, **url_opts) %>
+      <%= link_to(image_tag(display_image_url_for(content_provider), class: 'medium-avatar', alt: content_provider.title), url, **url_opts) %>
     </p>
 
     <p>
       <%= link_to content_provider.title, url, class: 'h5', **url_opts %>
+      <%= scrape_status_icon(content_provider) %>
     </p>
     <% unless content_provider.description.blank? %>
       <div class="tess-expandable markdown"><%= render_markdown content_provider.description %></div>

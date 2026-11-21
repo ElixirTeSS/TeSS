@@ -73,37 +73,7 @@ module Ingestors
 
         format = sample.start_with?('[') || sample.start_with?('{') ? :jsonld : :rdfa
         content.rewind
-        source = content.read
-        events = Tess::Rdf::EventExtractor.new(source, format, base_uri: url).extract do |p|
-          convert_params(p)
-        end
-        courses = Tess::Rdf::CourseExtractor.new(source, format, base_uri: url).extract do |p|
-          convert_params(p)
-        end
-        course_instances = Tess::Rdf::CourseInstanceExtractor.new(source, format, base_uri: url).extract do |p|
-          convert_params(p)
-        end
-        learning_resources = Tess::Rdf::LearningResourceExtractor.new(source, format, base_uri: url).extract do |p|
-          convert_params(p)
-        end
-        output[:totals]['Events'] += events.count
-        output[:totals]['Courses'] += courses.count
-        output[:totals]['CourseInstances'] += course_instances.count
-        output[:totals]['LearningResources'] += learning_resources.count
-        if verbose
-          puts "Events: #{events.count}"
-          puts "Courses: #{courses.count}"
-          puts "CourseInstances: #{course_instances.count}"
-          puts "LearningResources: #{learning_resources.count}"
-        end
-
-        deduplicate(events + courses + course_instances).each do |event|
-          output[:resources][:events] << event
-        end
-
-        deduplicate(learning_resources).each do |material|
-          output[:resources][:materials] << material
-        end
+        output = extract_resources(content.read, format: format, url: url)
       rescue StandardError => e
         Rails.logger.error("#{e.class}: #{e.message}")
         Rails.logger.error(e.backtrace.join("\n")) if e.backtrace&.any?
@@ -123,6 +93,30 @@ module Ingestors
         @messages << message
       end
 
+      output
+    end
+
+    def extract_resources(content, format:, url: nil, types: %i[events materials])
+      output = { resources: { events: [], materials: [] }, totals: Hash.new(0) }
+      return output unless content
+
+      extractors = {
+        events: {
+          'Events' => Tess::Rdf::EventExtractor,
+          'Courses' => Tess::Rdf::CourseExtractor,
+          'CourseInstances' => Tess::Rdf::CourseInstanceExtractor
+        },
+        materials: { 'LearningResources' => Tess::Rdf::LearningResourceExtractor }
+      }
+      types.each do |type|
+        extractors.fetch(type).each do |name, extractor|
+          records = extractor.new(content, format, base_uri: url).extract { |params| convert_params(params) }
+          output[:totals][name] = records.count
+          output[:resources][type].concat(records)
+          puts "#{name}: #{records.count}" if verbose
+        end
+        output[:resources][type] = deduplicate(output[:resources][type])
+      end
       output
     end
 

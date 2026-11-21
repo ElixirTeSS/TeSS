@@ -5,6 +5,7 @@ class IndicoIngestorTest < ActiveSupport::TestCase
     @ingestor = Ingestors::IndicoIngestor.new
     @user = users(:regular_user)
     @content_provider = content_providers(:another_portal_provider)
+    @ingestor.source = Source.new(method: 'indico', content_provider: @content_provider)
     # mock_ingestions
     # mock_timezone # System time zone should not affect test result
 
@@ -22,7 +23,7 @@ class IndicoIngestorTest < ActiveSupport::TestCase
 
   test 'should read indico link event' do
     @ingestor.read('https://indico.cern.ch/event/1617123/')
-    @ingestor.write(@user, @content_provider)
+    @ingestor.write(@user)
 
     sample = @ingestor.events.detect { |e| e.title == '14th HEP C++ Course and Hands-on Training - The Essentials' }
     assert sample.persisted?
@@ -41,7 +42,7 @@ class IndicoIngestorTest < ActiveSupport::TestCase
 
   test 'should read indico link category' do
     @ingestor.read('https://indico.cern.ch/category/11733/')
-    @ingestor.write(@user, @content_provider)
+    @ingestor.write(@user)
 
     sample = @ingestor.events.detect { |e| e.title == '14th HEP C++ Course and Hands-on Training - The Essentials' }
     sample2 = @ingestor.events.detect { |e| e.title == 'HEP C++ Course and Hands-on Training - Stay Informed' }
@@ -54,7 +55,7 @@ class IndicoIngestorTest < ActiveSupport::TestCase
 
   test 'should read non-indico link event' do
     @ingestor.read('https://myagenda.com/event/1617123/')
-    @ingestor.write(@user, @content_provider)
+    @ingestor.write(@user)
 
     sample = @ingestor.events.detect { |e| e.title == '14th HEP C++ Course and Hands-on Training - The Essentials' }
     assert sample.persisted?

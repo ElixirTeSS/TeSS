@@ -21,6 +21,8 @@ class OscmIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::OscmIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = 'FAIR Coffee lecture - Mariëlle Prevoo'
     new_url = 'https://www.openscience-maastricht.nl/events/fair-coffee-lecture-marielle-prevoo/'
@@ -31,7 +33,7 @@ class OscmIngestorTest < ActiveSupport::TestCase
       freeze_time(2019) do
         VCR.use_cassette("ingestors/oscm") do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

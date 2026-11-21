@@ -21,6 +21,8 @@ class VuMaterialIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::VuMaterialIngestor.new
 
+    ingestor.source = source
+
     # check materials don't exist
     new_title = 'Writing and presenting'
     new_url = 'https://vu.nl/en/education/phd-courses/writing-and-presenting'
@@ -31,7 +33,7 @@ class VuMaterialIngestorTest < ActiveSupport::TestCase
       freeze_time(2019) do
         VCR.use_cassette('ingestors/vu_material') do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

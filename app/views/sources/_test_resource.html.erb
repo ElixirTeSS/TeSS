@@ -1,6 +1,9 @@
 <% existing = resource.class.check_exists(resource) %>
 
 <div class="list-card bulk-import-row<%= ' new' unless existing -%>">
+  <% if resource.is_a?(ContentProvider) %>
+    <%= image_tag(display_image_url_for(resource), class: 'provider-logo', alt: resource.title) %>
+  <% end %>
   <h4>
     <% if existing %>
       <%= link_to(existing, target: '_blank', class: 'btn btn-xs btn-default pull-right') do %>
@@ -26,6 +29,9 @@
     <% else %>
       <div class="alert alert-danger">
         <i class="fa fa-exclamation-circle"></i> Errors: <%= resource.errors.full_messages.join(', ') %>
+        <% if resource.is_a?(ContentProvider) %>
+          Its resources will use the source content provider instead.
+        <% end %>
       </div>
     <% end %>
   </div>

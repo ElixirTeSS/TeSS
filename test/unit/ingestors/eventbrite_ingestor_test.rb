@@ -16,7 +16,7 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     # enable source
     source = sources(:eventbrite_source)
     ingestor = Ingestors::EventbriteIngestor.new
-    ingestor.token = source.token
+    ingestor.source = source
     refute_nil source
     refute_nil source.token
     # set enabled
@@ -26,7 +26,7 @@ class EventbriteIngestorTest < ActiveSupport::TestCase
     assert_difference 'Event.count', 13 do
       freeze_time(2019) do
         ingestor.read(source.url)
-        ingestor.write(@user, @content_provider)
+        ingestor.write(@user)
       end
     end
 

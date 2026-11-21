@@ -17,6 +17,8 @@ class UhasseltIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::UhasseltIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = 'Tidy data part 1: How to structure your data | March 2026'
     new_url = 'https://www.uhasselt.be/en/university-library/research/research-data-management/training-calendar-rdm/tidy-data-part-1-how-to-structure-your-data-march-2026'
@@ -27,7 +29,7 @@ class UhasseltIngestorTest < ActiveSupport::TestCase
       freeze_time(2023) do
         VCR.use_cassette("ingestors/uhasselt") do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

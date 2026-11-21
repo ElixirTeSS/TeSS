@@ -752,6 +752,15 @@ class MaterialTest < ActiveSupport::TestCase
     refute bioschemas.key?(:license)
   end
 
+  test 'includes provider page as subjectOf in bioschemas json' do
+    m = Material.new(title: 'Hello', content_provider: content_providers(:goblet))
+
+    bioschemas = m.to_bioschemas.first.generate
+    assert_equal Bioschemas::Generator.routes.content_provider_url(content_providers(:goblet)),
+                 bioschemas[:provider].first['subjectOf']
+    refute bioschemas.key?(:subjectOf)
+  end
+
   test 'validates origin_uri' do
     @material.origin_uri = nil
     assert @material.valid?

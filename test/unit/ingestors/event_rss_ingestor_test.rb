@@ -214,10 +214,20 @@ class EventRSSIngestorTest < ActiveSupport::TestCase
           <sdo:url rdf:resource="https://example.org/rss10/bioschemas/event"/>
           <sdo:startDate>2024-08-01</sdo:startDate>
           <sdo:endDate>2024-08-02</sdo:endDate>
+          <sdo:provider>
+            <sdo:Organization rdf:about="https://provider.example.org">
+              <sdo:name>RSS provider</sdo:name>
+              <sdo:url rdf:resource="https://provider.example.org"/>
+            </sdo:Organization>
+          </sdo:provider>
         </sdo:Event>
       </rdf:RDF>
     XML
 
+    @ingestor.source = Source.new(content_provider: content_providers(:portal_provider), method: 'event_rss')
+    homepage = stub_request(:get, 'https://provider.example.org').to_return(
+      body: '<meta property="og:description" content="RSS provider description">'
+    )
     read_xml(rss_10_bioschemas_feed_xml)
 
     assert_equal 2, @ingestor.events.count
@@ -228,6 +238,11 @@ class EventRSSIngestorTest < ActiveSupport::TestCase
     assert_equal 'https://example.org/rss10/bioschemas/event', event.url
     assert_equal Date.new(2024, 8, 1), event.start.to_date
     assert_equal Date.new(2024, 8, 2), event.end.to_date
+    assert_nil event.content_provider
+    assert_not_requested homepage
+    @ingestor.resolve_providers
+    assert_equal 'RSS provider description', event.content_provider.description
+    assert_requested homepage, times: 1
 
     fallback_event = @ingestor.events.detect { |e| e.url == 'https://example.org/rss10-bioschemas/event-item' }
     refute_nil fallback_event

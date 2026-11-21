@@ -1,14 +1,19 @@
 <% content_for :og_header do %>
-  <% # event twitter meta tags -%>
+  <% if content_provider.image? || content_provider.image_url.present? %>
+    <% image = display_image_url_for(content_provider)
+       image = image.start_with?('http') ? image : asset_url(image) %>
+    <%= tag(:meta, name: "twitter:image", content: image) %>
+    <%= tag(:meta, property: "og:image", content: image) %>
+  <% end %>
+  <% # content provider twitter meta tags -%>
   <%= tag(:meta, name: "twitter:card",        content: 'summary') %>
   <%= tag(:meta, name: "twitter:site",        content: TeSS::Config.site['title_short']) %>
   <%= tag(:meta, name: "twitter:creator",     content: TeSS::Config.twitter_handle) %>
-  <%= tag(:meta, name: "twitter:image",       content: asset_url(content_provider.image.url)) %>
   <%= tag(:meta, name: "twitter:title",       content: content_provider.title) %>
   <%= tag(:meta, name: "twitter:description", content: content_provider.description) %>
-  <% # event OpenGraph meta tags -%>
+  <% # content provider OpenGraph meta tags -%>
   <%= tag(:meta, property: "og:url",          content: request.original_url) %>
-  <%= tag(:meta, property: "og:image",        content: asset_url(content_provider.image.url)) %>
   <%= tag(:meta, property: "og:title",        content: content_provider.title) %>
   <%= tag(:meta, property: "og:description",  content: content_provider.description) %>
+  <%= tag(:meta, name: "keywords",            content: content_provider.keywords.join(', ')) if content_provider.keywords.any? %>
 <% end %>

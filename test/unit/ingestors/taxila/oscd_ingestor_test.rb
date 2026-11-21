@@ -21,6 +21,8 @@ class OscdIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::OscdIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = 'Opening up a Flow battery by Sanli Faez'
     new_url = 'https://osc-delft.github.io/events#opening_up_a_flow_battery_by_sanli_faez'
@@ -31,7 +33,7 @@ class OscdIngestorTest < ActiveSupport::TestCase
       freeze_time(2019) do
         VCR.use_cassette('ingestors/oscd') do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

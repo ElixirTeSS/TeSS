@@ -21,6 +21,8 @@ class LibcalIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::LibcalIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = 'ENDNOTE LIGHT'
     new_url = 'https://vu-nl.libcal.com/event/3826342'
@@ -31,7 +33,7 @@ class LibcalIngestorTest < ActiveSupport::TestCase
       freeze_time(2019) do
         VCR.use_cassette("ingestors/libcal") do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

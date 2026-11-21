@@ -21,6 +21,8 @@ class LcrdmIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::LcrdmIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = 'Open Science Festival 2025'
     new_url = 'https://lcrdm.nl/evenementen/open-science-festival-2025/'
@@ -31,7 +33,7 @@ class LcrdmIngestorTest < ActiveSupport::TestCase
       freeze_time(2025) do
         VCR.use_cassette('ingestors/lcrdm') do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

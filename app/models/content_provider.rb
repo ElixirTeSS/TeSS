@@ -8,7 +8,9 @@ class ContentProvider < ApplicationRecord
   include Searchable
   include IdentifiersDotOrg
   include HasFriendlyId
+  include LockableFields
   include CurationQueue
+  include Scrapable
 
   has_many :materials, dependent: :destroy
   has_many :events, dependent: :destroy
@@ -69,6 +71,7 @@ class ContentProvider < ApplicationRecord
       integer :user_id # Used for shadowbans
       time :created_at
       time :updated_at
+      time :last_scraped
     end
     # :nocov:
   end
@@ -88,19 +91,8 @@ class ContentProvider < ApplicationRecord
     PROVIDER_TYPE.index(content_provider_type) || 0
   end
 
-  def self.check_exists(content_provider_params)
-    given_content_provider = self.new(content_provider_params)
-    content_provider = nil
-
-    if given_content_provider.url.present?
-      content_provider = self.find_by_url(given_content_provider.url)
-    end
-
-    if given_content_provider.title.present?
-      content_provider ||= self.where(title: given_content_provider.title).last
-    end
-
-    content_provider
+  def self.check_exists(content_provider)
+    find_by(url: content_provider.url) if content_provider.url.present?
   end
 
   def self.identifiers_dot_org_key

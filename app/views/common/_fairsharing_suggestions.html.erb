@@ -2,7 +2,7 @@
   <input type="hidden" id='title_element' value="<%=title_element%>">
 
   <div class="input-group">
-    <%= text_field_tag(nil, nil, class: 'form-control', id: 'fairsharing_query',
+    <%= text_field_tag(nil, nil, class: 'form-control auto-lock-ignore', id: 'fairsharing_query',
                        placeholder: 'Search fairsharing.org', 'data-fairsharing-endpoint': fairsharing_search_path) %>
     <div class="input-group-btn">
       <span class="btn btn-default" id="search_fairsharing"><i class="fa fa-search"></i></span>

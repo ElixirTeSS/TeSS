@@ -21,6 +21,8 @@ class NwoIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::NwoIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = 'NL Polar day 2025'
     new_url = 'https://www.nwo.nl/en/meetings/nl-polar-day-2025'
@@ -31,7 +33,7 @@ class NwoIngestorTest < ActiveSupport::TestCase
       freeze_time(2019) do
         VCR.use_cassette('ingestors/nwo') do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

@@ -96,6 +96,9 @@ Rails.application.routes.draw do
   end
 
   resources :content_providers, concerns: :activities do
+    collection do
+      post :preview
+    end
     resources :sources, except: [:index]
   end
 

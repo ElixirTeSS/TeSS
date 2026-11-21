@@ -13,6 +13,7 @@ module Bioschemas
     property :url, :url
     property :description, :description
     property :keywords, :keywords
+    property :provider, -> (event) { provider(event) }
     property :startDate, :start
     property :endDate, :end
     property :organizer, -> (event) { { '@type' => 'Organization', name: event.organizer } if event.organizer.present? }

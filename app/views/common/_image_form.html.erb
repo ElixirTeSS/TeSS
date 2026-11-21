@@ -1,4 +1,5 @@
 <%= form.label :image, "Image" %>
+<%= form.field_lock(:image) if form.object.respond_to?(:locked_fields) %>
 
 <% if form.object.image? %>
     <div class="preview-image">

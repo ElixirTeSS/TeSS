@@ -14,8 +14,10 @@ function add_selected_dropdown_item(model_name, field_name, value, name){
         model_name: model_name, 
         value: value, 
         name: name });
-    
-    $(newItem).appendTo('.' + field_name);
+
+    var item = $(newItem);
+    item.appendTo('.' + field_name);
+    item.find('input[type=hidden]').trigger('change');
 }
 
 /* Adds a new option to the list of dropdown options. Used when a package is deselected (e.g. delete button pressed)"*/

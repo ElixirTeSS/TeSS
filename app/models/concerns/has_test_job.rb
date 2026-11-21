@@ -36,11 +36,28 @@ module HasTestJob
 
   class_methods do
     def get_test_resource(type, params, **extras)
-      klass = type.singularize.capitalize.constantize
+      klass = type.classify.constantize
       controller = "#{klass.name.pluralize}Controller".constantize
       c = controller.new
+      c.define_singleton_method(:current_user) { nil } # user normally comes from request
       c.params = { klass.model_name.param_key => params }
       safe_params = c.send("#{klass.model_name.param_key}_params")
+
+      if klass == ContentProvider
+        resource = klass.new(safe_params.merge(extras))
+        existing = ContentProvider.check_exists(resource)
+        if existing
+          existing.assign_attributes(safe_params.reject { |_field, value| value.blank? })
+          return existing
+        end
+        return resource
+      end
+
+      provider_params = c.params[klass.model_name.param_key][:content_provider]
+      if provider_params.present?
+        provider = get_test_resource('content_providers', provider_params, user: extras[:user])
+        extras[:content_provider] = provider if provider.persisted? || provider.valid?
+      end
       klass.new(safe_params.merge(extras))
     end
   end
@@ -59,6 +76,11 @@ module HasTestJob
   end
 
   def deep_hashify(params)
+    if params.is_a?(ContentProvider)
+      params = params.attributes.slice('title', 'url', 'description', 'image_url', 'content_provider_type',
+                                       'keywords', 'node_id', 'contact').symbolize_keys
+    end
+
     params = params.to_h if params.is_a?(OpenStruct) || params.is_a?(ActionController::Parameters)
 
     if params.is_a?(Hash)

@@ -775,6 +775,15 @@ class EventTest < ActiveSupport::TestCase
     assert_equal 'http://mygoblet.org', bioschemas[:provider].first['url']
   end
 
+  test 'includes provider page as subjectOf in event bioschemas json' do
+    e = Event.new(content_provider: content_providers(:goblet), event_types: ['workshops_and_courses'])
+
+    bioschemas = e.to_bioschemas.first.generate
+    assert_equal Bioschemas::Generator.routes.content_provider_url(content_providers(:goblet)),
+                 bioschemas[:provider].first['subjectOf']
+    refute bioschemas.key?(:subjectOf)
+  end
+
   test 'serializes event to oai_dc xml' do
     event = events(:one)
     material = materials(:good_material)

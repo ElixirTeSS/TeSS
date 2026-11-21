@@ -21,6 +21,8 @@ class LeidenIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::LeidenIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = 'Workshop: How to write a Data Management Plan (DMP)'
     new_url = 'https://www.library.universiteitleiden.nl/events/2023/07/workshop-how-to-write-a-data-management-plan-dmp'
@@ -31,7 +33,7 @@ class LeidenIngestorTest < ActiveSupport::TestCase
       freeze_time(2019) do
         VCR.use_cassette("ingestors/leiden") do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

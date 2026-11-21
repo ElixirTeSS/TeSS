@@ -1426,6 +1426,14 @@ components:
           type: string
           nullable: true
           description: A point of contact for this content provider.
+        last-scraped:
+          type: string
+          nullable: true
+          description: The date that the content provider's details were last refreshed by an importing source.
+          format: date
+        scraper-record:
+          type: boolean
+          description: Was this content provider automatically harvested (as opposed to being submitted manually)?
     ContentProviderCollection:
       allOf:
         - $ref: '#/components/schemas/FacetedCollection'

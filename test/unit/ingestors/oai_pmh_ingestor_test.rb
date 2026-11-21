@@ -135,6 +135,20 @@ class OaiPmhIngestorTest < ActiveSupport::TestCase
   end
 
   test 'should read bioschemas' do
+    @ingestor.source = Source.new(url: @oai_pmh_url, method: 'oai_pmh', content_provider: @content_provider)
+    stub_request(:get, 'https://example.org/content_providers/provider').to_return(status: 404)
+    stub_request(:get, 'https://provider.example.org').to_return(
+      body: '<meta property="og:description" content="Provider description">'
+    )
+    provider_metadata = <<~RDF
+      <sdo:provider>
+        <sdo:Organization rdf:about="https://provider.example.org">
+          <sdo:name>Imported provider</sdo:name>
+          <sdo:url rdf:resource="https://provider.example.org"/>
+          <sdo:subjectOf rdf:resource="https://example.org/content_providers/provider"/>
+        </sdo:Organization>
+      </sdo:provider>
+    RDF
     material = <<~METADATA
       <metadata><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sdo="http://schema.org/" xmlns:dc="http://purl.org/dc/terms/">
         <sdo:LearningResource rdf:about="https://pan-training.eu/materials/python-laser-image-visualization">
@@ -145,6 +159,7 @@ class OaiPmhIngestorTest < ActiveSupport::TestCase
           <sdo:name>bioschemas title</sdo:name>
           <sdo:url rdf:resource="https://example.org/bioschemas/material"/>
           <sdo:license rdf:resource="https://opensource.org/licenses/MIT"/>
+          #{provider_metadata}
         </sdo:LearningResource>
       </rdf:RDF></metadata>
     METADATA
@@ -154,6 +169,7 @@ class OaiPmhIngestorTest < ActiveSupport::TestCase
         <sdo:Event rdf:about="https://pan-training.eu/materials/python-laser-image-visualization">
           <sdo:name>bioschemas title2</sdo:name>
           <sdo:url rdf:resource="https://example.org/bioschemas/event"/>
+          #{provider_metadata}
         </sdo:Event>
       </rdf:RDF></metadata>
     METADATA
@@ -161,7 +177,9 @@ class OaiPmhIngestorTest < ActiveSupport::TestCase
     mock_oai_pmh([material, material, event], [])
 
     @ingestor.read(@oai_pmh_url)
+    @ingestor.resolve_providers
 
+    assert_nil @ingestor.instance_variable_get(:@bioschemas_manager).source.content_provider
     assert_equal 1, @ingestor.materials.length
     result = @ingestor.materials.first
     assert_equal 'bioschemas title', result.title
@@ -172,6 +190,12 @@ class OaiPmhIngestorTest < ActiveSupport::TestCase
     result = @ingestor.events.first
     assert_equal 'bioschemas title2', result.title
     assert_equal 'https://example.org/bioschemas/event', result.url
+    assert_equal [@ingestor.materials.first.content_provider], @ingestor.providers
+    assert_same @ingestor.materials.first.content_provider, result.content_provider
+    assert_equal 'Provider description', @ingestor.providers.first.description
+    assert_includes @ingestor.messages, "Couldn't open URL https://example.org/content_providers/provider: 404 "
+    assert_requested :get, 'https://example.org/content_providers/provider', times: 1
+    assert_requested :get, 'https://provider.example.org', times: 1
   end
 
   test 'should read TeSS instance OAI-PMH endpoint and store origin URI' do

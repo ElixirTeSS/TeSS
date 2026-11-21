@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_29_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_09_120100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -142,12 +142,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_29_120000) do
     t.datetime "image_updated_at"
     t.text "image_url"
     t.string "keywords", default: [], array: true
+    t.date "last_scraped"
+    t.bigint "last_scraped_by_id"
     t.integer "node_id"
+    t.boolean "scraper_record", default: false
     t.string "slug"
     t.text "title"
     t.datetime "updated_at", null: false
     t.text "url"
     t.integer "user_id"
+    t.index ["last_scraped_by_id"], name: "index_content_providers_on_last_scraped_by_id"
     t.index ["node_id"], name: "index_content_providers_on_node_id"
     t.index ["slug"], name: "index_content_providers_on_slug", unique: true
     t.index ["user_id"], name: "index_content_providers_on_user_id"
@@ -523,6 +527,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_29_120000) do
   create_table "sources", force: :cascade do |t|
     t.integer "approval_status"
     t.bigint "content_provider_id"
+    t.integer "content_providers_added", default: 0, null: false
+    t.integer "content_providers_rejected", default: 0, null: false
+    t.integer "content_providers_updated", default: 0, null: false
     t.datetime "created_at"
     t.string "default_language"
     t.boolean "enabled"
@@ -712,6 +719,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_29_120000) do
   add_foreign_key "collections", "spaces"
   add_foreign_key "collections", "users"
   add_foreign_key "content_providers", "nodes"
+  add_foreign_key "content_providers", "sources", column: "last_scraped_by_id", on_delete: :nullify
   add_foreign_key "content_providers", "users"
   add_foreign_key "event_materials", "events"
   add_foreign_key "event_materials", "materials"

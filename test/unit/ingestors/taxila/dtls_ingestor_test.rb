@@ -21,6 +21,8 @@ class DtlsIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::DtlsIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = 'Constraint-based modeling: Introduction and advanced topics'
     new_url = 'https://www.dtls.nl/?post_type=course&p=19311'
@@ -31,7 +33,7 @@ class DtlsIngestorTest < ActiveSupport::TestCase
       freeze_time(2019) do
         VCR.use_cassette('ingestors/dtls') do
           ingestor.read(source.url)
-          ingestor.write(@user, @content_provider)
+          ingestor.write(@user)
         end
       end
     end

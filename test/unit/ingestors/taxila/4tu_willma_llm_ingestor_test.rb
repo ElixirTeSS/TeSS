@@ -21,6 +21,8 @@ class FourtuWillmaLlmIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::Taxila::FourtuLlmIngestor.new
 
+    ingestor.source = source
+
     # check event doesn't
     new_title = '4TU-meeting National Technology Strategy'
     refute Event.where(title: new_title).any?
@@ -32,7 +34,7 @@ class FourtuWillmaLlmIngestorTest < ActiveSupport::TestCase
         VCR.use_cassette('ingestors/4tu_willma_llm') do
           with_settings({ llm_scraper: { model: 'willma', model_version: 'Zephyr 7B' } }) do
             ingestor.read(source.url)
-            ingestor.write(@user, @content_provider)
+            ingestor.write(@user)
           end
         end
       end

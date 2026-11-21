@@ -32,10 +32,12 @@ class MaterialCsvIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::MaterialCsvIngestor.new
 
+    ingestor.source = source
+
     assert_difference('Material.count', 2) do
       freeze_time(2022) do
         ingestor.read(source.url)
-        ingestor.write(@user, @content_provider)
+        ingestor.write(@user)
       end
     end
 
@@ -151,6 +153,8 @@ class MaterialCsvIngestorTest < ActiveSupport::TestCase
 
     ingestor = Ingestors::MaterialCsvIngestor.new
 
+    ingestor.source = source
+
     title = 'Another Material'
     url = 'https://app.com/materials/material2.html'
     description = 'default description'
@@ -170,7 +174,7 @@ class MaterialCsvIngestorTest < ActiveSupport::TestCase
     assert_difference 'Material.count', 1 do
       freeze_time(2022) do
         ingestor.read(source.url)
-        ingestor.write(@user, @content_provider)
+        ingestor.write(@user)
         assert_equal 3, ingestor.materials.count
         assert ingestor.events.empty?
         assert_equal 1, ingestor.stats[:materials][:added]
@@ -232,6 +236,8 @@ class MaterialCsvIngestorTest < ActiveSupport::TestCase
     )
 
     ingestor = Ingestors::MaterialCsvIngestor.new
+
+    ingestor.source = source
 
     # Stub a method that will raise an error
     ingestor.stub(:get_column, -> (*) { raise CSV::MalformedCSVError.new('test failure', 11) }) do

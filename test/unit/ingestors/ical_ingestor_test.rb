@@ -18,10 +18,11 @@ class IcalIngestorTest < ActiveSupport::TestCase
                                              method: 'ical',
                                              enabled: true)
     ingestor = Ingestors::IcalIngestor.new
+    ingestor.source = source
 
     assert_no_difference('Event.count') do
       ingestor.read(source.url)
-      ingestor.write(@user, @content_provider)
+      ingestor.write(@user)
     end
 
     assert ingestor.events.empty?
@@ -34,6 +35,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
                                              method: 'ical',
                                              enabled: true)
     ingestor = Ingestors::IcalIngestor.new
+    ingestor.source = source
 
     # check two events to be updated
     name = 'ical_event_1'
@@ -56,7 +58,7 @@ class IcalIngestorTest < ActiveSupport::TestCase
     assert_difference('Event.count', 4) do
       freeze_time(2019) do
         ingestor.read(source.url)
-        ingestor.write(@user, @content_provider)
+        ingestor.write(@user)
       end
     end
 
@@ -146,9 +148,10 @@ class IcalIngestorTest < ActiveSupport::TestCase
           url: 'https://pawsey.org.au/event/pcon-embracing-new-solutions-for-in-situ-visualisation/?ical=true',
           method: 'ical', enabled: true
         )
+        ingestor.source = source
 
         ingestor.read(source.url)
-        ingestor.write(@user, @content_provider)
+        ingestor.write(@user)
 
         assert_equal 1, ingestor.events.count
         assert ingestor.materials.empty?
@@ -161,9 +164,10 @@ class IcalIngestorTest < ActiveSupport::TestCase
           url: 'https://pawsey.org.au/event/pawsey-intern-showcase-2021/?ical=true',
           method: 'ical', enabled: true
         )
+        ingestor.source = source
 
         ingestor.read(source.url)
-        ingestor.write(@user, @content_provider)
+        ingestor.write(@user)
 
         assert_equal 1, ingestor.events.count
         assert ingestor.materials.empty?
