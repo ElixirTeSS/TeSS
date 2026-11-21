@@ -33,5 +33,11 @@
     <% end %>
   <% end %>
 
+  <% if respond_to?(:fair_signposting_links) %>
+    <% fair_signposting_links.each do |url, attributes| %>
+      <%= tag.link(href: url, **attributes) %>
+    <% end %>
+  <% end %>
+
   <%= yield :extra_head if content_for? :extra_head %>
 </head>
