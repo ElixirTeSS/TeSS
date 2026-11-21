@@ -97,6 +97,7 @@ default: &default
     logo_email: ''
     default_theme: default
     repository: 'https://github.com/ElixirTeSS/TeSS'
+    data_license: 'CC-BY 4.0'
     supported_by: 'elixir_supported_by'
     widget_example:
     home_page: # Configuration for the sections displayed on the front page
