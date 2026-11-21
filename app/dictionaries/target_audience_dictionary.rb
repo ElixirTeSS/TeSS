@@ -9,4 +9,8 @@ class TargetAudienceDictionary < Dictionary
     get_file_path 'target_audience', DEFAULT_FILE
   end
 
+  def load_dictionary
+    configured? ? super : {}
+  end
+
 end
