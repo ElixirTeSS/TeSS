@@ -139,7 +139,9 @@ If the archive path is omitted, the script creates a timestamped archive under `
 
 ### Restore
 
-> **Warning:** Restoring a database replaces the entire configured database. Restoring uploaded files deletes the current contents of `public/system` before extracting the archive. Verify the target environment and take a fresh backup before proceeding.
+> **Warning:** Restoring a database replaces the entire configured database. Restoring uploaded files deletes the current contents of `public/system` before extracting the archive. Verify the target environment before proceeding.
+
+Each restore asks for confirmation (`y` or `Y`) and first saves the current database or uploaded files to a uniquely named `*_before_restore_*` file in `backup/`. A failed safety backup cancels the restore. Keep these backups outside the host as well.
 
 Restore a database dump with `backup_database.sh`:
 

@@ -72,15 +72,34 @@ in_system() {
 }
 SYSTEM_DIR=/code/public/system
 
+backup_uploads() {
+  in_system tar -czf - -C "$SYSTEM_DIR" . > "$1"
+}
+
 case "$ACTION" in
   backup)
     mkdir -p "$(dirname "$ARCHIVE")"
     printf "\n * Backing up %s (%s) to %s\n" "$SYSTEM_DIR" "$RAILS_ENV" "$ARCHIVE"
-    in_system tar -czf - -C "$SYSTEM_DIR" . > "$ARCHIVE"
+    backup_uploads "$ARCHIVE"
     ;;
   restore)
+    printf '\nWARNING: Restoring will delete all current files in %s (%s).\n' "$SYSTEM_DIR" "$RAILS_ENV" >&2
+    read -r -p 'Continue? [y/N] ' confirmation || confirmation=
+    if [[ "$confirmation" != y && "$confirmation" != Y ]]; then
+      echo "Restore cancelled." >&2
+      exit 1
+    fi
+
     printf "\n * Restoring %s (%s) from %s\n" "$SYSTEM_DIR" "$RAILS_ENV" "$ARCHIVE"
     gzip -t "$ARCHIVE"
+    mkdir -p backup
+    SAFETY_BACKUP="$(mktemp "backup/uploads_before_restore_$(date +%Y%m%d_%H%M%S)_XXXXXX.tar.gz")"
+    printf '\n * Backing up current files to %s\n' "$SAFETY_BACKUP"
+    if ! backup_uploads "$SAFETY_BACKUP"; then
+      rm -f "$SAFETY_BACKUP"
+      echo "Backup failed; restore cancelled." >&2
+      exit 1
+    fi
     in_system find "$SYSTEM_DIR" -mindepth 1 -delete
     in_system tar -xzf - -C "$SYSTEM_DIR" < "$ARCHIVE"
     ;;

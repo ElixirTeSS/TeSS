@@ -74,13 +74,33 @@ esac
 
 DC=(docker compose -f "$COMPOSE_FILE")
 
+backup_database() {
+  "${DC[@]}" exec -T db pg_dump -U "$DB_USER" -d "$DB_NAME" -Fc > "$1"
+}
+
 case "$ACTION" in
   backup)
     mkdir -p "$(dirname "$DUMP_FILE")"
     printf "\n * Backing up database %s (%s) to %s\n" "$DB_NAME" "$RAILS_ENV" "$DUMP_FILE"
-    "${DC[@]}" exec -T db pg_dump -U "$DB_USER" -d "$DB_NAME" -Fc > "$DUMP_FILE"
+    backup_database "$DUMP_FILE"
     ;;
   restore)
+    printf '\nWARNING: Restoring will delete the entire current database %s (%s).\n' "$DB_NAME" "$RAILS_ENV" >&2
+    read -r -p 'Continue? [y/N] ' confirmation || confirmation=
+    if [[ "$confirmation" != y && "$confirmation" != Y ]]; then
+      echo "Restore cancelled." >&2
+      exit 1
+    fi
+
+    mkdir -p backup
+    SAFETY_BACKUP="$(mktemp "backup/database_before_restore_$(date +%Y%m%d_%H%M%S)_XXXXXX.dump")"
+    printf '\n * Backing up current database to %s\n' "$SAFETY_BACKUP"
+    if ! backup_database "$SAFETY_BACKUP"; then
+      rm -f "$SAFETY_BACKUP"
+      echo "Backup failed; restore cancelled." >&2
+      exit 1
+    fi
+
     printf "\n * Stopping app and sidekiq (%s)\n" "$RAILS_ENV"
     "${DC[@]}" stop app sidekiq
 
