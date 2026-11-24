@@ -12,13 +12,14 @@ module InSpace
   end
 
   def space= s
-    return if s.default?
+    return if s.global?
+    return super(nil) if s.default?
     super
   end
 
   class_methods do
     def in_current_space
-      Space.current_space&.default? ? all : where(space_id: Space.current_space&.id)
+      Space.current_space&.global? ? all : where(space_id: Space.current_space&.id)
     end
   end
 end

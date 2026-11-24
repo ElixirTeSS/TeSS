@@ -74,3 +74,13 @@ else
     rake 'tess:check_resource_urls'
   end
 end
+
+if !schedules['bioschemas_dump'].nil?
+  every :"#{schedules['bioschemas_dump']['every']}", at: "#{schedules['bioschemas_dump']['at']}" do
+    rake 'tess:dump_bioschemas'
+  end
+else
+  every :sunday, at: '9pm' do
+    rake 'tess:dump_bioschemas'
+  end
+end

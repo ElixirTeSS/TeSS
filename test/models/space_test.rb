@@ -255,4 +255,46 @@ class SpaceTest < ActiveSupport::TestCase
     assert_includes all_materials, materials(:plant_space_material)
     assert_includes all_materials, materials(:good_material)
   end
+
+  test 'resources scoped to space when using in_current_space' do
+    Space.with_current_space(spaces(:plants)) do
+      plant_materials = Material.in_current_space.to_a
+      assert_includes plant_materials, materials(:plant_space_material)
+      assert_not_includes plant_materials, materials(:good_material)
+    end
+
+    Space.with_current_space(spaces(:astro)) do
+      astro_materials = Material.in_current_space.to_a
+      assert_not_includes astro_materials, materials(:plant_space_material)
+      assert_not_includes astro_materials, materials(:good_material)
+    end
+
+    Space.with_current_space(DefaultSpace.new) do
+      default_materials = Material.in_current_space.to_a
+      assert_not_includes default_materials, materials(:plant_space_material)
+      assert_includes default_materials, materials(:good_material)
+    end
+
+    Space.with_current_space(GlobalSpace.new) do
+      all_materials = Material.in_current_space.to_a
+      assert_includes all_materials, materials(:plant_space_material)
+      assert_includes all_materials, materials(:good_material)
+    end
+  end
+
+  test 'space assignment' do
+    material = materials(:good_material)
+
+    material.space = spaces(:plants)
+    assert_equal spaces(:plants), material.space
+    assert_equal spaces(:plants).id, material.space_id
+
+    material.space = GlobalSpace.new # Does nothing
+    assert_equal spaces(:plants), material.space
+    assert_equal spaces(:plants).id, material.space_id
+
+    material.space = DefaultSpace.new # Sets to nil
+    assert_nil material.space
+    assert_nil material.space_id
+  end
 end

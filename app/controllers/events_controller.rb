@@ -32,6 +32,14 @@ class EventsController < ApplicationController
       format.csv
       format.ics
       format.rss
+      format.jsonld do
+        dump = Bioschemas::DataDump.new(Event)
+        if dump.exists?
+          send_file(dump.file, type: :jsonld)
+        else
+          head :not_found
+        end
+      end
     end
   end
 
