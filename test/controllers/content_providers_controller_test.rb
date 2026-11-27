@@ -418,6 +418,49 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_equal '{}', response.body
   end
 
+  test 'should find existing content_provider by ror, taking precedence over url and title' do
+    @content_provider.update!(ror: 'https://ror.org/02catss52')
+    other = content_providers(:iann)
+    post :check_exists, params: { format: :json, content_provider: {
+      ror: "  https://ror.org/02catss52\n", url: other.url, title: other.title
+    } }
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['id'], @content_provider.id)
+  end
+
+  test 'should find existing content_provider by url when ror does not match' do
+    post :check_exists, params: { format: :json, content_provider: {
+      ror: 'https://ror.org/04wxnsj81', url: @content_provider.url
+    } }
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['id'], @content_provider.id)
+  end
+
+  test 'should report existing ror as taken, ignoring surrounding whitespace' do
+    sign_in users(:regular_user)
+    @content_provider.update!(ror: 'https://ror.org/02catss52')
+    get :ror_exists, params: { ror: 'https://ror.org/02catss52' }
+    assert_response :success
+    assert_equal true, JSON.parse(response.body)['ror_taken']
+
+    get :ror_exists, params: { ror: "  https://ror.org/02catss52\n" }
+    assert_response :success
+    assert_equal true, JSON.parse(response.body)['ror_taken']
+  end
+
+  test 'should report blank, missing or unknown ror as not taken' do
+    sign_in users(:regular_user)
+    ['', '   ', 'https://ror.org/04wxnsj81'].each do |ror|
+      get :ror_exists, params: { ror: ror }
+      assert_response :success
+      assert_equal false, JSON.parse(response.body)['ror_taken']
+    end
+
+    get :ror_exists
+    assert_response :success
+    assert_equal false, JSON.parse(response.body)['ror_taken']
+  end
+
   test 'can assign nodes by name' do
     sign_in users(:regular_user)
     assert_difference('ContentProvider.count') do
