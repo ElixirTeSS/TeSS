@@ -83,6 +83,7 @@ en:
     url: 'URL'
     doi: 'DOI'
     orcid: 'ORCID'
+    ror: 'ROR'
   activerecord:
     models:
       event: Event
@@ -97,6 +98,7 @@ en:
     attributes:
       content_provider:
         user: Owner
+        ror: 'ROR URL'
       profile:
         firstname: 'First name'
         surname: 'Last name'

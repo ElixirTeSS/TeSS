@@ -6,6 +6,10 @@
 
   <%= render partial: 'common/url_checker', locals: { f: f, url: content_providers_check_exists_path, title: '' } %>
 
+  <%= f.input :ror, as: :string, label: 'ROR URL',
+              hint: 'Research Organization Registry (ROR) URL, e.g. https://ror.org/02catss52',
+              input_html: { title: 'Research Organization Registry (ROR) URL for this content provider' } %>
+
   <%= f.input :contact, as: :string %>
 
   <%= f.input :description, as: :markdown_area, input_html: { rows: '10' } %>

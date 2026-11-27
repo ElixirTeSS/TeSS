@@ -2,6 +2,7 @@ class ContentProvider < ApplicationRecord
   # The order of these determines which providers have precedence when scraping.
   # Low -> High
   PROVIDER_TYPE = ['Portal', 'Organisation', 'Project']
+  ROR_URL_REGEX = %r{\Ahttps://ror\.org/0[a-z0-9]{6}[0-9]{2}\z}
 
   include PublicActivity::Common
   include LogParameterChanges
@@ -26,7 +27,7 @@ class ContentProvider < ApplicationRecord
 
   # Remove trailing and squeezes (:squish option) white spaces inside the string (before_validation):
   # e.g. "James     Bond  " => "James Bond"
-  auto_strip_attributes :title, :description, :url, :image_url, squish: false
+  auto_strip_attributes :title, :description, :url, :image_url, :ror, squish: false
 
   validates :title, :url, presence: true
 
@@ -34,6 +35,7 @@ class ContentProvider < ApplicationRecord
   validates :url, url: true
   validates :content_provider_type, presence: true, inclusion: { in: PROVIDER_TYPE }
   validates :keywords, length: { maximum: 20 }
+  validates :ror, format: { with: ROR_URL_REGEX }, allow_blank: true
 
   clean_array_fields(:keywords)
 
@@ -46,6 +48,7 @@ class ContentProvider < ApplicationRecord
       text :title
       text :description
       text :keywords
+      text :ror
       # sort title
       string :sort_title do
         title.downcase.gsub(/^(an?|the) /, '')

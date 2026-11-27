@@ -752,6 +752,17 @@ class MaterialTest < ActiveSupport::TestCase
     refute bioschemas.key?(:license)
   end
 
+  test 'includes ROR identifier in material bioschemas json' do
+    provider = content_providers(:goblet)
+    provider.update_column(:ror, 'https://ror.org/02catss52')
+    m = Material.new(content_provider: provider)
+
+    bioschemas = m.to_bioschemas.first.generate
+    goblet = bioschemas[:provider].find { |p| p['name'] == 'Goblet' }
+    assert_equal 'https://ror.org/02catss52', goblet['identifier']
+    assert_equal 'https://ror.org/02catss52', goblet['@id']
+  end
+
   test 'validates origin_uri' do
     @material.origin_uri = nil
     assert @material.valid?

@@ -10,6 +10,12 @@
     <%= content_provider.keywords.join(', ') %>
   </div>
 <% end %>
+<% unless content_provider.ror.blank? || TeSS::Config.feature['content_providers_disabled'].include?('ror') %>
+  <h4 class="nav-heading">ROR</h4>
+  <div class="nav-block">
+    <%= external_link content_provider.ror, content_provider.ror, track: true %>
+  </div>
+<% end %>
 <% unless content_provider.node.blank? || !feature_enabled?('nodes') %>
   <h4 class="nav-heading">ELIXIR node</h4>
   <div class="nav-block">
