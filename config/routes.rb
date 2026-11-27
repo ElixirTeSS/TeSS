@@ -97,6 +97,9 @@ Rails.application.routes.draw do
   end
 
   resources :content_providers, concerns: :activities do
+    collection do
+      get :ror_exists, defaults: { format: :json }
+    end
     resources :sources, except: [:index]
   end
 

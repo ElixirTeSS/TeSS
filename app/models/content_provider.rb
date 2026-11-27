@@ -94,10 +94,11 @@ class ContentProvider < ApplicationRecord
 
   def self.check_exists(content_provider_params)
     given_content_provider = self.new(content_provider_params)
-    content_provider = nil
+    ror = given_content_provider.ror&.strip
+    content_provider = find_by(ror: ror) if ror.present?
 
     if given_content_provider.url.present?
-      content_provider = self.find_by_url(given_content_provider.url)
+      content_provider ||= self.find_by_url(given_content_provider.url)
     end
 
     if given_content_provider.title.present?

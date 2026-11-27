@@ -29,9 +29,25 @@ var Ror = {
         };
     },
 
+    checkDuplicate: function (input, warning) {
+        var ror = input.val().trim();
+        warning.empty();
+        if (!ror || ror === input.data('savedRor')) return;
+
+        $.getJSON(input.data('rorCheckUrl'), { ror: ror }, function (match) {
+            if (match.ror_taken && input.val().trim() === ror) {
+                warning.text('This ROR URL is already registered.');
+            }
+        });
+    },
+
     init: function () {
         $('[data-role="ror-autocomplete"]').each(function () {
-            $(this).autocomplete({
+            var input = $(this);
+            var warning = $('#ror-duplicate-warning');
+            input.on('input', function () { warning.empty(); });
+            input.on('change', function () { Ror.checkDuplicate(input, warning); });
+            input.autocomplete({
                 serviceUrl: $(this).data('autocompleteUrl'),
                 dataType: 'json',
                 minChars: 3,
@@ -40,7 +56,7 @@ var Ror = {
                 transformResult: Ror.transformResult,
                 formatResult: Autocompleters.formatResultWithHint,
                 onSelect: function (suggestion) {
-                    $(this).val(suggestion.data.ror);
+                    input.val(suggestion.data.ror).trigger('change');
                 }
             });
         });

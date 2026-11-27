@@ -32,8 +32,8 @@ class ContentProvidersController < ApplicationController
     authorize @content_provider
   end
 
-  # POST /events/check_exists
-  # POST /events/check_exists.json
+  # POST /content_providers/check_exists
+  # POST /content_providers/check_exists.json
   def check_exists
     @content_provider = ContentProvider.check_exists(content_provider_params)
 
@@ -48,6 +48,13 @@ class ContentProvidersController < ApplicationController
         format.json { render json: {}, status: 200, content_type: 'application/json' }
       end
     end
+  end
+
+  # GET /content_providers/ror_exists
+  # GET /content_providers/ror_exists.json
+  def ror_exists
+    ror = params[:ror].to_s.strip
+    render json: { ror_taken: ror.present? && ContentProvider.exists?(ror: ror) }
   end
 
   def create
