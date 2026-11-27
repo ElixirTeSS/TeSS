@@ -775,6 +775,17 @@ class EventTest < ActiveSupport::TestCase
     assert_equal 'http://mygoblet.org', bioschemas[:provider].first['url']
   end
 
+  test 'includes ROR identifier in event bioschemas json' do
+    provider = content_providers(:goblet)
+    provider.update_column(:ror, 'https://ror.org/02catss52')
+    e = Event.new(content_provider: provider, event_types: ['workshops_and_courses'])
+
+    bioschemas = e.to_bioschemas.first.generate
+    goblet = bioschemas[:provider].find { |p| p['name'] == 'Goblet' }
+    assert_equal 'https://ror.org/02catss52', goblet['identifier']
+    assert_equal 'https://ror.org/02catss52', goblet['@id']
+  end
+
   test 'serializes event to oai_dc xml' do
     event = events(:one)
     material = materials(:good_material)

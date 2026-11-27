@@ -144,11 +144,17 @@ module Bioschemas
       p = []
 
       if resource.content_provider
-        p << {
+        provider = {
           '@type' => 'Organization',
           'name' => resource.content_provider.title,
           'url' => resource.content_provider.url
         }
+
+        if resource.content_provider.ror.present?
+          provider['@id'] = provider['identifier'] = resource.content_provider.ror
+        end
+
+        p << provider
       end
 
       resource.nodes.each do |node|

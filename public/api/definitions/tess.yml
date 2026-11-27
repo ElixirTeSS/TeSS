@@ -1409,6 +1409,10 @@ components:
           type: string
           nullable: true
           description: A URL to an image of the content provider's logo.
+        ror:
+          type: string
+          nullable: true
+          description: The Research Organization Registry (ROR) URL of the content provider, e.g. https://ror.org/02catss52.
         keywords:
           type: array
           description: A list of freetext keywords to describe the content provider.

@@ -154,6 +154,32 @@ class ContentProvidersControllerTest < ActionController::TestCase
     assert_redirected_to content_provider_path(assigns(:content_provider))
   end
 
+  test 'should create content provider with ror' do
+    sign_in users(:regular_user)
+    assert_difference('ContentProvider.count') do
+      post :create, params: { content_provider: {
+        title: 'Provider with ROR',
+        url: 'http://provider-with-ror.org',
+        ror: 'https://ror.org/02catss52'
+      } }
+    end
+    assert_redirected_to content_provider_path(assigns(:content_provider))
+    assert_equal 'https://ror.org/02catss52', assigns(:content_provider).ror
+  end
+
+  test 'should not create content provider with invalid ror' do
+    sign_in users(:regular_user)
+    assert_no_difference('ContentProvider.count') do
+      post :create, params: { content_provider: {
+        title: 'Provider with invalid ROR',
+        url: 'http://provider-with-invalid-ror.org',
+        ror: '02catss52'
+      } }
+    end
+    assert_response :success
+    assert assigns(:content_provider).errors[:ror].any?
+  end
+
   test 'should not create content provider for non-logged in user' do
     assert_no_difference('ContentProvider.count') do
       post :create, params: { content_provider: {
@@ -190,6 +216,7 @@ class ContentProvidersControllerTest < ActionController::TestCase
     end
 
     assert_equal @content_provider.title, body['data']['attributes']['title']
+    assert body['data']['attributes'].key?('ror')
     assert_equal content_provider_path(assigns(:content_provider)), body['data']['links']['self']
   end
 
@@ -198,6 +225,28 @@ class ContentProvidersControllerTest < ActionController::TestCase
     sign_in @content_provider.user
     patch :update, params: { id: @content_provider, content_provider: @updated_content_provider }
     assert_redirected_to content_provider_path(assigns(:content_provider))
+  end
+
+  test 'should update content provider ror' do
+    sign_in @content_provider.user
+    patch :update, params: { id: @content_provider, content_provider: { ror: 'https://ror.org/02catss52' } }
+    assert_redirected_to content_provider_path(assigns(:content_provider))
+    assert_equal 'https://ror.org/02catss52', @content_provider.reload.ror
+  end
+
+  test 'should show ror on content provider page' do
+    @content_provider.update!(ror: 'https://ror.org/02catss52')
+    get :show, params: { id: @content_provider }
+    assert_response :success
+    assert_select 'span[itemprop="identifier"][content="https://ror.org/02catss52"]', count: 1
+    assert_select 'a[href="https://ror.org/02catss52"]', count: 1
+  end
+
+  test 'should show ror field on content provider form' do
+    sign_in users(:admin)
+    get :edit, params: { id: @content_provider }
+    assert_response :success
+    assert_select 'input[name="content_provider[ror]"]', count: 1
   end
 
   test 'should update content provider if curator' do
@@ -367,6 +416,49 @@ class ContentProvidersControllerTest < ActionController::TestCase
     post :check_exists, params: { format: :json, content_provider: { url: nil } }
     assert_response :success
     assert_equal '{}', response.body
+  end
+
+  test 'should find existing content_provider by ror, taking precedence over url and title' do
+    @content_provider.update!(ror: 'https://ror.org/02catss52')
+    other = content_providers(:iann)
+    post :check_exists, params: { format: :json, content_provider: {
+      ror: "  https://ror.org/02catss52\n", url: other.url, title: other.title
+    } }
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['id'], @content_provider.id)
+  end
+
+  test 'should find existing content_provider by url when ror does not match' do
+    post :check_exists, params: { format: :json, content_provider: {
+      ror: 'https://ror.org/04wxnsj81', url: @content_provider.url
+    } }
+    assert_response :success
+    assert_equal(JSON.parse(response.body)['id'], @content_provider.id)
+  end
+
+  test 'should report existing ror as taken, ignoring surrounding whitespace' do
+    sign_in users(:regular_user)
+    @content_provider.update!(ror: 'https://ror.org/02catss52')
+    get :ror_exists, params: { ror: 'https://ror.org/02catss52' }
+    assert_response :success
+    assert_equal true, JSON.parse(response.body)['ror_taken']
+
+    get :ror_exists, params: { ror: "  https://ror.org/02catss52\n" }
+    assert_response :success
+    assert_equal true, JSON.parse(response.body)['ror_taken']
+  end
+
+  test 'should report blank, missing or unknown ror as not taken' do
+    sign_in users(:regular_user)
+    ['', '   ', 'https://ror.org/04wxnsj81'].each do |ror|
+      get :ror_exists, params: { ror: ror }
+      assert_response :success
+      assert_equal false, JSON.parse(response.body)['ror_taken']
+    end
+
+    get :ror_exists
+    assert_response :success
+    assert_equal false, JSON.parse(response.body)['ror_taken']
   end
 
   test 'can assign nodes by name' do

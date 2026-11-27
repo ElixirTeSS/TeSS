@@ -317,6 +317,7 @@ class BioschemasTest < ActionDispatch::IntegrationTest
     material.external_resources.create!({ title: 'Cool website', url: 'https://external-resource.pizza' })
     material.node_names = ['Westeros']
     material.save!
+    content_providers(:goblet).update_column(:ror, 'https://ror.org/02catss52')
     url = material_url(material.slug)
 
     get url
@@ -411,12 +412,13 @@ class BioschemasTest < ActionDispatch::IntegrationTest
       pattern RDF::Query::Pattern.new(material_uri, RDF::Vocab::SCHEMA.provider, :provider_info)
       pattern RDF::Query::Pattern.new(:provider_info, RDF::Vocab::SCHEMA.name, :name)
       pattern RDF::Query::Pattern.new(:provider_info, RDF::Vocab::SCHEMA.url, :url)
+      pattern RDF::Query::Pattern.new(:provider_info, RDF::Vocab::SCHEMA.identifier, :identifier, optional: true)
     end
     results = graph.query(q)
-    providers = results.map { |r| [r.name, r.url] }
+    providers = results.map { |r| [r.name, r.url, r[:identifier]&.to_s] }
     assert_equal 2, providers.count
-    assert_includes providers, ['ELIXIR Westeros', 'http://example.com']
-    assert_includes providers, ['Goblet', 'http://mygoblet.org']
+    assert_includes providers, ['ELIXIR Westeros', 'http://example.com', nil]
+    assert_includes providers, ['Goblet', 'http://mygoblet.org', 'https://ror.org/02catss52']
 
     # External resources
     q = RDF::Query.new do

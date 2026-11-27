@@ -53,6 +53,44 @@ class ContentProviderTest < ActiveSupport::TestCase
 
   end
 
+  test 'should validate ror' do
+    content_provider = content_providers(:goblet)
+
+    content_provider.ror = nil
+    assert content_provider.valid?
+
+    content_provider.ror = ''
+    assert content_provider.valid?
+    assert_nil content_provider.ror
+
+    content_provider.ror = ' https://ror.org/02catss52 '
+    assert content_provider.valid?
+    assert_equal 'https://ror.org/02catss52', content_provider.ror
+
+    content_provider.ror = '02catss52'
+    refute content_provider.valid?
+    assert_includes content_provider.errors[:ror], 'is invalid'
+
+    content_provider.ror = 'http://ror.org/02catss52'
+    refute content_provider.valid?
+
+    content_provider.ror = 'https://ror.org/02catss52/'
+    refute content_provider.valid?
+
+    content_provider.ror = 'https://example.com/02catss52'
+    refute content_provider.valid?
+  end
+
+  test 'should require ror to be unique' do
+    goblet = content_providers(:goblet)
+    iann = content_providers(:iann)
+    goblet.update!(ror: 'https://ror.org/02catss52')
+
+    iann.ror = 'https://ror.org/02catss52'
+    refute iann.valid?
+    assert_includes iann.errors[:ror], 'has already been taken'
+  end
+
   test 'should validate content provider type' do
     content_provider = ContentProvider.new(title: 'New Provider',
                                            url: 'https://website.internet',
