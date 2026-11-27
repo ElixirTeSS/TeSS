@@ -150,6 +150,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_27_120000) do
     t.text "url"
     t.integer "user_id"
     t.index ["node_id"], name: "index_content_providers_on_node_id"
+    t.index ["ror"], name: "index_content_providers_on_ror", unique: true
     t.index ["slug"], name: "index_content_providers_on_slug", unique: true
     t.index ["user_id"], name: "index_content_providers_on_user_id"
   end

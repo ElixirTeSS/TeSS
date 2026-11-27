@@ -61,6 +61,7 @@ class ContentProviderTest < ActiveSupport::TestCase
 
     content_provider.ror = ''
     assert content_provider.valid?
+    assert_nil content_provider.ror
 
     content_provider.ror = ' https://ror.org/02catss52 '
     assert content_provider.valid?
@@ -78,6 +79,16 @@ class ContentProviderTest < ActiveSupport::TestCase
 
     content_provider.ror = 'https://example.com/02catss52'
     refute content_provider.valid?
+  end
+
+  test 'should require ror to be unique' do
+    goblet = content_providers(:goblet)
+    iann = content_providers(:iann)
+    goblet.update!(ror: 'https://ror.org/02catss52')
+
+    iann.ror = 'https://ror.org/02catss52'
+    refute iann.valid?
+    assert_includes iann.errors[:ror], 'has already been taken'
   end
 
   test 'should validate content provider type' do

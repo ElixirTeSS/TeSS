@@ -36,6 +36,7 @@ class ContentProvider < ApplicationRecord
   validates :content_provider_type, presence: true, inclusion: { in: PROVIDER_TYPE }
   validates :keywords, length: { maximum: 20 }
   validates :ror, format: { with: ROR_URL_REGEX }, allow_blank: true
+  validates :ror, uniqueness: { allow_blank: true }
 
   clean_array_fields(:keywords)
 
