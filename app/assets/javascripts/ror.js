@@ -36,7 +36,7 @@ var Ror = {
 
         $.getJSON(input.data('rorCheckUrl'), { ror: ror }, function (match) {
             if (match.ror_taken && input.val().trim() === ror) {
-                warning.text('This ROR URL is already registered.');
+                warning.text(input.data('duplicateMessage'));
             }
         });
     },

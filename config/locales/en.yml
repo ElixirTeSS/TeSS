@@ -1020,6 +1020,11 @@ en:
     hints:
       hide_child_nodes: Ticking this box will hide child nodes from the diagram until their parent node is clicked.
       public: Un-ticking this box will hide this workflow from anyone who isn't the creator or a collaborator.
+  content_providers:
+    hints:
+      ror: 'Enter a Research Organization Registry (ROR) URL, e.g. https://ror.org/02catss52, or search by organization name.'
+      ror_title: 'Research Organization Registry (ROR) URL for this content provider'
+      ror_already_registered: 'This ROR URL is already registered.'
   nodes:
     full_title: 'ELIXIR %{title}'
   menu:

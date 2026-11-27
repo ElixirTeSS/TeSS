@@ -6,16 +6,17 @@
 
   <%= render partial: 'common/url_checker', locals: { f: f, url: content_providers_check_exists_path, title: '' } %>
 
-  <%= f.input :ror, as: :string, label: 'ROR URL',
+  <%= f.input :ror, as: :string,
               hint: safe_join([
-                'Enter a Research Organization Registry (ROR) URL, e.g. https://ror.org/02catss52, or search by organization name.',
+                t('content_providers.hints.ror'),
                 tag.span(id: 'ror-duplicate-warning', class: 'text-warning', role: 'status')
               ], ' '),
-              input_html: { title: 'Research Organization Registry (ROR) URL for this content provider',
+              input_html: { title: t('content_providers.hints.ror_title'),
                             data: { role: 'ror-autocomplete',
                                     autocomplete_url: 'https://api.ror.org/v2/organizations',
                                     ror_check_url: ror_exists_content_providers_path,
-                                    saved_ror: f.object.ror_in_database } } %>
+                                    saved_ror: f.object.ror_in_database,
+                                    duplicate_message: t('content_providers.hints.ror_already_registered') } } %>
 
   <%= f.input :contact, as: :string %>
 
