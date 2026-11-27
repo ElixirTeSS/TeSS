@@ -7,8 +7,10 @@
   <%= render partial: 'common/url_checker', locals: { f: f, url: content_providers_check_exists_path, title: '' } %>
 
   <%= f.input :ror, as: :string, label: 'ROR URL',
-              hint: 'Research Organization Registry (ROR) URL, e.g. https://ror.org/02catss52',
-              input_html: { title: 'Research Organization Registry (ROR) URL for this content provider' } %>
+              hint: 'Enter a Research Organization Registry (ROR) URL, e.g. https://ror.org/02catss52, or search by organization name.',
+              input_html: { title: 'Research Organization Registry (ROR) URL for this content provider',
+                            data: { role: 'ror-autocomplete',
+                                    autocomplete_url: 'https://api.ror.org/v2/organizations' } } %>
 
   <%= f.input :contact, as: :string %>
 

@@ -185,6 +185,9 @@ document.addEventListener("turbolinks:load", function(e) {
     // Autocompleters ("app/views/common/_autocompleter.html.erb")
     Autocompleters.init();
 
+    // ROR autocomplete ("app/views/content_providers/_form.html.erb")
+    Ror.init();
+
     // Collaborations ("app/views/collaborations/_collaborators_button.html.erb")
     Collaborations.init();
 
